@@ -1,13 +1,13 @@
 import React from 'react';
-import About from './pages/about/about.jsx';
-import './style/App.css'; 
+import {Outlet} from "react-router-dom";
 
-function App() {
-  return (
-    <div className="App">
-      <About />
-    </div>
-  );
-}
+
+const App = () => {
+    return (
+        <div>
+            <Outlet/>
+        </div>
+    );
+};
 
 export default App;
