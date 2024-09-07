@@ -4,7 +4,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 90vh; /* 90% de la altura de la ventana */
+    height: 100vh; /* 100% de la altura de la ventana */
     padding: 20px;
     max-width: 800px;
     margin: 0 auto;
