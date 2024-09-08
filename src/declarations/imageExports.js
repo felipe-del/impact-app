@@ -4,6 +4,7 @@ import Profile_0 from '../assets/undraw_profile.svg';
 import Profile_1 from '../assets/undraw_profile_1.svg';
 import Profile_2 from '../assets/undraw_profile_2.svg';
 import Profile_3 from '../assets/undraw_profile_3.svg';
+import Escudo_UCR from '../assets/Escudo_UCR.png';
 
 // Exporta todas las imágenes de una vez
 export {
@@ -12,4 +13,5 @@ export {
   Profile_1,
   Profile_2,
   Profile_3,
+  Escudo_UCR,
 };
