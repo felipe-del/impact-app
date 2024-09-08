@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './about.css'; 
 
 const About = () => {
@@ -16,6 +17,7 @@ const About = () => {
             <p>
                 Thank you for visiting our About page. If you have any questions or need further information, please feel free to reach out to us.
             </p>
+            <Link to="/auth" className="login-button">Go to Login</Link>
         </div>
     );
 };

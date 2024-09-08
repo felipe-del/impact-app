@@ -1,23 +1,38 @@
-
 .about-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* 100% de la altura de la ventana */
+    height: 100vh; /* 100% of the viewport height */
     padding: 20px;
     max-width: 800px;
     margin: 0 auto;
     text-align: center;
+    
 }
 
-.about-container h1 {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
+.login-button {
+    display: inline-block;
+    padding: 12px 24px;
+    margin-top: 20px;
+    font-size: 18px;
+    color: #fff;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.about-container p {
-    font-size: 1.2rem;
-    line-height: 1.6;
-    margin-bottom: 15px;
+.login-button:hover {
+    background: linear-gradient(135deg, #0056b3, #004085);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.login-button:active {
+    background: linear-gradient(135deg, #004085, #003366);
+    transform: translateY(1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
