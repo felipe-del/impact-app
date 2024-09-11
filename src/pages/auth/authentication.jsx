@@ -25,7 +25,7 @@ const Authentication = () => {
                         </div>
                         <div className="toggle-panel toggle-right">
                             <img src={Escudo_UCR} alt="Escudo UCR" />
-                            <h1>{isSignIn ? 'Hello, Friend!' : 'Welcome Back!'}</h1>
+                            <h1>{isSignIn ? 'Hello, Friend!' : 'IMPACT | CIMPA'}</h1>
                             <p>{isSignIn ? 'Register with your personal details to use all of site features' : 'Enter your personal details to use all of site features'}</p>
                             <button className="hidden" onClick={toggleSignIn} id={isSignIn ? 'register' : 'login'}>{isSignIn ? 'Sign Up' : 'Sign In'}</button>
                         </div>
