@@ -19,10 +19,10 @@ const ProductRegister = () => {
                 setCategories(data);
                 setFilteredCategories(data);
             })
-            .catch(error => console.error('Error fetching categories:', error));
+            .catch(error => console.error('Error:', error));
     }, []);
 
-    // Filtrar categorías en función de la búsqueda
+    // Categories filter
     const handleSearch = (e) => {
         const searchValue = e.target.value;
         setSearchTerm(searchValue);
@@ -32,19 +32,18 @@ const ProductRegister = () => {
         setFilteredCategories(filtered);
     };
 
-    // Seleccionar una categoría y pasar al siguiente paso
+
     const handleSelectCategory = (category) => {
         setCategory(category);
         setSelectedCategory(category.name);
-        setCurrentStep(2); // Avanzar al paso del formulario
+        setCurrentStep(2); // Next step, form
     };
 
-    // Volver a la selección de categoría
+
     const handleGoBackToCategorySelection = () => {
-        setCurrentStep(1); // Regresar al paso de selección de categoría
+        setCurrentStep(1); // step back, category section
     };
 
-    // Manejar el envío del formulario
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -55,7 +54,22 @@ const ProductRegister = () => {
             quantity
         };
         console.log(newProduct);
-        // Aquí agregarías la lógica para enviar los datos al backend.
+        fetch('http://localhost:8080/api/productCategory/product', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newProduct)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("error in the product register");
+                }
+                alert('Productos guardada exitosamente');
+            })
+            .catch(error => {
+                console.error('Error al guardar categoría:', error);
+            });
     };
 
     return (
@@ -64,11 +78,10 @@ const ProductRegister = () => {
                 <h1>Registro de productos</h1>
                 <div className="ver-inventario">
                     <button className="button-5" role="button">Ver inventario productos</button>
-                    {/*<Link to="/categoryRegister" className="button-5">Registro de nueva categoría</Link>*/}
                 </div>
             </div>
 
-            {/* Paso 1: Selección de Categoría */}
+            {/* Category selection */}
             {currentStep === 1 && (
                 <div className="container">
                     <div className="search-container">
@@ -99,7 +112,7 @@ const ProductRegister = () => {
                 </div>
             )}
 
-            {/* Paso 2: Formulario de Registro */}
+            {/* Register form */}
             {currentStep === 2 && (
                 <div className="container">
                     <form onSubmit={handleSubmit}>
