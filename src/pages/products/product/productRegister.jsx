@@ -13,7 +13,7 @@ const ProductRegister = () => {
     const [currentStep, setCurrentStep] = useState(1); // 1 para selección de categoría, 2 para el formulario
 
     useEffect(() => {
-        fetch('http://localhost:8080/api/productCategory/categories')
+        fetch('http://localhost:8080/product/categories')
             .then(response => response.json())
             .then(data => {
                 setCategories(data);
@@ -54,7 +54,7 @@ const ProductRegister = () => {
             quantity
         };
         console.log(newProduct);
-        fetch('http://localhost:8080/api/productCategory/product', {
+        fetch('http://localhost:8080/product/product', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

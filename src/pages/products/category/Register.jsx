@@ -10,7 +10,7 @@ const Register = () => {
     const [measureUnit, setMeasureUnit] = useState(''); // State for unit of measurement
 
     useEffect(() => {
-        fetch('http://localhost:8080/api/productCategory/units')
+        fetch('http://localhost:8080/product/units')
             .then(response => response.json())
             .then(data => {setMeasureU(data)
                 if (data.length > 0) {
@@ -19,7 +19,7 @@ const Register = () => {
             })
             .catch(error => console.error('Fetch error:', error));
 
-        fetch('http://localhost:8080/api/productCategory/types')
+        fetch('http://localhost:8080/product/types')
             .then(response => response.json())
             .then(data => {setTypes(data);
         if (data.length > 0) {
@@ -38,7 +38,7 @@ const Register = () => {
             unit_of_measurement:  measureUnit
         };
         console.log(newCategory);
-        fetch('http://localhost:8080/api/productCategory', {
+        fetch('http://localhost:8080/product', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
