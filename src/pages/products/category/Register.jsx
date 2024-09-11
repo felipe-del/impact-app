@@ -55,13 +55,15 @@ const Register = () => {
                 console.error('Error al guardar categoría:', error);
             });
     };
-
+    const handdleRegisterP= ()=>{
+        window.location.href='\productRegister'
+    }
     return (
         <div className="main-container">
             <div className="button-container">
                 <h1>Registro de categorías</h1>
                 <div className="ver-inventario">
-                    <button className="button-5" role="button">Ver inventario productos</button>
+                    <button className="button-5" role="button" onClick={handdleRegisterP} >Registro productos</button>
                 </div>
             </div>
 
@@ -125,7 +127,7 @@ const Register = () => {
                     </div>
 
                     <div className="button">
-                        <button className="button-5" type="submit">Guardar</button>
+                        <button className="button-5" type="submit" role="button">Guardar</button>
                     </div>
                 </form>
             </div>
