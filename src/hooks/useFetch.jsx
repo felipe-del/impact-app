@@ -23,7 +23,7 @@ const useFetch = () => {
 
             return await response.json();
         } catch (error) {
-            setError('Something went wrong');
+            setError('Algo ha salido mal');
         } finally {
             setIsLoading(false);
         }
