@@ -23,8 +23,13 @@ const SignIn = ({ switchToSignUp }) => {
             const data = await fetchData(API_URLS.AUTH.LOGIN, options);
 
             console.log(data);
-            setUser(data);
-            window.location.href = '/app';
+
+            if (data) {
+                setUser(data);
+                window.location.href = '/app';
+            } else {
+                setLoginError('Authentication failed. Please check your credentials and try again.');
+            }
         } catch (error) {
             setLoginError('Authentication failed. Please check your credentials and try again.');
             console.error('Login error:', error);
@@ -49,9 +54,12 @@ const SignIn = ({ switchToSignUp }) => {
                 }
 
                 const result = await response.json();
-                if (result) {
+                if (result && result.isAuthenticated) {
+                    setUser(result);
                     console.log('User in session:', result);
                     window.location.href = '/app';
+                }else{
+                    console.log("Authentication failed. Please check your credentials and try again.")
                 }
             } catch (error) {
                 console.error('Error checking session:', error);

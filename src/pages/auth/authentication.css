@@ -9,8 +9,7 @@
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
     position: relative;
     overflow: hidden;
-    width: 768px;
-    max-width: 100%;
+    width: 700px;
     min-height: 480px;
 }
 
@@ -33,7 +32,7 @@
 }
 
 .container button{
-    background-color: #009eca;
+    background-color: #005da4;
     color: #fff;
     font-size: 12px;
     padding: 10px 45px;
@@ -147,9 +146,9 @@
 }
 
 .toggle{
-    background-color: #00C0F3;
+    background-color: #005da4;
     height: 100%;
-    background: linear-gradient(to right, #73c1d7, #009eca);
+    background: linear-gradient(to right, #005da4, #00c0f3);
     color: #fff;
     position: relative;
     left: -100%;
