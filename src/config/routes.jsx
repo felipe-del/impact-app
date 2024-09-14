@@ -4,6 +4,7 @@ import App from '../App.jsx';
 import Authentication from '../pages/auth/authentication.jsx';
 import Register from "../pages/products/category/Register.jsx";
 import ProductRegister from "../pages/products/product/productRegister.jsx";
+import ProductTable from '../pages/products/list/productTable.jsx';
 // import Register from "../pages/products/category/Register.jsx";
 
 export const Routes = createBrowserRouter([
@@ -30,6 +31,10 @@ export const Routes = createBrowserRouter([
             {
                 path: 'productRegister',
                 element: <ProductRegister/>
+            },
+            {
+                path: 'productList',
+                element: <ProductTable/>
             }
         ]
     }
