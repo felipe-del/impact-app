@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import './productRegister.module.css'
+import { Modal, Button } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './productRegister.module.css';
 
 const ProductRegister = () => {
     const [categories, setCategories] = useState([]);
@@ -10,10 +12,16 @@ const ProductRegister = () => {
     const [expiryDate, setExpiryDate] = useState('');
     const [quantity, setQuantity] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
-    const [currentStep, setCurrentStep] = useState(1); // 1 para selección de categoría, 2 para el formulario
+    const [currentStep, setCurrentStep] = useState(1);
+    const [showSuccess, setShowSuccess] = useState(false);
+    const [showError, setShowError] = useState(false);
+
 
     useEffect(() => {
-        fetch('http://localhost:8080/product/categories')
+        fetch('http://localhost:8080/product/categories', {
+            method: 'GET',
+            credentials: 'include'
+        })
             .then(response => response.json())
             .then(data => {
                 setCategories(data);
@@ -22,7 +30,6 @@ const ProductRegister = () => {
             .catch(error => console.error('Error:', error));
     }, []);
 
-    // Categories filter
     const handleSearch = (e) => {
         const searchValue = e.target.value;
         setSearchTerm(searchValue);
@@ -32,20 +39,34 @@ const ProductRegister = () => {
         setFilteredCategories(filtered);
     };
 
-
     const handleSelectCategory = (category) => {
         setCategory(category);
         setSelectedCategory(category.name);
-        setCurrentStep(2); // Next step, form
+        setCurrentStep(2);
     };
 
-
     const handleGoBackToCategorySelection = () => {
-        setCurrentStep(1); // step back, category section
+        setCurrentStep(1);
+    };
+
+    const resetForm = () => {
+        setCategory(null);
+        setSelectedCategory('');
+        setPurchaseDate(new Date().toISOString().substr(0, 10));
+        setExpiryDate('');
+        setQuantity('');
+        setSearchTerm('');
+        setFilteredCategories(categories); // Resetea la lista filtrada de categorías
+        setCurrentStep(1);
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        if (!category) {
+            setCategoryError('Selecciona una categoría');
+            return;
+        }
 
         const newProduct = {
             category: category.id,
@@ -53,9 +74,9 @@ const ProductRegister = () => {
             expiryDate,
             quantity
         };
-        console.log(newProduct);
         fetch('http://localhost:8080/product/product', {
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -63,12 +84,14 @@ const ProductRegister = () => {
         })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error("error in the product register");
+                    throw new Error("Error al guardar el producto");
                 }
-                alert('Productos guardada exitosamente');
+                setShowSuccess(true);
+                resetForm(); // Llama a resetForm después de que el producto se guarda exitosamente
             })
             .catch(error => {
-                console.error('Error al guardar categoría:', error);
+                console.error('Error al guardar el producto:', error);
+                setShowError(true);
             });
     };
 
@@ -81,14 +104,13 @@ const ProductRegister = () => {
                 </div>
             </div>
 
-            {/* Category selection */}
             {currentStep === 1 && (
-                <div className="container">
+                <div className="container2">
+                    <h3>Seleccione la categoría del producto</h3>
                     <div className="search-container">
-                        <h3>Seleccione la categoría del producto</h3>
+
                         <div className="form-group">
                             <div className='input-group'>
-                                <label>Buscar categorías</label>
                                 <input
                                     type="text"
                                     placeholder="Buscar categorías"
@@ -112,9 +134,8 @@ const ProductRegister = () => {
                 </div>
             )}
 
-            {/* Register form */}
             {currentStep === 2 && (
-                <div className="container">
+                <div className="container2">
                     <form onSubmit={handleSubmit}>
                         <h3>Categoría seleccionada: {selectedCategory || 'Ninguna seleccionada'}</h3>
                         <div className="form-group">
@@ -123,6 +144,7 @@ const ProductRegister = () => {
                                 <input
                                     type="date"
                                     value={purchaseDate}
+                                    required
                                     onChange={(e) => setPurchaseDate(e.target.value)}
                                 />
                             </div>
@@ -131,6 +153,7 @@ const ProductRegister = () => {
                                 <input
                                     type="date"
                                     value={expiryDate}
+                                    required
                                     onChange={(e) => setExpiryDate(e.target.value)}
                                 />
                             </div>
@@ -141,6 +164,7 @@ const ProductRegister = () => {
                                 <input
                                     type="number"
                                     value={quantity}
+                                    required
                                     onChange={(e) => setQuantity(e.target.value)}
                                 />
                             </div>
@@ -154,6 +178,32 @@ const ProductRegister = () => {
                     </form>
                 </div>
             )}
+
+            {/* Success Modal */}
+            <Modal show={showSuccess} onHide={() => setShowSuccess(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Éxito</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Producto guardado exitosamente.</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowSuccess(false)}>
+                        Cerrar
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
+            {/* Error Modal */}
+            <Modal show={showError} onHide={() => setShowError(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Error</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Hubo un error al guardar el producto. Inténtelo de nuevo.</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowError(false)}>
+                        Cerrar
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 };

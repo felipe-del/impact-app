@@ -3,14 +3,22 @@
     display: flex;
     flex-direction: column;
 }
-
-.container {
-    border: 2px solid #00c0f3;
+.container2{
+    /*border: 2px solid #005da4;*/
     flex: 1;
     flex-direction: column;
     padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    max-width: 70%;
 }
 
+.search-container {
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 15px;
+}
 .form-group {
     display: flex;
     justify-content: space-between;

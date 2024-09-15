@@ -76,16 +76,25 @@ const Sidebar = () => {
                     <span>Pages</span>
                 </a>
                 <div id="collapsePages" className="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div className="bg-white py-2 collapse-inner rounded">
-                        <h6 className="collapse-header">Login Screens:</h6>
-                        <Link className="collapse-item" to="/login">Login</Link>
-                        <Link className="collapse-item" to="/register">Register</Link>
-                        <Link className="collapse-item" to="/forgot-password">Forgot Password</Link>
-                        <div className="collapse-divider"></div>
-                        <h6 className="collapse-header">Other Pages:</h6>
-                        <Link className="collapse-item" to="/404">404 Page</Link>
-                        <Link className="collapse-item" to="/blank">Blank Page</Link>
-                    </div>
+                <div className="bg-white py-2 collapse-inner rounded">
+                    <h6 className="collapse-header">Login Screens:</h6>
+                    <Link className="collapse-item" to="/login">Login</Link>
+                    <Link className="collapse-item" to="/register">Register</Link>
+                    <Link className="collapse-item" to="/forgot-password">Forgot Password</Link>
+                    <div className="collapse-divider"></div>
+                    <h6 className="collapse-header">Other Pages:</h6>
+                    <Link className="collapse-item" to="/404">404 Page</Link>
+                    <Link className="collapse-item" to="/blank">Blank Page</Link>
+                    <div className="collapse-divider"></div>
+                    <h6 className="collapse-header">Assets Management:</h6>
+                    <Link className="collapse-item" to="/app/createAsset">Create Asset</Link>
+                    <Link className="collapse-item" to="/app/addSupplier">Add Supplier</Link>
+                    <Link className="collapse-item" to="/app/addBrand">Add Brand</Link>
+                    <Link className="collapse-item" to="/app/addCategory">Add Category</Link>
+                    <Link className="collapse-item" to="/app/categoryRegister">Category Register</Link>
+                    <Link className="collapse-item" to="/app/productRegister">Product Register</Link>
+                    <Link className="collapse-item" to="/app/productList">Product List</Link>
+                </div>
                 </div>
             </li>
 
