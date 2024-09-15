@@ -6,8 +6,8 @@ import SupplierForm from '../pages/supplierForm/supplierForm.jsx';
 import Register from "../pages/products/category/Register.jsx";
 import ProductRegister from "../pages/products/product/productRegister.jsx";
 import ProductTable from '../pages/products/list/productTable.jsx';
+import SpaceTable from '../pages/spaces/list/spaceTable.jsx';
 import CreateAsset from '../pages/asset/createAsset/createAsset.jsx';
-import AddSupplierModal from '../pages/supplier/addSupplier.jsx';
 import AddSupplier from '../pages/supplier/addSupplier.jsx';
 import AddBrand from '../pages/brand/addBrand.jsx';
 import AddCategory from '../pages/asset/addAssetCategory/addCategory.jsx';
@@ -60,6 +60,10 @@ export const Routes = createBrowserRouter([
             {
                 path: 'productList',
                 element: <ProductTable/>
+            },
+            {
+                path: 'spaceList',
+                element: <SpaceTable/>
             }
         ]
     }
