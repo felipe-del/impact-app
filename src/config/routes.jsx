@@ -6,6 +6,7 @@ import Register from "../pages/products/category/Register.jsx";
 import ProductRegister from "../pages/products/product/productRegister.jsx";
 import ProductTable from '../pages/products/list/productTable.jsx';
 import SpaceList from '../pages/spaces/list/spaceTable.jsx';
+import SpaceTable from '../pages/spaces/list/spaceTable.jsx';
 // import Register from "../pages/products/category/Register.jsx";
 
 export const Routes = createBrowserRouter([
@@ -39,7 +40,7 @@ export const Routes = createBrowserRouter([
             },
             {
                 path: 'spaceList',
-                element: <SpaceList/>
+                element: <SpaceTable/>
             }
         ]
     }

@@ -4,7 +4,7 @@ import SearchBar from '../../../components/searchBar/searchBar';
 import { useState , useEffect} from 'react';
 import { Link } from 'react-router-dom';
 
-const SpaceList = () => {
+const SpaceTable = () => {
   const [allSpaces, setSpaces] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -55,4 +55,4 @@ const SpaceList = () => {
   );
   };
 
-export default SpaceList;
+export default SpaceTable;
