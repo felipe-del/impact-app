@@ -10,12 +10,12 @@ const ProductRegister = () => {
     const [selectedCategory, setSelectedCategory] = useState('');
     const [purchaseDate, setPurchaseDate] = useState(new Date().toISOString().substr(0, 10));
     const [expiryDate, setExpiryDate] = useState('');
+    const [isExpiryDisabled, setIsExpiryDisabled] = useState(false); // Estado para controlar el campo de fecha de vencimiento
     const [quantity, setQuantity] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
     const [currentStep, setCurrentStep] = useState(1);
     const [showSuccess, setShowSuccess] = useState(false);
     const [showError, setShowError] = useState(false);
-
 
     useEffect(() => {
         fetch('http://localhost:8080/product/categories', {
@@ -43,6 +43,14 @@ const ProductRegister = () => {
         setCategory(category);
         setSelectedCategory(category.name);
         setCurrentStep(2);
+
+        // Si la categoría es "Oficina", desactivar la fecha de vencimiento
+        if (category.categorieType.name === 'Oficina') {
+            setIsExpiryDisabled(true);
+            setExpiryDate(''); // Limpiar la fecha de vencimiento
+        } else {
+            setIsExpiryDisabled(false);
+        }
     };
 
     const handleGoBackToCategorySelection = () => {
@@ -54,6 +62,7 @@ const ProductRegister = () => {
         setSelectedCategory('');
         setPurchaseDate(new Date().toISOString().substr(0, 10));
         setExpiryDate('');
+        setIsExpiryDisabled(false); // Resetear estado de la fecha de vencimiento
         setQuantity('');
         setSearchTerm('');
         setFilteredCategories(categories); // Resetea la lista filtrada de categorías
@@ -71,7 +80,7 @@ const ProductRegister = () => {
         const newProduct = {
             category: category.id,
             purchaseDate,
-            expiryDate,
+            expiryDate: isExpiryDisabled ? null : expiryDate, // Enviar null si está deshabilitado
             quantity
         };
         fetch('http://localhost:8080/product/product', {
@@ -108,7 +117,6 @@ const ProductRegister = () => {
                 <div className="container2">
                     <h3>Seleccione la categoría del producto</h3>
                     <div className="search-container">
-
                         <div className="form-group">
                             <div className='input-group'>
                                 <input
@@ -153,7 +161,8 @@ const ProductRegister = () => {
                                 <input
                                     type="date"
                                     value={expiryDate}
-                                    required
+                                    disabled={isExpiryDisabled} // Deshabilitar si es de tipo "Oficina"
+                                    required={!isExpiryDisabled} // Hacerlo obligatorio solo si no está deshabilitado
                                     onChange={(e) => setExpiryDate(e.target.value)}
                                 />
                             </div>
