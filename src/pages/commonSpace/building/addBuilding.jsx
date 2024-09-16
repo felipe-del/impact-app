@@ -40,9 +40,23 @@ const AddBuilding = () => {
             });
     };
 
+    const handleRegisterBloc = () => {
+        window.location.href = 'addBuildingLocation';
+    };
+    const handleRegisterSp = () => {
+        window.location.href = 'addSpace';
+    };
+
+
     return (
         <div className="main-container">
-            <h1>Registro de edificios</h1>
+            <div className="button-container">
+                <h1>Registro de edificios</h1>
+                <div>
+                    <button className="button-5" role="button" onClick={handleRegisterBloc}>Registro de ubicaciones</button>
+                    <button className="button-5" role="button" onClick={handleRegisterSp}>Registro de espacios</button>
+                </div>
+            </div>
             <div className="container2">
                 <div className="container3">
                     <h3>Detalles del Edificio</h3>
