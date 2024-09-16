@@ -45,13 +45,13 @@ const AddCategory = () => {
 
     return (
         <div className="main-container">
-            <h1>Add Category</h1>
+            <h1>Agregar Categoría de Activo</h1>
             <div className="container2">
                 <div className="container3">
-                    <h3>Category Details</h3>
+                    <h3>Detalles</h3>
                     <form onSubmit={handleSubmit}>
                         <div className="form-group">
-                            <label htmlFor="name">Name</label>
+                            <label htmlFor="name">Nombre</label>
                             <input
                                 type="text"
                                 id="name"
@@ -61,7 +61,7 @@ const AddCategory = () => {
                             />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="description">Description</label>
+                            <label htmlFor="description">Descripción</label>
                             <input
                                 type="text"
                                 id="description"
@@ -72,7 +72,7 @@ const AddCategory = () => {
                         </div>
                         <div className="button">
                             <Button className="button-5" type="submit" role="button">
-                                Save
+                                Guardar
                             </Button>
                         </div>
                     </form>
@@ -80,14 +80,14 @@ const AddCategory = () => {
                     {/* Success Alert */}
                     {showSuccessAlert && (
                         <Alert variant="success" onClose={() => setShowSuccessAlert(false)} dismissible>
-                            Category added successfully!
+                            Categoría de activo ingresada correctamente!
                         </Alert>
                     )}
 
                     {/* Error Alert */}
                     {showErrorAlert && (
                         <Alert variant="danger" onClose={() => setShowErrorAlert(false)} dismissible>
-                            There was an error adding the category. Please try again.
+                            Se produjo un error al agregar la categoría del activo. Por favor inténtalo de nuevo.
                         </Alert>
                     )}
                 </div>
