@@ -6,7 +6,7 @@ import SupplierForm from '../pages/supplierForm/supplierForm.jsx';
 import Register from "../pages/products/category/Register.jsx";
 import ProductRegister from "../pages/products/product/productRegister.jsx";
 import ProductTable from '../pages/products/list/productTable.jsx';
-import SpaceTable from '../pages/spaces/list/spaceTable.jsx';
+import SpaceTable from '../pages/commonSpace/list/spaceTable.jsx';
 import CreateAsset from '../pages/asset/createAsset/createAsset.jsx';
 import AddSupplier from '../pages/supplier/addSupplier.jsx';
 import AddBrand from '../pages/brand/addBrand.jsx';
