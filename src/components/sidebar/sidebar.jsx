@@ -88,6 +88,7 @@ const Sidebar = () => {
                         <Link className="collapse-item" to="/app/addBuildingLocation">Add Building location</Link>
                         <Link className="collapse-item" to="/app/addSpaceType">Add Space-type</Link>
                         <Link className="collapse-item" to="/app/addSpace">Add Space</Link>
+                        <Link className="collapse-item" to="/app/spaceList">Space List</Link>
                         <h6 className="collapse-header">Products Management:</h6>
                         <Link className="collapse-item" to="/app/categoryRegister">Category Register</Link>
                         <Link className="collapse-item" to="/app/productRegister">Product Register</Link>
