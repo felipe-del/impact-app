@@ -76,30 +76,28 @@ const Sidebar = () => {
                     <span>Pages</span>
                 </a>
                 <div id="collapsePages" className="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                <div className="bg-white py-2 collapse-inner rounded">
-                    <h6 className="collapse-header">Login Screens:</h6>
-                    <Link className="collapse-item" to="/login">Login</Link>
-                    <Link className="collapse-item" to="/register">Register</Link>
-                    <Link className="collapse-item" to="/forgot-password">Forgot Password</Link>
-                    <div className="collapse-divider"></div>
-                    <h6 className="collapse-header">Other Pages:</h6>
-                    <Link className="collapse-item" to="/404">404 Page</Link>
-                    <Link className="collapse-item" to="/blank">Blank Page</Link>
-                    <div className="collapse-divider"></div>
-                    <h6 className="collapse-header">Assets Management:</h6>
-                    <Link className="collapse-item" to="/app/createAsset">Create Asset</Link>
-                    <Link className="collapse-item" to="/app/addSupplier">Add Supplier</Link>
-                    <Link className="collapse-item" to="/app/addBrand">Add Brand</Link>
-                    <Link className="collapse-item" to="/app/addCategory">Add Category</Link>
-                    <Link className="collapse-item" to="/app/categoryRegister">Category Register</Link>
-                    <Link className="collapse-item" to="/app/productRegister">Product Register</Link>
-                    <Link className="collapse-item" to="/app/productList">Product List</Link>
-                </div>
+                    <div className="bg-white py-2 collapse-inner rounded">
+                        <div className="collapse-divider"></div>
+                        <h6 className="collapse-header">Assets Management:</h6>
+                        <Link className="collapse-item" to="/app/createAsset">Create Asset</Link>
+                        <Link className="collapse-item" to="/app/addSupplier">Add Supplier</Link>
+                        <Link className="collapse-item" to="/app/addBrand">Add Brand</Link>
+                        <Link className="collapse-item" to="/app/addCategory">Add Category</Link>
+                        <h6 className="collapse-header">Space Management:</h6>
+                        <Link className="collapse-item" to="/app/addBuilding">Add Building</Link>
+                        <Link className="collapse-item" to="/app/addBuildingLocation">Add Building location</Link>
+                        <Link className="collapse-item" to="/app/addSpaceType">Add Space-type</Link>
+                        <Link className="collapse-item" to="/app/addSpace">Add Space</Link>
+                        <h6 className="collapse-header">Products Management:</h6>
+                        <Link className="collapse-item" to="/app/categoryRegister">Category Register</Link>
+                        <Link className="collapse-item" to="/app/productRegister">Product Register</Link>
+                        <Link className="collapse-item" to="/app/productList">Product List</Link>
+                    </div>
                 </div>
             </li>
 
             <li className="nav-item">
-                <Link className="nav-link" to="/charts">
+            <Link className="nav-link" to="/charts">
                     <i className="fas fa-fw fa-chart-area"></i>
                     <span>Charts</span>
                 </Link>
