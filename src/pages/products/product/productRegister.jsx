@@ -16,6 +16,7 @@ const ProductRegister = () => {
     const [currentStep, setCurrentStep] = useState(1);
     const [showSuccess, setShowSuccess] = useState(false);
     const [showError, setShowError] = useState(false);
+   
 
     useEffect(() => {
         fetch('http://localhost:8080/product/categories', {
@@ -72,10 +73,6 @@ const ProductRegister = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (!category) {
-            setCategoryError('Selecciona una categoría');
-            return;
-        }
 
         const newProduct = {
             category: category.id,
@@ -173,6 +170,7 @@ const ProductRegister = () => {
                                 <input
                                     type="number"
                                     value={quantity}
+                                    min={1}
                                     required
                                     onChange={(e) => setQuantity(e.target.value)}
                                 />
