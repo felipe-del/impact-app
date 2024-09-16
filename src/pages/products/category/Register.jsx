@@ -116,6 +116,7 @@ const Register = () => {
                                     type="number"
                                     id="min-quantity"
                                     value={minQuantity}
+                                    min={1}
                                     onChange={(e) => setMinQuantity(e.target.value)}
                                     required
                                 />
