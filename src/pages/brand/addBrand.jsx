@@ -42,13 +42,13 @@ const AddBrand = () => {
 
     return (
         <div className="main-container">
-            <h1>Add Brand</h1>
+            <h1>Agregar Marca</h1>
             <div className="container2">
                 <div className="container3">
-                    <h3>Brand Details</h3>
+                    <h3>Detalles</h3>
                     <form onSubmit={handleSubmit}>
                         <div className="form-group">
-                            <label htmlFor="name">Name</label>
+                            <label htmlFor="name">Nombre</label>
                             <input
                                 type="text"
                                 id="name"
@@ -59,7 +59,7 @@ const AddBrand = () => {
                         </div>
                         <div className="button">
                             <Button className="button-5" type="submit" role="button">
-                                Save
+                                Guardar
                             </Button>
                         </div>
                     </form>
@@ -67,14 +67,14 @@ const AddBrand = () => {
                     {/* Success Alert */}
                     {showSuccessAlert && (
                         <Alert variant="success" onClose={() => setShowSuccessAlert(false)} dismissible>
-                            Brand added successfully!
+                            Marca ingresada correctamente!
                         </Alert>
                     )}
 
                     {/* Error Alert */}
                     {showErrorAlert && (
                         <Alert variant="danger" onClose={() => setShowErrorAlert(false)} dismissible>
-                            There was an error adding the brand. Please try again.
+                            Se produjo un error al agregar la marca. Por favor inténtalo de nuevo.
                         </Alert>
                     )}
                 </div>
