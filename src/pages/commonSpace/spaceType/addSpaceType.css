@@ -1,0 +1,49 @@
+.form-group {
+    margin-bottom: 20px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+input {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+li:hover {
+    background-color: #f0f0f0;
+    color: #005da4;
+}
+.img-button {
+    width: 5px;
+    height: auto;
+    filter: invert(1);
+}
+
+
+button-group {
+    display: flex;
+    flex-direction: column;
+}

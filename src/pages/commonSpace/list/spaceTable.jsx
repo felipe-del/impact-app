@@ -1,6 +1,6 @@
 import React from 'react';
-import DynamicTable from '../../../components/dynamicTable/dynamicTable';
-import SearchBar from '../../../components/searchBar/searchBar';
+import DynamicTable from '../../../components/dynamicTable/dynamicTable.jsx';
+import SearchBar from '../../../components/searchBar/searchBar.jsx';
 import { useState , useEffect} from 'react';
 import { Link } from 'react-router-dom';
 
@@ -28,8 +28,10 @@ const SpaceTable = () => {
   const flattenedProducts = filteredProducts.map(space => ({
       nombre: space.name,
       numeroEspacio: space.spaceCode,  // Asegúrate de que 'name' existe en 'category'
-      edificio: space.locationName,
+      edificio: space.location.building.name,
       capacidadMaxima: space.maxPeople,  // Asegúrate de que 'name' existe en 'status'
+      tipoDeEspacio: space.type.type,
+      estado: space.status.name
   }));
 
   const productColumns = [
@@ -37,22 +39,26 @@ const SpaceTable = () => {
     { header: 'Codigo', accessor: 'numeroEspacio' },
     { header: 'Edificio', accessor: 'edificio' },
     { header: 'Cantidad máxima de personas', accessor: 'capacidadMaxima' },
+    { header: 'Tipo de espacio', accessor: 'tipoDeEspacio' },
+    { header: 'Estado del espacio', accessor: 'estado' },
   ];
 
   return (
-    <div>
-      <h2 className="mb-4">Listado de espacios comunes</h2>
-      <div className="d-flex justify-content-between align-items-center mb-3">
-        <SearchBar 
-          searchTerm={searchTerm} 
-          onSearchChange={setSearchTerm} 
-          placeholder="Buscar espacios comunes..." 
-        />
-        <Link to="/nueva-pagina-2" className="btn btn-primary me-2">Registrar espacio</Link>
+      <div>
+          <div className="d-flex justify-content-end mb-4">
+              <Link className="button-5" to="/app/addSpace">Registro de espacios</Link>
+          </div>
+          <h2 className="mb-4">Listado de espacios comunes</h2>
+          <div className="d-flex justify-content-between align-items-center mb-3">
+              <SearchBar
+                  searchTerm={searchTerm}
+                  onSearchChange={setSearchTerm}
+                  placeholder="Buscar espacios comunes..."
+              />
+          </div>
+          <DynamicTable items={flattenedProducts} columns={productColumns}/>
       </div>
-      <DynamicTable items={flattenedProducts} columns={productColumns} />
-    </div>
   );
-  };
+};
 
 export default SpaceTable;
