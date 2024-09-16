@@ -52,9 +52,22 @@ const AddBuildingLocation = () => {
             });
     };
 
+    const handleRegisterBld = () => {
+        window.location.href = 'addBuilding';
+    };
+    const handleRegisterSp = () => {
+        window.location.href = 'addSpace';
+    };
+
     return (
         <div className="main-container">
-            <h1>Registrar ubicaciones en edificios</h1>
+            <div className="button-container">
+                <h1>Registrar ubicaciones en edificios</h1>
+                <div>
+                    <button className="button-5" role="button" onClick={handleRegisterBld}>Registro de edificios</button>
+                    <button className="button-5" role="button" onClick={handleRegisterSp}>Registro de espacios</button>
+                </div>
+            </div>
             <div className="container2">
                 <div className="container3">
                     <h3>Detalles de la ubicación</h3>
