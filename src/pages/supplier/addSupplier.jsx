@@ -51,13 +51,13 @@ const AddSupplier = () => {
 
     return (
         <div className="main-container">
-            <h1>Add Supplier</h1>
+            <h1>Agregar Proveedor</h1>
             <div className="container2">
                 <div className="container3">
-                    <h3>Supplier Details</h3>
+                    <h3>Detalles</h3>
                     <form onSubmit={handleSubmit}>
                         <div className="form-group">
-                            <label htmlFor="name">Name</label>
+                            <label htmlFor="name">Nombre</label>
                             <input
                                 type="text"
                                 id="name"
@@ -67,7 +67,7 @@ const AddSupplier = () => {
                             />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="phone">Phone</label>
+                            <label htmlFor="phone">Número Telefónico</label>
                             <input
                                 type="text"
                                 id="phone"
@@ -76,7 +76,7 @@ const AddSupplier = () => {
                             />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="email">Email</label>
+                            <label htmlFor="email">Correo Electrónico</label>
                             <input
                                 type="email"
                                 id="email"
@@ -85,7 +85,7 @@ const AddSupplier = () => {
                             />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="address">Address</label>
+                            <label htmlFor="address">Dirección</label>
                             <textarea
                                 id="address"
                                 value={address}
@@ -94,7 +94,7 @@ const AddSupplier = () => {
                         </div>
                         <div className="button">
                             <Button className="button-5" type="submit" role="button">
-                                Save
+                                Guardar
                             </Button>
                         </div>
                     </form>
@@ -102,14 +102,14 @@ const AddSupplier = () => {
                     {/* Success Alert */}
                     {showSuccessAlert && (
                         <Alert variant="success" onClose={() => setShowSuccessAlert(false)} dismissible>
-                            Supplier added successfully!
+                            Proveedor ingresado correctamente!
                         </Alert>
                     )}
 
                     {/* Error Alert */}
                     {showErrorAlert && (
                         <Alert variant="danger" onClose={() => setShowErrorAlert(false)} dismissible>
-                            There was an error adding the supplier. Please try again.
+                            Se produjo un error al agregar el proveedor. Por favor inténtalo de nuevo.
                         </Alert>
                     )}
                 </div>
