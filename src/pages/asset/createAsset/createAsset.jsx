@@ -235,7 +235,7 @@ const CreateAsset = () => {
             {/* Error Alert */}
             {showErrorAlert && (
                 <Alert variant="danger" onClose={() => setShowErrorAlert(false)} dismissible>
-                    Hubo un problema al guardar el activo. Por favor, intente nuevamente.
+                   Se produjo un error al agregar el activo. Por favor inténtalo de nuevo.
                 </Alert>
             )}
         </div>
