@@ -19,15 +19,15 @@ const Authentication = () => {
                 <div className="toggle-container">
                     <div className={`toggle ${isSignIn ? '' : 'active'}`}>
                         <div className="toggle-panel toggle-left">
-                            <h1>{isSignIn ? 'Welcome Back!' : 'Hello, Friend!'}</h1>
-                            <p>{isSignIn ? 'Enter your personal details to use all of site features' : 'Register with your personal details to use all of site features'}</p>
-                            <button className="hidden" onClick={toggleSignIn} id={isSignIn ? 'login' : 'register'}>{isSignIn ? 'Sign In' : 'Sign Up'}</button>
+                            <h1>{isSignIn ? 'Bienvenido!' : ' '}</h1>
+                            <p>{isSignIn ? 'Ingresa tus datos personales para utilizar todas las funciones del sitio' : 'Ingresa tus datos personales para utilizar todas las funciones del sitio'}</p>
+                            <button className="hidden" onClick={toggleSignIn} id={isSignIn ? 'login' : 'register'}>{isSignIn ? 'Inicio de sesión' : 'Registro'}</button>
                         </div>
                         <div className="toggle-panel toggle-right">
                             <img src={Escudo_UCR} alt="Escudo UCR" />
-                            <h1>{isSignIn ? 'Hello, Friend!' : 'IMPACT | CIMPA'}</h1>
-                            <p>{isSignIn ? 'Register with your personal details to use all of site features' : 'Enter your personal details to use all of site features'}</p>
-                            <button className="hidden" onClick={toggleSignIn} id={isSignIn ? 'register' : 'login'}>{isSignIn ? 'Sign Up' : 'Sign In'}</button>
+                            <h1>{isSignIn ? ' ' : 'IMPACT | CIMPA'}</h1>
+                            <p>{isSignIn ? ' ' : 'Si no tiene una cuenta, puede registrarse aquí'}</p>
+                            <button className="hidden" onClick={toggleSignIn} id={isSignIn ? 'register' : 'login'}>{isSignIn ? ' ' : 'Registro'}</button>
                         </div>
                     </div>
                 </div>

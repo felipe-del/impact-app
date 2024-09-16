@@ -69,13 +69,13 @@ const SignUp = ({ switchToSignIn }) => {
         <div className="form-container sign-up">
             <form onSubmit={handleSubmit}>
                 <h1>Crear Cuenta</h1>
-                <div className="social-icons">
-                    <a href="#" className="icon"><i className="fa-brands fa-google-plus-g"></i></a>
-                    <a href="#" className="icon"><i className="fa-brands fa-facebook-f"></i></a>
-                    <a href="#" className="icon"><i className="fa-brands fa-github"></i></a>
-                    <a href="#" className="icon"><i className="fa-brands fa-linkedin-in"></i></a>
-                </div>
-                <span>usa tu correo eléctronico para el registrar una cuenta</span>
+                {/*<div className="social-icons">*/}
+                {/*    <a href="#" className="icon"><i className="fa-brands fa-google-plus-g"></i></a>*/}
+                {/*    <a href="#" className="icon"><i className="fa-brands fa-facebook-f"></i></a>*/}
+                {/*    <a href="#" className="icon"><i className="fa-brands fa-github"></i></a>*/}
+                {/*    <a href="#" className="icon"><i className="fa-brands fa-linkedin-in"></i></a>*/}
+                {/*</div>*/}
+                {/*<span>usa tu correo eléctronico para el registrar una cuenta</span>*/}
                 <input
                     type="text"
                     placeholder="Nombre"
