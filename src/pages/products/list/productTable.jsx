@@ -61,7 +61,7 @@ const ProductTable = () => {
         <div>
             <div className="d-flex justify-content-end mb-4">
                 <Link to="/app/inventory" className="btn btn-primary me-2">Inventario</Link>
-                <Link to="/nueva-pagina-2" className="btn btn-primary me-2">Registrar producto</Link>
+                <Link to="/productRegister" className="btn btn-primary me-2">Registrar producto</Link>
             </div>
             <h2 className="mb-4">Listado de productos</h2>
             <div className="d-flex justify-content-between align-items-center mb-3">
