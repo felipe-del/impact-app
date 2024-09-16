@@ -78,21 +78,21 @@ const Sidebar = () => {
                 <div id="collapsePages" className="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div className="bg-white py-2 collapse-inner rounded">
                         <div className="collapse-divider"></div>
-                        <h6 className="collapse-header">Assets Management:</h6>
-                        <Link className="collapse-item" to="/app/createAsset">Create Asset</Link>
-                        <Link className="collapse-item" to="/app/addSupplier">Add Supplier</Link>
-                        <Link className="collapse-item" to="/app/addBrand">Add Brand</Link>
-                        <Link className="collapse-item" to="/app/addCategory">Add Category</Link>
-                        <h6 className="collapse-header">Space Management:</h6>
+                        <h6 className="collapse-header">Activos:</h6>
+                        <Link className="collapse-item" to="/app/createAsset">Registro de activos</Link>
+                        <Link className="collapse-item" to="/app/addSupplier">Agregar proveedor</Link>
+                        <Link className="collapse-item" to="/app/addBrand">Agregar marca</Link>
+                        <Link className="collapse-item" to="/app/addCategory">Agregar categoría</Link>
+                        <h6 className="collapse-header">Espacios comunes:</h6>
                         <Link className="collapse-item" to="/app/addBuilding">Add Building</Link>
                         <Link className="collapse-item" to="/app/addBuildingLocation">Add Building location</Link>
                         <Link className="collapse-item" to="/app/addSpaceType">Add Space-type</Link>
                         <Link className="collapse-item" to="/app/addSpace">Add Space</Link>
                         <Link className="collapse-item" to="/app/spaceList">Space List</Link>
-                        <h6 className="collapse-header">Products Management:</h6>
-                        <Link className="collapse-item" to="/app/categoryRegister">Category Register</Link>
-                        <Link className="collapse-item" to="/app/productRegister">Product Register</Link>
-                        <Link className="collapse-item" to="/app/productList">Product List</Link>
+                        <h6 className="collapse-header">Productos:</h6>
+                        <Link className="collapse-item" to="/app/categoryRegister">Registro de categoría</Link>
+                        <Link className="collapse-item" to="/app/productRegister">Ingreso de productos</Link>
+                        <Link className="collapse-item" to="/app/productList">Lista de productos</Link>
                     </div>
                 </div>
             </li>
