@@ -1,16 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../../style/sb-admin-2.min.css';
-
-import { Rocket } from '../../declarations/imageExports.js'
+import './sidebar.css';
+import { Escudo_UCR } from '../../declarations/imageExports.js'
 
 const Sidebar = () => {
     return (
-        <ul className="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <ul className="navbar-nav bg-custom sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <a className="sidebar-brand d-flex align-items-center justify-content-center">
                 <div className="sidebar-brand-icon rotate-n-15">
-                    <i className="fas fa-laugh-wink"></i>
+                <i className="fas fa-clipboard-list"></i>
                 </div>
                 <div className="sidebar-brand-text mx-3">IMPACT <sup>BETA</sup></div>
             </a>
@@ -20,7 +20,7 @@ const Sidebar = () => {
             <li className="nav-item active">
                 <Link className="nav-link" to="/dashboard">
                     <i className="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span>
+                    <span>Panel</span>
                 </Link>
             </li>
 
@@ -34,7 +34,7 @@ const Sidebar = () => {
                 <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                    aria-expanded="true" aria-controls="collapseTwo">
                     <i className="fas fa-fw fa-cog"></i>
-                    <span>Components</span>
+                    <span>Componentes</span>
                 </a>
                 <div id="collapseTwo" className="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div className="bg-white py-2 collapse-inner rounded">
@@ -49,7 +49,7 @@ const Sidebar = () => {
                 <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                    aria-expanded="true" aria-controls="collapseUtilities">
                     <i className="fas fa-fw fa-wrench"></i>
-                    <span>Utilities</span>
+                    <span>Útiles</span>
                 </a>
                 <div id="collapseUtilities" className="collapse" aria-labelledby="headingUtilities"
                      data-parent="#accordionSidebar">
@@ -66,14 +66,14 @@ const Sidebar = () => {
             <hr className="sidebar-divider" />
 
             <div className="sidebar-heading">
-                Addons
+                Complementos
             </div>
 
             <li className="nav-item">
                 <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
                    aria-expanded="true" aria-controls="collapsePages">
                     <i className="fas fa-fw fa-folder"></i>
-                    <span>Pages</span>
+                    <span>Páginas</span>
                 </a>
                 <div id="collapsePages" className="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div className="bg-white py-2 collapse-inner rounded">
@@ -100,14 +100,14 @@ const Sidebar = () => {
             <li className="nav-item">
             <Link className="nav-link" to="/charts">
                     <i className="fas fa-fw fa-chart-area"></i>
-                    <span>Charts</span>
+                    <span>Gráficos</span>
                 </Link>
             </li>
 
             <li className="nav-item">
                 <Link className="nav-link" to="/tables">
                     <i className="fas fa-fw fa-table"></i>
-                    <span>Tables</span>
+                    <span>Tablas</span>
                 </Link>
             </li>
 
@@ -117,11 +117,15 @@ const Sidebar = () => {
                 <button className="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
 
+          
+
             <div className="sidebar-card d-none d-lg-flex">
-                <img className="sidebar-card-illustration mb-2" src={Rocket} alt="Rocket illustration" />
-                <p className="text-center mb-2"><strong>SB Admin Pro</strong> is packed with premium features, components, and more!</p>
-                <a className="btn btn-success btn-sm" href="https://startbootstrap.com/theme/sb-admin-pro">Upgrade to Pro!</a>
+                <img className="sidebar-card-illustration mb-2 img-fluid" src={Escudo_UCR} alt="Escudo de la Universidad" />
+                <p className="text-center mb-2"><strong>Conoce más sobre CIMPA</strong> y su impacto en nuestros proyectos y en la comunidad.</p>
+                <a className="btn btn-info btn-sm" href="https://www.cimpa.ucr.ac.cr/" target="_blank" rel="noopener noreferrer">Visita el sitio web de CIMPA</a>
             </div>
+
+
 
         </ul>
     );
