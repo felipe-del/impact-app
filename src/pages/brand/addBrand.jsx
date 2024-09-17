@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Alert } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
-import './AddBrand.css';
+
 
 const AddBrand = () => {
     const [name, setName] = useState('');
