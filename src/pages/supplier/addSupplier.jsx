@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Alert } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
-import './AddSupplier.css';
 
 const AddSupplier = () => {
     const [name, setName] = useState('');
@@ -50,72 +49,98 @@ const AddSupplier = () => {
     };
 
     return (
-        <div className="main-container">
-            <h1>Agregar Proveedor</h1>
-            <div className="container2">
-                <div className="container3">
-                    <h3>Detalles</h3>
+        <div className="mt-5 d-flex justify-content-center">
+            <div className="card p-5 shadow-lg" style={{ maxWidth: "700px", borderRadius: "10px" }}>
+                <h1 className="text-center text-primary mb-5">Agregar Proveedor</h1>
+    
+                <div className="mb-4">
+                    
                     <form onSubmit={handleSubmit}>
-                        <div className="form-group">
-                            <label htmlFor="name">Nombre</label>
-                            <input
-                                type="text"
-                                id="name"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                                required
-                            />
+                        <div className="mb-4 row align-items-center">
+                            <label htmlFor="name" className="col-sm-4 col-form-label text-primary">
+                                <i className="fas fa-user"></i> Nombre
+                            </label>
+                            <div className="col-sm-8">
+                                <input
+                                    type="text"
+                                    id="name"
+                                    className="form-control border-primary"
+                                    placeholder="Ingresa el nombre del proveedor"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    required
+                                />
+                            </div>
                         </div>
-                        <div className="form-group">
-                            <label htmlFor="phone">Número Telefónico</label>
-                            <input
-                                type="text"
-                                id="phone"
-                                value={phone}
-                                onChange={(e) => setPhone(e.target.value)}
-                            />
+                        <div className="mb-4 row align-items-center">
+                            <label htmlFor="phone" className="col-sm-4 col-form-label text-primary">
+                                <i className="fas fa-phone"></i> Número Telefónico
+                            </label>
+                            <div className="col-sm-8">
+                                <input
+                                    type="text"
+                                    id="phone"
+                                    className="form-control border-primary"
+                                    placeholder="Ingresa el número telefónico"
+                                    value={phone}
+                                    onChange={(e) => setPhone(e.target.value)}
+                                />
+                            </div>
                         </div>
-                        <div className="form-group">
-                            <label htmlFor="email">Correo Electrónico</label>
-                            <input
-                                type="email"
-                                id="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
+                        <div className="mb-4 row align-items-center">
+                            <label htmlFor="email" className="col-sm-4 col-form-label text-primary">
+                                <i className="fas fa-envelope"></i> Correo Electrónico
+                            </label>
+                            <div className="col-sm-8">
+                                <input
+                                    type="email"
+                                    id="email"
+                                    className="form-control border-primary"
+                                    placeholder="Ingresa el correo electrónico"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                />
+                            </div>
                         </div>
-                        <div className="form-group">
-                            <label htmlFor="address">Dirección</label>
-                            <textarea
-                                id="address"
-                                value={address}
-                                onChange={(e) => setAddress(e.target.value)}
-                            />
+                        <div className="mb-4 row align-items-center">
+                            <label htmlFor="address" className="col-sm-4 col-form-label text-primary">
+                                <i className="fas fa-map-marker-alt"></i> Dirección
+                            </label>
+                            <div className="col-sm-8">
+                                <textarea
+                                    id="address"
+                                    className="form-control border-primary"
+                                    placeholder="Ingresa la dirección"
+                                    value={address}
+                                    onChange={(e) => setAddress(e.target.value)}
+                                />
+                            </div>
                         </div>
-                        <div className="button">
-                            <Button className="button-5" type="submit" role="button">
-                                Guardar
+                        <div className="text-center">
+                            <Button className="btn btn-lg btn-primary w-100 shadow-sm" type="submit">
+                                <i className="fas fa-save"></i> Guardar
                             </Button>
                         </div>
                     </form>
-
+    
                     {/* Success Alert */}
                     {showSuccessAlert && (
-                        <Alert variant="success" onClose={() => setShowSuccessAlert(false)} dismissible>
+                        <div className="alert alert-success mt-4 text-center" role="alert">
                             Proveedor ingresado correctamente!
-                        </Alert>
+                        </div>
                     )}
-
+    
                     {/* Error Alert */}
                     {showErrorAlert && (
-                        <Alert variant="danger" onClose={() => setShowErrorAlert(false)} dismissible>
+                        <div className="alert alert-danger mt-4 text-center" role="alert">
                             Se produjo un error al agregar el proveedor. Por favor inténtalo de nuevo.
-                        </Alert>
+                        </div>
                     )}
                 </div>
             </div>
         </div>
     );
+    
 };
 
 export default AddSupplier;
