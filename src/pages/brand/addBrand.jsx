@@ -41,46 +41,51 @@ const AddBrand = () => {
     };
 
     return (
-        <div className="main-container">
-            <h1>Agregar Marca</h1>
-            <div className="container2">
-                <div className="container3">
-                    <h3>Detalles</h3>
-                    <form onSubmit={handleSubmit}>
-                        <div className="form-group">
-                            <label htmlFor="name">Nombre</label>
+        <div className="mt-5 d-flex justify-content-center">
+            <div className="card p-5 shadow-lg" style={{ maxWidth: "700px", borderRadius: "10px" }}>
+                <h1 className="text-center text-primary mb-5">Agregar Marca</h1>
+                
+                <form onSubmit={handleSubmit}>
+                    <div className="mb-4 row align-items-center">
+                        <label htmlFor="name" className="col-sm-4 col-form-label text-primary">
+                            <i className="fas fa-tag"></i> Nombre
+                        </label>
+                        <div className="col-sm-8 w-100 mb-4">
                             <input
                                 type="text"
                                 id="name"
+                                className="form-control border-primary"
+                                placeholder="Ingresa el nombre de la marca"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 required
                             />
                         </div>
-                        <div className="button">
-                            <Button className="button-5" type="submit" role="button">
-                                Guardar
-                            </Button>
-                        </div>
-                    </form>
-
-                    {/* Success Alert */}
-                    {showSuccessAlert && (
-                        <Alert variant="success" onClose={() => setShowSuccessAlert(false)} dismissible>
-                            Marca ingresada correctamente!
-                        </Alert>
-                    )}
-
-                    {/* Error Alert */}
-                    {showErrorAlert && (
-                        <Alert variant="danger" onClose={() => setShowErrorAlert(false)} dismissible>
-                            Se produjo un error al agregar la marca. Por favor inténtalo de nuevo.
-                        </Alert>
-                    )}
-                </div>
+                    </div>
+                    <div className="text-center">
+                        <Button className="btn btn-lg btn-primary w-100 shadow-sm" type="submit">
+                            <i className="fas fa-save"></i> Guardar
+                        </Button>
+                    </div>
+                </form>
+    
+                {/* Success Alert */}
+                {showSuccessAlert && (
+                    <div className="alert alert-success mt-4 text-center" role="alert">
+                        Marca ingresada correctamente!
+                    </div>
+                )}
+    
+                {/* Error Alert */}
+                {showErrorAlert && (
+                    <div className="alert alert-danger mt-5 text-center" role="alert">
+                        Se produjo un error al agregar la marca. Por favor inténtalo de nuevo.
+                    </div>
+                )}
             </div>
         </div>
     );
+    
 };
 
 export default AddBrand;
