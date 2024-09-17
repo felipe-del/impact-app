@@ -16,6 +16,7 @@ import AddSpace from "../pages/commonSpace/space/addSpace.jsx";
 import AddBuilding from "../pages/commonSpace/building/addBuilding.jsx";
 import AddSpaceType from "../pages/commonSpace/spaceType/addSpaceType.jsx";
 import InventoryTable from '../pages/products/inventory/inventoryTable.jsx';
+import AssetTable from '../pages/asset/list/assetTable.jsx';
 
 export const Routes = createBrowserRouter([
     {
@@ -89,6 +90,10 @@ export const Routes = createBrowserRouter([
             {
                 path: 'inventoryList',
                 element: <InventoryTable/>
+            },
+            {
+                path: 'assetList',
+                element: <AssetTable/>
             }
         ]
     }

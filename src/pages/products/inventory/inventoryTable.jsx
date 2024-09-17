@@ -65,8 +65,8 @@ const InventoryTable = () => {
       return (
           <div>
               <div className="d-flex justify-content-end mb-4">
-                  <Link to="/app/products" className="btn btn-primary me-2">Productos</Link>
-                  <Link to="/nueva-pagina-2" className="btn btn-primary me-2">Registrar categoría</Link>
+                  <Link to="/app/productList" className="btn btn-primary me-2">Productos</Link>
+                  <Link to="/app/categoryRegister" className="btn btn-primary me-2">Registrar categoría</Link>
               </div>
               <h2 className="mb-4">Inventario de productos</h2>
               <div className="d-flex justify-content-between align-items-center mb-3">
