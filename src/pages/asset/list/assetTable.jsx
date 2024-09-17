@@ -4,7 +4,7 @@ import SearchBar from '../../../components/searchBar/searchBar';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-const AssetPage = () => {
+const AssetTable = () => {
   const [assets, setAssets] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -56,4 +56,4 @@ const flattenedProducts = filteredProducts.map(asset => ({
     );
   };
 
-export default AssetPage;
+export default AssetTable;
