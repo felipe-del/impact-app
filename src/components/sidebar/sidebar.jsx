@@ -83,12 +83,13 @@ const Sidebar = () => {
                         <Link className="collapse-item" to="/app/addSupplier">Agregar proveedor</Link>
                         <Link className="collapse-item" to="/app/addBrand">Agregar marca</Link>
                         <Link className="collapse-item" to="/app/addCategory">Agregar categoría</Link>
+                        <Link className="collapse-item" to="/app/assetList">Lista de activos</Link>
                         <h6 className="collapse-header">Espacios comunes:</h6>
                         <Link className="collapse-item" to="/app/addBuilding">Add Building</Link>
                         <Link className="collapse-item" to="/app/addBuildingLocation">Add Building location</Link>
                         <Link className="collapse-item" to="/app/addSpaceType">Add Space-type</Link>
                         <Link className="collapse-item" to="/app/addSpace">Add Space</Link>
-                        <Link className="collapse-item" to="/app/spaceList">Space List</Link>
+                        <Link className="collapse-item" to="/app/spaceList">Lista de espacios</Link>
                         <h6 className="collapse-header">Productos:</h6>
                         <Link className="collapse-item" to="/app/categoryRegister">Registro de categoría</Link>
                         <Link className="collapse-item" to="/app/productRegister">Ingreso de productos</Link>
