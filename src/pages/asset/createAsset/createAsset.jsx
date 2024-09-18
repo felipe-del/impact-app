@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importa Bootstrap CSS
-
+import'./createAsset.css';
 
 const CreateAsset = () => {
     const [suppliers, setSuppliers] = useState([]);
@@ -104,163 +104,162 @@ const CreateAsset = () => {
     };
 
     return (
-    <div className="mt-5 d-flex justify-content-center">
-        <div className="card p-5 shadow-lg" style={{ maxWidth: "900px", borderRadius: "10px" }}>
-            <h1 className="text-center text-primary mb-5">Registro de Activo</h1>
-
-            <h3 className="text-center text-primary mb-4">Datos del Activo</h3>
-            <form ref={formRef} onSubmit={handleSubmit}>
-                <div className="row mb-4">
-                    <div className="col-md-6 mb-3">
-                        <label htmlFor="purchaseDate" className="form-label text-primary">
-                            <i className="fas fa-calendar-alt"></i> Fecha de Compra
-                        </label>
-                        <input
-                            type="date"
-                            id="purchaseDate"
-                            className="form-control border-primary"
-                            value={purchaseDate}
-                            onChange={(e) => setPurchaseDate(e.target.value)}
-                            required
-                        />
+        <div className="mt-5 d-flex justify-content-center">
+            <div className="card p-5 shadow-lg" style={{ maxWidth: "900px", borderRadius: "10px" }}>
+                <h1 id="registro-activo-title" className="text-center mb-5">Registro de Activo</h1>
+    
+                <h3 id="datos-activo-title" className="text-center mb-4">Datos del Activo</h3>
+                <form ref={formRef} onSubmit={handleSubmit}>
+                    <div className="row mb-4">
+                        <div className="col-md-6 mb-3">
+                            <label htmlFor="purchaseDate" id="label-purchase-date" className="form-label">
+                                <i className="fas fa-calendar-alt" id="icon-purchase-date"></i> Fecha de Compra
+                            </label>
+                            <input
+                                type="date"
+                                id="purchaseDate"
+                                className="form-control border-primary"
+                                value={purchaseDate}
+                                onChange={(e) => setPurchaseDate(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div className="col-md-6 mb-3">
+                            <label htmlFor="value" id="label-value" className="form-label">
+                                <i className="fas fa-dollar-sign" id="icon-value"></i> Valor
+                            </label>
+                            <input
+                                type="number"
+                                id="value"
+                                min={1}
+                                className="form-control border-primary"
+                                value={value}
+                                onChange={(e) => setValue(e.target.value)}
+                                required
+                            />
+                        </div>
                     </div>
-                    <div className="col-md-6 mb-3">
-                        <label htmlFor="value" className="form-label text-primary">
-                            <i className="fas fa-dollar-sign"></i> Valor
-                        </label>
-                        <input
-                            type="number"
-                            id="value"
-                            min={1}
-                            className="form-control border-primary"
-                            value={value}
-                            onChange={(e) => setValue(e.target.value)}
-                            required
-                        />
+    
+                    <div className="row mb-4">
+                        <div className="col-md-6 mb-3">
+                            <label htmlFor="supplier" id="label-supplier" className="form-label">
+                                <i className="fas fa-truck" id="icon-supplier"></i> Proveedor
+                            </label>
+                            <select
+                                id="supplier"
+                                className="form-select border-primary"
+                                value={supplier}
+                                onChange={(e) => setSupplier(e.target.value)}
+                                required
+                            >
+                                <option value="">Seleccionar proveedor</option>
+                                {suppliers.map((supplier) => (
+                                    <option key={supplier.id} value={supplier.id}>
+                                        {supplier.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="col-md-6 mb-3">
+                            <label htmlFor="brand" id="label-brand" className="form-label">
+                                <i className="fas fa-tag" id="icon-brand"></i> Marca
+                            </label>
+                            <select
+                                id="brand"
+                                className="form-select border-primary"
+                                value={brand}
+                                onChange={(e) => setBrand(e.target.value)}
+                                required
+                            >
+                                <option value="">Seleccionar marca</option>
+                                {brands.map((brand) => (
+                                    <option key={brand.id} value={brand.id}>
+                                        {brand.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="col-md-6 mb-3">
+                            <label htmlFor="category" id="label-category" className="form-label">
+                                <i className="fas fa-list" id="icon-category"></i> Categoría
+                            </label>
+                            <select
+                                id="category"
+                                className="form-select border-primary"
+                                value={category}
+                                onChange={(e) => setCategory(e.target.value)}
+                                required
+                            >
+                                <option value="">Seleccionar categoría</option>
+                                {categories.map((category) => (
+                                    <option key={category.id} value={category.id}>
+                                        {category.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="col-md-6 mb-3">
+                            <label htmlFor="responsible" id="label-responsible" className="form-label">
+                                <i className="fas fa-user" id="icon-responsible"></i> Responsable
+                            </label>
+                            <select
+                                id="responsible"
+                                className="form-select border-primary"
+                                value={responsible}
+                                onChange={(e) => setResponsible(e.target.value)}
+                                required
+                            >
+                                <option value="">Seleccionar responsable</option>
+                                {users.map((user) => (
+                                    <option key={user.id} value={user.id}>
+                                        {user.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="col-md-6 mb-3">
+                            <label htmlFor="status" id="label-status" className="form-label">
+                                <i className="fas fa-exclamation-triangle" id="icon-status"></i> Estado
+                            </label>
+                            <select
+                                id="status"
+                                className="form-select border-primary"
+                                value={status}
+                                onChange={(e) => setStatus(e.target.value)}
+                                required
+                            >
+                                <option value="">Seleccionar estado</option>
+                                {statuses.map((status) => (
+                                    <option key={status.id} value={status.id}>
+                                        {status.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
                     </div>
-                </div>
-
-                <div className="row mb-4">
-                    <div className="col-md-6 mb-3">
-                        <label htmlFor="supplier" className="form-label text-primary">
-                            <i className="fas fa-truck"></i> Proveedor
-                        </label>
-                        <select
-                            id="supplier"
-                            className="form-select border-primary"
-                            value={supplier}
-                            onChange={(e) => setSupplier(e.target.value)}
-                            required
-                        >
-                            <option value="">Seleccionar proveedor</option>
-                            {suppliers.map((supplier) => (
-                                <option key={supplier.id} value={supplier.id}>
-                                    {supplier.name}
-                                </option>
-                            ))}
-                        </select>
+    
+                    <div className="text-center">
+                        <Button className="btn btn-lg btn-custom w-100 shadow-sm" type="submit">
+                            <i className="fas fa-save"></i> Guardar
+                        </Button>
                     </div>
-                    <div className="col-md-6 mb-3">
-                        <label htmlFor="brand" className="form-label text-primary">
-                            <i className="fas fa-tag"></i> Marca
-                        </label>
-                        <select
-                            id="brand"
-                            className="form-select border-primary"
-                            value={brand}
-                            onChange={(e) => setBrand(e.target.value)}
-                            required
-                        >
-                            <option value="">Seleccionar marca</option>
-                            {brands.map((brand) => (
-                                <option key={brand.id} value={brand.id}>
-                                    {brand.name}
-                                </option>
-                            ))}
-                        </select>
+                </form>
+    
+                {showSuccessAlert && (
+                    <div className="alert alert-success mt-4 text-center" role="alert">
+                        El activo se ha guardado exitosamente.
                     </div>
-                    <div className="col-md-6 mb-3">
-                        <label htmlFor="category" className="form-label text-primary">
-                            <i className="fas fa-list"></i> Categoría
-                        </label>
-                        <select
-                            id="category"
-                            className="form-select border-primary"
-                            value={category}
-                            onChange={(e) => setCategory(e.target.value)}
-                            required
-                        >
-                            <option value="">Seleccionar categoría</option>
-                            {categories.map((category) => (
-                                <option key={category.id} value={category.id}>
-                                    {category.name}
-                                </option>
-                            ))}
-                        </select>
+                )}
+    
+                {showErrorAlert && (
+                    <div className="alert alert-danger mt-4 text-center" role="alert">
+                        Hubo un problema al guardar el activo. Por favor, intente nuevamente.
                     </div>
-                    <div className="col-md-6 mb-3">
-                        <label htmlFor="responsible" className="form-label text-primary">
-                            <i className="fas fa-user"></i> Responsable
-                        </label>
-                        <select
-                            id="responsible"
-                            className="form-select border-primary"
-                            value={responsible}
-                            onChange={(e) => setResponsible(e.target.value)}
-                            required
-                        >
-                            <option value="">Seleccionar responsable</option>
-                            {users.map((user) => (
-                                <option key={user.id} value={user.id}>
-                                    {user.name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                    <div className="col-md-6 mb-3">
-                        <label htmlFor="status" className="form-label text-primary">
-                            <i className="fas fa-exclamation-triangle"></i> Estado
-                        </label>
-                        <select
-                            id="status"
-                            className="form-select border-primary"
-                            value={status}
-                            onChange={(e) => setStatus(e.target.value)}
-                            required
-                        >
-                            <option value="">Seleccionar estado</option>
-                            {statuses.map((status) => (
-                                <option key={status.id} value={status.id}>
-                                    {status.name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                </div>
-
-                <div className="text-center">
-                    <Button className="btn btn-lg btn-primary w-100 shadow-sm" type="submit">
-                        <i className="fas fa-save"></i> Guardar
-                    </Button>
-                </div>
-            </form>
-
-            {/* Success Alert */}
-            {showSuccessAlert && (
-                <div className="alert alert-success mt-4 text-center" role="alert">
-                    El activo se ha guardado exitosamente.
-                </div>
-            )}
-
-            {/* Error Alert */}
-            {showErrorAlert && (
-                <div className="alert alert-danger mt-4 text-center" role="alert">
-                    Hubo un problema al guardar el activo. Por favor, intente nuevamente.
-                </div>
-            )}
+                )}
+            </div>
         </div>
-    </div>
-);
+    );
+    
 
 };
 
