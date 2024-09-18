@@ -94,6 +94,7 @@ const Sidebar = () => {
                         <Link className="collapse-item" to="/app/categoryRegister">Registro de categoría</Link>
                         <Link className="collapse-item" to="/app/productRegister">Ingreso de productos</Link>
                         <Link className="collapse-item" to="/app/productList">Lista de productos</Link>
+                        <Link className="collapse-item" to="/app/inventoryList">Lista de categorías</Link>
                     </div>
                 </div>
             </li>
