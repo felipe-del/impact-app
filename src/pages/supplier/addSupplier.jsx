@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Alert } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
+import './addSupplier.css';
 
 const AddSupplier = () => {
     const [name, setName] = useState('');
@@ -51,14 +52,13 @@ const AddSupplier = () => {
     return (
         <div className="mt-5 d-flex justify-content-center">
             <div className="card p-5 shadow-lg" style={{ maxWidth: "700px", borderRadius: "10px" }}>
-                <h1 className="text-center text-primary mb-5">Agregar Proveedor</h1>
+                <h1 id="provider-title" className="text-center mb-5">Agregar Proveedor</h1>
     
                 <div className="mb-4">
-                    
                     <form onSubmit={handleSubmit}>
                         <div className="mb-4 row align-items-center">
-                            <label htmlFor="name" className="col-sm-4 col-form-label text-primary">
-                                <i className="fas fa-user"></i> Nombre
+                            <label htmlFor="name" id="label-provider-name" className="col-sm-4 col-form-label form-label">
+                                <i className="fas fa-user" id="icon-provider-name"></i> Nombre
                             </label>
                             <div className="col-sm-8">
                                 <input
@@ -73,8 +73,8 @@ const AddSupplier = () => {
                             </div>
                         </div>
                         <div className="mb-4 row align-items-center">
-                            <label htmlFor="phone" className="col-sm-4 col-form-label text-primary">
-                                <i className="fas fa-phone"></i> Número Telefónico
+                            <label htmlFor="phone" id="label-provider-phone" className="col-sm-4 col-form-label form-label">
+                                <i className="fas fa-phone" id="icon-provider-phone"></i> Número Telefónico
                             </label>
                             <div className="col-sm-8">
                                 <input
@@ -88,8 +88,8 @@ const AddSupplier = () => {
                             </div>
                         </div>
                         <div className="mb-4 row align-items-center">
-                            <label htmlFor="email" className="col-sm-4 col-form-label text-primary">
-                                <i className="fas fa-envelope"></i> Correo Electrónico
+                            <label htmlFor="email" id="label-provider-email" className="col-sm-4 col-form-label form-label">
+                                <i className="fas fa-envelope" id="icon-provider-email"></i> Correo Electrónico
                             </label>
                             <div className="col-sm-8">
                                 <input
@@ -103,8 +103,8 @@ const AddSupplier = () => {
                             </div>
                         </div>
                         <div className="mb-4 row align-items-center">
-                            <label htmlFor="address" className="col-sm-4 col-form-label text-primary">
-                                <i className="fas fa-map-marker-alt"></i> Dirección
+                            <label htmlFor="address" id="label-provider-address" className="col-sm-4 col-form-label form-label">
+                                <i className="fas fa-map-marker-alt" id="icon-provider-address"></i> Dirección
                             </label>
                             <div className="col-sm-8">
                                 <textarea
@@ -117,7 +117,7 @@ const AddSupplier = () => {
                             </div>
                         </div>
                         <div className="text-center">
-                            <Button className="btn btn-lg btn-primary w-100 shadow-sm" type="submit">
+                            <Button className="btn btn-lg btn-custom w-100 shadow-sm" type="submit">
                                 <i className="fas fa-save"></i> Guardar
                             </Button>
                         </div>
@@ -140,6 +140,7 @@ const AddSupplier = () => {
             </div>
         </div>
     );
+    
     
 };
 

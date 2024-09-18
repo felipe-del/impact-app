@@ -1,0 +1,22 @@
+#brand-title {
+    color: #3a5fcd; /* Color personalizado para el título */
+}
+
+.form-label {
+    color: #3a5fcd; /* Color personalizado para las etiquetas */
+}
+
+.btn-custom {
+    background-color: #213f98; /* Color coral */
+    color: white; /* Color del texto */
+    border-color: #204fdc; /* Borde del mismo color */
+}
+
+.btn-custom:hover {
+    background-color: #294086; /* Un tono más oscuro al pasar el cursor */
+    border-color: #294086;
+}
+
+#icon-name {
+    color: #3a5fcd; /* Color personalizado para los íconos */
+}

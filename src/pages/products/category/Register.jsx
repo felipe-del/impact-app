@@ -88,105 +88,127 @@ const Register = () => {
     };
 
     return (
-        <div className="main-container">
-            <div className="button-container">
-                <h1>Registro de categorías</h1>
-                <div className="ver-inventario">
-                    <button className="button-5" role="button" onClick={handleRegisterP}>Registro productos</button>
-                </div>
-            </div>
-            <div className="container2">
-                <div className="container3">
-                    <h3>Datos de la categoría</h3><br></br>
-                    <form ref={formRef} onSubmit={handleSubmit}>
-                        <div className="form-group">
-                            <div className="input-group">
-                                <label htmlFor="name">Nombre del producto</label>
-                                <input
-                                    type="text"
-                                    id="name"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                    required
-                                />
-                            </div>
-                            <div className="input-group">
-                                <label htmlFor="min-quantity">Cantidad mínima</label>
-                                <input
-                                    type="number"
-                                    id="min-quantity"
-                                    value={minQuantity}
-                                    min={1}
-                                    onChange={(e) => setMinQuantity(e.target.value)}
-                                    required
-                                />
-                            </div>
-                        </div>
+        <div className="mt-5 d-flex justify-content-center">
+            <div className="card p-5 shadow-lg" style={{ maxWidth: "700px", borderRadius: "10px" }}>
+                <h1 className="text-center mb-5">Registro de Categorías</h1>
 
-                        <div className="form-group">
-                            <div className="input-group">
-                                <label htmlFor="type">Tipo del producto</label>
-                                <select
-                                    id="type"
-                                    value={type}
-                                    onChange={(e) => setType(e.target.value)}
-                                    required
-                                >
-                                    {types.map((type) => (
-                                        <option key={type.id} value={type.id}>
-                                            {type.name}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                            <div className="input-group">
-                                <label htmlFor="measure_unit">Unidad de medida</label>
-                                <select
-                                    id="measure_unit"
-                                    value={measureUnit}
-                                    onChange={(e) => setMeasureUnit(e.target.value)}
-                                    required
-                                >
-                                    {measureU.map((measure) => (
-                                        <option key={measure.id} value={measure.id}>
-                                            {measure.name}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                        </div>
-
-                        <div className="button">
-                            <button className="button-5" type="submit" role="button">Guardar</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            {/* Success Modal */}
-            <Modal show={showSuccessModal} onHide={() => setShowSuccessModal(false)}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Éxito</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>La categoría se ha guardado exitosamente.</Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowSuccessModal(false)}>
-                        Cerrar
+                <div className="text-center mb-4">
+                    <Button className="btn btn-lg btn-custom btn-space shadow-sm" role="button" onClick={handleRegisterP}>
+                        <i className="fas fa-box"></i> Registro de productos
                     </Button>
-                </Modal.Footer>
-            </Modal>
+                </div>
 
-            {/* Error Modal */}
-            <Modal show={showErrorModal} onHide={() => setShowErrorModal(false)}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Error</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>Hubo un problema al guardar la categoría. Por favor, intente nuevamente.</Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowErrorModal(false)}>
-                        Cerrar
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+                <div className="container2">
+                    <div className="container3">
+                        <h3 className="text-center mb-4">Datos de la Categoría</h3>
+                        <form onSubmit={handleSubmit}>
+                            <div className="mb-4 row align-items-center">
+                                <label htmlFor="name" className="col-sm-4 col-form-label form-label">
+                                    <i className="fas fa-tag"></i> Nombre del producto
+                                </label>
+                                <div className="col-sm-8">
+                                    <input
+                                        type="text"
+                                        id="name"
+                                        className="form-control border-primary"
+                                        placeholder="Ingresa el nombre del producto"
+                                        value={name}
+                                        onChange={(e) => setName(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                            </div>
+                            <div className="mb-4 row align-items-center">
+                                <label htmlFor="min-quantity" className="col-sm-4 col-form-label form-label">
+                                    <i className="fas fa-sort-numeric-up"></i> Cantidad mínima
+                                </label>
+                                <div className="col-sm-8">
+                                    <input
+                                        type="number"
+                                        id="min-quantity"
+                                        className="form-control border-primary"
+                                        value={minQuantity}
+                                        min={1}
+                                        onChange={(e) => setMinQuantity(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                            </div>
+                            <div className="mb-4 row align-items-center">
+                                <label htmlFor="type" className="col-sm-4 col-form-label form-label">
+                                    <i className="fas fa-cube"></i> Tipo del producto
+                                </label>
+                                <div className="col-sm-8">
+                                    <select
+                                        id="type"
+                                        className="form-control border-primary"
+                                        value={type}
+                                        onChange={(e) => setType(e.target.value)}
+                                        required
+                                    >
+                                        {types.map((type) => (
+                                            <option key={type.id} value={type.id}>
+                                                {type.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="mb-4 row align-items-center">
+                                <label htmlFor="measure_unit" className="col-sm-4 col-form-label form-label">
+                                    <i className="fas fa-ruler"></i> Unidad de medida
+                                </label>
+                                <div className="col-sm-8">
+                                    <select
+                                        id="measure_unit"
+                                        className="form-control border-primary"
+                                        value={measureUnit}
+                                        onChange={(e) => setMeasureUnit(e.target.value)}
+                                        required
+                                    >
+                                        {measureU.map((measure) => (
+                                            <option key={measure.id} value={measure.id}>
+                                                {measure.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="text-center">
+                                <Button className="btn btn-lg btn-custom w-100 shadow-sm" type="submit">
+                                    <i className="fas fa-save"></i> Guardar
+                                </Button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                {/* Success Modal */}
+                <Modal show={showSuccessModal} onHide={() => setShowSuccessModal(false)}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Éxito</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>La categoría se ha guardado exitosamente.</Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={() => setShowSuccessModal(false)}>
+                            Cerrar
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+
+                {/* Error Modal */}
+                <Modal show={showErrorModal} onHide={() => setShowErrorModal(false)}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Error</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>Hubo un problema al guardar la categoría. Por favor, intente nuevamente.</Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={() => setShowErrorModal(false)}>
+                            Cerrar
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+            </div>
         </div>
     );
 };

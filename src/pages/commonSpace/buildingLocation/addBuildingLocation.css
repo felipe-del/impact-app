@@ -41,3 +41,31 @@ li:hover {
     height: auto;
     filter: invert(1);
 }
+.btn-custom {
+    background-color: #213f98; /* Color principal */
+    color: white; /* Color del texto */
+    border: none; /* Sin borde */
+    border-radius: 30px; /* Bordes redondeados */
+    padding: 10px 20px; /* Espaciado interno */
+    font-size: 1.1rem; /* Tamaño de fuente */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Efecto de transición */
+    display: inline-flex; /* Para centrar ícono y texto */
+    align-items: center; /* Alineación vertical */
+}
+
+.btn-custom i {
+    margin-right: 8px; /* Espacio entre ícono y texto */
+}
+
+.btn-custom:hover {
+    background-color: #182d78; /* Cambia el color en hover */
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada en hover */
+}
+
+.btn-space {
+    margin: 10px; /* Espaciado entre botones */
+}
+
+.shadow-sm {
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+}
