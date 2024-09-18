@@ -72,7 +72,7 @@ const SignIn = ({ switchToSignUp }) => {
     return (
         <div className="form-container sign-in">
             <form onSubmit={handleSubmit}>
-                <h1>Inicio de sesión  </h1>
+                <h1>Inicio de sesión  </h1><br></br>
                 {/*<div className="social-icons">*/}
                 {/*    <a href="#" className="icon"><i className="fa-brands fa-google-plus-g"></i></a>*/}
                 {/*    <a href="#" className="icon"><i className="fa-brands fa-facebook-f"></i></a>*/}
@@ -82,7 +82,7 @@ const SignIn = ({ switchToSignUp }) => {
                 {/*<span>or use your email for registration</span>*/}
                 <input
                     type="email"
-                    placeholder="Correo electrónico"
+                    placeholder="Correo electrónico institucional"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
