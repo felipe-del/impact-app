@@ -35,8 +35,8 @@ const SpaceTable = () => {
   }));
 
   const productColumns = [
-    { header: 'Nombre', accessor: 'nombre' },
     { header: 'Codigo', accessor: 'numeroEspacio' },
+    { header: 'Nombre', accessor: 'nombre' },
     { header: 'Edificio', accessor: 'edificio' },
     { header: 'Cantidad máxima de personas', accessor: 'capacidadMaxima' },
     { header: 'Tipo de espacio', accessor: 'tipoDeEspacio' },
