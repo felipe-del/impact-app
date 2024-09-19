@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Alert, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import './addCategory.css';
+import { API_URLS } from '../../../declarations/apiConfig';
 
 const AddCategory = () => {
     const [name, setName] = useState('');
@@ -12,7 +13,7 @@ const AddCategory = () => {
 
     useEffect(() => {
         // Fetch subcategories on component mount
-        fetch('http://localhost:8080/asset/subcategory')
+        fetch(API_URLS.ASSET.ADD_NEW_SUBCATEGORY)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -25,13 +26,14 @@ const AddCategory = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
+        console.log(selectedSubcategory)
         const newCategory = {
+            id: 0,
             name,
-            subcategory_id: selectedSubcategory // Assuming the backend expects subcategory_id
+            subcategoryId: selectedSubcategory // Assuming the backend expects subcategory_id
         };
 
-        fetch('http://localhost:8080/asset/category', {
+        fetch(API_URLS.ASSET.ADD_NEW_CATEGORY, {
             method: 'POST',
             credentials: 'include',
             headers: {

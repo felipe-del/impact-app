@@ -28,6 +28,7 @@ export const API_URLS = {
         GET_ALL_CURRENCY: concat('/asset/currency'),
         GET_ALL_MODEL: concat('/asset/model'),
         ADD_NEW_MODEL: concat('/asset/model'),
+        ADD_NEW_CATEGORY: concat('/asset/category'),
         ADD_NEW_SUBCATEGORY: concat('/asset/subcategory')
     },
     SUPPLIER: {
