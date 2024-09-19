@@ -17,6 +17,8 @@ import AddBuilding from "../pages/commonSpace/building/addBuilding.jsx";
 import AddSpaceType from "../pages/commonSpace/spaceType/addSpaceType.jsx";
 import InventoryTable from '../pages/products/inventory/inventoryTable.jsx';
 import AssetTable from '../pages/asset/list/assetTable.jsx';
+import AddAssetModel from '../pages/asset/addAssetModel/addAssetModel.jsx';
+import AddSubcategory from '../pages/asset/addAssetSubcategory/addAssetSubcategory.jsx';
 
 export const Routes = createBrowserRouter([
     {
@@ -94,7 +96,15 @@ export const Routes = createBrowserRouter([
             {
                 path: 'assetList',
                 element: <AssetTable/>
-            }
+            },
+            {
+                path: 'addAssetModel',
+                element: <AddAssetModel/>
+            },
+            {
+                path: 'addSubcategory',
+                element: <AddSubcategory/>
+            },
         ]
     }
 ]);
