@@ -79,23 +79,26 @@ const Sidebar = () => {
                     <div className="bg-white py-2 collapse-inner rounded">
                         <div className="collapse-divider"></div>
                         <h6 className="collapse-header">Activos:</h6>
-                        <Link className="collapse-item" to="/app/createAsset">Registro de activos</Link>
+                        <Link className="collapse-item" to="/app/createAsset">Agregar activo</Link>
                         <Link className="collapse-item" to="/app/addSupplier">Agregar proveedor</Link>
                         <Link className="collapse-item" to="/app/addBrand">Agregar marca</Link>
                         <Link className="collapse-item" to="/app/addCategory">Agregar categoría</Link>
+                        <Link className="collapse-item" to="/app/addAssetModel">Agregar modelos</Link>
+                        <Link className="collapse-item" to="/app/addSubcategory">Agregar subcategoría</Link>
                         <Link className="collapse-item" to="/app/assetList">Lista de activos</Link>
                         <h6 className="collapse-header">Espacios comunes:</h6>
-                        <Link className="collapse-item" to="/app/addBuilding">Add Building</Link>
-                        <Link className="collapse-item" to="/app/addBuildingLocation">Add Building location</Link>
-                        <Link className="collapse-item" to="/app/addSpaceType">Add Space-type</Link>
-                        <Link className="collapse-item" to="/app/addSpace">Add Space</Link>
+                        <Link className="collapse-item" to="/app/addBuilding">Agregar edificio</Link>
+                        <Link className="collapse-item" to="/app/addBuildingLocation">Agregar ubicación en edificio</Link>
+                        <Link className="collapse-item" to="/app/addSpaceType">Agregar tipo de espacio</Link>
+                        <Link className="collapse-item" to="/app/addSpace">Agregar espacio</Link>
                         <Link className="collapse-item" to="/app/spaceList">Lista de espacios</Link>
                         <h6 className="collapse-header">Productos:</h6>
                         <Link className="collapse-item" to="/app/categoryRegister">Registro de categoría</Link>
                         <Link className="collapse-item" to="/app/productRegister">Ingreso de productos</Link>
                         <Link className="collapse-item" to="/app/productList">Lista de productos</Link>
-                        <Link className="collapse-item" to="/app/inventoryList">Lista de categorías</Link>
+                        <Link className="collapse-item" to="/app/inventoryList">Inventario</Link>
                     </div>
+
                 </div>
             </li>
 

@@ -1,21 +1,34 @@
-import React, { useState } from 'react';
-import { Button, Alert } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { Button, Alert, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import './addCategory.css';
 
 const AddCategory = () => {
     const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
+    const [selectedSubcategory, setSelectedSubcategory] = useState('');
+    const [subcategories, setSubcategories] = useState([]);
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
     const [showErrorAlert, setShowErrorAlert] = useState(false);
+
+    useEffect(() => {
+        // Fetch subcategories on component mount
+        fetch('http://localhost:8080/asset/subcategory')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => setSubcategories(data))
+            .catch(error => console.error('Error fetching subcategories:', error));
+    }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
         const newCategory = {
-            id: 0,
             name,
-            description
+            subcategory_id: selectedSubcategory // Assuming the backend expects subcategory_id
         };
 
         fetch('http://localhost:8080/asset/category', {
@@ -35,7 +48,7 @@ const AddCategory = () => {
             .then(() => {
                 setShowSuccessAlert(true);
                 setName('');
-                setDescription('');
+                setSelectedSubcategory('');
             })
             .catch(error => {
                 console.error('Error adding category:', error);
@@ -47,7 +60,19 @@ const AddCategory = () => {
         <div className="mt-5 d-flex justify-content-center">
             <div className="card p-5 shadow-lg" style={{ maxWidth: "700px", borderRadius: "10px" }}>
                 <h1 id="category-title" className="text-center mb-5">Agregar Categoría</h1>
-    
+
+                {showSuccessAlert && (
+                    <Alert variant="success" onClose={() => setShowSuccessAlert(false)} dismissible>
+                        Categoría agregada exitosamente.
+                    </Alert>
+                )}
+
+                {showErrorAlert && (
+                    <Alert variant="danger" onClose={() => setShowErrorAlert(false)} dismissible>
+                        Hubo un error al agregar la categoría.
+                    </Alert>
+                )}
+
                 <div className="mb-4">
                     <form onSubmit={handleSubmit}>
                         <div className="mb-4 row align-items-center">
@@ -67,19 +92,25 @@ const AddCategory = () => {
                             </div>
                         </div>
                         <div className="mb-4 row align-items-center">
-                            <label htmlFor="description" id="label-description" className="col-sm-4 col-form-label form-label">
-                                <i className="fas fa-info-circle" id="icon-description"></i> Descripción
+                            <label htmlFor="subcategory" id="label-subcategory" className="col-sm-4 col-form-label form-label">
+                                <i className="fas fa-list" id="icon-subcategory"></i> Subcategoría
                             </label>
                             <div className="col-sm-8">
-                                <input
-                                    type="text"
-                                    id="description"
-                                    className="form-control border-primary"
-                                    placeholder="Ingresa una descripción de la categoría"
-                                    value={description}
-                                    onChange={(e) => setDescription(e.target.value)}
+                                <Form.Control
+                                    as="select"
+                                    id="subcategory"
+                                    className="border-primary"
+                                    value={selectedSubcategory}
+                                    onChange={(e) => setSelectedSubcategory(e.target.value)}
                                     required
-                                />
+                                >
+                                    <option value="">Selecciona una subcategoría</option>
+                                    {subcategories.map(subcategory => (
+                                        <option key={subcategory.id} value={subcategory.id}>
+                                            {subcategory.name}
+                                        </option>
+                                    ))}
+                                </Form.Control>
                             </div>
                         </div>
                         <div className="text-center">
@@ -92,9 +123,6 @@ const AddCategory = () => {
             </div>
         </div>
     );
-    
-    
-    
 };
 
 export default AddCategory;
