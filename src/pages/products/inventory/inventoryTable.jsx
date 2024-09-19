@@ -44,13 +44,11 @@ const InventoryTable = () => {
       // Definir las columnas de la tabla
       const productColumns = [
           { header: 'Código', accessor: 'id' },
-          { header: 'Nombre', accessor: 'name' },
+          { header: 'Descripción', accessor: 'name' },
           { header: 'Unidad de medida', accessor: 'unit' },
           { header: 'Cantidad mínima', accessor: 'minQuantity' },
           { header: 'Cantidad disponible', accessor: 'availableQuantity' },
-          { header: 'Estado', accessor: 'status', cellStyle: (value) => ({
-            color: value === 'Requerido' ? 'red' : 'green'
-          }) }
+          { header: 'Estado', accessor: 'status'},
       ];
   
       // Manejar los cambios en los checkboxes

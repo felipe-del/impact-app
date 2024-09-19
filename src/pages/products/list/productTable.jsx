@@ -42,7 +42,7 @@ const ProductTable = () => {
     // Columnas de la tabla
     const productColumns = [
         { header: 'Código', accessor: 'id' },  // Usamos 'id' en lugar de 'code'
-        { header: 'Nombre', accessor: 'name' },  // Nombre del producto aplanado
+        { header: 'Descripción', accessor: 'name' },  // Nombre del producto aplanado
         { header: 'Fecha de compra', accessor: 'purchaseDate' },
         { header: 'Fecha de vencimiento', accessor: 'expiryDate' },
         { header: 'Estado', accessor: 'status' },  // Estado del producto aplanado
