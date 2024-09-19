@@ -85,7 +85,7 @@ const SignUp = ({ switchToSignIn }) => {
                 />
                 <input
                     type="email"
-                    placeholder="Correo Eléctronico"
+                    placeholder="Correo eléctronico institucional"
                     value={email}
                     onChange={handleInputChange(setEmail)}
                     className="input-field"

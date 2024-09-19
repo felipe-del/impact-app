@@ -198,3 +198,7 @@
 .container.active .toggle-right{
     transform: translateX(200%);
 }
+#pdf_link{
+    color: #ffff;
+    text-decoration: underline;
+}
