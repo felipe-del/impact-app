@@ -26,17 +26,19 @@ const matchesSearch = asset.category.toLowerCase().includes(searchTerm.toLowerCa
 });
 
 const flattenedProducts = filteredProducts.map(asset => ({
-    plate: asset.id,
+    plate: asset.plate,
     category: asset.category,  // Asegúrate de que 'name' existe en 'category'
-    number: asset.number,
+    subcategory: asset.subcategory,
     status: asset.status,
+    description: asset.description,
 }));
   
     const productColumns = [
       { header: 'Placa', accessor: 'plate' },
       { header: 'Categoría', accessor: 'category' },
-      { header: 'Número', accessor: 'number' },
+      { header: 'Subcagoría', accessor: 'subcategory' },
       { header: 'Estado', accessor: 'status' },
+      { header: 'Descripción', accessor: 'description'}
     ];
   
     return (
