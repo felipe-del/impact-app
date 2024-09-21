@@ -90,7 +90,7 @@ const Register = () => {
     return (
         <div className="mt-5 d-flex justify-content-center">
             <div className="card p-5 shadow-lg" style={{ maxWidth: "700px", borderRadius: "10px" }}>
-                <h1 className="text-center mb-5">Registro de Categorías</h1>
+                <h1 className="title text-center mb-5">Registro de Categorías</h1>
 
                 <div className="text-center mb-4">
                     <Button className="btn btn-lg btn-custom btn-space shadow-sm" role="button" onClick={handleRegisterP}>
@@ -100,7 +100,7 @@ const Register = () => {
 
                 <div className="container2">
                     <div className="container3">
-                        <h3 className="text-center mb-4">Datos de la Categoría</h3>
+                        <h3 className="text-center mb-4 subtitle">Datos de la Categoría</h3>
                         <form onSubmit={handleSubmit}>
                             <div className="mb-4 row align-items-center">
                                 <label htmlFor="name" className="col-sm-4 col-form-label form-label">

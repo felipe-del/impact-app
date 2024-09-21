@@ -102,89 +102,94 @@ const ProductRegister = () => {
     };
 
     return (
-        <div className="main-container">
+        <div className="mt-5 d-flex justify-content-center">
+            <div className="card p-5 shadow-lg" style={{ maxWidth: "700px", borderRadius: "10px" }}>
             <div className="button-container">
-                <h1>Registro de productos</h1>
-                <div className="ver-inventario">
-                    <button className="button-5" role="button">Ver inventario productos</button>
+                <h1 className="title text-center mb-5">Registro de productos</h1>
+                <div className="text-center mb-4">
+                    <Button className="btn btn-lg btn-custom btn-space shadow-sm" role="button" >
+                        <i className="fas fa-box"></i> Ver inventario productos
+                    </Button>
                 </div>
             </div>
-
-            {currentStep === 1 && (
-                <div className="container2">
-                    <h3>Seleccione la categoría del producto</h3>
-                    <div className="search-container">
-                        <div className="form-group">
-                            <div className='input-group'>
-                                <input
-                                    type="text"
-                                    placeholder="Buscar categorías"
-                                    value={searchTerm}
-                                    onChange={handleSearch}
-                                />
+                {currentStep === 1 && (
+                    <div className="container2">
+                        <h3>Seleccione la categoría del producto</h3>
+                        <div className="search-container">
+                            <div className="form-group">
+                                <div className='input-group'>
+                                    <input
+                                        type="text"
+                                        placeholder="Buscar categorías"
+                                        value={searchTerm}
+                                        onChange={handleSearch}
+                                    />
+                                </div>
                             </div>
-                        </div>
-                        <div className='form-group'>
-                            <div className='input-group'>
-                                <ul>
-                                    {filteredCategories.map(category => (
-                                        <li key={category.id} onClick={() => handleSelectCategory(category)}>
-                                            {category.name}
-                                        </li>
-                                    ))}
-                                </ul>
+                            <div className='form-group'>
+                                <div className='input-group'>
+                                    <ul>
+                                        {filteredCategories.map(category => (
+                                            <li key={category.id} onClick={() => handleSelectCategory(category)}>
+                                                {category.name}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            )}
+                )}
 
-            {currentStep === 2 && (
-                <div className="container2">
-                    <form onSubmit={handleSubmit}>
-                        <h3>Categoría seleccionada: {selectedCategory || 'Ninguna seleccionada'}</h3>
-                        <div className="form-group">
-                            <div className="input-group">
-                                <label>Fecha de compra:</label>
-                                <input
-                                    type="date"
-                                    value={purchaseDate}
-                                    required
-                                    onChange={(e) => setPurchaseDate(e.target.value)}
-                                />
+                {currentStep === 2 && (
+                    <div className="container2">
+                        <form onSubmit={handleSubmit}>
+                            <h3>Categoría seleccionada: {selectedCategory || 'Ninguna seleccionada'}</h3>
+                            <div className="form-group">
+                                <div className="input-group">
+                                    <label>Fecha de compra:</label>
+                                    <input
+                                        type="date"
+                                        value={purchaseDate}
+                                        required
+                                        onChange={(e) => setPurchaseDate(e.target.value)}
+                                    />
+                                </div>
+                                <div className="input-group">
+                                    <label>Fecha de vencimiento:</label>
+                                    <input
+                                        type="date"
+                                        value={expiryDate}
+                                        disabled={isExpiryDisabled} // Deshabilitar si es de tipo "Oficina"
+                                        required={!isExpiryDisabled} // Hacerlo obligatorio solo si no está deshabilitado
+                                        onChange={(e) => setExpiryDate(e.target.value)}
+                                    />
+                                </div>
                             </div>
-                            <div className="input-group">
-                                <label>Fecha de vencimiento:</label>
-                                <input
-                                    type="date"
-                                    value={expiryDate}
-                                    disabled={isExpiryDisabled} // Deshabilitar si es de tipo "Oficina"
-                                    required={!isExpiryDisabled} // Hacerlo obligatorio solo si no está deshabilitado
-                                    onChange={(e) => setExpiryDate(e.target.value)}
-                                />
+                            <div className="form-group">
+                                <div className="input-group">
+                                    <label>Cantidad a ingresar:</label>
+                                    <input
+                                        type="number"
+                                        value={quantity}
+                                        min={1}
+                                        required
+                                        onChange={(e) => setQuantity(e.target.value)}
+                                    />
+                                </div>
                             </div>
-                        </div>
-                        <div className="form-group">
-                            <div className="input-group">
-                                <label>Cantidad a ingresar:</label>
-                                <input
-                                    type="number"
-                                    value={quantity}
-                                    min={1}
-                                    required
-                                    onChange={(e) => setQuantity(e.target.value)}
-                                />
+                            <div className="form-group">
+                                <button type="button" className="button-5" onClick={handleGoBackToCategorySelection}>
+                                    Cambiar categoría
+                                </button>
+                                <button type="submit" className="button-5">Guardar</button>
                             </div>
-                        </div>
-                        <div className="form-group">
-                            <button type="button" className="button-5" onClick={handleGoBackToCategorySelection}>
-                                Cambiar categoría
-                            </button>
-                            <button type="submit" className="button-5">Guardar</button>
-                        </div>
-                    </form>
-                </div>
-            )}
+                        </form>
+                    </div>
+                )}
+            </div>
+
+
 
             {/* Success Modal */}
             <Modal show={showSuccess} onHide={() => setShowSuccess(false)}>
