@@ -26,7 +26,9 @@ const SignIn = ({ switchToSignUp }) => {
 
             if (data) {
                 setUser(data);
+                setLoginError('');
                 window.location.href = '/app';
+
             } else {
                 setLoginError('Por favor, verifique sus credenciales e inténtelo nuevamente.');
             }
