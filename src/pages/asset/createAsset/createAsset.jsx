@@ -33,46 +33,58 @@ const CreateAsset = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // Fetch supplier data
+               // Fetch supplier data
                 const supplierResponse = await fetch(API_URLS.SUPPLIER.GET_ALL, { method: 'GET', credentials: 'include' });
                 if (!supplierResponse.ok) throw new Error('Network response was not ok for suppliers');
                 const supplierData = await supplierResponse.json();
+                console.log('Suppliers:', supplierData);  // Log supplier data
                 setSuppliers(supplierData);
 
                 // Fetch brand data
                 const brandResponse = await fetch(API_URLS.BRAND.GET_ALL, { method: 'GET', credentials: 'include' });
                 if (!brandResponse.ok) throw new Error('Network response was not ok for brands');
                 const brandData = await brandResponse.json();
+                console.log('Brands:', brandData);  // Log brand data
                 setBrands(brandData);
 
                 // Fetch category data
-                const categoryResponse = await fetch(API_URLS.ASSET.GET_ALL_CATEGORY, { method: 'GET', credentials: 'include' });
-                if (!categoryResponse.ok) throw new Error('Network response was not ok for categories');
-                const categoryData = await categoryResponse.json();
-                setCategories(categoryData);
+                try {
+                    const categoryResponse = await fetch(API_URLS.ASSET.GET_ALL_CATEGORY, { method: 'GET', credentials: 'include' });
+                    if (!categoryResponse.ok) throw new Error('Network response was not ok for categories');
+                    const categoryData = await categoryResponse.json();
+                    console.log('Categories:', categoryData);
+                    setCategories(categoryData);
+                } catch (error) {
+                    console.error('Error fetching categories:', error); // Log the error
+                }
+                
 
                 // Fetch status data
                 const statusResponse = await fetch(API_URLS.ASSET.GET_ALL_STATUS, { method: 'GET', credentials: 'include' });
                 if (!statusResponse.ok) throw new Error('Network response was not ok for statuses');
                 const statusData = await statusResponse.json();
+                console.log('Statuses:', statusData);  // Log status data
                 setStatuses(statusData);
 
                 // Fetch user data
                 const userResponse = await fetch(API_URLS.USER.GET_ALL, { method: 'GET', credentials: 'include' });
                 if (!userResponse.ok) throw new Error('Network response was not ok for users');
                 const userData = await userResponse.json();
+                console.log('Users:', userData);  // Log user data
                 setUsers(userData);
 
                 // Fetch currency data
                 const currencyResponse = await fetch(API_URLS.ASSET.GET_ALL_CURRENCY, { method: 'GET', credentials: 'include' });
                 if (!currencyResponse.ok) throw new Error('Network response was not ok for currencies');
                 const currencyData = await currencyResponse.json();
+                console.log('Currencies:', currencyData);  // Log currency data
                 setCurrencies(currencyData);
 
                 // Fetch asset model data
                 const assetModelResponse = await fetch(API_URLS.ASSET.GET_ALL_MODEL, { method: 'GET', credentials: 'include' });
                 if (!assetModelResponse.ok) throw new Error('Network response was not ok for asset models');
                 const assetModelData = await assetModelResponse.json();
+                console.log('Asset Models:', assetModelData);  // Log asset model data
                 setAssetModels(assetModelData);
         
             } catch (error) {
