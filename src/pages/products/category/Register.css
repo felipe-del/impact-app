@@ -112,13 +112,14 @@
     background-color: #f9f9f9;
 }
 .btn-custom {
-    background-color: rgba(0, 93, 164, 1); !important;
+    background-color: rgba(0, 93, 164, 1) !important;
     border: none !important;
 }
 
 .btn-custom:hover {
-    background-color: rgba(0, 73, 130, 1); !important;
+    background-color: rgba(0, 73, 130, 1) !important;
 }
+
 .btn{
     display: flex;
     justify-content: center;
@@ -126,4 +127,10 @@
 }
 .title, .subtitle{
     color: rgba(0, 93, 164, 1);
+}
+.buttons{
+    display: flex;
+}
+#cancel{
+    background-color: rgb(213, 52, 52) !important;
 }
