@@ -49,7 +49,7 @@ const AddBuilding = () => {
 
 
     return (
-        <div className="main-container mt-5 d-flex justify-content-center">
+        <div className="mt-5 d-flex justify-content-center">
             <div className="card p-5 shadow-lg" style={{ maxWidth: "700px", borderRadius: "10px" }}>
                 <h1 id="building-title" className="text-center mb-5">Registro de edificios</h1>
                 <div className="text-center mb-4">
