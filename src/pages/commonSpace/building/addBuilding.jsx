@@ -46,8 +46,7 @@ const AddBuilding = () => {
     const handleRegisterSp = () => {
         window.location.href = 'addSpace';
     };
-
-
+    
     return (
         <div className="mt-5 d-flex justify-content-center">
             <div className="card p-5 shadow-lg" style={{ maxWidth: "700px", borderRadius: "10px" }}>
