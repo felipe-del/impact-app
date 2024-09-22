@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { API_URLS } from '../../../declarations/apiConfig';
+import { usePage } from '../../../context/pageContext';
 
 const ProductRequest = () => {
     const [products, setProducts] = useState([]);
@@ -11,6 +12,11 @@ const ProductRequest = () => {
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
     const [showErrorAlert, setShowErrorAlert] = useState(false);
     const formRef = useRef(null);
+    const { setPageName } = usePage();
+
+    useEffect(() => {
+        setPageName("Solicitud de Productos");
+    }, [setPageName]);
 
     const userId = sessionStorage.getItem('userId'); // Replace with your method to get the user ID from session
 

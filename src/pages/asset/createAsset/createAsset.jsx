@@ -3,6 +3,7 @@ import { Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './createAsset.css';
 import { API_URLS } from '../../../declarations/apiConfig';
+import { usePage } from '../../../context/pageContext';
 
 const CreateAsset = () => {
     const [suppliers, setSuppliers] = useState([]);
@@ -29,6 +30,11 @@ const CreateAsset = () => {
     const [showErrorAlert, setShowErrorAlert] = useState(false);
 
     const formRef = useRef(null);
+    const { setPageName } = usePage();
+
+    useEffect(() => {
+        setPageName("Agregar Activo"); 
+    }, [setPageName]);
 
     useEffect(() => {
         const fetchData = async () => {

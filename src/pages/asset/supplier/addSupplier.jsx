@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Alert } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import './addSupplier.css';
+import { usePage } from '../../../context/pageContext';
 
 const AddSupplier = () => {
     const [name, setName] = useState('');
@@ -14,6 +15,11 @@ const AddSupplier = () => {
     const [selectedEntityType, setSelectedEntityType] = useState(null);
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
     const [showErrorAlert, setShowErrorAlert] = useState(false);
+    const { setPageName } = usePage();
+
+    useEffect(() => {
+        setPageName("Agregar Proveedor");
+    }, [setPageName]);
 
     useEffect(() => {
         fetch('http://localhost:8080/supplier/allEntityType')

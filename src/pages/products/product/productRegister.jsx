@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './productRegister.module.css';
+import { usePage } from '../../../context/pageContext';
 
 const ProductRegister = () => {
     const [categories, setCategories] = useState([]);
@@ -16,6 +17,11 @@ const ProductRegister = () => {
     const [currentStep, setCurrentStep] = useState(1);
     const [showSuccess, setShowSuccess] = useState(false);
     const [showError, setShowError] = useState(false);
+    const { setPageName } = usePage();
+
+    useEffect(() => {
+        setPageName("Agregar Producto");
+    }, [setPageName]);
    
 
     useEffect(() => {

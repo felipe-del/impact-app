@@ -1,8 +1,8 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faList  } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faList, faClipboardCheck   } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
-import '../../style/sb-admin-2.css';
+import '../../style/sb-admin-2.min.css';
 import './sidebar.css';
 import { Escudo_UCR } from '../../declarations/imageExports.js';
 
@@ -20,7 +20,7 @@ const Sidebar = () => {
             <hr className="sidebar-divider my-0" />
 
             <li className="nav-item active" id="dashboard-item">
-                <Link className="nav-link" to="/dashboard">
+                <Link className="nav-link" to="/app/dashboard">
                     <i className="fas fa-fw fa-tachometer-alt"></i>
                     <span>Panel</span>
                 </Link>
@@ -46,6 +46,7 @@ const Sidebar = () => {
                     </Link><Link className="collapse-item" to="/app/addCategory"><FontAwesomeIcon icon={faPlus} /> Categoría
                     </Link><Link className="collapse-item" to="/app/addAssetModel"><FontAwesomeIcon icon={faPlus} /> Modelos</Link>
                     <Link className="collapse-item" to="/app/addSubcategory"><FontAwesomeIcon icon={faPlus} /> Subcategoría</Link>
+                    <Link className="collapse-item" to="/app/assetLoanRequest"><FontAwesomeIcon icon={faClipboardCheck} /> Solicitud</Link>
                     <Link className="collapse-item" to="/app/assetList"><FontAwesomeIcon icon={faList} /> Activos</Link>
                     </div>
                 </div>
@@ -82,6 +83,7 @@ const Sidebar = () => {
                     <div className="bg-white py-2 collapse-inner rounded">
                     <Link className="collapse-item" to="/app/categoryRegister"><FontAwesomeIcon icon={faPlus} /> Categoría</Link>
                     <Link className="collapse-item" to="/app/productRegister"><FontAwesomeIcon icon={faPlus} /> Productos</Link>
+                    <Link className="collapse-item" to="/app/productLoanRequest"><FontAwesomeIcon icon={faClipboardCheck} /> Solicitud</Link>
                     <Link className="collapse-item" to="/app/productList"><FontAwesomeIcon icon={faList} /> Productos</Link>
                     <Link className="collapse-item" to="/app/inventoryList"><FontAwesomeIcon icon={faList} /> Inventario</Link>
                     </div>

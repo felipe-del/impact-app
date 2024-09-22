@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Alert } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import './addBrand.css';
+import { usePage } from '../../../context/pageContext';
 
 const AddBrand = () => {
     const [name, setName] = useState('');
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
     const [showErrorAlert, setShowErrorAlert] = useState(false);
+    const { setPageName } = usePage();
+
+    useEffect(() => {
+        setPageName("Agregar Marca de Activo");
+    }, [setPageName]);
 
     const handleSubmit = (e) => {
         e.preventDefault();

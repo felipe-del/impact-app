@@ -3,10 +3,16 @@ import DynamicTable from '../../../components/dynamicTable/dynamicTable';
 import SearchBar from '../../../components/searchBar/searchBar';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { usePage } from '../../../context/pageContext';
 
 const AssetTable = () => {
   const [assets, setAssets] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const { setPageName } = usePage();
+
+    useEffect(() => {
+        setPageName("Listado de Activos");
+    }, [setPageName]);
 
   useEffect(() => {
     fetch("http://localhost:8080/asset/all")
