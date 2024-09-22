@@ -1,8 +1,10 @@
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus, faList  } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
-import '../../style/sb-admin-2.min.css';
+import '../../style/sb-admin-2.css';
 import './sidebar.css';
-import { Escudo_UCR } from '../../declarations/imageExports.js'
+import { Escudo_UCR } from '../../declarations/imageExports.js';
 
 const Sidebar = () => {
     return (
@@ -10,128 +12,109 @@ const Sidebar = () => {
 
             <a className="sidebar-brand d-flex align-items-center justify-content-center">
                 <div className="sidebar-brand-icon rotate-n-15">
-                <i className="fas fa-clipboard-list"></i>
+                    <i className="fas fa-clipboard-list"></i>
                 </div>
                 <div className="sidebar-brand-text mx-3">IMPACT <sup>BETA</sup></div>
             </a>
 
             <hr className="sidebar-divider my-0" />
 
-            <li className="nav-item active">
+            <li className="nav-item active" id="dashboard-item">
                 <Link className="nav-link" to="/dashboard">
                     <i className="fas fa-fw fa-tachometer-alt"></i>
                     <span>Panel</span>
                 </Link>
             </li>
-
             <hr className="sidebar-divider" />
 
-            <div className="sidebar-heading">
-                Interface
-            </div>
-
-            <li className="nav-item">
-                <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                   aria-expanded="true" aria-controls="collapseTwo">
-                    <i className="fas fa-fw fa-cog"></i>
-                    <span>Componentes</span>
-                </a>
-                <div id="collapseTwo" className="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div className="bg-white py-2 collapse-inner rounded">
-                        <h6 className="collapse-header">Custom Components:</h6>
-                        <Link className="collapse-item" to="/buttons">Buttons</Link>
-                        <Link className="collapse-item" to="/cards">Cards</Link>
-                    </div>
-                </div>
-            </li>
-
-            <li className="nav-item">
-                <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                   aria-expanded="true" aria-controls="collapseUtilities">
-                    <i className="fas fa-fw fa-wrench"></i>
-                    <span>Útiles</span>
-                </a>
-                <div id="collapseUtilities" className="collapse" aria-labelledby="headingUtilities"
-                     data-parent="#accordionSidebar">
-                    <div className="bg-white py-2 collapse-inner rounded">
-                        <h6 className="collapse-header">Custom Utilities:</h6>
-                        <Link className="collapse-item" to="/utilities-color">Colors</Link>
-                        <Link className="collapse-item" to="/utilities-border">Borders</Link>
-                        <Link className="collapse-item" to="/utilities-animation">Animations</Link>
-                        <Link className="collapse-item" to="/utilities-other">Other</Link>
-                    </div>
-                </div>
-            </li>
-
-            <hr className="sidebar-divider" />
-
-            <div className="sidebar-heading">
+            <div className="sidebar-heading" id="complementos-heading">
                 Complementos
             </div>
 
-            <li className="nav-item">
-                <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-                   aria-expanded="true" aria-controls="collapsePages">
-                    <i className="fas fa-fw fa-folder"></i>
-                    <span>Páginas</span>
+            {/* Activos Section */}
+            <li className="nav-item" id="activos-item">
+                <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseActivos"
+                    aria-expanded="true" aria-controls="collapseActivos">
+                    <i className="fas fa-fw fa-desktop"></i>
+                    <span>Activos</span>
                 </a>
-                <div id="collapsePages" className="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div id="collapseActivos" className="collapse" aria-labelledby="headingActivos" data-parent="#accordionSidebar">
                     <div className="bg-white py-2 collapse-inner rounded">
-                        <div className="collapse-divider"></div>
-                        <h6 className="collapse-header">Activos:</h6>
-                        <Link className="collapse-item" to="/app/createAsset">Agregar activo</Link>
-                        <Link className="collapse-item" to="/app/addSupplier">Agregar proveedor</Link>
-                        <Link className="collapse-item" to="/app/addBrand">Agregar marca</Link>
-                        <Link className="collapse-item" to="/app/addCategory">Agregar categoría</Link>
-                        <Link className="collapse-item" to="/app/addAssetModel">Agregar modelos</Link>
-                        <Link className="collapse-item" to="/app/addSubcategory">Agregar subcategoría</Link>
-                        <Link className="collapse-item" to="/app/assetList">Lista de activos</Link>
-                        <h6 className="collapse-header">Espacios comunes:</h6>
-                        <Link className="collapse-item" to="/app/addBuilding">Agregar edificio</Link>
-                        <Link className="collapse-item" to="/app/addBuildingLocation">Agregar ubicación en edificio</Link>
-                        <Link className="collapse-item" to="/app/addSpaceType">Agregar tipo de espacio</Link>
-                        <Link className="collapse-item" to="/app/addSpace">Agregar espacio</Link>
-                        <Link className="collapse-item" to="/app/spaceList">Lista de espacios</Link>
-                        <h6 className="collapse-header">Productos:</h6>
-                        <Link className="collapse-item" to="/app/categoryRegister">Registro de categoría</Link>
-                        <Link className="collapse-item" to="/app/productRegister">Ingreso de productos</Link>
-                        <Link className="collapse-item" to="/app/productList">Lista de productos</Link>
-                        <Link className="collapse-item" to="/app/inventoryList">Inventario</Link>
+                    <Link className="collapse-item" to="/app/createAsset"><FontAwesomeIcon icon={faPlus} /> Activo
+                    </Link><Link className="collapse-item" to="/app/addSupplier"><FontAwesomeIcon icon={faPlus} /> Proveedor
+                    </Link><Link className="collapse-item" to="/app/addBrand"><FontAwesomeIcon icon={faPlus} /> Marca
+                    </Link><Link className="collapse-item" to="/app/addCategory"><FontAwesomeIcon icon={faPlus} /> Categoría
+                    </Link><Link className="collapse-item" to="/app/addAssetModel"><FontAwesomeIcon icon={faPlus} /> Modelos</Link>
+                    <Link className="collapse-item" to="/app/addSubcategory"><FontAwesomeIcon icon={faPlus} /> Subcategoría</Link>
+                    <Link className="collapse-item" to="/app/assetList"><FontAwesomeIcon icon={faList} /> Activos</Link>
                     </div>
-
                 </div>
             </li>
 
-            <li className="nav-item">
-            <Link className="nav-link" to="/charts">
+            {/* Espacios Comunes Section */}
+            <li className="nav-item" id="espacios-item">
+                <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEspacios"
+                    aria-expanded="true" aria-controls="collapseEspacios">
+                    <i className="fas fa-fw fa-building"></i>
+                    <span>Espacios Comunes</span>
+                </a>
+                <div id="collapseEspacios" className="collapse" aria-labelledby="headingEspacios" data-parent="#accordionSidebar">
+                    <div className="bg-white py-2 collapse-inner rounded">
+                        
+                        <Link className="collapse-item" to="/app/addBuilding"><FontAwesomeIcon icon={faPlus} /> Edificio</Link>
+                        <Link className="collapse-item" to="/app/addBuildingLocation"><FontAwesomeIcon icon={faPlus} /> Ubicación en edificio</Link>
+                        <Link className="collapse-item" to="/app/addSpaceType"><FontAwesomeIcon icon={faPlus} /> Tipo de espacio</Link>
+                        <Link className="collapse-item" to="/app/addSpace"><FontAwesomeIcon icon={faPlus} /> Espacio</Link>
+                        <Link className="collapse-item" to="/app/spaceList"><FontAwesomeIcon icon={faList} /> Espacios</Link>
+
+                    </div>
+                </div>
+            </li>
+
+            {/* Productos Section */}
+            <li className="nav-item" id="productos-item">
+                <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProductos"
+                    aria-expanded="true" aria-controls="collapseProductos">
+                    <i className="fas fa-fw fa-box"></i>
+                    <span>Productos</span>
+                </a>
+                <div id="collapseProductos" className="collapse" aria-labelledby="headingProductos" data-parent="#accordionSidebar">
+                    <div className="bg-white py-2 collapse-inner rounded">
+                    <Link className="collapse-item" to="/app/categoryRegister"><FontAwesomeIcon icon={faPlus} /> Categoría</Link>
+                    <Link className="collapse-item" to="/app/productRegister"><FontAwesomeIcon icon={faPlus} /> Productos</Link>
+                    <Link className="collapse-item" to="/app/productList"><FontAwesomeIcon icon={faList} /> Productos</Link>
+                    <Link className="collapse-item" to="/app/inventoryList"><FontAwesomeIcon icon={faList} /> Inventario</Link>
+                    </div>
+                </div>
+            </li>
+
+            <hr className="sidebar-divider" />
+
+            <div className="sidebar-heading" id="complementos-heading">
+                Visuales
+            </div>
+
+            <li className="nav-item" id="charts-item">
+                <Link className="nav-link" to="/charts">
                     <i className="fas fa-fw fa-chart-area"></i>
                     <span>Gráficos</span>
                 </Link>
             </li>
 
-            <li className="nav-item">
+            <li className="nav-item" id="tables-item">
                 <Link className="nav-link" to="/tables">
                     <i className="fas fa-fw fa-table"></i>
                     <span>Tablas</span>
                 </Link>
             </li>
+            <hr className="sidebar-divider" />
 
-            <hr className="sidebar-divider d-none d-md-block" />
-
-            <div className="text-center d-none d-md-inline">
-                <button className="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
-
-          
-
+           
             <div className="sidebar-card d-none d-lg-flex">
                 <img className="sidebar-card-illustration mb-2 img-fluid" src={Escudo_UCR} alt="Escudo de la Universidad" />
                 <p className="text-center mb-2"><strong>Conoce más sobre CIMPA</strong> y su impacto en nuestros proyectos y en la comunidad.</p>
                 <a className="btn btn-info btn-sm" href="https://www.cimpa.ucr.ac.cr/" target="_blank" rel="noopener noreferrer">Visita el sitio web de CIMPA</a>
             </div>
-
-
-
         </ul>
     );
 }
