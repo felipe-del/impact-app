@@ -19,6 +19,8 @@ import InventoryTable from '../pages/products/inventory/inventoryTable.jsx';
 import AssetTable from '../pages/asset/list/assetTable.jsx';
 import AddAssetModel from '../pages/asset/addAssetModel/addAssetModel.jsx';
 import AddSubcategory from '../pages/asset/addAssetSubcategory/addAssetSubcategory.jsx';
+import AssetLoanRequest from '../pages/asset/loan/loanRequest .jsx';
+import ProductRequest from '../pages/products/loan/productRequest.jsx';
 
 export const Routes = createBrowserRouter([
     {
@@ -104,6 +106,14 @@ export const Routes = createBrowserRouter([
             {
                 path: 'addSubcategory',
                 element: <AddSubcategory/>
+            },
+            {
+                path: 'assetLoanRequest',
+                element: <AssetLoanRequest/>
+            },
+            {
+                path: 'productLoanRequest',
+                element: <ProductRequest/>
             },
         ]
     }
