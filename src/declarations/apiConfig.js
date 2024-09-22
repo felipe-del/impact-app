@@ -24,6 +24,7 @@ export const API_URLS = {
     },
     ASSET: {
         GET_ALL_CATEGORY: concat('/asset/category'),
+        GET_ALL_SUBCATEGORY: concat('/asset/subcategory'),
         GET_ALL_STATUS: concat('/asset/status'),
         GET_ALL_CURRENCY: concat('/asset/currency'),
         GET_ALL_MODEL: concat('/asset/model'),

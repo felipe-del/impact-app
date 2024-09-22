@@ -8,13 +8,13 @@ const AddSupplier = () => {
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
     const [address, setAddress] = useState('');
-    const [clientContact, setClientContact] = useState(''); // Estado para el contacto del cliente
-    const [entityTypes, setEntityTypes] = useState([]); // Nuevo estado para tipos de entidad
-    const [selectedEntityType, setSelectedEntityType] = useState(null); // Estado para el tipo de entidad seleccionado
+    const [clientContact, setClientContact] = useState('');
+    const [idNumber, setIdNumber] = useState(''); // State for ID number
+    const [entityTypes, setEntityTypes] = useState([]);
+    const [selectedEntityType, setSelectedEntityType] = useState(null);
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
     const [showErrorAlert, setShowErrorAlert] = useState(false);
 
-    // useEffect para obtener los tipos de entidad
     useEffect(() => {
         fetch('http://localhost:8080/supplier/allEntityType')
             .then(response => {
@@ -24,7 +24,7 @@ const AddSupplier = () => {
                 return response.json();
             })
             .then(data => {
-                setEntityTypes(data); // Guardar los datos de tipos de entidad
+                setEntityTypes(data);
             })
             .catch(error => {
                 console.error('Error fetching entity types:', error);
@@ -40,8 +40,9 @@ const AddSupplier = () => {
             phone,
             email,
             address,
-            entityTypeId: selectedEntityType, // Asignar el ID del tipo de entidad seleccionado
-            clientContact // Incluir el contacto del cliente
+            entityTypeId: selectedEntityType,
+            clientContact,
+            idNumber // Include the ID number
         };
 
         fetch('http://localhost:8080/supplier', {
@@ -64,8 +65,9 @@ const AddSupplier = () => {
                 setPhone('');
                 setEmail('');
                 setAddress('');
-                setClientContact(''); // Resetear el contacto del cliente
-                setSelectedEntityType(null); // Resetear el tipo de entidad
+                setClientContact('');
+                setIdNumber(''); // Reset ID number
+                setSelectedEntityType(null);
             })
             .catch(error => {
                 console.error('Error adding supplier:', error);
@@ -156,6 +158,23 @@ const AddSupplier = () => {
                                     placeholder="Ingresa el contacto del cliente"
                                     value={clientContact}
                                     onChange={(e) => setClientContact(e.target.value)}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="mb-4 row align-items-center">
+                            <label htmlFor="idNumber" className="col-sm-4 col-form-label form-label">
+                                <i className="fas fa-id-card" id="icon-id-number"></i> Cédula
+                            </label>
+                            <div className="col-sm-8">
+                                <input
+                                    type="text"
+                                    id="idNumber"
+                                    className="form-control border-primary"
+                                    placeholder="Ingresa la cédula del proveedor"
+                                    value={idNumber}
+                                    onChange={(e) => setIdNumber(e.target.value)}
+                                    required
                                 />
                             </div>
                         </div>

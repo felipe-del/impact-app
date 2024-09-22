@@ -1,34 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Alert, Form } from 'react-bootstrap';
+import { Button, Alert } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import './addCategory.css';
 
 const AddCategory = () => {
     const [name, setName] = useState('');
-    const [selectedSubcategory, setSelectedSubcategory] = useState('');
-    const [subcategories, setSubcategories] = useState([]);
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
     const [showErrorAlert, setShowErrorAlert] = useState(false);
-
-    useEffect(() => {
-        // Fetch subcategories on component mount
-        fetch('http://localhost:8080/asset/subcategory')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => setSubcategories(data))
-            .catch(error => console.error('Error fetching subcategories:', error));
-    }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
         const newCategory = {
-            name,
-            subcategory_id: selectedSubcategory // Assuming the backend expects subcategory_id
+            id: 0,
+            name
+            // Removed subcategory_id since it's no longer needed
         };
 
         fetch('http://localhost:8080/asset/category', {
@@ -47,8 +33,7 @@ const AddCategory = () => {
             })
             .then(() => {
                 setShowSuccessAlert(true);
-                setName('');
-                setSelectedSubcategory('');
+                setName(''); // Reset name
             })
             .catch(error => {
                 console.error('Error adding category:', error);
@@ -89,28 +74,6 @@ const AddCategory = () => {
                                     onChange={(e) => setName(e.target.value)}
                                     required
                                 />
-                            </div>
-                        </div>
-                        <div className="mb-4 row align-items-center">
-                            <label htmlFor="subcategory" id="label-subcategory" className="col-sm-4 col-form-label form-label">
-                                <i className="fas fa-list" id="icon-subcategory"></i> Subcategoría
-                            </label>
-                            <div className="col-sm-8">
-                                <Form.Control
-                                    as="select"
-                                    id="subcategory"
-                                    className="border-primary"
-                                    value={selectedSubcategory}
-                                    onChange={(e) => setSelectedSubcategory(e.target.value)}
-                                    required
-                                >
-                                    <option value="">Selecciona una subcategoría</option>
-                                    {subcategories.map(subcategory => (
-                                        <option key={subcategory.id} value={subcategory.id}>
-                                            {subcategory.name}
-                                        </option>
-                                    ))}
-                                </Form.Control>
                             </div>
                         </div>
                         <div className="text-center">
