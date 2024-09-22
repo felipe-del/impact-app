@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Alert, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import './addAssetSubcategory.css';
@@ -7,17 +7,44 @@ import { API_URLS } from '../../../declarations/apiConfig';
 const AddSubcategory = () => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState('');
+    const [categories, setCategories] = useState([]);
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
     const [showErrorAlert, setShowErrorAlert] = useState(false);
 
+    useEffect(() => {
+        // Fetch categories on component mount
+        fetch(API_URLS.ASSET.GET_ALL_CATEGORY, {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Fetched categories:', data); // Log the fetched categories
+                setCategories(data);
+            })
+            .catch(error => console.error('Error fetching categories:', error));
+    }, []);
+    
     const handleSubmit = (e) => {
         e.preventDefault();
 
         const newSubcategory = {
-            id: 0,  // ID will be auto-generated
+            id: 0, // ID will be auto-generated
             name,
-            description
+            description,
+            categoryId: selectedCategory // Add selected category ID
         };
+
+        console.log(newSubcategory)
 
         fetch(API_URLS.ASSET.ADD_NEW_SUBCATEGORY, {
             method: 'POST',
@@ -37,6 +64,7 @@ const AddSubcategory = () => {
                 setShowSuccessAlert(true);
                 setName('');
                 setDescription('');
+                setSelectedCategory(''); // Reset selected category
             })
             .catch(error => {
                 console.error('Error adding subcategory:', error);
@@ -77,6 +105,25 @@ const AddSubcategory = () => {
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                         />
+                    </Form.Group>
+                    <Form.Group className="mb-4">
+                        <Form.Label htmlFor="category" id="label-category">
+                            <i className="fas fa-list" id="icon-category"></i> Categoría
+                        </Form.Label>
+                        <Form.Control
+                            as="select"
+                            id="category"
+                            value={selectedCategory}
+                            onChange={(e) => setSelectedCategory(e.target.value)}
+                            required
+                        >
+                            <option value="">Selecciona una categoría</option>
+                            {categories.map(category => (
+                                <option key={category.id} value={category.id}>
+                                    {category.name}
+                                </option>
+                            ))}
+                        </Form.Control>
                     </Form.Group>
                     <div className="text-center">
                         <Button className="btn btn-lg btn-custom w-100 shadow-sm" type="submit">

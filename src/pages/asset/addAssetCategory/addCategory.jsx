@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Alert, Form } from 'react-bootstrap';
+import { Button, Alert } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import './addCategory.css';
 import { API_URLS } from '../../../declarations/apiConfig';
 
 const AddCategory = () => {
     const [name, setName] = useState('');
-    const [selectedSubcategory, setSelectedSubcategory] = useState('');
-    const [subcategories, setSubcategories] = useState([]);
+    const [selectedSubcategory, setSelectedSubcategory] = useState(''); // Added state for subcategory
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
     const [showErrorAlert, setShowErrorAlert] = useState(false);
+    const [subcategories, setSubcategories] = useState([]); // Added state for subcategories
 
     useEffect(() => {
         // Fetch subcategories on component mount
@@ -26,7 +26,6 @@ const AddCategory = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(selectedSubcategory)
         const newCategory = {
             id: 0,
             name,
@@ -49,8 +48,8 @@ const AddCategory = () => {
             })
             .then(() => {
                 setShowSuccessAlert(true);
-                setName('');
-                setSelectedSubcategory('');
+                setName(''); // Reset name
+                setSelectedSubcategory(''); // Reset subcategory
             })
             .catch(error => {
                 console.error('Error adding category:', error);
@@ -95,24 +94,23 @@ const AddCategory = () => {
                         </div>
                         <div className="mb-4 row align-items-center">
                             <label htmlFor="subcategory" id="label-subcategory" className="col-sm-4 col-form-label form-label">
-                                <i className="fas fa-list" id="icon-subcategory"></i> Subcategoría
+                                <i className="fas fa-folder" id="icon-subcategory"></i> Subcategoría
                             </label>
                             <div className="col-sm-8">
-                                <Form.Control
-                                    as="select"
+                                <select
                                     id="subcategory"
-                                    className="border-primary"
+                                    className="form-select border-primary"
                                     value={selectedSubcategory}
                                     onChange={(e) => setSelectedSubcategory(e.target.value)}
                                     required
                                 >
-                                    <option value="">Selecciona una subcategoría</option>
-                                    {subcategories.map(subcategory => (
+                                    <option value="">Seleccionar subcategoría</option>
+                                    {subcategories.map((subcategory) => (
                                         <option key={subcategory.id} value={subcategory.id}>
                                             {subcategory.name}
                                         </option>
                                     ))}
-                                </Form.Control>
+                                </select>
                             </div>
                         </div>
                         <div className="text-center">
