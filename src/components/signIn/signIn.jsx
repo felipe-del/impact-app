@@ -26,7 +26,9 @@ const SignIn = ({ switchToSignUp }) => {
 
             if (data) {
                 setUser(data);
+                setLoginError('');
                 window.location.href = '/app';
+
             } else {
                 setLoginError('Por favor, verifique sus credenciales e inténtelo nuevamente.');
             }
@@ -96,7 +98,7 @@ const SignIn = ({ switchToSignUp }) => {
                     required
                     className="input-field"
                 />
-                <a href="#">Olvidó su contraseña?</a>
+                {/*<a href="#">Olvidó su contraseña?</a>*/}
                 {isLoading && <div>Loading...</div>}
                 {error && <div style={{ color: 'red' }}>{error}</div>}
                 {loginError && <div style={{ color: 'red' }}>{loginError}</div>}

@@ -83,15 +83,33 @@ const Register = () => {
 
     };
 
+    const handleCancel = () => {
+        setName('');
+        setMinQuantity('');
+        setType(types.length > 0 ? types[0].id : '');
+        setMeasureUnit(measureU.length > 0 ? measureU[0].id : '');
+        if (formRef.current) {
+            formRef.current.reset(); 
+        }
+    };
+
     const handleRegisterP = () => {
         window.location.href = 'productRegister';
     };
 
+
     return (
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol className="breadcrumb">
+                    <li className="breadcrumb-item"><a href="/app">Inicio</a></li>
+                    <li className="breadcrumb-item active" aria-current="page">Registro de Categorías</li>
+                </ol>
+            </nav>
+
         <div className="mt-5 d-flex justify-content-center">
             <div className="card p-5 shadow-lg" style={{ maxWidth: "700px", borderRadius: "10px" }}>
-                <h1 className="text-center mb-5">Registro de Categorías</h1>
-
+                <h1 className="title text-center mb-5">Registro de Categorías</h1>
                 <div className="text-center mb-4">
                     <Button className="btn btn-lg btn-custom btn-space shadow-sm" role="button" onClick={handleRegisterP}>
                         <i className="fas fa-box"></i> Registro de productos
@@ -100,7 +118,7 @@ const Register = () => {
 
                 <div className="container2">
                     <div className="container3">
-                        <h3 className="text-center mb-4">Datos de la Categoría</h3>
+                        <h3 className="text-center mb-4 subtitle">Datos de la Categoría</h3>
                         <form onSubmit={handleSubmit}>
                             <div className="mb-4 row align-items-center">
                                 <label htmlFor="name" className="col-sm-4 col-form-label form-label">
@@ -111,7 +129,7 @@ const Register = () => {
                                         type="text"
                                         id="name"
                                         className="form-control border-primary"
-                                        placeholder="Ingresa el nombre del producto"
+                                        placeholder="Nombre del producto"
                                         value={name}
                                         onChange={(e) => setName(e.target.value)}
                                         required
@@ -174,11 +192,16 @@ const Register = () => {
                                     </select>
                                 </div>
                             </div>
-                            <div className="text-center">
+                            <div className="text-center buttons">
+                                <Button className="btn btn-danger btn-lg w-100 shadow-sm btn-custom" id='cancel' onClick={handleCancel}>
+                                    <i className="fas fa-times"></i> Cancelar
+                                </Button>
                                 <Button className="btn btn-lg btn-custom w-100 shadow-sm" type="submit">
                                     <i className="fas fa-save"></i> Guardar
                                 </Button>
+                                
                             </div>
+                            
                         </form>
                     </div>
                 </div>
@@ -209,6 +232,7 @@ const Register = () => {
                     </Modal.Footer>
                 </Modal>
             </div>
+        </div>
         </div>
     );
 };

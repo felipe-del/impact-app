@@ -30,7 +30,6 @@ const SpaceTable = () => {
       numeroEspacio: space.spaceCode,  // Asegúrate de que 'name' existe en 'category'
       edificio: space.location.building.name,
       capacidadMaxima: space.maxPeople,  // Asegúrate de que 'name' existe en 'status'
-      tipoDeEspacio: space.type.type,
       estado: space.status.name
   }));
 
@@ -39,7 +38,6 @@ const SpaceTable = () => {
     { header: 'Nombre', accessor: 'nombre' },
     { header: 'Edificio', accessor: 'edificio' },
     { header: 'Cantidad máxima de personas', accessor: 'capacidadMaxima' },
-    { header: 'Tipo de espacio', accessor: 'tipoDeEspacio' },
     { header: 'Estado del espacio', accessor: 'estado' },
   ];
 
