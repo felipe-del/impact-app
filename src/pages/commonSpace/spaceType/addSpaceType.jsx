@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Alert } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import './addSpaceType.css';
+import { usePage } from '../../../context/pageContext';
 
 const AddSpaceType = () => {
     const [type, setType] = useState('');
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
     const [showErrorAlert, setShowErrorAlert] = useState(false);
+    const { setPageName } = usePage();
+
+    useEffect(() => {
+        setPageName("Agregar tipo de espacio");
+    }, [setPageName]);
 
     const handleSubmit = (e) => {
         e.preventDefault();

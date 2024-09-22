@@ -3,6 +3,7 @@ import { Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assetLoanRequest.css';
 import { API_URLS } from '../../../declarations/apiConfig';
+import { usePage } from '../../../context/pageContext';
 
 const AssetLoanRequest = () => {
     const [assets, setAssets] = useState([]);
@@ -14,6 +15,11 @@ const AssetLoanRequest = () => {
     const formRef = useRef(null);
 
     const userId = sessionStorage.getItem('userId'); // Replace with your method to get the user ID from session
+    const { setPageName } = usePage();
+
+    useEffect(() => {
+        setPageName("Solicitar Activo"); 
+    }, [setPageName]);
 
     useEffect(() => {
         // Fetch the available assets from the API

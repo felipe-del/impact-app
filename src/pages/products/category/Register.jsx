@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importa Bootstrap CSS
 import './Register.css';
+import { usePage } from '../../../context/pageContext';
 
 const Register = () => {
     const [types, setTypes] = useState([]);
@@ -14,6 +15,11 @@ const Register = () => {
     const [showErrorModal, setShowErrorModal] = useState(false);
 
     const formRef = useRef(null);
+    const { setPageName } = usePage();
+
+    useEffect(() => {
+        setPageName("Agregar categoria de producto");
+    }, [setPageName]);
 
     useEffect(() => {
         fetch('http://localhost:8080/product/units', {

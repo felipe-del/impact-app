@@ -3,6 +3,7 @@ import { Button, Alert } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import './addCategory.css';
 import { API_URLS } from '../../../declarations/apiConfig';
+import { usePage } from '../../../context/pageContext';
 
 const AddCategory = () => {
     const [name, setName] = useState('');
@@ -10,6 +11,11 @@ const AddCategory = () => {
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
     const [showErrorAlert, setShowErrorAlert] = useState(false);
     const [subcategories, setSubcategories] = useState([]); // Added state for subcategories
+    const { setPageName } = usePage();
+
+    useEffect(() => {
+        setPageName("Agregar Categoría"); // Update as necessary
+    }, [setPageName]);
 
     useEffect(() => {
         // Fetch subcategories on component mount

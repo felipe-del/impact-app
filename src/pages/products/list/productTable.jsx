@@ -3,12 +3,18 @@ import DynamicTable from '../../../components/dynamicTable/dynamicTable';
 import SearchBar from '../../../components/searchBar/searchBar';
 import { useState , useEffect} from 'react';
 import { Link } from 'react-router-dom';
+import { usePage } from '../../../context/pageContext';
 
 const ProductTable = () => {
     const [showLimpieza, setShowLimpieza] = useState(true);
     const [showOficina, setShowOficina] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [allProducts, setProducts] = useState([]);
+    const { setPageName } = usePage();
+
+    useEffect(() => {
+        setPageName("Listado de productos");
+    }, [setPageName]);
 
     useEffect(() => {
         fetch("http://localhost:8080/product/all")

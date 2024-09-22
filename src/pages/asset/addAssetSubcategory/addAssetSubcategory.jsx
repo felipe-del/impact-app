@@ -3,6 +3,7 @@ import { Button, Alert, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import './addAssetSubcategory.css';
 import { API_URLS } from '../../../declarations/apiConfig';
+import { usePage } from '../../../context/pageContext';
 
 const AddSubcategory = () => {
     const [name, setName] = useState('');
@@ -11,6 +12,11 @@ const AddSubcategory = () => {
     const [categories, setCategories] = useState([]);
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
     const [showErrorAlert, setShowErrorAlert] = useState(false);
+    const { setPageName } = usePage();
+
+    useEffect(() => {
+        setPageName("Agregar Subcategoría de Activo"); // Update as necessary
+    }, [setPageName]);
 
     useEffect(() => {
         // Fetch categories on component mount
