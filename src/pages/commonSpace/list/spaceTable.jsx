@@ -44,20 +44,30 @@ const SpaceTable = () => {
   ];
 
   return (
-      <div>
-          <div className="d-flex justify-content-end mb-4">
-              <Link className="button-5" to="/app/addSpace">Registro de espacios</Link>
-          </div>
-          <h2 className="mb-4">Listado de espacios comunes</h2>
-          <div className="d-flex justify-content-between align-items-center mb-3">
-              <SearchBar
-                  searchTerm={searchTerm}
-                  onSearchChange={setSearchTerm}
-                  placeholder="Buscar espacios comunes..."
-              />
-          </div>
-          <DynamicTable items={flattenedProducts} columns={productColumns}/>
-      </div>
+<div>
+    <div className="d-flex justify-content-between align-items-center mb-4">
+        <nav aria-label="breadcrumb">
+            <ol className="breadcrumb mb-0">
+                <li className="breadcrumb-item"><a href="/app">Inicio</a></li>
+                <li className="breadcrumb-item active" aria-current="page">Listado de Espacios Comunes</li>
+            </ol>
+        </nav>
+        <Link className="button-5" to="/app/addSpace">Registro de espacios</Link>
+    </div>
+    
+    <h2 className="mb-4">Listado de espacios comunes</h2>
+    
+    <div className="d-flex justify-content-between align-items-center mb-3">
+        <SearchBar
+            searchTerm={searchTerm}
+            onSearchChange={setSearchTerm}
+            placeholder="Buscar espacios comunes..."
+        />
+    </div>
+    
+    <DynamicTable items={flattenedProducts} columns={productColumns}/>
+</div>
+
   );
 };
 
