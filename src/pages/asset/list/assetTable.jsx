@@ -27,7 +27,7 @@ const AssetTable = () => {
 
 // Filtrado de productos basado en la búsqueda y las categorías seleccionadas
 const filteredProducts = assets.filter(asset => {
-const matchesSearch = asset.category.toLowerCase().includes(searchTerm.toLowerCase());
+const matchesSearch = asset.description.toLowerCase().includes(searchTerm.toLowerCase());
   return matchesSearch;
 });
 
@@ -37,6 +37,7 @@ const flattenedProducts = filteredProducts.map(asset => ({
     subcategory: asset.subcategory,
     status: asset.status,
     description: asset.description,
+    location: asset.location,
 }));
   
     const productColumns = [
@@ -44,7 +45,8 @@ const flattenedProducts = filteredProducts.map(asset => ({
       { header: 'Categoría', accessor: 'category' },
       { header: 'Subcagoría', accessor: 'subcategory' },
       { header: 'Estado', accessor: 'status' },
-      { header: 'Descripción', accessor: 'description'}
+      { header: 'Descripción', accessor: 'description'},
+      { header: 'Ubicación', accessor: 'location'},
     ];
   
     return (
