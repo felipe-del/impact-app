@@ -13,6 +13,8 @@ const CreateAsset = () => {
     const [users, setUsers] = useState([]);
     const [currencies, setCurrencies] = useState([]);
     const [assetModels, setAssetModels] = useState([]);
+    const [locationNumbers, setLocationNumbers] = useState([]); // Nuevo estado para los números de localización
+
     const [purchaseDate, setPurchaseDate] = useState('');
     const [value, setValue] = useState('');
     const [supplier, setSupplier] = useState('');
@@ -24,6 +26,7 @@ const CreateAsset = () => {
     const [assetModel, setAssetModel] = useState('');
     const [assetSeries, setAssetSeries] = useState('');
     const [plateNumber, setPlateNumber] = useState('');
+    const [locationNumber, setLocationNumber] = useState(''); // Estado para el número de localización
 
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
     const [showErrorAlert, setShowErrorAlert] = useState(false);
@@ -42,54 +45,50 @@ const CreateAsset = () => {
                 const supplierResponse = await fetch(API_URLS.SUPPLIER.GET_ALL, { method: 'GET', credentials: 'include' });
                 if (!supplierResponse.ok) throw new Error('Network response was not ok for suppliers');
                 const supplierData = await supplierResponse.json();
-                console.log('Suppliers:', supplierData);
                 setSuppliers(supplierData);
 
                 // Fetch brand data
                 const brandResponse = await fetch(API_URLS.BRAND.GET_ALL, { method: 'GET', credentials: 'include' });
                 if (!brandResponse.ok) throw new Error('Network response was not ok for brands');
                 const brandData = await brandResponse.json();
-                console.log('Brands:', brandData);
                 setBrands(brandData);
 
                 // Fetch subcategory data
-                try {
-                    const subcategoryResponse = await fetch(API_URLS.ASSET.GET_ALL_SUBCATEGORY, { method: 'GET', credentials: 'include' }); // Change URL to fetch subcategories
-                    if (!subcategoryResponse.ok) throw new Error('Network response was not ok for subcategories');
-                    const subcategoryData = await subcategoryResponse.json();
-                    console.log('Subcategories:', subcategoryData);
-                    setSubcategories(subcategoryData); // Update state to use subcategories
-                } catch (error) {
-                    console.error('Error fetching subcategories:', error);
-                }
+                const subcategoryResponse = await fetch(API_URLS.ASSET.GET_ALL_SUBCATEGORY, { method: 'GET', credentials: 'include' });
+                if (!subcategoryResponse.ok) throw new Error('Network response was not ok for subcategories');
+                const subcategoryData = await subcategoryResponse.json();
+                setSubcategories(subcategoryData);
 
                 // Fetch status data
                 const statusResponse = await fetch(API_URLS.ASSET.GET_ALL_STATUS, { method: 'GET', credentials: 'include' });
                 if (!statusResponse.ok) throw new Error('Network response was not ok for statuses');
                 const statusData = await statusResponse.json();
-                console.log('Statuses:', statusData);
                 setStatuses(statusData);
 
                 // Fetch user data
                 const userResponse = await fetch(API_URLS.USER.GET_ALL, { method: 'GET', credentials: 'include' });
                 if (!userResponse.ok) throw new Error('Network response was not ok for users');
                 const userData = await userResponse.json();
-                console.log('Users:', userData);
                 setUsers(userData);
 
                 // Fetch currency data
                 const currencyResponse = await fetch(API_URLS.ASSET.GET_ALL_CURRENCY, { method: 'GET', credentials: 'include' });
                 if (!currencyResponse.ok) throw new Error('Network response was not ok for currencies');
                 const currencyData = await currencyResponse.json();
-                console.log('Currencies:', currencyData);
                 setCurrencies(currencyData);
 
                 // Fetch asset model data
                 const assetModelResponse = await fetch(API_URLS.ASSET.GET_ALL_MODEL, { method: 'GET', credentials: 'include' });
                 if (!assetModelResponse.ok) throw new Error('Network response was not ok for asset models');
                 const assetModelData = await assetModelResponse.json();
-                console.log('Asset Models:', assetModelData);
+                console.log(assetModelData);
                 setAssetModels(assetModelData);
+
+                // Fetch location numbers
+                const locationNumberResponse = await fetch(API_URLS.ASSET.GET_ALL_LOCATION_NUMBER, { method: 'GET', credentials: 'include' });
+                if (!locationNumberResponse.ok) throw new Error('Network response was not ok for location numbers');
+                const locationNumberData = await locationNumberResponse.json();
+                setLocationNumbers(locationNumberData);
 
             } catch (error) {
                 console.error('Fetch error:', error);
@@ -102,20 +101,21 @@ const CreateAsset = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
+        console.log(currency)
         const newAsset = {
             id: 0,
             purchaseDate,
             value: parseFloat(value),
             supplierId: parseInt(supplier),
             brandId: parseInt(brand),
-            subcategoryId: parseInt(subcategory), // Change to subcategoryId
+            subcategoryId: parseInt(subcategory),
             responsibleId: parseInt(responsible),
             statusId: parseInt(status),
-            currencyName: currency,
-            assetModelName: assetModel,
+            currencyId: parseInt(currency),
+            assetModelId: parseInt(assetModel),
             assetSeries,
             plateNumber,
+            locationNumber: parseInt(locationNumber), // Se añade el ID del número de localización
             isDeleted: false
         };
 
@@ -127,30 +127,31 @@ const CreateAsset = () => {
             },
             body: JSON.stringify(newAsset)
         })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                setShowSuccessAlert(true);
-                setPurchaseDate('');
-                setValue('');
-                setSupplier('');
-                setBrand('');
-                setSubcategory(''); // Reset subcategory
-                setResponsible('');
-                setStatus('');
-                setCurrency('');
-                setAssetModel('');
-                setAssetSeries('');
-                setPlateNumber('');
-                if (formRef.current) {
-                    formRef.current.reset();
-                }
-            })
-            .catch(error => {
-                console.error('Error al guardar activo:', error);
-                setShowErrorAlert(true);
-            });
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            setShowSuccessAlert(true);
+            setPurchaseDate('');
+            setValue('');
+            setSupplier('');
+            setBrand('');
+            setSubcategory('');
+            setResponsible('');
+            setStatus('');
+            setCurrency('');
+            setAssetModel('');
+            setAssetSeries('');
+            setPlateNumber('');
+            setLocationNumber(''); // Reinicia el número de localización
+            if (formRef.current) {
+                formRef.current.reset();
+            }
+        })
+        .catch(error => {
+            console.error('Error al guardar activo:', error);
+            setShowErrorAlert(true);
+        });
     };
 
     return (
@@ -162,8 +163,8 @@ const CreateAsset = () => {
                 <form ref={formRef} onSubmit={handleSubmit}>
                     <div className="row mb-4">
                         <div className="col-md-6 mb-3">
-                            <label htmlFor="purchaseDate" id="label-purchase-date" className="form-label">
-                                <i className="fas fa-calendar-alt" id="icon-purchase-date"></i> Fecha de Compra
+                            <label htmlFor="purchaseDate" className="form-label">
+                                <i className="fas fa-calendar-alt"></i> Fecha de Compra
                             </label>
                             <input
                                 type="date"
@@ -175,8 +176,8 @@ const CreateAsset = () => {
                             />
                         </div>
                         <div className="col-md-6 mb-3">
-                            <label htmlFor="value" id="label-value" className="form-label">
-                                <i className="fas fa-money-bill" id="icon-value"></i> Valor
+                            <label htmlFor="value" className="form-label">
+                                <i className="fas fa-money-bill"></i> Valor
                             </label>
                             <input
                                 type="number"
@@ -192,8 +193,8 @@ const CreateAsset = () => {
 
                     <div className="row mb-4">
                         <div className="col-md-6 mb-3">
-                            <label htmlFor="supplier" id="label-supplier" className="form-label">
-                                <i className="fas fa-truck" id="icon-supplier"></i> Proveedor
+                            <label htmlFor="supplier" className="form-label">
+                                <i className="fas fa-truck"></i> Proveedor
                             </label>
                             <select
                                 id="supplier"
@@ -211,8 +212,8 @@ const CreateAsset = () => {
                             </select>
                         </div>
                         <div className="col-md-6 mb-3">
-                            <label htmlFor="brand" id="label-brand" className="form-label">
-                                <i className="fas fa-tag" id="icon-brand"></i> Marca
+                            <label htmlFor="brand" className="form-label">
+                                <i className="fas fa-tag"></i> Marca
                             </label>
                             <select
                                 id="brand"
@@ -233,14 +234,14 @@ const CreateAsset = () => {
 
                     <div className="row mb-4">
                         <div className="col-md-6 mb-3">
-                            <label htmlFor="subcategory" id="label-subcategory" className="form-label">
-                                <i className="fas fa-folder" id="icon-subcategory"></i> Subcategoría
+                            <label htmlFor="subcategory" className="form-label">
+                                <i className="fas fa-list-alt"></i> Subcategoría
                             </label>
                             <select
                                 id="subcategory"
                                 className="form-select border-primary"
-                                value={subcategory} // Change to subcategory
-                                onChange={(e) => setSubcategory(e.target.value)} // Change to setSubcategory
+                                value={subcategory}
+                                onChange={(e) => setSubcategory(e.target.value)}
                                 required
                             >
                                 <option value="">Seleccionar subcategoría</option>
@@ -252,8 +253,8 @@ const CreateAsset = () => {
                             </select>
                         </div>
                         <div className="col-md-6 mb-3">
-                            <label htmlFor="responsible" id="label-responsible" className="form-label">
-                                <i className="fas fa-user" id="icon-responsible"></i> Responsable
+                            <label htmlFor="responsible" className="form-label">
+                                <i className="fas fa-user"></i> Responsable
                             </label>
                             <select
                                 id="responsible"
@@ -274,8 +275,8 @@ const CreateAsset = () => {
 
                     <div className="row mb-4">
                         <div className="col-md-6 mb-3">
-                            <label htmlFor="status" id="label-status" className="form-label">
-                                <i className="fas fa-check-circle" id="icon-status"></i> Estado
+                            <label htmlFor="status" className="form-label">
+                                <i className="fas fa-info-circle"></i> Estado
                             </label>
                             <select
                                 id="status"
@@ -293,8 +294,8 @@ const CreateAsset = () => {
                             </select>
                         </div>
                         <div className="col-md-6 mb-3">
-                            <label htmlFor="currency" id="label-currency" className="form-label">
-                                <i className="fas fa-money-bill-wave" id="icon-currency"></i> Moneda
+                            <label htmlFor="currency" className="form-label">
+                                <i className="fas fa-dollar-sign"></i> Moneda
                             </label>
                             <select
                                 id="currency"
@@ -305,7 +306,7 @@ const CreateAsset = () => {
                             >
                                 <option value="">Seleccionar moneda</option>
                                 {currencies.map((currency) => (
-                                    <option key={currency.id} value={currency.currencyName}>
+                                    <option key={currency.name} value={currency.id}>
                                         {currency.currencyName}
                                     </option>
                                 ))}
@@ -315,8 +316,8 @@ const CreateAsset = () => {
 
                     <div className="row mb-4">
                         <div className="col-md-6 mb-3">
-                            <label htmlFor="assetModel" id="label-asset-model" className="form-label">
-                                <i className="fas fa-cogs" id="icon-asset-model"></i> Modelo de Activo
+                            <label htmlFor="assetModel" className="form-label">
+                                <i className="fas fa-box"></i> Modelo de Activo
                             </label>
                             <select
                                 id="assetModel"
@@ -327,15 +328,15 @@ const CreateAsset = () => {
                             >
                                 <option value="">Seleccionar modelo</option>
                                 {assetModels.map((model) => (
-                                    <option key={model.id} value={model.modelName}>
+                                    <option key={model.modelName} value={model.id}>
                                         {model.modelName}
                                     </option>
                                 ))}
                             </select>
                         </div>
                         <div className="col-md-6 mb-3">
-                            <label htmlFor="assetSeries" id="label-asset-series" className="form-label">
-                                <i className="fas fa-hashtag" id="icon-asset-series"></i> Serie de Activo
+                            <label htmlFor="assetSeries" className="form-label">
+                                <i className="fas fa-barcode"></i> Serie del Activo
                             </label>
                             <input
                                 type="text"
@@ -348,24 +349,48 @@ const CreateAsset = () => {
                         </div>
                     </div>
 
-                    <div className="mb-4">
-                        <label htmlFor="plateNumber" id="label-plate-number" className="form-label">
-                            <i className="fas fa-car" id="icon-plate-number"></i> Número de Placa
-                        </label>
-                        <input
-                            type="text"
-                            id="plateNumber"
-                            className="form-control border-primary"
-                            value={plateNumber}
-                            onChange={(e) => setPlateNumber(e.target.value)}
-                        />
+                    <div className="row mb-4">
+                        <div className="col-md-6 mb-3">
+                            <label htmlFor="plateNumber" className="form-label">
+                                <i className="fas fa-hashtag"></i> Número de Placa
+                            </label>
+                            <input
+                                type="text"
+                                id="plateNumber"
+                                className="form-control border-primary"
+                                value={plateNumber}
+                                onChange={(e) => setPlateNumber(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div className="col-md-6 mb-3">
+                            <label htmlFor="locationNumber" className="form-label">
+                                <i className="fas fa-map-marker-alt"></i> Número de Localización
+                            </label>
+                            <select
+                                id="locationNumber"
+                                className="form-select border-primary"
+                                value={locationNumber}
+                                onChange={(e) => setLocationNumber(e.target.value)}
+                                required
+                            >
+                                <option value="">Seleccionar localización</option>
+                                {locationNumbers.map((location) => (
+                                    <option key={location.id} value={location.id}>
+                                        {location.locationType + ' : ' + location.locationNumber}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
                     </div>
 
-                    <Button type="submit" className="btn btn-primary w-100">Registrar Activo</Button>
-                </form>
+                    <Button variant="primary" type="submit">
+                        Agregar Activo
+                    </Button>
 
-                {showSuccessAlert && <div className="alert alert-success mt-3">Activo registrado exitosamente!</div>}
-                {showErrorAlert && <div className="alert alert-danger mt-3">Error al registrar el activo!</div>}
+                    {showSuccessAlert && <div className="alert alert-success mt-3">Activo agregado exitosamente</div>}
+                    {showErrorAlert && <div className="alert alert-danger mt-3">Hubo un error al agregar el activo</div>}
+                </form>
             </div>
         </div>
     );
