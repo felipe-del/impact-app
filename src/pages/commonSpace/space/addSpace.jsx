@@ -2,6 +2,8 @@ import React, {useState, useEffect, useRef} from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './addSpace.css';
+import { usePage } from '../../../context/pageContext';
+
 
 const AddSpace = () => {
     const [name, setName] = useState(''); // State for floorId
@@ -13,6 +15,11 @@ const AddSpace = () => {
     const [buildingLocation, setBuildingLocation] = useState(''); // State for space location
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
+    const { setPageName } = usePage();
+
+    useEffect(() => {
+        setPageName("Agregar espacio");
+    }, [setPageName]);
 
     const formRef = useRef(null);
 

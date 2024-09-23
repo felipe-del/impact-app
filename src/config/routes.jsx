@@ -2,14 +2,11 @@ import { createBrowserRouter } from 'react-router-dom';
 import About from '../pages/about/about.jsx';
 import App from '../App.jsx';
 import Authentication from '../pages/auth/authentication.jsx';
-import SupplierForm from '../pages/supplierForm/supplierForm.jsx';
 import Register from "../pages/products/category/Register.jsx";
 import ProductRegister from "../pages/products/product/productRegister.jsx";
 import ProductTable from '../pages/products/list/productTable.jsx';
 import SpaceTable from '../pages/commonSpace/list/spaceTable.jsx';
 import CreateAsset from '../pages/asset/createAsset/createAsset.jsx';
-import AddSupplier from '../pages/supplier/addSupplier.jsx';
-import AddBrand from '../pages/brand/addBrand.jsx';
 import AddCategory from '../pages/asset/addAssetCategory/addCategory.jsx';
 import AddBuildingLocation from "../pages/commonSpace/buildingLocation/addBuildingLocation.jsx";
 import AddSpace from "../pages/commonSpace/space/addSpace.jsx";
@@ -20,6 +17,9 @@ import AddAssetModel from '../pages/asset/addAssetModel/addAssetModel.jsx';
 import AddSubcategory from '../pages/asset/addAssetSubcategory/addAssetSubcategory.jsx';
 import AssetLoanRequest from '../pages/asset/loan/loanRequest .jsx';
 import ProductRequest from '../pages/products/loan/productRequest.jsx';
+import Dashboard from '../pages/dashboard/dashboard.jsx';
+import AddBrand from '../pages/asset/addBrand/addBrand.jsx';
+import AddSupplier from '../pages/asset/supplier/addSupplier.jsx';
 
 export const Routes = createBrowserRouter([
     {
@@ -37,10 +37,6 @@ export const Routes = createBrowserRouter([
             {
                 path: 'about',
                 element: <About/>
-            },
-            {
-                path: 'createSupplier',
-                element: <SupplierForm/>
             },
             {
                 path: 'createAsset',
@@ -109,6 +105,10 @@ export const Routes = createBrowserRouter([
             {
                 path: 'productLoanRequest',
                 element: <ProductRequest/>
+            },
+            {
+                path: 'dashboard',
+                element: <Dashboard/>
             },
         ]
     }

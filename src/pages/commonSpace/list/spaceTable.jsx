@@ -3,10 +3,16 @@ import DynamicTable from '../../../components/dynamicTable/dynamicTable.jsx';
 import SearchBar from '../../../components/searchBar/searchBar.jsx';
 import { useState , useEffect} from 'react';
 import { Link } from 'react-router-dom';
+import { usePage } from '../../../context/pageContext.jsx';
 
 const SpaceTable = () => {
   const [allSpaces, setSpaces] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const { setPageName } = usePage();
+
+  useEffect(() => {
+      setPageName("Listado de Espacios comunes");
+  }, [setPageName]);
 
   useEffect(() => {
       fetch("http://localhost:8080/common-space/all")

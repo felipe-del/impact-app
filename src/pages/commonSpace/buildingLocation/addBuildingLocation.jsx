@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { Button, Alert } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import './addBuildingLocation.css';
+import { usePage } from '../../../context/pageContext';
 
 const AddBuildingLocation = () => {
     const [buildings, setBuildings] = useState([]);
@@ -9,6 +10,11 @@ const AddBuildingLocation = () => {
     const [floorId, setFloorId] = useState('');
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
     const [showErrorAlert, setShowErrorAlert] = useState(false);
+    const { setPageName } = usePage();
+
+    useEffect(() => {
+        setPageName("Agregar Ubicacion dentro de edificio");
+    }, [setPageName]);
 
     useEffect(() => {
         fetch('http://localhost:8080/common-space/building', { method: 'GET',  credentials: 'include' })
