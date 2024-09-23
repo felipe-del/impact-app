@@ -10,25 +10,11 @@ const AddCategory = () => {
     const [selectedSubcategory, setSelectedSubcategory] = useState(''); // Added state for subcategory
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
     const [showErrorAlert, setShowErrorAlert] = useState(false);
-    const [subcategories, setSubcategories] = useState([]); // Added state for subcategories
     const { setPageName } = usePage();
 
     useEffect(() => {
         setPageName("Agregar Categoría"); // Update as necessary
     }, [setPageName]);
-
-    useEffect(() => {
-        // Fetch subcategories on component mount
-        fetch(API_URLS.ASSET.ADD_NEW_SUBCATEGORY)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => setSubcategories(data))
-            .catch(error => console.error('Error fetching subcategories:', error));
-    }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -96,27 +82,6 @@ const AddCategory = () => {
                                     onChange={(e) => setName(e.target.value)}
                                     required
                                 />
-                            </div>
-                        </div>
-                        <div className="mb-4 row align-items-center">
-                            <label htmlFor="subcategory" id="label-subcategory" className="col-sm-4 col-form-label form-label">
-                                <i className="fas fa-folder" id="icon-subcategory"></i> Subcategoría
-                            </label>
-                            <div className="col-sm-8">
-                                <select
-                                    id="subcategory"
-                                    className="form-select border-primary"
-                                    value={selectedSubcategory}
-                                    onChange={(e) => setSelectedSubcategory(e.target.value)}
-                                    required
-                                >
-                                    <option value="">Seleccionar subcategoría</option>
-                                    {subcategories.map((subcategory) => (
-                                        <option key={subcategory.id} value={subcategory.id}>
-                                            {subcategory.name}
-                                        </option>
-                                    ))}
-                                </select>
                             </div>
                         </div>
                         <div className="text-center">

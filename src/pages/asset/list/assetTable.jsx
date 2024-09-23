@@ -49,14 +49,22 @@ const flattenedProducts = filteredProducts.map(asset => ({
   
     return (
       <div>
+        <div className="d-flex justify-content-between align-items-center mb-4">
+          <nav aria-label="breadcrumb">
+                  <ol className="breadcrumb mb-0">
+                      <li className="breadcrumb-item"><a href="/app">Inicio</a></li>
+                      <li className="breadcrumb-item active" aria-current="page">Listado de Activos</li>
+                  </ol>
+          </nav>
+          <Link to="/app/createAsset" className="btn btn-primary me-2">Registrar activo</Link>
+        </div>
         <h2 className="mb-4">Listado de activos</h2>
         <div className="d-flex justify-content-between align-items-center mb-3">
           <SearchBar 
             searchTerm={searchTerm} 
             onSearchChange={setSearchTerm} 
             placeholder="Buscar activos..." 
-          />
-          <Link to="/app/createAsset" className="btn btn-primary me-2">Registrar activo</Link>
+          /> 
         </div>
         
         <DynamicTable items={flattenedProducts} columns={productColumns} />
