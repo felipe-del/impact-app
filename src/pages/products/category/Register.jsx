@@ -205,7 +205,6 @@ const Register = () => {
                                 <Button className="btn btn-lg btn-custom w-100 shadow-sm" type="submit">
                                     <i className="fas fa-save"></i> Guardar
                                 </Button>
-                                
                             </div>
                             
                         </form>
