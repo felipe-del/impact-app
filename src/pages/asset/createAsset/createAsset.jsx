@@ -8,17 +8,16 @@ import { usePage } from '../../../context/pageContext';
 const CreateAsset = () => {
     const [suppliers, setSuppliers] = useState([]);
     const [brands, setBrands] = useState([]);
-    const [subcategories, setSubcategories] = useState([]); // Change to subcategories
+    const [subcategories, setSubcategories] = useState([]); 
     const [statuses, setStatuses] = useState([]);
     const [users, setUsers] = useState([]);
     const [currencies, setCurrencies] = useState([]);
     const [assetModels, setAssetModels] = useState([]);
-
     const [purchaseDate, setPurchaseDate] = useState('');
     const [value, setValue] = useState('');
     const [supplier, setSupplier] = useState('');
     const [brand, setBrand] = useState('');
-    const [subcategory, setSubcategory] = useState(''); // Change to subcategory
+    const [subcategory, setSubcategory] = useState(''); 
     const [responsible, setResponsible] = useState('');
     const [status, setStatus] = useState('');
     const [currency, setCurrency] = useState('');

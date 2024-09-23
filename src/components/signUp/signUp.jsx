@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { API_URLS } from '../../declarations/apiConfig.js';
 import useFetch from '../../hooks/useFetch.jsx';
 import './signUp.css';
+import { InfoIcon } from '../../declarations/imageExports';
 import Spinner from 'react-bootstrap/Spinner';
 
 const SignUp = ({ switchToSignIn }) => {
@@ -12,6 +13,8 @@ const SignUp = ({ switchToSignIn }) => {
     const [showPassword, setShowPassword] = useState(false); /** State to toggle password visibility */
     const [registerError, setRegisterError] = useState(''); /** State to store error messages */
     const [registerSucces, setRegisterSuccess] = useState('');/** State to store success message */
+    const [showInfoMessage, setShowInfoMessage] = useState(false);
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -90,13 +93,19 @@ const SignUp = ({ switchToSignIn }) => {
                     onChange={handleInputChange(setEmail)}
                     className="input-field"
                 />
-               <div className="password-container">
+                <div className="password-container">
+                    <div className="icon-container" onClick={() => setShowInfoMessage(!showInfoMessage)}>
+                        <img src={InfoIcon} alt="Info Icon"/>
+                        <div className={`info-message ${showInfoMessage ? 'active' : ''}`}>
+                            Tu contraseña debe tener al menos 8 caracteres, 2 números y 1 carácter especial.(Gatito#23)
+                        </div>
+                    </div>
                     <input
                         type={showPassword ? "text" : "password"}
                         placeholder="Contraseña"
                         value={password}
                         onChange={handleInputChange(setPassword)}
-                        className="input-field"
+                        className="input-field password-input"
                     />
                     {password && (
                         <span
@@ -107,16 +116,16 @@ const SignUp = ({ switchToSignIn }) => {
                         </span>
                     )}
                 </div>
-                
-                {isLoading && 
+
+                {isLoading &&
                     <div>
                         <Spinner animation="border" role="status">
                             <span className="visually-hidden">Loading...</span>
                         </Spinner>
                     </div>}
-                {error && <div style={{ color: 'red' }}>{error}</div>}
-                {registerSucces && <div style={{ color: 'green' }}>{registerSucces}</div>}
-                {registerError && <div style={{ color: 'red' }}>{registerError}</div>}
+                {error && <div style={{color: 'red'}}>{error}</div>}
+                {registerSucces && <div style={{color: 'green'}}>{registerSucces}</div>}
+                {registerError && <div style={{color: 'red'}}>{registerError}</div>}
                 <button type="submit">REGISTRAR</button>
                 <button className="hidden" onClick={switchToSignIn} id="register">Sign In</button>
             </form>

@@ -64,7 +64,6 @@ const Sidebar = () => {
                         
                         <Link className="collapse-item" to="/app/addBuilding"><FontAwesomeIcon icon={faPlus} /> Edificio</Link>
                         <Link className="collapse-item" to="/app/addBuildingLocation"><FontAwesomeIcon icon={faPlus} /> Ubicación en edificio</Link>
-                        <Link className="collapse-item" to="/app/addSpaceType"><FontAwesomeIcon icon={faPlus} /> Tipo de espacio</Link>
                         <Link className="collapse-item" to="/app/addSpace"><FontAwesomeIcon icon={faPlus} /> Espacio</Link>
                         <Link className="collapse-item" to="/app/spaceList"><FontAwesomeIcon icon={faList} /> Espacios</Link>
 

@@ -13,8 +13,6 @@ const AddSpace = () => {
     const [buildingId, setBuildingId] = useState('');
     const [filteredLocations, setFilteredLocations] = useState([]);
     const [buildingLocation, setBuildingLocation] = useState(''); // State for space location
-    const [types, setTypes] = useState([]); // State for space type
-    const [spaceType, setSpaceType] = useState(''); // State for product type
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
     const { setPageName } = usePage();
@@ -30,16 +28,6 @@ const AddSpace = () => {
             .then(response => response.json())
             .then(data => { setBuildings(data); })
             .catch(error => console.error('Fetch error:', error));
-
-        fetch('http://localhost:8080/common-space/types', { method: 'GET',  credentials: 'include' })
-            .then(response => response.json())
-            .then(data => {
-                setTypes(data);
-                if (data.length > 0) {
-                    setSpaceType(data[0].type);
-                }
-            })
-            .catch(error => console.error('Fetch error:', error));
     }, []);
 
     const handleSubmit = (e) => {
@@ -49,7 +37,6 @@ const AddSpace = () => {
             name,
             spaceCode,
             maxPeople,
-            spaceType,
             spaceStatus: 1,
             buildingLocation,
         };
@@ -132,27 +119,6 @@ const AddSpace = () => {
                                     onChange={(e) => setSpaceCode(e.target.value)}
                                     required
                                 />
-                            </div>
-                        </div>
-                        <div className="mb-4 row align-items-center">
-                            <label htmlFor="type" className="col-sm-4 col-form-label form-label">
-                                <i className="fas fa-list"></i> Tipo de espacio
-                            </label>
-                            <div className="col-sm-8">
-                                <select
-                                    id="type"
-                                    className="form-control border-primary"
-                                    value={spaceType}
-                                    onChange={(e) => setSpaceType(e.target.value)}
-                                    required
-                                >
-                                    <option>Seleccione un tipo de espacio</option>
-                                    {types.map((type) => (
-                                        <option key={type.id} value={type.id}>
-                                            {type.type}
-                                        </option>
-                                    ))}
-                                </select>
                             </div>
                         </div>
                         <div className="mb-4 row align-items-center">
