@@ -20,6 +20,8 @@ import ProductRequest from '../pages/products/loan/productRequest.jsx';
 import Dashboard from '../pages/dashboard/dashboard.jsx';
 import AddBrand from '../pages/asset/addBrand/addBrand.jsx';
 import AddSupplier from '../pages/asset/supplier/addSupplier.jsx';
+import AddLocationNumber from '../pages/asset/addLocationNumber/addLocationNumber.jsx';
+import AddLocationType from '../pages/asset/addLocationType/addLocationType.jsx';
 
 export const Routes = createBrowserRouter([
     {
@@ -109,6 +111,14 @@ export const Routes = createBrowserRouter([
             {
                 path: 'dashboard',
                 element: <Dashboard/>
+            },
+            {
+                path: 'addLocationNumber',
+                element: <AddLocationNumber/>
+            },
+            {
+                path: 'addLocationType',
+                element: <AddLocationType/>
             },
         ]
     }

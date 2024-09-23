@@ -28,9 +28,13 @@ export const API_URLS = {
         GET_ALL_STATUS: concat('/asset/status'),
         GET_ALL_CURRENCY: concat('/asset/currency'),
         GET_ALL_MODEL: concat('/asset/model'),
+        GET_ALL_LOCATION_TYPE: concat('/asset/locationType'),
+        GET_ALL_LOCATION_NUMBER: concat('/asset/locationNumber'),
         ADD_NEW_MODEL: concat('/asset/model'),
         ADD_NEW_CATEGORY: concat('/asset/category'),
-        ADD_NEW_SUBCATEGORY: concat('/asset/subcategory')
+        ADD_NEW_SUBCATEGORY: concat('/asset/subcategory'),
+        ADD_NEW_LOCATION_TYPE: concat('/asset/locationType'),
+        ADD_NEW_LOCATION_NUMBER: concat('/asset/locationNumber')
     },
     SUPPLIER: {
         GET_ALL: concat('/supplier')
