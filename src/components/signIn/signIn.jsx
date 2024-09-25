@@ -1,34 +1,35 @@
-import React, { useState, useEffect, FormEvent } from 'react';
+import React, { useState, useEffect } from 'react';
 import { API_URLS } from '../../declarations/apiConfig.js';
-import { useUser } from '../../context/userContext'; 
-import useFetch from '../../hooks/useFetch.jsx';
+import useFetch from '../../hooks/useFetch';
+import { useNavigate } from 'react-router-dom';
 import './signIn.css';
 
-const SignIn = ({ switchToSignUp }) => {
-    const { setUser } = useUser();
+const SignIn = ({ switchToSignUp, setUser }) => {
     const { fetchData, isLoading, error } = useFetch();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [loginError, setLoginError] = useState(''); // Estado para almacenar el mensaje de error
+    const [loginError, setLoginError] = useState(''); 
+
+    const navigate = useNavigate(); // Initialize useNavigate hook
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         try {
             const options = {
                 method: 'POST',
                 body: JSON.stringify({ email, password }),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
             };
 
             const data = await fetchData(API_URLS.AUTH.LOGIN, options);
 
-            console.log(data);
-
-            if (data) {
-                setUser(data);
+            if (data && data.authenticated) {
+                console.log(data);
+                setUser(data); // Set user in context
+                navigate('/app'); // Navigate to app route
                 setLoginError('');
-                window.location.href = '/app';
-
             } else {
                 setLoginError('Por favor, verifique sus credenciales e inténtelo nuevamente.');
             }
@@ -37,31 +38,25 @@ const SignIn = ({ switchToSignUp }) => {
             console.error('Login error:', error);
         }
     };
-    
 
-    // GET CURRENT USER
+    // Optionally check for existing sessions on component mount
     useEffect(() => {
         const checkSession = async () => {
             try {
                 const response = await fetch(API_URLS.AUTH.CURRENT_USER, {
                     method: 'GET',
-                    credentials: 'include', 
+                    credentials: 'include',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                 });
 
-                if (!response.ok) {
-                    throw new Error('Failed to fetch session data');
-                }
-
+                if (!response.ok) throw new Error('Failed to fetch session data');
                 const result = await response.json();
-                if (result && result.isAuthenticated) {
+
+                if (result && result.authenticated) {
                     setUser(result);
-                    console.log('User in session:', result);
-                    window.location.href = '/app';
-                }else{
-                    console.log("Authentication failed. Please check your credentials and try again.")
+                    navigate('/app'); // Navigate if authenticated
                 }
             } catch (error) {
                 console.error('Error checking session:', error);
@@ -69,19 +64,12 @@ const SignIn = ({ switchToSignUp }) => {
         };
 
         checkSession();
-    }, []);
+    }, [setUser, navigate]);
 
     return (
         <div className="form-container sign-in">
             <form onSubmit={handleSubmit}>
-                <h1>Inicio de sesión  </h1><br></br>
-                {/*<div className="social-icons">*/}
-                {/*    <a href="#" className="icon"><i className="fa-brands fa-google-plus-g"></i></a>*/}
-                {/*    <a href="#" className="icon"><i className="fa-brands fa-facebook-f"></i></a>*/}
-                {/*    <a href="#" className="icon"><i className="fa-brands fa-github"></i></a>*/}
-                {/*    <a href="#" className="icon"><i className="fa-brands fa-linkedin-in"></i></a>*/}
-                {/*</div>*/}
-                {/*<span>or use your email for registration</span>*/}
+                <h1>Inicio de sesión</h1>
                 <input
                     type="email"
                     placeholder="Correo electrónico institucional"
@@ -98,7 +86,6 @@ const SignIn = ({ switchToSignUp }) => {
                     required
                     className="input-field"
                 />
-                {/*<a href="#">Olvidó su contraseña?</a>*/}
                 {isLoading && <div>Loading...</div>}
                 {error && <div style={{ color: 'red' }}>{error}</div>}
                 {loginError && <div style={{ color: 'red' }}>{loginError}</div>}
