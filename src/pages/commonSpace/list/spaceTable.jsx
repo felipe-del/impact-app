@@ -52,7 +52,7 @@ const SpaceTable = () => {
   return (
 <div>
     <div className="d-flex justify-content-between align-items-center mb-4">
-        <nav aria-label="breadcrumb">
+        <nav aria-label="breadcrumb" className="flex-grow-1">
             <ol className="breadcrumb mb-0">
                 <li className="breadcrumb-item"><a href="/app">Inicio</a></li>
                 <li className="breadcrumb-item active" aria-current="page">Listado de Espacios Comunes</li>
@@ -73,7 +73,6 @@ const SpaceTable = () => {
     
     <DynamicTable items={flattenedProducts} columns={productColumns}/>
 </div>
-
   );
 };
 
