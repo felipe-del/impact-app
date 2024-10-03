@@ -1,6 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faList, faClipboardCheck, faMapMarkedAlt, faHashtag } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faList, faClipboardCheck, faMapMarkedAlt, faHashtag, faPenToSquare} from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import '../../style/sb-admin-2.min.css';
 import './sidebar.css';
@@ -64,9 +64,11 @@ const Sidebar = () => {
                 <div id="collapseEspacios" className="collapse" aria-labelledby="headingEspacios" data-parent="#accordionSidebar">
                     <div className="bg-white py-2 collapse-inner rounded">
                         
-                        <Link className="collapse-item" to="/app/addBuilding"><FontAwesomeIcon icon={faPlus} /> Edificio</Link>
-                        <Link className="collapse-item" to="/app/addBuildingLocation"><FontAwesomeIcon icon={faPlus} /> Ubicación en edificio</Link>
-                        <Link className="collapse-item" to="/app/addSpace"><FontAwesomeIcon icon={faPlus} /> Espacio</Link>
+                        <Link className="collapse-item" to="/app/addBuilding"><FontAwesomeIcon icon={faPlus} /> Registro de Edificios</Link>
+                        <Link className="collapse-item" to="/app/addBuildingLocation"><FontAwesomeIcon icon={faPlus} /> Ubicación en Edificio</Link>
+                        <Link className="collapse-item" to="/app/addSpace"><FontAwesomeIcon icon={faPlus} /> Registro de Espacios</Link>
+                        <Link className="collapse-item" to="/app/editSpace"><FontAwesomeIcon icon={faPenToSquare}/> Edicion de Espacios</Link>
+                        <Link className="collapse-item" to="/app/spaceRequest"><FontAwesomeIcon icon={faClipboardCheck}/> Solicitud de Espacios</Link>
                         <Link className="collapse-item" to="/app/spaceList"><FontAwesomeIcon icon={faList} /> Espacios</Link>
 
                     </div>

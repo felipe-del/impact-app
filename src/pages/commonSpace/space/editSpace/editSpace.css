@@ -1,0 +1,13 @@
+.list-group-item {
+    transition: background-color 1s ease, color 0.5s ease;
+}
+
+.bg-success {
+    background-color: #3a5fcd !important;
+    transition: background-color 1s ease-in-out;
+}
+
+.text-white {
+    color: white !important;
+    transition: color 1s ease-in-out;
+}

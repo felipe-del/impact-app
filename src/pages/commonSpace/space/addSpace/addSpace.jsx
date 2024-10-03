@@ -1,18 +1,19 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './addSpace.css';
-import { usePage } from '../../../context/pageContext';
+import { usePage } from '../../../../context/pageContext.jsx';
 
 
 const AddSpace = () => {
-    const [name, setName] = useState(''); // State for floorId
-    const [spaceCode, setSpaceCode] = useState(''); // State for the space code
-    const [maxPeople, setMaxPeople] = useState(''); // State for the max people
+    const [name, setName] = useState('');
+    const [spaceCode, setSpaceCode] = useState('');
+    const [maxPeople, setMaxPeople] = useState('');
     const [buildings, setBuildings] = useState([]);
     const [buildingId, setBuildingId] = useState('');
     const [filteredLocations, setFilteredLocations] = useState([]);
-    const [buildingLocation, setBuildingLocation] = useState(''); // State for space location
+    const [buildingLocation, setBuildingLocation] = useState('');
+    const [openTime, setOpenTime] = useState('');
+    const [closeTime, setCloseTime] = useState('');
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
     const { setPageName } = usePage();
@@ -20,8 +21,6 @@ const AddSpace = () => {
     useEffect(() => {
         setPageName("Agregar espacio");
     }, [setPageName]);
-
-    const formRef = useRef(null);
 
     useEffect(() => {
         fetch('http://localhost:8080/common-space/locations-by-building', { method: 'GET',  credentials: 'include' })
@@ -39,8 +38,9 @@ const AddSpace = () => {
             maxPeople,
             spaceStatus: 1,
             buildingLocation,
+            openTime,
+            closeTime
         };
-        console.log(newSpace);
 
         fetch('http://localhost:8080/common-space/create', {method: 'POST', credentials: 'include',
             headers: {'Content-Type': 'application/json'}, body: JSON.stringify(newSpace)})
@@ -56,7 +56,6 @@ const AddSpace = () => {
                 console.error('Error adding brand:', error);
                 setShowErrorModal(true);
             });
-
     };
 
     const handleRegisterBld = () => {
@@ -72,6 +71,8 @@ const AddSpace = () => {
         setMaxPeople('');
         setBuildingId('');
         setBuildingLocation('');
+        setOpenTime('');
+        setCloseTime('');
     }
 
     return (
@@ -83,26 +84,24 @@ const AddSpace = () => {
                 </ol>
             </nav>
             <div className="mt-2 d-flex justify-content-center">
-                <div className="card p-5 shadow-lg" style={{maxWidth: "700px", borderRadius: "10px"}}>
-                    <h1 id="space-registration-title" className="text-center mb-5">Registro de Espacios</h1>
-                    <div className="mb-4">
+                <div className="card p-5 shadow-lg" style={{minWidth: "50vw", maxWidth: "70vw", borderRadius: "3vh"}}>
+                    <h1 id="space-registration-title" className="text-center mb-4">Registro de Espacios</h1>
+                    <div className="mb-2">
                         <div className="text-center mb-4">
-                            <Button className="btn btn-lg btn-custom btn-space shadow-sm" role="button"
-                                    onClick={handleRegisterBld}>
+                            <Button className="btn btn-lg btn-custom btn-space shadow-sm ml-5" role="button" onClick={handleRegisterBld}>
                                 <i className="fas fa-building"></i> Registro de edificios
                             </Button>
-                            <Button className="btn btn-lg btn-custom btn-space shadow-sm" role="button"
-                                    onClick={handleRegisterBloc}>
+                            <Button className="btn btn-lg btn-custom btn-space shadow-sm ml-4 mr-2" role="button" onClick={handleRegisterBloc}>
                                 <i className="fas fa-map-marker-alt"></i> Registro de ubicaciones
                             </Button>
                         </div>
-
+                        <h3>Detalles del espacio</h3>
                         <form onSubmit={handleSubmit}>
-                            <div className="mb-4 row align-items-center">
+                            <div className="row align-items-center">
                                 <label htmlFor="name" className="col-sm-4 col-form-label form-label">
                                     <i className="fas fa-tag"></i> Nombre del espacio
                                 </label>
-                                <div className="col-sm-8">
+                                <div className="col-sm-8 w-100 mb-4">
                                     <input
                                         type="text"
                                         id="name"
@@ -178,7 +177,7 @@ const AddSpace = () => {
                                     </select>
                                 </div>
                             </div>
-                            <div className="mb-4 row align-items-center">
+                            <div className="mb-3 row align-items-center">
                                 <label htmlFor="buildingLocation" className="col-sm-4 col-form-label form-label">
                                     <i className="fas fa-map-marker"></i> Ubicaciones del edificio
                                 </label>
@@ -199,14 +198,46 @@ const AddSpace = () => {
                                     </select>
                                 </div>
                             </div>
-                            <div className="text-center buttons">
-                                <Button className="btn btn-danger btn-lg w-100 shadow-sm btn-custom" id='cancel'
-                                        onClick={handleCancel}>
-                                    <i className="fas fa-times"></i> Cancelar
-                                </Button>
-                                <Button className="btn btn-lg btn-custom w-100 shadow-sm" type="submit">
-                                    <i className="fas fa-save"></i> Guardar
-                                </Button>
+                            <div className="mb-4 row align-items-center">
+                                <div className="col-sm-6">
+                                    <label htmlFor="openTime" className="col-form-label form-label">
+                                        <i className="fas fa-clock"></i> Hora de apertura
+                                    </label>
+                                    <input
+                                        type="time"
+                                        id="openTime"
+                                        className="form-control border-primary"
+                                        value={openTime}
+                                        onChange={(e) => setOpenTime(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                                <div className="col-sm-6">
+                                    <label htmlFor="closeTime" className="col-form-label form-label">
+                                        <i className="fas fa-clock"></i> Hora de cierre
+                                    </label>
+                                    <input
+                                        type="time"
+                                        id="closeTime"
+                                        className="form-control border-primary"
+                                        value={closeTime}
+                                        onChange={(e) => setCloseTime(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                            </div>
+                            <div className="row align-items-center">
+                                <div className="col-sm-6">
+                                    <Button className="btn btn-danger btn-lg w-100 shadow-sm me-4" id='cancel'
+                                            onClick={handleCancel}>
+                                        <i className="fas fa-times"></i> Cancelar
+                                    </Button>
+                                </div>
+                                <div className="col-sm-6">
+                                    <Button className="btn btn-lg btn-custom w-100 shadow-sm" type="submit">
+                                        <i className="fas fa-save"></i> Guardar
+                                    </Button>
+                                </div>
                             </div>
                         </form>
 
@@ -226,7 +257,7 @@ const AddSpace = () => {
                         {/* Error Modal */}
                         <Modal show={showErrorModal} onHide={() => setShowErrorModal(false)}>
                             <Modal.Header closeButton>
-                                <Modal.Title>Error</Modal.Title>
+                            <Modal.Title>Error</Modal.Title>
                             </Modal.Header>
                             <Modal.Body>Hubo un problema al guardar el espacio. Por favor, intente
                                 nuevamente.</Modal.Body>
