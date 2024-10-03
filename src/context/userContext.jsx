@@ -1,10 +1,7 @@
 import React, { createContext, useContext, useState } from 'react';
 
 // Define the shape of the User object
-const UserContext = createContext({
-    user: null,
-    setUser: () => {}
-});
+const UserContext = createContext()
 
 // Create a UserProvider component
 export const UserProvider = ({ children }) => {
