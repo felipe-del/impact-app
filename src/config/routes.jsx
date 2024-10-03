@@ -9,7 +9,7 @@ import SpaceTable from '../pages/commonSpace/list/spaceTable.jsx';
 import CreateAsset from '../pages/asset/createAsset/createAsset.jsx';
 import AddCategory from '../pages/asset/addAssetCategory/addCategory.jsx';
 import AddBuildingLocation from "../pages/commonSpace/buildingLocation/addBuildingLocation.jsx";
-import AddSpace from "../pages/commonSpace/space/addSpace.jsx";
+import AddSpace from "../pages/commonSpace/space/addSpace/addSpace.jsx";
 import AddBuilding from "../pages/commonSpace/building/addBuilding.jsx";
 import InventoryTable from '../pages/products/inventory/inventoryTable.jsx';
 import AssetTable from '../pages/asset/list/assetTable.jsx';
@@ -22,6 +22,7 @@ import AddBrand from '../pages/asset/addBrand/addBrand.jsx';
 import AddSupplier from '../pages/asset/supplier/addSupplier.jsx';
 import AddLocationNumber from '../pages/asset/addLocationNumber/addLocationNumber.jsx';
 import AddLocationType from '../pages/asset/addLocationType/addLocationType.jsx';
+import EditSpace from "../pages/commonSpace/space/editSpace/editSpace.jsx";
 
 export const Routes = createBrowserRouter([
     {
@@ -83,6 +84,10 @@ export const Routes = createBrowserRouter([
             {
                 path: 'spaceList',
                 element: <SpaceTable/>
+            },
+            {
+                path: 'editSpace',
+                element: <EditSpace/>
             },
             {
                 path: 'inventoryList',
