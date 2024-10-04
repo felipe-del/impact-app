@@ -8,22 +8,22 @@ import { usePage } from '../../../context/pageContext';
 const AssetLoanRequest = () => {
     const [assets, setAssets] = useState([]);
     const [selectedAsset, setSelectedAsset] = useState('');
-    const [purpose, setPurpose] = useState('');
+    const [reason, setReason] = useState('');
     const [expirationDate, setExpirationDate] = useState('');
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
     const [showErrorAlert, setShowErrorAlert] = useState(false);
     const formRef = useRef(null);
 
-    const userId = sessionStorage.getItem('userId'); // Replace with your method to get the user ID from session
+    const userId = sessionStorage.getItem('userId'); // Reemplaza con tu método para obtener el userId
     const { setPageName } = usePage();
 
     useEffect(() => {
-        setPageName("Solicitar Activo"); 
+        setPageName("Solicitar Activo");
     }, [setPageName]);
 
     useEffect(() => {
         // Fetch the available assets from the API
-        fetch(`${API_URLS.assets}/available`)
+        fetch(API_URLS.ASSET.GET_ALL)
             .then(response => response.json())
             .then(data => {
                 setAssets(data);
@@ -37,25 +37,28 @@ const AssetLoanRequest = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (!selectedAsset || !purpose || !expirationDate) {
+        if (!selectedAsset || !reason || !expirationDate) {
             setShowErrorAlert(true);
             return;
         }
 
         const loanRequest = {
-            plateNumber: selectedAsset, // Use the selected asset's plate number
-            purpose,
-            expirationDate,
-            userId, // Include user ID in the request
-            requestDate: new Date().toISOString().split('T')[0] // Current date
+            id: 0, // Deja null para que la API lo genere automáticamente
+            requestId: 0, // Igual que arriba
+            assetId: parseInt(selectedAsset),
+            statusId: 1, // 1 es el ID del estado "Pendiente"
+            expirationDate: expirationDate,
+            reason: reason,
         };
-
-        fetch('http://localhost:8080/asset/loan-request', {
+        console.log(loanRequest)
+    
+        fetch(API_URLS.ASSET.SAVE_ASSET_REQUEST, {
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(loanRequest)
+            body: JSON.stringify(loanRequest) // Asegúrate de enviar el objeto como JSON
         })
             .then(response => {
                 if (!response.ok) {
@@ -63,7 +66,7 @@ const AssetLoanRequest = () => {
                 }
                 setShowSuccessAlert(true);
                 setSelectedAsset('');
-                setPurpose('');
+                setReason('');
                 setExpirationDate('');
                 if (formRef.current) {
                     formRef.current.reset();
@@ -93,7 +96,7 @@ const AssetLoanRequest = () => {
                         >
                             <option value="">Seleccione un activo</option>
                             {assets.map(asset => (
-                                <option key={asset.id} value={asset.plateNumber}>
+                                <option key={asset.id} value={asset.id}>
                                     {asset.name} - {asset.plateNumber}
                                 </option>
                             ))}
@@ -107,8 +110,8 @@ const AssetLoanRequest = () => {
                         <textarea
                             id="purpose"
                             className="form-control border-primary"
-                            value={purpose}
-                            onChange={(e) => setPurpose(e.target.value)}
+                            value={reason}
+                            onChange={(e) => setReason(e.target.value)}
                             required
                         />
                     </div>
