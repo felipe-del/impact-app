@@ -107,7 +107,6 @@ const CategoryEdit = () => {
             });
     };
     const handleClose= ()=>{
-
             window.location.href= '/app/inventoryList'
     }
     const handleCancel = () => {
@@ -205,7 +204,7 @@ const CategoryEdit = () => {
                                     </div>
                                 </div>
                                 <div className="text-center buttons">
-                                    <Button className="btn btn-danger btn-lg w-100 shadow-sm btn-custom" id='cancel' onClick={handleCancel}>
+                                    <Button className="me-2 btn btn-danger btn-lg w-100 shadow-sm btn-custom" id='cancel' onClick={handleCancel}>
                                         <i className="fas fa-times"></i> Cancelar
                                     </Button>
                                     <Button className="btn btn-lg btn-custom w-100 shadow-sm" type="submit" disabled={!isSaveEnabled}>
