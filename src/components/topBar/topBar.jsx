@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Profile_0, Profile_1, Profile_2, Profile_3 } from '../../declarations/imageExports';
-import { useUser } from '../../context/userContext.jsx'; // Import the usePage hook
+import { useUser } from '../../context/userContext.jsx'; 
 import LogoutModal from '../modal/logoutModal/logoutModal.jsx';
 import { usePage } from '../../context/pageContext.jsx';
 
@@ -12,7 +12,7 @@ const TopBar = () => {
     const { pageName } = usePage(); // Access the pageName from context
 
     useEffect(() => {
-        console.log(user);
+        console.log("Current user:", user);
     }, [user]);
 
     return (
@@ -69,7 +69,9 @@ const TopBar = () => {
                 {/* Nav Item - User Information */}
                 <li className="nav-item dropdown no-arrow">
                     <a className="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span className="mr-2 d-none d-lg-inline text-gray-600 small">{user?.name || "Guest"}</span>
+                        <span className="mr-2 d-none d-lg-inline text-gray-600 small">
+                            {user?.name || "Guest"}
+                        </span>
                         <img className="img-profile rounded-circle" src={Profile_0} alt="Profile" />
                     </a>
                     {/* Dropdown - User Information */}

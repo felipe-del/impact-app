@@ -4,6 +4,7 @@ import SearchBar from '../../../components/searchBar/searchBar.jsx';
 import { useState , useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import { usePage } from '../../../context/pageContext.jsx';
+import {formatTime} from "../functions/commonUseFunctions.jsx";
 
 const SpaceTable = () => {
   const [allSpaces, setSpaces] = useState([]);
@@ -37,7 +38,8 @@ const SpaceTable = () => {
       edificio: space.location.building.name,
       ubicacion: space.location.floor,
       capacidadMaxima: space.maxPeople,  // Asegúrate de que 'name' existe en 'status'
-      estado: space.status.name
+      estado: space.status.name,
+      horario: `${formatTime(space.openTime)} - ${formatTime(space.closeTime)}`
   }));
 
   const productColumns = [
@@ -47,6 +49,7 @@ const SpaceTable = () => {
     { header: 'Ubicacion', accessor: 'ubicacion' },
     { header: 'Cantidad máxima de personas', accessor: 'capacidadMaxima' },
     { header: 'Estado del espacio', accessor: 'estado' },
+    { header: 'Horario de disponiblidad', accessor: 'horario' },
   ];
 
   return (
@@ -73,7 +76,6 @@ const SpaceTable = () => {
     
     <DynamicTable items={flattenedProducts} columns={productColumns}/>
 </div>
-
   );
 };
 
