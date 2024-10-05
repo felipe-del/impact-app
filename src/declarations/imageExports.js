@@ -7,6 +7,8 @@ import Profile_3 from '../assets/undraw_profile_3.svg';
 import Escudo_UCR from '../assets/Escudo_UCR.png';
 import ReturnArrow from '../assets/return.png';
 import InfoIcon from '../assets/info_icon.png';
+import Pencil from '../assets/pencil.png';
+
 // Exporta todas las imágenes de una vez
 export {
   Rocket,
@@ -16,5 +18,6 @@ export {
   Profile_3,
   Escudo_UCR,
   ReturnArrow,
-  InfoIcon
+  InfoIcon,
+  Pencil
 };

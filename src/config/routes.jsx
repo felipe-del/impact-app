@@ -22,7 +22,10 @@ import AddBrand from '../pages/asset/addBrand/addBrand.jsx';
 import AddSupplier from '../pages/asset/supplier/addSupplier.jsx';
 import AddLocationNumber from '../pages/asset/addLocationNumber/addLocationNumber.jsx';
 import AddLocationType from '../pages/asset/addLocationType/addLocationType.jsx';
+import CategoryEdit  from '../pages/products/category/CategoryEdit.jsx';
+import ProductEdit from '../pages/products/product/productEdit.jsx';
 import EditSpace from "../pages/commonSpace/space/editSpace/editSpace.jsx";
+
 
 export const Routes = createBrowserRouter([
     {
@@ -125,6 +128,14 @@ export const Routes = createBrowserRouter([
                 path: 'addLocationType',
                 element: <AddLocationType/>
             },
+            {
+                path: 'categoryEdit/:id',
+                element: <CategoryEdit/>
+            },
+            {
+                path: 'productEdit/:id',
+                element: <ProductEdit/>
+            }
         ]
     }
 ]);
