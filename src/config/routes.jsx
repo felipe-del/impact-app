@@ -26,6 +26,7 @@ import CategoryEdit  from '../pages/products/category/CategoryEdit.jsx';
 import ProductEdit from '../pages/products/product/productEdit.jsx';
 import EditSpace from "../pages/commonSpace/space/editSpace/editSpace.jsx";
 import EditAsset from '../pages/asset/editAsset/editAsset.jsx';
+import AddSpaceEquipment from '../pages/commonSpace/equipment/addEquipment.jsx';
 
 
 export const Routes = createBrowserRouter([
@@ -140,7 +141,11 @@ export const Routes = createBrowserRouter([
             {   path: 'editAsset/:id',
                 element: <EditAsset/>
         
-            }
+            },
+            {
+                path:'addSpaceEquipment',
+                element:<AddSpaceEquipment/>
+            },
         ]
     }
 ]);
