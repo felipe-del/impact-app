@@ -25,6 +25,8 @@ import AddLocationType from '../pages/asset/addLocationType/addLocationType.jsx'
 import CategoryEdit  from '../pages/products/category/CategoryEdit.jsx';
 import ProductEdit from '../pages/products/product/productEdit.jsx';
 import EditSpace from "../pages/commonSpace/space/editSpace/editSpace.jsx";
+import EditAsset from '../pages/asset/editAsset/editAsset.jsx';
+
 
 export const Routes = createBrowserRouter([
     {
@@ -135,10 +137,10 @@ export const Routes = createBrowserRouter([
                 path: 'productEdit/:id',
                 element: <ProductEdit/>
             },
-            {
-                path:'editAsset/:id',
+            {   path: 'editAsset/:id',
                 element: <EditAsset/>
-            },
+        
+            }
         ]
     }
 ]);
