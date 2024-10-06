@@ -3,6 +3,7 @@ import DynamicTable from '../../../components/dynamicTable/dynamicTable';
 import SearchBar from '../../../components/searchBar/searchBar';
 import { useState , useEffect} from 'react';
 import { Link } from 'react-router-dom';
+import { Pencil } from '../../../declarations/imageExports';
 import { usePage } from '../../../context/pageContext';
 
 const ProductTable = () => {
@@ -10,6 +11,7 @@ const ProductTable = () => {
     const [showOficina, setShowOficina] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [allProducts, setProducts] = useState([]);
+    const [showEditColumn, setShowEditColumn] = useState(false);
     const { setPageName } = usePage();
 
     useEffect(() => {
@@ -43,6 +45,7 @@ const ProductTable = () => {
         purchaseDate: product.purchaseDate,
         expiryDate: product.expiryDate,
         status: product.status?.name || 'Sin estado',  // Asegúrate de que 'name' existe en 'status'
+        edit:  <img src={Pencil} alt="Edit" className='icon-pencil' onClick={() => handleEdit(product)} />
     }));
 
     // Columnas de la tabla
@@ -63,6 +66,16 @@ const ProductTable = () => {
         }
     };
 
+    if (showEditColumn) {
+        productColumns.push({
+            header: 'Editar',
+            accessor: 'edit',
+        });
+    }
+    const handleEdit = (product) => {
+        window.location.href = `productEdit/${product.id}`;
+    };
+
     return (
         <div>
     <div className="d-flex justify-content-between align-items-center mb-4">
@@ -74,7 +87,12 @@ const ProductTable = () => {
         </nav>
         <div className="d-flex">
             <Link to="/app/inventoryList" className="btn btn-primary me-2">Inventario</Link>
-            <Link to="/app/productRegister" className="btn btn-primary">Registrar producto</Link>
+            <Link to="/app/productRegister" className="btn btn-primary me-2">Registrar producto</Link>
+            <button className="btn btn-primary " onClick={() => {
+                setShowEditColumn(!showEditColumn);
+            }}>
+                {showEditColumn ? 'Ocultar Editar' : 'Editar'}
+            </button>
         </div>
     </div>
     

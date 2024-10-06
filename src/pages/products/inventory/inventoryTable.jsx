@@ -4,6 +4,9 @@ import SearchBar from '../../../components/searchBar/searchBar';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { usePage } from '../../../context/pageContext';
+import { Pencil } from '../../../declarations/imageExports';
+import './inventory.css';
+
 
 const InventoryTable = () => {
 
@@ -11,12 +14,13 @@ const InventoryTable = () => {
       const [searchTerm, setSearchTerm] = useState('');
       const [showLimpieza, setShowLimpieza] = useState(true);
       const [showOficina, setShowOficina] = useState(true);
+      const [showEditColumn, setShowEditColumn] = useState(false);
       const { setPageName } = usePage();
 
         useEffect(() => {
             setPageName("Listado de Inventario");
         }, [setPageName]);
-  
+
       useEffect(() => {
           fetch("http://localhost:8080/product/cat")
               .then(response => response.json())
@@ -26,17 +30,17 @@ const InventoryTable = () => {
               })
               .catch(error => console.error('Error:', error));
       }, []);
-  
+
       // Filtrado de productos basado en la búsqueda y las categorías seleccionadas
       const filteredProducts = categories.filter(category => {
           const matchesCategory =
               (showLimpieza && category.productCategory === 'Limpieza') ||
               (showOficina && category.productCategory === 'Oficina');
           const matchesSearch = category.name.toLowerCase().includes(searchTerm.toLowerCase());
-  
+
           return matchesCategory && matchesSearch;
       });
-  
+
       // Aplanar los datos de productos para que la tabla los maneje fácilmente
       const flattenedProducts = filteredProducts.map(category => ({
               id: category.id,
@@ -45,8 +49,9 @@ const InventoryTable = () => {
               minQuantity: category.cantidadMinima,
               availableQuantity: category.availableQuantity,
               status: category.status,  // El estado calculado según la cantidad disponible y mínima
+              edit:  <img src={Pencil} alt="Edit" className='icon-pencil' onClick={() => handleEdit(category)} />
       }));
-  
+
       // Definir las columnas de la tabla
       const productColumns = [
           { header: 'Código', accessor: 'id' },
@@ -56,7 +61,17 @@ const InventoryTable = () => {
           { header: 'Cantidad disponible', accessor: 'availableQuantity' },
           { header: 'Estado', accessor: 'status'},
       ];
-  
+
+    if (showEditColumn) {
+        productColumns.push({
+            header: 'Editar',
+            accessor: 'edit',
+        });
+    }
+    const handleEdit = (product) => {
+        window.location.href = `categoryEdit/${product.id}`;
+    };
+
       // Manejar los cambios en los checkboxes
       const handleCategoryChange = (category) => {
         if (category === 'Limpieza') {
@@ -77,17 +92,22 @@ const InventoryTable = () => {
         </nav>
         <div className="d-flex">
             <Link to="/app/productList" className="btn btn-primary me-2">Productos</Link>
-            <Link to="/app/categoryRegister" className="btn btn-primary">Registrar categoría</Link>
+            <Link to="/app/categoryRegister" className="btn btn-primary me-2">Registrar categoría</Link>
+            <button className="btn btn-primary " onClick={() => {
+                setShowEditColumn(!showEditColumn);
+            }}>
+                {showEditColumn ? 'Ocultar Editar' : 'Editar'}
+            </button>
         </div>
     </div>
-    
+
     <h2 className="mb-4">Inventario de productos</h2>
-    
+
     <div className="d-flex justify-content-between align-items-center mb-3">
-        <SearchBar 
-            searchTerm={searchTerm} 
-            onSearchChange={setSearchTerm} 
-            placeholder="Buscar productos..." 
+        <SearchBar
+            searchTerm={searchTerm}
+            onSearchChange={setSearchTerm}
+            placeholder="Buscar productos..."
         />
         <div className="ms-auto">
             <label className="me-2">
@@ -108,11 +128,11 @@ const InventoryTable = () => {
             </label>
         </div>
     </div>
-    
+
     <DynamicTable items={flattenedProducts} columns={productColumns} />
 </div>
 
-    
+
       );
   };
 
