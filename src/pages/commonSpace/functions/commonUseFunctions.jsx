@@ -8,4 +8,12 @@ const formatTime = (timeToDisplay) => {
     });
 };
 
-export { formatTime };
+const formatEventTime = (eventDate, time) => {
+    // Combine the date with the given time
+    const dateTime = new Date(`${eventDate}T${time}:00Z`);
+
+    // Return the ISO 8601 format
+    return dateTime.toISOString();
+};
+
+export { formatTime, formatEventTime };

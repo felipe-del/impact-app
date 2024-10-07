@@ -22,7 +22,13 @@ import AddBrand from '../pages/asset/addBrand/addBrand.jsx';
 import AddSupplier from '../pages/asset/supplier/addSupplier.jsx';
 import AddLocationNumber from '../pages/asset/addLocationNumber/addLocationNumber.jsx';
 import AddLocationType from '../pages/asset/addLocationType/addLocationType.jsx';
+import CategoryEdit  from '../pages/products/category/CategoryEdit.jsx';
+import ProductEdit from '../pages/products/product/productEdit.jsx';
 import EditSpace from "../pages/commonSpace/space/editSpace/editSpace.jsx";
+import EditAsset from '../pages/asset/editAsset/editAsset.jsx';
+import AddSpaceEquipment from '../pages/commonSpace/equipment/addEquipment.jsx';
+import SpaceRequest from "../pages/commonSpace/space/spaceRequest/spaceRequest.jsx";
+
 
 export const Routes = createBrowserRouter([
     {
@@ -90,6 +96,10 @@ export const Routes = createBrowserRouter([
                 element: <EditSpace/>
             },
             {
+                path: 'spaceRequest',
+                element: <SpaceRequest/>
+            },
+            {
                 path: 'inventoryList',
                 element: <InventoryTable/>
             },
@@ -124,6 +134,22 @@ export const Routes = createBrowserRouter([
             {
                 path: 'addLocationType',
                 element: <AddLocationType/>
+            },
+            {
+                path: 'categoryEdit/:id',
+                element: <CategoryEdit/>
+            },
+            {
+                path: 'productEdit/:id',
+                element: <ProductEdit/>
+            },
+            {   path: 'editAsset/:id',
+                element: <EditAsset/>
+        
+            },
+            {
+                path:'addSpaceEquipment',
+                element:<AddSpaceEquipment/>
             },
         ]
     }

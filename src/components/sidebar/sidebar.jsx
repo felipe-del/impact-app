@@ -63,7 +63,8 @@ const Sidebar = () => {
                 </a>
                 <div id="collapseEspacios" className="collapse" aria-labelledby="headingEspacios" data-parent="#accordionSidebar">
                     <div className="bg-white py-2 collapse-inner rounded">
-                        
+
+                        <Link className="collapse-item" to="/app/addSpaceEquipment"><FontAwesomeIcon icon={faPlus} /> Registro de Equipo </Link>
                         <Link className="collapse-item" to="/app/addBuilding"><FontAwesomeIcon icon={faPlus} /> Registro de Edificios</Link>
                         <Link className="collapse-item" to="/app/addBuildingLocation"><FontAwesomeIcon icon={faPlus} /> Ubicación en Edificio</Link>
                         <Link className="collapse-item" to="/app/addSpace"><FontAwesomeIcon icon={faPlus} /> Registro de Espacios</Link>
