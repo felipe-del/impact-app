@@ -121,7 +121,7 @@ const ProductRequest = () => {
                 <form ref={formRef} onSubmit={handleSubmit}>
                     <div className="mb-4">
                         <label htmlFor="categorySelect" className="form-label">
-                            <i className="fas fa-box" id="icon-category"></i> Seleccione la Categoría
+                            <i className="fas fa-building"></i> Seleccione la Categoría
                         </label>
                         <select
                             id="categorySelect"
