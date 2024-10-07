@@ -1,0 +1,7 @@
+.form-check {
+    margin-bottom: 1rem; /* Adds spacing between radio options */
+}
+
+.form-check-label {
+    margin-left: 0.5rem; /* Adds some space between the radio button and label */
+}
