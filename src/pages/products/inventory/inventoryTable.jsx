@@ -81,59 +81,56 @@ const InventoryTable = () => {
         }
       };
 
-      return (
+    return (
         <div>
-    <div className="d-flex justify-content-between align-items-center mb-4">
-        <nav aria-label="breadcrumb">
-            <ol className="breadcrumb mb-0">
-                <li className="breadcrumb-item"><a href="/app">Inicio</a></li>
-                <li className="breadcrumb-item active" aria-current="page">Listado de Categorías</li>
-            </ol>
-        </nav>
-        <div className="d-flex">
-            <Link to="/app/productList" className="btn btn-primary me-2">Productos</Link>
-            <Link to="/app/categoryRegister" className="btn btn-primary me-2">Registrar categoría</Link>
-            <button className="btn btn-primary " onClick={() => {
-                setShowEditColumn(!showEditColumn);
-            }}>
-                {showEditColumn ? 'Ocultar Editar' : 'Editar'}
-            </button>
+            <div className="d-flex justify-content-between align-items-center mb-4">
+                <nav aria-label="breadcrumb">
+                    <ol className="breadcrumb mb-0">
+                        <li className="breadcrumb-item"><a href="/app">Inicio</a></li>
+                        <li className="breadcrumb-item active" aria-current="page">Listado de Categorías</li>
+                    </ol>
+                </nav>
+                <div className="d-flex">
+                    <Link to="/app/productList" className="btn btn-primary me-2">Productos</Link>
+                    <Link to="/app/categoryRegister" className="btn btn-primary me-2">Registrar categoría</Link>
+                    <button className="btn btn-primary " onClick={() => {
+                        setShowEditColumn(!showEditColumn);
+                    }}>
+                        {showEditColumn ? 'Ocultar Editar' : 'Editar'}
+                    </button>
+                </div>
+            </div>
+
+            <h2 className="mb-4">Inventario de productos</h2>
+
+            <div className="d-flex justify-content-between align-items-center mb-3">
+                <SearchBar
+                    searchTerm={searchTerm}
+                    onSearchChange={setSearchTerm}
+                    placeholder="Buscar productos..."
+                />
+                <div className="ms-auto">
+                    <label className="me-2">
+                        <input
+                            type="checkbox"
+                            className="me-1"
+                            checked={showOficina}
+                            onChange={() => handleCategoryChange('Oficina')}
+                        /> Productos oficina
+                    </label>
+                    <label>
+                        <input
+                            type="checkbox"
+                            className="me-1"
+                            checked={showLimpieza}
+                            onChange={() => handleCategoryChange('Limpieza')}
+                        /> Productos limpieza
+                    </label>
+                </div>
+            </div>
+            <DynamicTable items={flattenedProducts} columns={productColumns} style={{maxHeight: "60vh"}}/>
         </div>
-    </div>
-
-    <h2 className="mb-4">Inventario de productos</h2>
-
-    <div className="d-flex justify-content-between align-items-center mb-3">
-        <SearchBar
-            searchTerm={searchTerm}
-            onSearchChange={setSearchTerm}
-            placeholder="Buscar productos..."
-        />
-        <div className="ms-auto">
-            <label className="me-2">
-                <input
-                    type="checkbox"
-                    className="me-1"
-                    checked={showOficina}
-                    onChange={() => handleCategoryChange('Oficina')}
-                /> Productos oficina
-            </label>
-            <label>
-                <input
-                    type="checkbox"
-                    className="me-1"
-                    checked={showLimpieza}
-                    onChange={() => handleCategoryChange('Limpieza')}
-                /> Productos limpieza
-            </label>
-        </div>
-    </div>
-
-    <DynamicTable items={flattenedProducts} columns={productColumns} />
-</div>
-
-
-      );
-  };
+    );
+};
 
 export default InventoryTable;

@@ -1,9 +1,9 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const DynamicTable = ({items, columns }) => {
+const DynamicTable = ({items, columns, style}) => {
   return (
-      <div className="table-responsive" style={{ maxHeight: '65vh', overflowY: 'auto' }}>
+      <div className="table-responsive" style={{ ...style, overflowY: 'auto' }}>
         <table className="table table-bordered table-hover">
           <thead className="table-primary">
           <tr>

@@ -123,8 +123,8 @@ const ProductTable = () => {
             </label>
         </div>
     </div>
-    
-    <DynamicTable items={flattenedProducts} columns={productColumns} />
+
+    <DynamicTable items={flattenedProducts} columns={productColumns} style={{maxHeight: '60vh'}}/>
 </div>
 
     );
