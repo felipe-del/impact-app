@@ -113,6 +113,12 @@ const Sidebar = () => {
                     <span>Tablas</span>
                 </Link>
             </li>
+            <li className="nav-item" id="user-item">
+                <Link className="nav-link" to="/app/manageUsers">
+                    <i className="fas fa-fw fa-users"></i>
+                    <span>Gestión de usuarios</span>
+                </Link>
+            </li>
             <hr className="sidebar-divider" />
 
            

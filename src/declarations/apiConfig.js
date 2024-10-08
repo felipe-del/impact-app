@@ -13,7 +13,8 @@ export const API_URLS = {
         CURRENT_USER: concat('/auth/current-user'),
     },
     USER: {
-        GET_ALL: concat('/user')
+        GET_ALL: concat('/user'),
+        GET_INACTIVE: concat('/user/inactive')
     },
     PRODUCTS: {
         LIST: concat('/api/products'),
