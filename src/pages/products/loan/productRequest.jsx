@@ -7,9 +7,10 @@ const ProductRequest = () => {
     const [products, setProducts] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('');
     const [purpose, setPurpose] = useState('');
+    const [quantity, setQuantity] = useState(1);
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
     const [showErrorAlert, setShowErrorAlert] = useState(false);
-    const [filteredCategories, setFilteredCategories] = useState([]); 
+    const [filteredCategories, setFilteredCategories] = useState([]);
     const [availableQuantity, setAvailableQuantity] = useState(0);
     const formRef = useRef(null);
     const { setPageName } = usePage();
@@ -17,8 +18,6 @@ const ProductRequest = () => {
     useEffect(() => {
         setPageName("Solicitud de Productos");
     }, [setPageName]);
-
-    const userId = sessionStorage.getItem('userId'); 
 
     useEffect(() => {
         fetch(`http://localhost:8080/product/all`, {
@@ -31,11 +30,10 @@ const ProductRequest = () => {
         .then(response => response.json())
         .then(data => {
             setProducts(data);
-            console.log(data);
 
             const categoryCount = {};
             data.forEach(product => {
-                if (product.status.id === 1) { 
+                if (product.status.id === 1) { // Solo contar productos disponibles
                     if (!categoryCount[product.category.name]) {
                         categoryCount[product.category.name] = 0;
                     }
@@ -63,30 +61,28 @@ const ProductRequest = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (!selectedCategory || !purpose) {
+        if (!selectedCategory || !purpose || quantity <= 0) {
             setShowErrorAlert(true);
             return;
         }
 
-        if (availableQuantity === 0) {
+        if (availableQuantity < quantity) {
             setShowErrorAlert(true);
             return;
         }
 
-        // Filtrar solo un producto disponible de la categoría seleccionada
         const selectedProduct = products
-    .filter(product => product.category.name === selectedCategory && product.status.id === 1)
-    .slice(0, 1)[0]?.id; // Obtener el ID del primer producto disponible
-
+            .filter(product => product.category.name === selectedCategory && product.status.id === 1)
+            .slice(0, 1)[0]?.id;
 
         const productRequest = {
-            categoryName: selectedCategory,  
+            categoryName: selectedCategory,
             productId: selectedProduct,
-            reason: purpose,               
-            userId: 1,                        
-            requestDate: new Date().toISOString().split('T')[0] 
+            reason: purpose,
+            count: quantity,
+            userId: 1,
+            requestDate: new Date().toISOString().split('T')[0]
         };
-        console.log(productRequest);
 
         fetch('http://localhost:8080/product/request', {
             method: 'POST',
@@ -103,6 +99,7 @@ const ProductRequest = () => {
             setShowSuccessAlert(true);
             setSelectedCategory('');
             setPurpose('');
+            setQuantity(1);
             setAvailableQuantity(0);
             if (formRef.current) {
                 formRef.current.reset();
@@ -117,7 +114,7 @@ const ProductRequest = () => {
     return (
         <div className="mt-5 d-flex justify-content-center">
             <div className="card p-5 shadow-lg" style={{ maxWidth: "900px", borderRadius: "10px" }}>
-                <h1 id="product-request-title" className="text-center mb-5">Solicitud de Producto</h1>
+                <h1 className="text-center mb-5">Solicitud de Producto</h1>
                 <form ref={formRef} onSubmit={handleSubmit}>
                     <div className="mb-4">
                         <label htmlFor="categorySelect" className="form-label">
@@ -132,7 +129,7 @@ const ProductRequest = () => {
                         >
                             <option value="">Seleccione una categoría</option>
                             {filteredCategories.map((category) => (
-                                <option key={category} value={category.id}>
+                                <option key={category} value={category}>
                                     {category}
                                 </option>
                             ))}
@@ -140,8 +137,27 @@ const ProductRequest = () => {
                     </div>
 
                     <div className="mb-4">
+                        <label htmlFor="quantity" className="form-label">
+                            <i className="fas fa-sort-amount-up"></i> Cantidad
+                        </label>
+                        <input
+                            type="number"
+                            id="quantity"
+                            className="form-control border-primary"
+                            value={quantity}
+                            onChange={(e) => setQuantity(Number(e.target.value))}
+                            min="1"
+                            max={availableQuantity} // Limitar a la cantidad disponible
+                            required
+                        />
+                        <small className="form-text text-muted">
+                            Cantidad disponible para esta categoría: {availableQuantity}
+                        </small>
+                    </div>
+
+                    <div className="mb-4">
                         <label htmlFor="purpose" className="form-label">
-                            <i className="fas fa-file-alt" id="icon-purpose"></i> Propósito de la Solicitud
+                            <i className="fas fa-file-alt"></i> Propósito de la Solicitud
                         </label>
                         <textarea
                             id="purpose"
