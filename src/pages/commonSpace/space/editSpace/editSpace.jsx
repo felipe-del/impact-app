@@ -131,9 +131,17 @@ const EditSpace = () => {
                                     <h3>Seleccione el espacio a editar</h3>
                                     <div className='form-group'>
                                         <div className='input-group'>
-                                            <select id="spaceId">
+                                            <select
+                                                id="spaceId"
+                                                value={spaceId}
+                                                onChange={(e) => {
+                                                    const selectedSpace = spaces.find(s => s.id === parseInt(e.target.value));
+                                                    if (selectedSpace) handleSelectSpace(selectedSpace);
+                                                }}
+                                            >
+                                                <option value="">Seleccione un espacio</option>
                                                 {spaces.map(currentSpace => (
-                                                    <option key={currentSpace.id} id={currentSpace.id} onClick={() => handleSelectSpace(currentSpace)}>
+                                                    <option key={currentSpace.id} value={currentSpace.id}>
                                                         {currentSpace.id} - {currentSpace.name}
                                                     </option>
                                                 ))}
@@ -147,7 +155,7 @@ const EditSpace = () => {
                                     <div>
                                         <form onSubmit={handleSubmit}>
                                             <div className="row align-items-center mt-4">
-                                                <label htmlFor="name" className="col-sm-4 col-form-label form-label">
+                                            <label htmlFor="name" className="col-sm-4 col-form-label form-label">
                                                     <i className="fas fa-tag"></i> Nombre del espacio
                                                 </label>
                                                 <div className="col-sm-8 w-100 mb-4">
