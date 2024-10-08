@@ -10,7 +10,8 @@
 #utilities-item:hover,
 #activos-item:hover,
 #espacios-item:hover,
-#productos-item:hover {
+#productos-item:hover,
+#user-item:hover {
     background-color: #007bff; /* Change to your desired color */
 }
 
