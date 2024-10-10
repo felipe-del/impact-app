@@ -44,7 +44,6 @@ const ProductTable = () => {
         name: product.category?.name || 'Sin categoría',  // Asegúrate de que 'name' existe en 'category'
         purchaseDate: product.purchaseDate,
         expiryDate: product.expiryDate,
-        status: product.status?.name || 'Sin estado',  // Asegúrate de que 'name' existe en 'status'
         edit:  <img src={Pencil} alt="Edit" className='icon-pencil' onClick={() => handleEdit(product)} />
     }));
 
@@ -54,7 +53,6 @@ const ProductTable = () => {
         { header: 'Descripción', accessor: 'name' },  // Nombre del producto aplanado
         { header: 'Fecha de compra', accessor: 'purchaseDate' },
         { header: 'Fecha de vencimiento', accessor: 'expiryDate' },
-        { header: 'Estado', accessor: 'status' },  // Estado del producto aplanado
     ];
 
     // Manejar los cambios en los checkboxes
