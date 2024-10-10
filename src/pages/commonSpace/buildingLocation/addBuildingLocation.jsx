@@ -99,8 +99,8 @@ const AddBuildingLocation = () => {
                             <h3>Detalles de la ubicación</h3>
                             <form onSubmit={handleSubmit}>
                                 <div className="mb-4 row align-items-center">
-                                    <label htmlFor="buildingId" className="col-sm-4 col-form-label form-label">
-                                        <i className="fas fa-building" id="icon-name"></i> Edificio
+                                    <label htmlFor="buildingId" className="col-sm-4 col-form-label form-label text-black">
+                                        <i className="fas fa-building"></i> Edificio
                                     </label>
                                     <div className="col-sm-8">
                                         <select
@@ -120,8 +120,8 @@ const AddBuildingLocation = () => {
                                     </div>
                                 </div>
                                 <div className="mb-5 row align-items-center">
-                                    <label htmlFor="floorId" className="col-sm-4 col-form-label form-label">
-                                        <i className="fas fa-map-marker-alt" id="icon-name"></i> Nombre de la ubicación
+                                    <label htmlFor="floorId" className="col-sm-4 col-form-label form-label text-black">
+                                        <i className="fas fa-map-marker-alt"></i> Nombre de la ubicación
                                     </label>
                                     <div className="col-sm-8">
                                         <input

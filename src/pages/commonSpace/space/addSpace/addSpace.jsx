@@ -98,7 +98,7 @@ const AddSpace = () => {
                         <h3>Detalles del espacio</h3>
                         <form onSubmit={handleSubmit}>
                             <div className="row align-items-center">
-                                <label htmlFor="name" className="col-sm-4 col-form-label form-label">
+                                <label htmlFor="name" className="col-sm-4 col-form-label form-label text-black">
                                     <i className="fas fa-tag"></i> Nombre del espacio
                                 </label>
                                 <div className="col-sm-8 w-100 mb-4">
@@ -114,7 +114,7 @@ const AddSpace = () => {
                                 </div>
                             </div>
                             <div className="mb-4 row align-items-center">
-                                <label htmlFor="spaceCode" className="col-sm-4 col-form-label form-label">
+                                <label htmlFor="spaceCode" className="col-sm-4 col-form-label form-label text-black">
                                     <i className="fas fa-code"></i> Código del espacio
                                 </label>
                                 <div className="col-sm-8">
@@ -130,7 +130,7 @@ const AddSpace = () => {
                                 </div>
                             </div>
                             <div className="mb-4 row align-items-center">
-                                <label htmlFor="maxPeople" className="col-sm-4 col-form-label form-label">
+                                <label htmlFor="maxPeople" className="col-sm-4 col-form-label form-label text-black">
                                     <i className="fas fa-users"></i> Capacidad máxima de personas
                                 </label>
                                 <div className="col-sm-8">
@@ -146,7 +146,7 @@ const AddSpace = () => {
                                 </div>
                             </div>
                             <div className="mb-4 row align-items-center">
-                                <label htmlFor="buildingId" className="col-sm-4 col-form-label form-label">
+                                <label htmlFor="buildingId" className="col-sm-4 col-form-label form-label text-black">
                                     <i className="fas fa-building"></i> Edificio
                                 </label>
                                 <div className="col-sm-8">
@@ -178,8 +178,8 @@ const AddSpace = () => {
                                 </div>
                             </div>
                             <div className="mb-3 row align-items-center">
-                                <label htmlFor="buildingLocation" className="col-sm-4 col-form-label form-label">
-                                    <i className="fas fa-map-marker"></i> Ubicaciones del edificio
+                                <label htmlFor="buildingLocation" className="col-sm-4 col-form-label form-label text-black">
+                                    <i className="fas fa-map-marker-alt"></i> Ubicaciones del edificio
                                 </label>
                                 <div className="col-sm-8">
                                     <select
@@ -200,7 +200,7 @@ const AddSpace = () => {
                             </div>
                             <div className="mb-4 row align-items-center">
                                 <div className="col-sm-6">
-                                    <label htmlFor="openTime" className="col-form-label form-label">
+                                    <label htmlFor="openTime" className="col-form-label form-label text-black">
                                         <i className="fas fa-clock"></i> Hora de apertura
                                     </label>
                                     <input
@@ -213,7 +213,7 @@ const AddSpace = () => {
                                     />
                                 </div>
                                 <div className="col-sm-6">
-                                    <label htmlFor="closeTime" className="col-form-label form-label">
+                                    <label htmlFor="closeTime" className="col-form-label form-label text-black">
                                         <i className="fas fa-clock"></i> Hora de cierre
                                     </label>
                                     <input

@@ -84,8 +84,8 @@ const AddBuilding = () => {
                         <h3 id="building-details-title">Detalles del Edificio</h3>
                         <form onSubmit={handleSubmit}>
                             <div className="form-group mb-4 row align-items-center">
-                                <label htmlFor="buildingName" className="col-sm-4 col-form-label form-label">
-                                    <i className="fas fa-building" id="icon-name"></i> Nombre del Edificio
+                                <label htmlFor="buildingName" className="col-sm-4 col-form-label form-label text-black">
+                                    <i className="fas fa-building"></i> Nombre del Edificio
                                 </label>
                                 <div className="col-sm-8">
                                     <input
