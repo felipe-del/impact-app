@@ -173,7 +173,8 @@ const EditAsset = () => {
                     <input
                         type="number"
                         id="value"
-                        min={1}
+                        min={0.01}  // O el valor mínimo decimal que desees
+                        step="0.01"  // Permite pasos decimales
                         className="form-control border-primary"
                         value={value}
                         onChange={(e) => setValue(e.target.value)}
