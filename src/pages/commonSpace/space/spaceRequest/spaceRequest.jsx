@@ -152,7 +152,7 @@ const SpaceRequest = () => {
                                 </select>
                             </div>
                         </div>
-                        <div className="mb-3 row align-items-center">
+                        <div className="mb-1 row align-items-center">
                             <label htmlFor="numPeople" className="form-label text-black">
                                 <i className="fas fa-users"></i> Cantidad de personas
                             </label>
@@ -169,6 +169,9 @@ const SpaceRequest = () => {
                                     required
                                 />
                             </div>
+                            { space && (
+                                <span className="mt-1 text-primary font-italic">Capacidad máxima del espacio: {space?.space?.maxPeople}</span>
+                            )}
                         </div>
                         <div className="mb-3 row align-items-center">
                             <label htmlFor="eventDesc" className="form-label text-black">
