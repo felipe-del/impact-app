@@ -25,7 +25,7 @@ export const API_URLS = {
     },
     ASSET: {
         SAVE_ASSET_REQUEST: concat('/asset/request'),
-        GET_ALL: concat('/asset'),
+        GET_ALL: concat('/asset/all'),
         GET_ALL_CATEGORY: concat('/asset/category'),
         GET_ALL_SUBCATEGORY: concat('/asset/subcategory'),
         GET_ALL_STATUS: concat('/asset/status'),
