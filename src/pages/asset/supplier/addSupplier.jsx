@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Alert } from 'react-bootstrap';
+import { useState, useEffect } from 'react';
+import { Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import './addSupplier.css';
 import { usePage } from '../../../context/pageContext';
@@ -81,6 +81,13 @@ const AddSupplier = () => {
             });
     };
 
+    // Function to format phone number
+    const formatPhoneNumber = (value) => {
+        const phoneNumber = value.replace(/\D/g, ''); // Remove non-digit characters
+        const formattedNumber = phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3'); // Format to xxx-xxx-xxxx
+        return formattedNumber.length > 12 ? formattedNumber.slice(0, 12) : formattedNumber; // Limit to 12 characters
+    };
+
     return (
         <div className="mt-5 d-flex justify-content-center">
             <div className="card p-5 shadow-lg" style={{ maxWidth: "700px", borderRadius: "10px" }}>
@@ -88,86 +95,7 @@ const AddSupplier = () => {
 
                 <div className="mb-4">
                     <form onSubmit={handleSubmit}>
-                        <div className="mb-4 row align-items-center">
-                            <label htmlFor="name" className="col-sm-4 col-form-label form-label">
-                                <i className="fas fa-user" id="icon-provider-name"></i> Nombre
-                            </label>
-                            <div className="col-sm-8">
-                                <input
-                                    type="text"
-                                    id="name"
-                                    className="form-control border-primary"
-                                    placeholder="Ingresa el nombre del proveedor"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                    required
-                                />
-                            </div>
-                        </div>
-
-                        <div className="mb-4 row align-items-center">
-                            <label htmlFor="phone" className="col-sm-4 col-form-label form-label">
-                                <i className="fas fa-phone" id="icon-provider-phone"></i> Número Telefónico
-                            </label>
-                            <div className="col-sm-8">
-                                <input
-                                    type="text"
-                                    id="phone"
-                                    className="form-control border-primary"
-                                    placeholder="Ingresa el número telefónico"
-                                    value={phone}
-                                    onChange={(e) => setPhone(e.target.value)}
-                                />
-                            </div>
-                        </div>
-
-                        <div className="mb-4 row align-items-center">
-                            <label htmlFor="email" className="col-sm-4 col-form-label form-label">
-                                <i className="fas fa-envelope" id="icon-provider-email"></i> Correo Electrónico
-                            </label>
-                            <div className="col-sm-8">
-                                <input
-                                    type="email"
-                                    id="email"
-                                    className="form-control border-primary"
-                                    placeholder="Ingresa el correo electrónico"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                />
-                            </div>
-                        </div>
-
-                        <div className="mb-4 row align-items-center">
-                            <label htmlFor="address" className="col-sm-4 col-form-label form-label">
-                                <i className="fas fa-map-marker-alt" id="icon-provider-address"></i> Dirección
-                            </label>
-                            <div className="col-sm-8">
-                                <textarea
-                                    id="address"
-                                    className="form-control border-primary"
-                                    placeholder="Ingresa la dirección"
-                                    value={address}
-                                    onChange={(e) => setAddress(e.target.value)}
-                                />
-                            </div>
-                        </div>
-
-                        <div className="mb-4 row align-items-center">
-                            <label htmlFor="clientContact" className="col-sm-4 col-form-label form-label">
-                                <i className="fas fa-user" id="icon-client-contact"></i> Contacto del Cliente
-                            </label>
-                            <div className="col-sm-8">
-                                <input
-                                    type="text"
-                                    id="clientContact"
-                                    className="form-control border-primary"
-                                    placeholder="Ingresa el contacto del cliente"
-                                    value={clientContact}
-                                    onChange={(e) => setClientContact(e.target.value)}
-                                />
-                            </div>
-                        </div>
-
+                        {/* ID Number */}
                         <div className="mb-4 row align-items-center">
                             <label htmlFor="idNumber" className="col-sm-4 col-form-label form-label">
                                 <i className="fas fa-id-card" id="icon-id-number"></i> Cédula
@@ -185,9 +113,10 @@ const AddSupplier = () => {
                             </div>
                         </div>
 
+                        {/* Entity Type */}
                         <div className="mb-4 row align-items-center">
                             <label htmlFor="entityType" className="col-sm-4 col-form-label form-label">
-                                Tipo de Entidad
+                            <i className="fas fa-building" id="icon-entity-type"></i> Tipo de Entidad
                             </label>
                             <div className="col-sm-8">
                                 <select
@@ -204,6 +133,91 @@ const AddSupplier = () => {
                                         </option>
                                     ))}
                                 </select>
+                            </div>
+                        </div>
+
+                        {/* Name */}
+                        <div className="mb-4 row align-items-center">
+                            <label htmlFor="name" className="col-sm-4 col-form-label form-label">
+                                <i className="fas fa-user" id="icon-provider-name"></i> Nombre
+                            </label>
+                            <div className="col-sm-8">
+                                <input
+                                    type="text"
+                                    id="name"
+                                    className="form-control border-primary"
+                                    placeholder="Ingresa el nombre del proveedor"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    required
+                                />
+                            </div>
+                        </div>
+
+                        {/* Phone Number */}
+                        <div className="mb-4 row align-items-center">
+                            <label htmlFor="phone" className="col-sm-4 col-form-label form-label">
+                                <i className="fas fa-phone" id="icon-provider-phone"></i> Número Telefónico
+                            </label>
+                            <div className="col-sm-8">
+                                <input
+                                    type="text"
+                                    id="phone"
+                                    className="form-control border-primary"
+                                    placeholder="Ingresa el número telefónico"
+                                    value={formatPhoneNumber(phone)}
+                                    onChange={(e) => setPhone(formatPhoneNumber(e.target.value))}
+                                />
+                            </div>
+                        </div>
+
+                        {/* Email */}
+                        <div className="mb-4 row align-items-center">
+                            <label htmlFor="email" className="col-sm-4 col-form-label form-label">
+                                <i className="fas fa-envelope" id="icon-provider-email"></i> Correo Electrónico
+                            </label>
+                            <div className="col-sm-8">
+                                <input
+                                    type="email"
+                                    id="email"
+                                    className="form-control border-primary"
+                                    placeholder="Ingresa el correo electrónico"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                />
+                            </div>
+                        </div>
+
+                        {/* Address */}
+                        <div className="mb-4 row align-items-center">
+                            <label htmlFor="address" className="col-sm-4 col-form-label form-label">
+                                <i className="fas fa-map-marker-alt" id="icon-provider-address"></i> Dirección
+                            </label>
+                            <div className="col-sm-8">
+                                <textarea
+                                    id="address"
+                                    className="form-control border-primary"
+                                    placeholder="Ingresa la dirección"
+                                    value={address}
+                                    onChange={(e) => setAddress(e.target.value)}
+                                />
+                            </div>
+                        </div>
+
+                        {/* Client Contact */}
+                        <div className="mb-4 row align-items-center">
+                            <label htmlFor="clientContact" className="col-sm-4 col-form-label form-label">
+                                <i className="fas fa-user" id="icon-client-contact"></i> Contacto de la Empresa
+                            </label>
+                            <div className="col-sm-8">
+                                <input
+                                    type="text"
+                                    id="clientContact"
+                                    className="form-control border-primary"
+                                    placeholder="Ingresa el contacto de la empresa"
+                                    value={clientContact}
+                                    onChange={(e) => setClientContact(e.target.value)}
+                                />
                             </div>
                         </div>
 

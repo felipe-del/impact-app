@@ -98,7 +98,7 @@ const AssetLoanRequest = () => {
                             <option value="">Seleccione un activo</option>
                             {assets.map(asset => (
                                 <option key={asset.id} value={asset.id}>
-                                    {asset.category} - {asset.plate}
+                                    {asset.category} - {asset.subcategory} - {asset.description} - {asset.plate}
                                 </option>
                             ))}
                         </select>
