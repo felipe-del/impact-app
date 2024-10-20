@@ -4,83 +4,69 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './createAsset.css';
 import { API_URLS } from '../../../declarations/apiConfig';
 import { usePage } from '../../../context/pageContext';
+import InputMask from 'react-input-mask';
 
 const CreateAsset = () => {
+    const [formData, setFormData] = useState({
+        purchaseDate: '',
+        value: '',
+        supplier: '',
+        brand: '',
+        subcategory: '',
+        responsible: '',
+        status: '',
+        currency: '',
+        assetModel: '',
+        assetSeries: '',
+        plateNumber: '',
+        locationNumber: '',
+    });
+
     const [suppliers, setSuppliers] = useState([]);
     const [brands, setBrands] = useState([]);
-    const [subcategories, setSubcategories] = useState([]); 
+    const [subcategories, setSubcategories] = useState([]);
     const [statuses, setStatuses] = useState([]);
     const [users, setUsers] = useState([]);
     const [currencies, setCurrencies] = useState([]);
     const [assetModels, setAssetModels] = useState([]);
     const [locationNumbers, setLocationNumbers] = useState([]);
-
-    const [purchaseDate, setPurchaseDate] = useState('');
-    const [value, setValue] = useState('');
-    const [supplier, setSupplier] = useState('');
-    const [brand, setBrand] = useState('');
-    const [subcategory, setSubcategory] = useState(''); 
-    const [responsible, setResponsible] = useState('');
-    const [status, setStatus] = useState('');
-    const [currency, setCurrency] = useState('');
-    const [assetModel, setAssetModel] = useState('');
-    const [assetSeries, setAssetSeries] = useState('');
-    const [plateNumber, setPlateNumber] = useState('');
-    const [locationNumber, setLocationNumber] = useState('');
-
+    
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
     const [showErrorAlert, setShowErrorAlert] = useState(false);
-
     const formRef = useRef(null);
     const { setPageName } = usePage();
 
     useEffect(() => {
-        setPageName("Agregar Activo"); 
+        setPageName("Agregar Activo");
     }, [setPageName]);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const supplierResponse = await fetch(API_URLS.SUPPLIER.GET_ALL, { method: 'GET', credentials: 'include' });
-                if (!supplierResponse.ok) throw new Error('Network response was not ok for suppliers');
-                const supplierData = await supplierResponse.json();
-                setSuppliers(supplierData);
+                const responses = await Promise.all([
+                    fetch(API_URLS.SUPPLIER.GET_ALL, { method: 'GET', credentials: 'include' }),
+                    fetch(API_URLS.BRAND.GET_ALL, { method: 'GET', credentials: 'include' }),
+                    fetch(API_URLS.ASSET.GET_ALL_SUBCATEGORY, { method: 'GET', credentials: 'include' }),
+                    fetch(API_URLS.ASSET.GET_ALL_STATUS, { method: 'GET', credentials: 'include' }),
+                    fetch(API_URLS.USER.GET_ALL, { method: 'GET', credentials: 'include' }),
+                    fetch(API_URLS.ASSET.GET_ALL_CURRENCY, { method: 'GET', credentials: 'include' }),
+                    fetch(API_URLS.ASSET.GET_ALL_MODEL, { method: 'GET', credentials: 'include' }),
+                    fetch(API_URLS.ASSET.GET_ALL_LOCATION_NUMBER, { method: 'GET', credentials: 'include' }),
+                ]);
 
-                const brandResponse = await fetch(API_URLS.BRAND.GET_ALL, { method: 'GET', credentials: 'include' });
-                if (!brandResponse.ok) throw new Error('Network response was not ok for brands');
-                const brandData = await brandResponse.json();
-                setBrands(brandData);
+                const data = await Promise.all(responses.map(res => {
+                    if (!res.ok) throw new Error('Network response was not ok');
+                    return res.json();
+                }));
 
-                const subcategoryResponse = await fetch(API_URLS.ASSET.GET_ALL_SUBCATEGORY, { method: 'GET', credentials: 'include' });
-                if (!subcategoryResponse.ok) throw new Error('Network response was not ok for subcategories');
-                const subcategoryData = await subcategoryResponse.json();
-                setSubcategories(subcategoryData);
-
-                const statusResponse = await fetch(API_URLS.ASSET.GET_ALL_STATUS, { method: 'GET', credentials: 'include' });
-                if (!statusResponse.ok) throw new Error('Network response was not ok for statuses');
-                const statusData = await statusResponse.json();
-                setStatuses(statusData);
-
-                const userResponse = await fetch(API_URLS.USER.GET_ALL, { method: 'GET', credentials: 'include' });
-                if (!userResponse.ok) throw new Error('Network response was not ok for users');
-                const userData = await userResponse.json();
-                setUsers(userData);
-
-                const currencyResponse = await fetch(API_URLS.ASSET.GET_ALL_CURRENCY, { method: 'GET', credentials: 'include' });
-                if (!currencyResponse.ok) throw new Error('Network response was not ok for currencies');
-                const currencyData = await currencyResponse.json();
-                setCurrencies(currencyData);
-
-                const assetModelResponse = await fetch(API_URLS.ASSET.GET_ALL_MODEL, { method: 'GET', credentials: 'include' });
-                if (!assetModelResponse.ok) throw new Error('Network response was not ok for asset models');
-                const assetModelData = await assetModelResponse.json();
-                setAssetModels(assetModelData);
-
-                const locationNumberResponse = await fetch(API_URLS.ASSET.GET_ALL_LOCATION_NUMBER, { method: 'GET', credentials: 'include' });
-                if (!locationNumberResponse.ok) throw new Error('Network response was not ok for location numbers');
-                const locationNumberData = await locationNumberResponse.json();
-                setLocationNumbers(locationNumberData);
-
+                setSuppliers(data[0]);
+                setBrands(data[1]);
+                setSubcategories(data[2]);
+                setStatuses(data[3]);
+                setUsers(data[4]);
+                setCurrencies(data[5]);
+                setAssetModels(data[6]);
+                setLocationNumbers(data[7]);
             } catch (error) {
                 console.error('Fetch error:', error);
                 setShowErrorAlert(true);
@@ -90,23 +76,26 @@ const CreateAsset = () => {
         fetchData();
     }, []);
 
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prevState => ({ ...prevState, [name]: value }));
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
         const newAsset = {
             id: 0,
-            purchaseDate,
-            value: parseFloat(value),
-            supplierId: parseInt(supplier),
-            brandId: parseInt(brand),
-            subcategoryId: parseInt(subcategory),
-            responsibleId: parseInt(responsible),
-            statusId: parseInt(status),
-            currencyId: parseInt(currency),
-            assetModelId: parseInt(assetModel),
-            assetSeries,
-            plateNumber,
-            locationNumber: parseInt(locationNumber),
+            ...formData,
+            value: parseFloat(formData.value),
+            supplierId: parseInt(formData.supplier),
+            brandId: parseInt(formData.brand),
+            subcategoryId: parseInt(formData.subcategory),
+            responsibleId: parseInt(formData.responsible),
+            statusId: parseInt(formData.status),
+            currencyId: parseInt(formData.currency),
+            assetModelId: parseInt(formData.assetModel),
+            locationNumber: parseInt(formData.locationNumber),
             isDeleted: false
         };
 
@@ -118,38 +107,38 @@ const CreateAsset = () => {
             },
             body: JSON.stringify(newAsset)
         })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            setShowSuccessAlert(true);
-            setPurchaseDate('');
-            setValue('');
-            setSupplier('');
-            setBrand('');
-            setSubcategory('');
-            setResponsible('');
-            setStatus('');
-            setCurrency('');
-            setAssetModel('');
-            setAssetSeries('');
-            setPlateNumber('');
-            setLocationNumber('');
-            if (formRef.current) {
-                formRef.current.reset();
-            }
-        })
-        .catch(error => {
-            console.error('Error al guardar activo:', error);
-            setShowErrorAlert(true);
-        });
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                setShowSuccessAlert(true);
+                setFormData({
+                    purchaseDate: '',
+                    value: '',
+                    supplier: '',
+                    brand: '',
+                    subcategory: '',
+                    responsible: '',
+                    status: '',
+                    currency: '',
+                    assetModel: '',
+                    assetSeries: '',
+                    plateNumber: '',
+                    locationNumber: '',
+                });
+                if (formRef.current) {
+                    formRef.current.reset();
+                }
+            })
+            .catch(error => {
+                console.error('Error saving asset:', error);
+                setShowErrorAlert(true);
+            });
     };
 
     return (
         <div className="mt-5 d-flex justify-content-center">
             <div className="card p-5 shadow-lg" style={{ maxWidth: "900px", borderRadius: "10px" }}>
                 <h1 id="registro-activo-title" className="text-center mb-5">Registro de Activo</h1>
-    
+
                 <h3 id="datos-activo-title" className="text-center mb-4">Datos del Activo</h3>
                 <form ref={formRef} onSubmit={handleSubmit}>
                     <div className="row mb-4">
@@ -157,12 +146,14 @@ const CreateAsset = () => {
                             <label htmlFor="plateNumber" className="form-label">
                                 <i className="fas fa-id-badge"></i> Número de Placa
                             </label>
-                            <input
-                                type="text"
+                            <InputMask
+                                mask="***-***" // Adjust the mask as needed
+                                name="plateNumber"
                                 id="plateNumber"
                                 className="form-control border-primary"
-                                value={plateNumber}
-                                onChange={(e) => setPlateNumber(e.target.value)}
+                                value={formData.plateNumber}
+                                onChange={handleChange}
+                                placeholder="Ej: ABC-123"
                                 required
                             />
                         </div>
@@ -170,12 +161,14 @@ const CreateAsset = () => {
                             <label htmlFor="assetSeries" className="form-label">
                                 <i className="fas fa-barcode"></i> Serie de Activo
                             </label>
-                            <input
-                                type="text"
+                            <InputMask
+                                mask="A***" // Adjust the mask as needed
+                                name="assetSeries"
                                 id="assetSeries"
                                 className="form-control border-primary"
-                                value={assetSeries}
-                                onChange={(e) => setAssetSeries(e.target.value)}
+                                value={formData.assetSeries}
+                                onChange={handleChange}
+                                placeholder="Ej: A123"
                                 required
                             />
                         </div>
@@ -184,10 +177,11 @@ const CreateAsset = () => {
                                 <i className="fas fa-laptop"></i> Modelo del Activo
                             </label>
                             <select
+                                name="assetModel"
                                 id="assetModel"
                                 className="form-select border-primary"
-                                value={assetModel}
-                                onChange={(e) => setAssetModel(e.target.value)}
+                                value={formData.assetModel}
+                                onChange={handleChange}
                                 required
                             >
                                 <option value="">Seleccionar modelo del activo</option>
@@ -199,17 +193,18 @@ const CreateAsset = () => {
                             </select>
                         </div>
                     </div>
-    
+
                     <div className="row mb-4">
                         <div className="col-md-4 mb-3">
                             <label htmlFor="brand" className="form-label">
                                 <i className="fas fa-tag"></i> Marca
                             </label>
                             <select
+                                name="brand"
                                 id="brand"
                                 className="form-select border-primary"
-                                value={brand}
-                                onChange={(e) => setBrand(e.target.value)}
+                                value={formData.brand}
+                                onChange={handleChange}
                                 required
                             >
                                 <option value="">Seleccionar marca</option>
@@ -225,10 +220,11 @@ const CreateAsset = () => {
                                 <i className="fas fa-list-alt"></i> Subcategoría
                             </label>
                             <select
+                                name="subcategory"
                                 id="subcategory"
                                 className="form-select border-primary"
-                                value={subcategory}
-                                onChange={(e) => setSubcategory(e.target.value)}
+                                value={formData.subcategory}
+                                onChange={handleChange}
                                 required
                             >
                                 <option value="">Seleccionar subcategoría</option>
@@ -244,10 +240,11 @@ const CreateAsset = () => {
                                 <i className="fas fa-user"></i> Responsable
                             </label>
                             <select
+                                name="responsible"
                                 id="responsible"
                                 className="form-select border-primary"
-                                value={responsible}
-                                onChange={(e) => setResponsible(e.target.value)}
+                                value={formData.responsible}
+                                onChange={handleChange}
                                 required
                             >
                                 <option value="">Seleccionar responsable</option>
@@ -259,86 +256,18 @@ const CreateAsset = () => {
                             </select>
                         </div>
                     </div>
-    
+
                     <div className="row mb-4">
-                        <div className="col-md-4 mb-3">
-                            <label htmlFor="locationNumber" className="form-label">
-                                <i className="fas fa-map-marker-alt"></i> Número de Localización
-                            </label>
-                            <select
-                                id="locationNumber"
-                                className="form-select border-primary"
-                                value={locationNumber}
-                                onChange={(e) => setLocationNumber(e.target.value)}
-                                required
-                            >
-                                <option value="">Seleccionar número de localización</option>
-                                {locationNumbers.map((location) => (
-                                    <option key={location.id} value={location.id}>
-                                        {location.locationNumber}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                        <div className="col-md-4 mb-3">
-                            <label htmlFor="status" className="form-label">
-                                <i className="fas fa-tasks"></i> Estado
-                            </label>
-                            <select
-                                id="status"
-                                className="form-select border-primary"
-                                value={status}
-                                onChange={(e) => setStatus(e.target.value)}
-                                required
-                            >
-                                <option value="">Seleccionar estado</option>
-                                {statuses.map((status) => (
-                                    <option key={status.id} value={status.id}>
-                                        {status.name}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                    </div>
-    
-                    <h3 id="datos-compra-title" className="text-center mb-4">Datos de la Compra de Activo</h3>
-                    <div className="row mb-4">
-                        <div className="col-md-4 mb-3">
-                            <label htmlFor="purchaseDate" className="form-label">
-                                <i className="fas fa-calendar-alt"></i> Fecha de Compra
-                            </label>
-                            <input
-                                type="date"
-                                id="purchaseDate"
-                                className="form-control border-primary"
-                                value={purchaseDate}
-                                onChange={(e) => setPurchaseDate(e.target.value)}
-                                required
-                            />
-                        </div>
-                        <div className="col-md-4 mb-3">
-                            <label htmlFor="value" className="form-label">
-                                <i className="fas fa-money-bill"></i> Valor
-                            </label>
-                            <input
-                                type="number"
-                                id="value"
-                                min={1}
-                                className="form-control border-primary"
-                                value={value}
-                                onChange={(e) => setValue(e.target.value)}
-                                required
-                            />
-                        </div>
                         <div className="col-md-4 mb-3">
                             <label htmlFor="supplier" className="form-label">
-                                <i className="fas fa-truck"></i> Proveedor
+                                <i className="fas fa-store"></i> Proveedor
                             </label>
                             <select
+                                name="supplier"
                                 id="supplier"
                                 className="form-select border-primary"
-                                value={supplier}
-                                onChange={(e) => setSupplier(e.target.value)}
+                                value={formData.supplier}
+                                onChange={handleChange}
                                 required
                             >
                                 <option value="">Seleccionar proveedor</option>
@@ -349,18 +278,47 @@ const CreateAsset = () => {
                                 ))}
                             </select>
                         </div>
+                        <div className="col-md-4 mb-3">
+                            <label htmlFor="purchaseDate" className="form-label">
+                                <i className="fas fa-calendar-alt"></i> Fecha de Compra
+                            </label>
+                            <input
+                                type="date"
+                                name="purchaseDate" // Ensure name is set
+                                id="purchaseDate"
+                                className="form-control border-primary"
+                                value={formData.purchaseDate} // This binds the state to the input
+                                onChange={handleChange} // Ensure this updates the state
+                                required
+                            />
+                        </div>
+                        <div className="col-md-4 mb-3">
+                            <label htmlFor="value" className="form-label">
+                                <i className="fas fa-dollar-sign"></i> Valor
+                            </label>
+                            <input
+                                type="number"
+                                name="value"
+                                id="value"
+                                className="form-control border-primary"
+                                value={formData.value}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
                     </div>
-    
+
                     <div className="row mb-4">
                         <div className="col-md-4 mb-3">
                             <label htmlFor="currency" className="form-label">
-                                <i className="fas fa-coins"></i> Moneda
+                                <i className="fas fa-money-bill-wave"></i> Moneda
                             </label>
                             <select
+                                name="currency"
                                 id="currency"
                                 className="form-select border-primary"
-                                value={currency}
-                                onChange={(e) => setCurrency(e.target.value)}
+                                value={formData.currency}
+                                onChange={handleChange}
                                 required
                             >
                                 <option value="">Seleccionar moneda</option>
@@ -371,28 +329,67 @@ const CreateAsset = () => {
                                 ))}
                             </select>
                         </div>
+                        <div className="col-md-4 mb-3">
+                            <label htmlFor="status" className="form-label">
+                                <i className="fas fa-exclamation-circle"></i> Estado
+                            </label>
+                            <select
+                                name="status"
+                                id="status"
+                                className="form-select border-primary"
+                                value={formData.status}
+                                onChange={handleChange}
+                                required
+                            >
+                                <option value="">Seleccionar estado</option>
+                                {statuses.map((status) => (
+                                    <option key={status.id} value={status.id}>
+                                        {status.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="col-md-4 mb-3">
+                            <label htmlFor="locationNumber" className="form-label">
+                                <i className="fas fa-map-marker-alt"></i> Número de Ubicación
+                            </label>
+                            <select
+                                name="locationNumber"
+                                id="locationNumber"
+                                className="form-select border-primary"
+                                value={formData.locationNumber}
+                                onChange={handleChange}
+                                required
+                            >
+                                <option value="">Seleccionar número de ubicación</option>
+                                {locationNumbers.map((location) => (
+                                    <option key={location.id} value={location.id}>
+                                        {location.locationNumber}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
                     </div>
-    
-                    <div className="text-center">
-                        <Button type="submit" className="btn btn-primary">Guardar Activo</Button>
+
+                    <div className="text-center mb-4">
+                        <Button type="submit" className="btn btn-primary">Registrar Activo</Button>
                     </div>
+
+                    {showSuccessAlert && (
+                        <div className="alert alert-success" role="alert">
+                            Activo registrado con éxito!
+                        </div>
+                    )}
+
+                    {showErrorAlert && (
+                        <div className="alert alert-danger" role="alert">
+                            Error al registrar el activo. Por favor, intente nuevamente.
+                        </div>
+                    )}
                 </form>
-    
-                {showSuccessAlert && (
-                    <div className="alert alert-success mt-3">
-                        Activo guardado exitosamente.
-                    </div>
-                )}
-                {showErrorAlert && (
-                    <div className="alert alert-danger mt-3">
-                        Hubo un error al guardar el activo. Inténtelo de nuevo.
-                    </div>
-                )}
             </div>
         </div>
-    );    
-
+    );
 };
 
 export default CreateAsset;
-
