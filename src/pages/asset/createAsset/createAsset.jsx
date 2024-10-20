@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './createAsset.css';
@@ -13,7 +13,7 @@ const CreateAsset = () => {
     const [users, setUsers] = useState([]);
     const [currencies, setCurrencies] = useState([]);
     const [assetModels, setAssetModels] = useState([]);
-    const [locationNumbers, setLocationNumbers] = useState([]); // Nuevo estado para los números de localización
+    const [locationNumbers, setLocationNumbers] = useState([]);
 
     const [purchaseDate, setPurchaseDate] = useState('');
     const [value, setValue] = useState('');
@@ -26,7 +26,7 @@ const CreateAsset = () => {
     const [assetModel, setAssetModel] = useState('');
     const [assetSeries, setAssetSeries] = useState('');
     const [plateNumber, setPlateNumber] = useState('');
-    const [locationNumber, setLocationNumber] = useState(''); // Estado para el número de localización
+    const [locationNumber, setLocationNumber] = useState('');
 
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
     const [showErrorAlert, setShowErrorAlert] = useState(false);
@@ -41,50 +41,41 @@ const CreateAsset = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // Fetch supplier data
                 const supplierResponse = await fetch(API_URLS.SUPPLIER.GET_ALL, { method: 'GET', credentials: 'include' });
                 if (!supplierResponse.ok) throw new Error('Network response was not ok for suppliers');
                 const supplierData = await supplierResponse.json();
                 setSuppliers(supplierData);
 
-                // Fetch brand data
                 const brandResponse = await fetch(API_URLS.BRAND.GET_ALL, { method: 'GET', credentials: 'include' });
                 if (!brandResponse.ok) throw new Error('Network response was not ok for brands');
                 const brandData = await brandResponse.json();
                 setBrands(brandData);
 
-                // Fetch subcategory data
                 const subcategoryResponse = await fetch(API_URLS.ASSET.GET_ALL_SUBCATEGORY, { method: 'GET', credentials: 'include' });
                 if (!subcategoryResponse.ok) throw new Error('Network response was not ok for subcategories');
                 const subcategoryData = await subcategoryResponse.json();
                 setSubcategories(subcategoryData);
 
-                // Fetch status data
                 const statusResponse = await fetch(API_URLS.ASSET.GET_ALL_STATUS, { method: 'GET', credentials: 'include' });
                 if (!statusResponse.ok) throw new Error('Network response was not ok for statuses');
                 const statusData = await statusResponse.json();
                 setStatuses(statusData);
 
-                // Fetch user data
                 const userResponse = await fetch(API_URLS.USER.GET_ALL, { method: 'GET', credentials: 'include' });
                 if (!userResponse.ok) throw new Error('Network response was not ok for users');
                 const userData = await userResponse.json();
                 setUsers(userData);
 
-                // Fetch currency data
                 const currencyResponse = await fetch(API_URLS.ASSET.GET_ALL_CURRENCY, { method: 'GET', credentials: 'include' });
                 if (!currencyResponse.ok) throw new Error('Network response was not ok for currencies');
                 const currencyData = await currencyResponse.json();
                 setCurrencies(currencyData);
 
-                // Fetch asset model data
                 const assetModelResponse = await fetch(API_URLS.ASSET.GET_ALL_MODEL, { method: 'GET', credentials: 'include' });
                 if (!assetModelResponse.ok) throw new Error('Network response was not ok for asset models');
                 const assetModelData = await assetModelResponse.json();
-                console.log(assetModelData);
                 setAssetModels(assetModelData);
 
-                // Fetch location numbers
                 const locationNumberResponse = await fetch(API_URLS.ASSET.GET_ALL_LOCATION_NUMBER, { method: 'GET', credentials: 'include' });
                 if (!locationNumberResponse.ok) throw new Error('Network response was not ok for location numbers');
                 const locationNumberData = await locationNumberResponse.json();
@@ -101,7 +92,7 @@ const CreateAsset = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(currency)
+
         const newAsset = {
             id: 0,
             purchaseDate,
@@ -115,7 +106,7 @@ const CreateAsset = () => {
             assetModelId: parseInt(assetModel),
             assetSeries,
             plateNumber,
-            locationNumber: parseInt(locationNumber), // Se añade el ID del número de localización
+            locationNumber: parseInt(locationNumber),
             isDeleted: false
         };
 
@@ -143,7 +134,7 @@ const CreateAsset = () => {
             setAssetModel('');
             setAssetSeries('');
             setPlateNumber('');
-            setLocationNumber(''); // Reinicia el número de localización
+            setLocationNumber('');
             if (formRef.current) {
                 formRef.current.reset();
             }
@@ -158,60 +149,59 @@ const CreateAsset = () => {
         <div className="mt-5 d-flex justify-content-center">
             <div className="card p-5 shadow-lg" style={{ maxWidth: "900px", borderRadius: "10px" }}>
                 <h1 id="registro-activo-title" className="text-center mb-5">Registro de Activo</h1>
-
+    
                 <h3 id="datos-activo-title" className="text-center mb-4">Datos del Activo</h3>
                 <form ref={formRef} onSubmit={handleSubmit}>
                     <div className="row mb-4">
-                        <div className="col-md-6 mb-3">
-                            <label htmlFor="purchaseDate" className="form-label">
-                                <i className="fas fa-calendar-alt"></i> Fecha de Compra
+                        <div className="col-md-4 mb-3">
+                            <label htmlFor="plateNumber" className="form-label">
+                                <i className="fas fa-id-badge"></i> Número de Placa
                             </label>
                             <input
-                                type="date"
-                                id="purchaseDate"
+                                type="text"
+                                id="plateNumber"
                                 className="form-control border-primary"
-                                value={purchaseDate}
-                                onChange={(e) => setPurchaseDate(e.target.value)}
+                                value={plateNumber}
+                                onChange={(e) => setPlateNumber(e.target.value)}
                                 required
                             />
                         </div>
-                        <div className="col-md-6 mb-3">
-                            <label htmlFor="value" className="form-label">
-                                <i className="fas fa-money-bill"></i> Valor
+                        <div className="col-md-4 mb-3">
+                            <label htmlFor="assetSeries" className="form-label">
+                                <i className="fas fa-barcode"></i> Serie de Activo
                             </label>
                             <input
-                                type="number"
-                                id="value"
-                                min={1}
+                                type="text"
+                                id="assetSeries"
                                 className="form-control border-primary"
-                                value={value}
-                                onChange={(e) => setValue(e.target.value)}
+                                value={assetSeries}
+                                onChange={(e) => setAssetSeries(e.target.value)}
                                 required
                             />
                         </div>
-                    </div>
-
-                    <div className="row mb-4">
-                        <div className="col-md-6 mb-3">
-                            <label htmlFor="supplier" className="form-label">
-                                <i className="fas fa-truck"></i> Proveedor
+                        <div className="col-md-4 mb-3">
+                            <label htmlFor="assetModel" className="form-label">
+                                <i className="fas fa-laptop"></i> Modelo del Activo
                             </label>
                             <select
-                                id="supplier"
+                                id="assetModel"
                                 className="form-select border-primary"
-                                value={supplier}
-                                onChange={(e) => setSupplier(e.target.value)}
+                                value={assetModel}
+                                onChange={(e) => setAssetModel(e.target.value)}
                                 required
                             >
-                                <option value="">Seleccionar proveedor</option>
-                                {suppliers.map((supplier) => (
-                                    <option key={supplier.id} value={supplier.id}>
-                                        {supplier.name}
+                                <option value="">Seleccionar modelo del activo</option>
+                                {assetModels.map((model) => (
+                                    <option key={model.id} value={model.id}>
+                                        {model.modelName}
                                     </option>
                                 ))}
                             </select>
                         </div>
-                        <div className="col-md-6 mb-3">
+                    </div>
+    
+                    <div className="row mb-4">
+                        <div className="col-md-4 mb-3">
                             <label htmlFor="brand" className="form-label">
                                 <i className="fas fa-tag"></i> Marca
                             </label>
@@ -230,10 +220,7 @@ const CreateAsset = () => {
                                 ))}
                             </select>
                         </div>
-                    </div>
-
-                    <div className="row mb-4">
-                        <div className="col-md-6 mb-3">
+                        <div className="col-md-4 mb-3">
                             <label htmlFor="subcategory" className="form-label">
                                 <i className="fas fa-list-alt"></i> Subcategoría
                             </label>
@@ -252,7 +239,7 @@ const CreateAsset = () => {
                                 ))}
                             </select>
                         </div>
-                        <div className="col-md-6 mb-3">
+                        <div className="col-md-4 mb-3">
                             <label htmlFor="responsible" className="form-label">
                                 <i className="fas fa-user"></i> Responsable
                             </label>
@@ -272,11 +259,30 @@ const CreateAsset = () => {
                             </select>
                         </div>
                     </div>
-
+    
                     <div className="row mb-4">
-                        <div className="col-md-6 mb-3">
+                        <div className="col-md-4 mb-3">
+                            <label htmlFor="locationNumber" className="form-label">
+                                <i className="fas fa-map-marker-alt"></i> Número de Localización
+                            </label>
+                            <select
+                                id="locationNumber"
+                                className="form-select border-primary"
+                                value={locationNumber}
+                                onChange={(e) => setLocationNumber(e.target.value)}
+                                required
+                            >
+                                <option value="">Seleccionar número de localización</option>
+                                {locationNumbers.map((location) => (
+                                    <option key={location.id} value={location.id}>
+                                        {location.locationNumber}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="col-md-4 mb-3">
                             <label htmlFor="status" className="form-label">
-                                <i className="fas fa-info-circle"></i> Estado
+                                <i className="fas fa-tasks"></i> Estado
                             </label>
                             <select
                                 id="status"
@@ -293,9 +299,62 @@ const CreateAsset = () => {
                                 ))}
                             </select>
                         </div>
-                        <div className="col-md-6 mb-3">
+                    </div>
+    
+                    <h3 id="datos-compra-title" className="text-center mb-4">Datos de la Compra de Activo</h3>
+                    <div className="row mb-4">
+                        <div className="col-md-4 mb-3">
+                            <label htmlFor="purchaseDate" className="form-label">
+                                <i className="fas fa-calendar-alt"></i> Fecha de Compra
+                            </label>
+                            <input
+                                type="date"
+                                id="purchaseDate"
+                                className="form-control border-primary"
+                                value={purchaseDate}
+                                onChange={(e) => setPurchaseDate(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div className="col-md-4 mb-3">
+                            <label htmlFor="value" className="form-label">
+                                <i className="fas fa-money-bill"></i> Valor
+                            </label>
+                            <input
+                                type="number"
+                                id="value"
+                                min={1}
+                                className="form-control border-primary"
+                                value={value}
+                                onChange={(e) => setValue(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div className="col-md-4 mb-3">
+                            <label htmlFor="supplier" className="form-label">
+                                <i className="fas fa-truck"></i> Proveedor
+                            </label>
+                            <select
+                                id="supplier"
+                                className="form-select border-primary"
+                                value={supplier}
+                                onChange={(e) => setSupplier(e.target.value)}
+                                required
+                            >
+                                <option value="">Seleccionar proveedor</option>
+                                {suppliers.map((supplier) => (
+                                    <option key={supplier.id} value={supplier.id}>
+                                        {supplier.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+    
+                    <div className="row mb-4">
+                        <div className="col-md-4 mb-3">
                             <label htmlFor="currency" className="form-label">
-                                <i className="fas fa-dollar-sign"></i> Moneda
+                                <i className="fas fa-coins"></i> Moneda
                             </label>
                             <select
                                 id="currency"
@@ -306,94 +365,34 @@ const CreateAsset = () => {
                             >
                                 <option value="">Seleccionar moneda</option>
                                 {currencies.map((currency) => (
-                                    <option key={currency.name} value={currency.id}>
+                                    <option key={currency.id} value={currency.id}>
                                         {currency.currencyName}
                                     </option>
                                 ))}
                             </select>
                         </div>
                     </div>
-
-                    <div className="row mb-4">
-                        <div className="col-md-6 mb-3">
-                            <label htmlFor="assetModel" className="form-label">
-                                <i className="fas fa-box"></i> Modelo de Activo
-                            </label>
-                            <select
-                                id="assetModel"
-                                className="form-select border-primary"
-                                value={assetModel}
-                                onChange={(e) => setAssetModel(e.target.value)}
-                                required
-                            >
-                                <option value="">Seleccionar modelo</option>
-                                {assetModels.map((model) => (
-                                    <option key={model.modelName} value={model.id}>
-                                        {model.modelName}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                        <div className="col-md-6 mb-3">
-                            <label htmlFor="assetSeries" className="form-label">
-                                <i className="fas fa-barcode"></i> Serie del Activo
-                            </label>
-                            <input
-                                type="text"
-                                id="assetSeries"
-                                className="form-control border-primary"
-                                value={assetSeries}
-                                onChange={(e) => setAssetSeries(e.target.value)}
-                                required
-                            />
-                        </div>
+    
+                    <div className="text-center">
+                        <Button type="submit" className="btn btn-primary">Guardar Activo</Button>
                     </div>
-
-                    <div className="row mb-4">
-                        <div className="col-md-6 mb-3">
-                            <label htmlFor="plateNumber" className="form-label">
-                                <i className="fas fa-hashtag"></i> Número de Placa
-                            </label>
-                            <input
-                                type="text"
-                                id="plateNumber"
-                                className="form-control border-primary"
-                                value={plateNumber}
-                                onChange={(e) => setPlateNumber(e.target.value)}
-                                required
-                            />
-                        </div>
-                        <div className="col-md-6 mb-3">
-                            <label htmlFor="locationNumber" className="form-label">
-                                <i className="fas fa-map-marker-alt"></i> Número de Localización
-                            </label>
-                            <select
-                                id="locationNumber"
-                                className="form-select border-primary"
-                                value={locationNumber}
-                                onChange={(e) => setLocationNumber(e.target.value)}
-                                required
-                            >
-                                <option value="">Seleccionar localización</option>
-                                {locationNumbers.map((location) => (
-                                    <option key={location.id} value={location.id}>
-                                        {location.locationType + ' : ' + location.locationNumber}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                    </div>
-
-                    <Button variant="primary" type="submit">
-                        Agregar Activo
-                    </Button>
-
-                    {showSuccessAlert && <div className="alert alert-success mt-3">Activo agregado exitosamente</div>}
-                    {showErrorAlert && <div className="alert alert-danger mt-3">Hubo un error al agregar el activo</div>}
                 </form>
+    
+                {showSuccessAlert && (
+                    <div className="alert alert-success mt-3">
+                        Activo guardado exitosamente.
+                    </div>
+                )}
+                {showErrorAlert && (
+                    <div className="alert alert-danger mt-3">
+                        Hubo un error al guardar el activo. Inténtelo de nuevo.
+                    </div>
+                )}
             </div>
         </div>
-    );
+    );    
+
 };
 
 export default CreateAsset;
+
