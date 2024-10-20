@@ -230,7 +230,7 @@ const CreateAsset = () => {
                                 <option value="">Seleccionar subcategoría</option>
                                 {subcategories.map((subcategory) => (
                                     <option key={subcategory.id} value={subcategory.id}>
-                                        {subcategory.name}
+                                        {subcategory.name} - {subcategory.description}
                                     </option>
                                 ))}
                             </select>
@@ -324,7 +324,7 @@ const CreateAsset = () => {
                                 <option value="">Seleccionar moneda</option>
                                 {currencies.map((currency) => (
                                     <option key={currency.id} value={currency.id}>
-                                        {currency.currencyName}
+                                        {currency.currencyName} - {currency.code}
                                     </option>
                                 ))}
                             </select>
@@ -344,7 +344,7 @@ const CreateAsset = () => {
                                 <option value="">Seleccionar estado</option>
                                 {statuses.map((status) => (
                                     <option key={status.id} value={status.id}>
-                                        {status.name}
+                                        {status.name} - {status.description}
                                     </option>
                                 ))}
                             </select>
@@ -364,7 +364,7 @@ const CreateAsset = () => {
                                 <option value="">Seleccionar número de ubicación</option>
                                 {locationNumbers.map((location) => (
                                     <option key={location.id} value={location.id}>
-                                        {location.locationNumber}
+                                        {location.locationType} - {location.locationNumber}
                                     </option>
                                 ))}
                             </select>
