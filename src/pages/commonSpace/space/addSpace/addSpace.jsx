@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { usePage } from '../../../../context/pageContext.jsx';
+import {API_URLS} from "../../../../declarations/apiConfig.js";
 
 
 const AddSpace = () => {
@@ -20,14 +21,11 @@ const AddSpace = () => {
 
     useEffect(() => {
         setPageName("Agregar espacio");
-    }, [setPageName]);
-
-    useEffect(() => {
-        fetch('http://localhost:8080/common-space/locations-by-building', { method: 'GET',  credentials: 'include' })
+        fetch(API_URLS.COMMON_SPACE.BUILDING_LOCATIONS_BY_BUILDING, { method: 'GET',  credentials: 'include' })
             .then(response => response.json())
             .then(data => { setBuildings(data); })
             .catch(error => console.error('Fetch error:', error));
-    }, []);
+    }, [setPageName]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -42,7 +40,7 @@ const AddSpace = () => {
             closeTime
         };
 
-        fetch('http://localhost:8080/common-space/create', {method: 'POST', credentials: 'include',
+        fetch(API_URLS.COMMON_SPACE.CREATE_SPACE, {method: 'POST', credentials: 'include',
             headers: {'Content-Type': 'application/json'}, body: JSON.stringify(newSpace)})
             .then(response => {
                 if (!response.ok) { throw new Error('Network response was not ok'); }
@@ -64,7 +62,6 @@ const AddSpace = () => {
     const handleRegisterBloc = () => {
         window.location.href = 'addBuildingLocation';
     };
-
     const handleCancel = () => {
         setName('');
         setSpaceCode('');
@@ -100,9 +97,10 @@ const AddSpace = () => {
                             <div className="row align-items-center">
                                 <label htmlFor="name" className="col-sm-4 col-form-label form-label text-black">
                                     <i className="fas fa-tag"></i> Nombre del espacio
+                                    <span className="ml-2 text-danger fw-bold">*</span>
                                 </label>
                                 <div className="col-sm-8 w-100 mb-4">
-                                    <input
+                                <input
                                         type="text"
                                         id="name"
                                         className="form-control border-primary"
@@ -116,9 +114,10 @@ const AddSpace = () => {
                             <div className="mb-4 row align-items-center">
                                 <label htmlFor="spaceCode" className="col-sm-4 col-form-label form-label text-black">
                                     <i className="fas fa-code"></i> Código del espacio
+                                    <span className="ml-2 text-danger fw-bold">*</span>
                                 </label>
                                 <div className="col-sm-8">
-                                    <input
+                                <input
                                         type="number"
                                         id="spaceCode"
                                         className="form-control border-primary"
@@ -132,9 +131,10 @@ const AddSpace = () => {
                             <div className="mb-4 row align-items-center">
                                 <label htmlFor="maxPeople" className="col-sm-4 col-form-label form-label text-black">
                                     <i className="fas fa-users"></i> Capacidad máxima de personas
+                                    <span className="ml-1 text-danger fw-bold">*</span>
                                 </label>
                                 <div className="col-sm-8">
-                                    <input
+                                <input
                                         type="number"
                                         id="maxPeople"
                                         className="form-control border-primary"
@@ -148,9 +148,10 @@ const AddSpace = () => {
                             <div className="mb-4 row align-items-center">
                                 <label htmlFor="buildingId" className="col-sm-4 col-form-label form-label text-black">
                                     <i className="fas fa-building"></i> Edificio
+                                    <span className="ml-2 text-danger fw-bold">*</span>
                                 </label>
                                 <div className="col-sm-8">
-                                    <select
+                                <select
                                         id="buildingId"
                                         className="form-control border-primary"
                                         value={buildingId}
@@ -178,11 +179,13 @@ const AddSpace = () => {
                                 </div>
                             </div>
                             <div className="mb-3 row align-items-center">
-                                <label htmlFor="buildingLocation" className="col-sm-4 col-form-label form-label text-black">
+                                <label htmlFor="buildingLocation"
+                                       className="col-sm-4 col-form-label form-label text-black">
                                     <i className="fas fa-map-marker-alt"></i> Ubicaciones del edificio
+                                    <span className="ml-2 text-danger fw-bold">*</span>
                                 </label>
                                 <div className="col-sm-8">
-                                    <select
+                                <select
                                         id="buildingLocation"
                                         className="form-control border-primary"
                                         value={buildingLocation}
@@ -202,6 +205,7 @@ const AddSpace = () => {
                                 <div className="col-sm-6">
                                     <label htmlFor="openTime" className="col-form-label form-label text-black">
                                         <i className="fas fa-clock"></i> Hora de apertura
+                                        <span className="ml-2 text-danger fw-bold">*</span>
                                     </label>
                                     <input
                                         type="time"
@@ -215,6 +219,7 @@ const AddSpace = () => {
                                 <div className="col-sm-6">
                                     <label htmlFor="closeTime" className="col-form-label form-label text-black">
                                         <i className="fas fa-clock"></i> Hora de cierre
+                                        <span className="ml-2 text-danger fw-bold">*</span>
                                     </label>
                                     <input
                                         type="time"
