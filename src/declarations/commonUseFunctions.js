@@ -16,4 +16,13 @@ const formatEventTime = (eventDate, time) => {
     return dateTime.toISOString();
 };
 
-export { formatTime, formatEventTime };
+const handleTimeSetting = (time) => {
+    const [hours, minutes] = time.split(':');
+    return `${hours}:${minutes}`;
+}
+
+const isEmptyString = (string) => {
+    return typeof string === 'string' && string.trim() === '';
+}
+
+export { formatTime, formatEventTime, handleTimeSetting, isEmptyString };
