@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { usePage } from '../../../context/pageContext';
+import {API_URLS} from "../../../declarations/apiConfig.js";
 
 const AddBuilding = () => {
     const [name, setName] = useState('');
@@ -12,7 +13,6 @@ const AddBuilding = () => {
     useEffect(() => {
         setPageName("Agregar Edificio");
     }, [setPageName]);
-
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -21,18 +21,10 @@ const AddBuilding = () => {
             name: name
         };
 
-        fetch('http://localhost:8080/common-space/create/building', {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newBuilding)
-        })
+        fetch(API_URLS.COMMON_SPACE.CREATE_BUILDING, { method: 'POST',  credentials: 'include',
+            headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(newBuilding) })
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
+                if (!response.ok) { throw new Error('Network response was not ok'); }
                 return response.json();
             })
             .then(() => {
@@ -51,7 +43,6 @@ const AddBuilding = () => {
     const handleRegisterSp = () => {
         window.location.href = 'addSpace';
     };
-
     const handleCancel = () => {
         setName('');
     }
@@ -86,6 +77,7 @@ const AddBuilding = () => {
                             <div className="form-group mb-4 row align-items-center">
                                 <label htmlFor="buildingName" className="col-sm-4 col-form-label form-label text-black">
                                     <i className="fas fa-building"></i> Nombre del Edificio
+                                    <span className="ml-2 text-danger fw-bold">*</span>
                                 </label>
                                 <div className="col-sm-8">
                                     <input

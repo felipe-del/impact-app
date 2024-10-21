@@ -3,7 +3,8 @@ import {Modal, Button, ListGroup} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './editSpace.css'
 import {usePage} from "../../../../context/pageContext.jsx";
-import {formatTime} from "../../functions/commonUseFunctions.jsx";
+import {formatTime, handleTimeSetting} from "../../../../declarations/commonUseFunctions.js";
+import {API_URLS} from "../../../../declarations/apiConfig.js";
 
 const EditSpace = () => {
     const { setPageName } = usePage();
@@ -26,27 +27,27 @@ const EditSpace = () => {
 
     useEffect(() => {
         setPageName("Editar espacio");
-    }, [setPageName]);
 
-    useEffect(() => {
-        fetch('http://localhost:8080/common-space/all', { method: 'GET', credentials: 'include' })
+        fetch(API_URLS.COMMON_SPACE.ALL_SPACES, { method: 'GET', credentials: 'include' })
             .then(response => response.json())
             .then(data => { setSpaces(data); })
             .catch(error => console.error('Fetch error:', error));
-    }, []);
 
-    useEffect(() => {
-        fetch('http://localhost:8080/common-space/locations-by-building', { method: 'GET',  credentials: 'include' })
+        fetch(API_URLS.COMMON_SPACE.BUILDING_LOCATIONS_BY_BUILDING, { method: 'GET',  credentials: 'include' })
             .then(response => response.json())
             .then(data => { setBuildings(data); })
             .catch(error => console.error('Fetch error:', error));
-    }, []);
+
+        }, [setPageName]);
 
     const handleSelectSpace = (space) => {
         setSpace(space);
         setName(space.name);
         setSpaceId(space.id);
         setSpaceCode(space.spaceCode);
+        setMaxPeople(space.maxPeople);
+        setOpenTime(handleTimeSetting(space.openTime));
+        setCloseTime(handleTimeSetting(space.closeTime));
 
         setCurrentStep(2);
     };
@@ -96,21 +97,25 @@ const EditSpace = () => {
         setOpenTime('');
         setCloseTime('');
     }
-
     const goBackToPreviousStep = ()=> {
         setName('');
         setSpace('');
         setSpaceCode('');
         setCurrentStep(1);
     }
-
     const updateTracking = () => {
         if (maxPeople !== space.maxPeople) trackUpdate.push('maxPeople');
         if (buildingLocation !== space.location.floor) trackUpdate.push('buildingLocation');
         if (openTime !== space.openTime) trackUpdate.push('openTime');
         if (closeTime !== space.closeTime) trackUpdate.push('closeTime');
-    }
 
+        // This fetch is so that the changes are reflected if the user goes back to the space selection screen and then
+        // decides to click on the same space, so that it fetches the new updated data
+        fetch(API_URLS.COMMON_SPACE.ALL_SPACES, { method: 'GET', credentials: 'include' })
+            .then(response => response.json())
+            .then(data => { setSpaces(data); })
+            .catch(error => console.error('Fetch error:', error));
+    }
 
     return (
         <div>
@@ -142,7 +147,7 @@ const EditSpace = () => {
                                                 <option value="">Seleccione un espacio</option>
                                                 {spaces.map(currentSpace => (
                                                     <option key={currentSpace.id} value={currentSpace.id}>
-                                                        {currentSpace.id} - {currentSpace.name}
+                                                        {currentSpace.spaceCode} - {currentSpace.name}
                                                     </option>
                                                 ))}
                                             </select>
@@ -192,6 +197,7 @@ const EditSpace = () => {
                                                         id="maxPeople"
                                                         className="form-control border-primary"
                                                         placeholder="Ingresa la capacidad máxima de personas"
+                                                        min="1"
                                                         value={maxPeople}
                                                         onChange={(e) => setMaxPeople(e.target.value)}
                                                         required
@@ -201,9 +207,10 @@ const EditSpace = () => {
                                             <div className="mb-4 row align-items-center">
                                                 <label htmlFor="buildingId" className="col-sm-4 col-form-label form-label text-black">
                                                     <i className="fas fa-building"></i> Edificio
+                                                    <span className="ml-2 text-danger fw-bold">*</span>
                                                 </label>
                                                 <div className="col-sm-8">
-                                                    <select
+                                                <select
                                                         id="buildingId"
                                                         className="form-control border-primary"
                                                         value={buildingId}
@@ -231,12 +238,12 @@ const EditSpace = () => {
                                                 </div>
                                             </div>
                                             <div className="mb-3 row align-items-center">
-                                                <label htmlFor="buildingLocation"
-                                                       className="col-sm-4 col-form-label form-label text-black">
+                                                <label htmlFor="buildingLocation" className="col-sm-4 col-form-label form-label text-black">
                                                     <i className="fas fa-map-marker-alt"></i> Ubicaciones del edificio
+                                                    <span className="ml-2 text-danger fw-bold">*</span>
                                                 </label>
                                                 <div className="col-sm-8">
-                                                    <select
+                                                <select
                                                         id="buildingLocation"
                                                         className="form-control border-primary"
                                                         value={buildingLocation}

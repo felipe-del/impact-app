@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { usePage } from "../../../../context/pageContext.jsx";
 import DynamicTable from "../../../../components/dynamicTable/dynamicTable.jsx";
 import {Button, Modal} from "react-bootstrap";
-import {formatEventTime} from "../../functions/commonUseFunctions.jsx";
+import {formatEventTime, isEmptyString} from "../../../../declarations/commonUseFunctions.js";
 
 const SpaceRequest = () => {
     const { setPageName } = usePage();
@@ -11,7 +11,7 @@ const SpaceRequest = () => {
     const [spaces, setSpaces] = useState([]);
     const [brands, setBrands] = useState([]);
     const [spaceId, setSpaceId] = useState(-1);
-    const [equipment, setEquipment] = useState([]);
+    const [equipments, setEquipments] = useState([]);
     const [numPeople, setNumPeople] = useState('');
     const [eventDesc, setEventDesc] = useState('');
     const [eventObs, setEventObs] = useState('');
@@ -26,23 +26,21 @@ const SpaceRequest = () => {
 
     useEffect(() => {
         setPageName("Solicitud de espacios");
-    }, [setPageName]);
 
-    useEffect(() => {
         fetch('http://localhost:8080/common-space/equipment-by-space', { method: 'GET', credentials: 'include' })
             .then(response => response.json())
             .then(data => setSpaces(data))
             .catch(error => console.error('Error fetching spaces:', error));
-    }, []);
 
-    useEffect(() => {
         fetch('http://localhost:8080/common-space/brands', { method: 'GET', credentials: 'include' })
             .then(response => response.json())
             .then(data => setBrands(data))
             .catch(error => console.error('Error fetching brands:', error));
-    }, [])
+
+    }, [setPageName]);
 
     const handleSpaceChange = (e) => {
+        resetForm();
         const curSpaceId = e.target.value;
         const selected = spaces.find(space => space.space.id === parseInt(curSpaceId));
 
@@ -58,7 +56,7 @@ const SpaceRequest = () => {
             };
         });
 
-        setEquipment(equipmentWithBrandNames);
+        setEquipments(equipmentWithBrandNames);
     };
 
     const handleSubmit = (sp) => {
@@ -73,6 +71,10 @@ const SpaceRequest = () => {
             return;
         }
 
+        if(isEmptyString(eventObs)) { setEventObs("No hay observaciones"); }
+
+        console.log(eventObs);
+
         const newSpaceRequest = {
             spaceId,
             numPeople,
@@ -83,6 +85,8 @@ const SpaceRequest = () => {
             startTime: formatEventTime(startDate, startTime),
             endTime: formatEventTime(endDate, endTime)
         };
+
+        console.log('Request payload:', newSpaceRequest); // Debug log
 
         fetch('http://localhost:8080/common-space/request/space-request&reservation', {method: 'POST', credentials: 'include',
             headers: {'Content-Type': 'application/json'}, body: JSON.stringify(newSpaceRequest)})
@@ -106,7 +110,6 @@ const SpaceRequest = () => {
     ];
 
     const resetForm = () => {
-        setSpaceId('');
         setNumPeople('');
         setEventDesc('');
         setEventObs('');
@@ -114,6 +117,7 @@ const SpaceRequest = () => {
         setStartDate('');
         setEndDate('');
         setStartTime('');
+        setUseEquipment(false);
         setEndTime('');
     }
 
@@ -133,6 +137,7 @@ const SpaceRequest = () => {
                         <div className="mb-3 row align-items-center">
                             <label htmlFor="spaceSelect" className="form-label text-black">
                                 <i className="fas fa-building"></i> Seleccione el espacio que desea solicitar
+                                <span className="ml-2 text-danger fw-bold">*</span>
                             </label>
                             <div className="col">
                                 <select
@@ -146,7 +151,7 @@ const SpaceRequest = () => {
                                     <option value="">Seleccione un espacio</option>
                                     {spaces.map(({space}) => (
                                         <option key={space.id} value={space.id}>
-                                            {space.name} - {space.spaceCode}
+                                            {space.spaceCode} - {space.name}
                                         </option>
                                     ))}
                                 </select>
@@ -155,8 +160,9 @@ const SpaceRequest = () => {
                         <div className="mb-1 row align-items-center">
                             <label htmlFor="numPeople" className="form-label text-black">
                                 <i className="fas fa-users"></i> Cantidad de personas
+                                <span className="ml-2 text-danger fw-bold">*</span>
                             </label>
-                            <div className="col-sm">
+                            <div className="col-sm mb-1">
                                 <input
                                     type="number"
                                     id="numPeople"
@@ -169,13 +175,15 @@ const SpaceRequest = () => {
                                     required
                                 />
                             </div>
-                            { space && (
-                                <span className="mt-1 text-primary font-italic">Capacidad máxima del espacio: {space?.space?.maxPeople}</span>
+                            {space && (
+                                <span
+                                    className="mt-1 text-primary font-italic">Capacidad máxima del espacio: {space?.space?.maxPeople}</span>
                             )}
                         </div>
                         <div className="mb-3 row align-items-center">
                             <label htmlFor="eventDesc" className="form-label text-black">
                                 <i className="fas fa-file-alt"></i> Propósito de la Solicitud
+                                <span className="ml-2 text-danger fw-bold">*</span>
                             </label>
                             <div className="col">
                                 <textarea
@@ -188,7 +196,61 @@ const SpaceRequest = () => {
                                 />
                             </div>
                         </div>
+                        <div className="mb-3 row align-items-center">
+                            <div className="col-sm-6">
+                                <label htmlFor="openTime" className="col-form-label form-label text-black">
+                                    <i className="fas fa-clock"></i> Hora de inicio
+                                    <span className="ml-2 text-danger fw-bold">*</span>
+                                </label>
+                                <input
+                                    type="time"
+                                    id="openTime"
+                                    className="form-control border-primary"
+                                    value={startTime}
+                                    min={space?.space?.openTime}
+                                    max={space?.space?.closeTime}
+                                    onChange={(e) => setStartTime(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <div className="col-sm-6">
+                                <label htmlFor="closeTime" className="col-form-label form-label text-black">
+                                    <i className="fas fa-clock"></i> Hora de finalización
+                                    <span className="ml-2 text-danger fw-bold">*</span>
+                                </label>
+                                <input
+                                    type="time"
+                                    id="closeTime"
+                                    className="form-control border-primary"
+                                    value={endTime}
+                                    min={space?.space?.openTime}
+                                    max={space?.space?.closeTime}
+                                    onChange={(e) => setEndTime(e.target.value)}
+                                    required
+                                />
+                            </div>
+                        </div>
                         <div className="mb-2 row d-flex align-items-center">
+                            <div className="row col d-flex align-content-end" style={{marginRight: ".6vw"}}>
+                                <div className="col">
+                                    <label className="form-label text-black">
+                                        <i className="fas fa-calendar-days"></i> Seleccione la fecha del evento
+                                        <span className="ml-2 text-danger fw-bold">*</span>
+                                    </label>
+                                    <input
+                                        type="date"
+                                        id="eventDate"
+                                        className="form-control mt-2 border-primary"
+                                        name="eventDate"
+                                        value={eventDate}
+                                        onChange={(e) => {
+                                            setEventDate(e.target.value);
+                                            setStartDate(e.target.value);
+                                            setEndDate(e.target.value);
+                                        }}
+                                    />
+                                </div>
+                            </div>
                             <div className="mb-3 row" style={{maxWidth: "50%"}}>
                                 <label className="form-label text-black">
                                     <i className="fas fa-computer"></i> Desea utilizar el equipo tecnológico disponible?
@@ -220,57 +282,6 @@ const SpaceRequest = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="row col d-flex align-content-end" style={{marginLeft: ".6vw"}}>
-                                <div className="col">
-                                    <label className="form-label text-black">
-                                        <i className="fas fa-calendar-days"></i> Seleccione la fecha del evento
-                                    </label>
-                                    <input
-                                        type="date"
-                                        id="eventDate"
-                                        className="form-control mt-2 border-primary"
-                                        name="eventDate"
-                                        value={eventDate}
-                                        onChange={(e) => {
-                                            setEventDate(e.target.value);
-                                            setStartDate(e.target.value);
-                                            setEndDate(e.target.value);
-                                        }}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="mb-3 row align-items-center">
-                            <div className="col-sm-6">
-                                <label htmlFor="openTime" className="col-form-label form-label text-black">
-                                    <i className="fas fa-clock"></i> Hora de inicio
-                                </label>
-                                <input
-                                    type="time"
-                                    id="openTime"
-                                    className="form-control border-primary"
-                                    value={startTime}
-                                    min={space?.space?.openTime}
-                                    max={space?.space?.closeTime}
-                                    onChange={(e) => setStartTime(e.target.value)}
-                                    required
-                                />
-                            </div>
-                            <div className="col-sm-6">
-                                <label htmlFor="closeTime" className="col-form-label form-label text-black">
-                                    <i className="fas fa-clock"></i> Hora de finalización
-                                </label>
-                                <input
-                                    type="time"
-                                    id="closeTime"
-                                    className="form-control border-primary"
-                                    value={endTime}
-                                    min={space?.space?.openTime}
-                                    max={space?.space?.closeTime}
-                                    onChange={(e) => setEndTime(e.target.value)}
-                                    required
-                                />
-                            </div>
                         </div>
                         <div className="mb-3 row align-items-center">
                             <label htmlFor="eventDesc" className="form-label text-black">
@@ -282,7 +293,6 @@ const SpaceRequest = () => {
                                     className="form-control border-primary"
                                     value={eventObs}
                                     onChange={(e) => setEventObs(e.target.value)}
-                                    required
                                     style={{height: '7vh', resize: 'none'}}
                                 />
                             </div>
@@ -308,9 +318,9 @@ const SpaceRequest = () => {
                         <div className="container shadow-lg card" style={{borderRadius: "2vh", padding: "1vw"}}>
                             <h3 className="mb-4">Equipo tecnológico disponible para <strong>{space.space.name}:</strong>
                             </h3>
-                            {equipment.length > 0 ? (
+                            {equipments.length > 0 ? (
                                 <DynamicTable
-                                    items={equipment}
+                                    items={equipments}
                                     columns={columns}
                                 />
                             ) : (
@@ -339,7 +349,7 @@ const SpaceRequest = () => {
                     <Modal.Body>Hubo un problema enviar la solicitud. Por favor, intente nuevamente.</Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={() => setShowErrorModal(false)}>
-                            Cerrar
+                        Cerrar
                         </Button>
                     </Modal.Footer>
                 </Modal>
