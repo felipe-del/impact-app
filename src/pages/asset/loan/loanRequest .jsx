@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assetLoanRequest.css';
@@ -14,7 +14,7 @@ const AssetLoanRequest = () => {
     const [showErrorAlert, setShowErrorAlert] = useState(false);
     const formRef = useRef(null);
 
-    const userId = sessionStorage.getItem('userId'); // Reemplaza con tu método para obtener el userId
+    //const userId = sessionStorage.getItem('userId'); // Reemplaza con tu método para obtener el userId
     const { setPageName } = usePage();
 
     useEffect(() => {
@@ -27,6 +27,7 @@ const AssetLoanRequest = () => {
             .then(response => response.json())
             .then(data => {
                 setAssets(data);
+                console.log(data);
             })
             .catch(error => {
                 console.error('Error fetching assets:', error);
@@ -97,7 +98,7 @@ const AssetLoanRequest = () => {
                             <option value="">Seleccione un activo</option>
                             {assets.map(asset => (
                                 <option key={asset.id} value={asset.id}>
-                                    {asset.name} - {asset.plateNumber}
+                                    {asset.category} - {asset.subcategory} - {asset.description} - {asset.plate}
                                 </option>
                             ))}
                         </select>

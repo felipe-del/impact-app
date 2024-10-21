@@ -1,10 +1,10 @@
 #registro-activo-title,
 #datos-activo-title {
-    color: #3a5fcd; /* Color personalizado para los títulos */
+    color: #000000; /* Color personalizado para los títulos */
 }
 
 .form-label {
-    color: #3a5fcd; /* Color personalizado para las etiquetas */
+    color: #000000; /* Color personalizado para las etiquetas */
 }
 
 .btn-custom {

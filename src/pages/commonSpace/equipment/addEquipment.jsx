@@ -115,8 +115,8 @@ const AddSpaceEquipment = () => {
                     </div>
                     <form onSubmit={handleSubmit}>
                         <div className="form-group mb-4 row align-items-center">
-                            <label htmlFor="equipmentName" className="col-sm-4 col-form-label form-label">
-                                <i className="fas fa-laptop" id="icon-name"></i> Nombre del Equipo
+                            <label htmlFor="equipmentName" className="col-sm-4 col-form-label form-label" style={{ color: 'black' }}>
+                                <i className="fas fa-laptop" id="icon-name" style={{ color: 'black' }}></i> Nombre del Equipo
                             </label>
                             <div className="col-sm-8">
                                 <input
@@ -132,7 +132,7 @@ const AddSpaceEquipment = () => {
                         </div>
                         
                         <div className="form-group mb-4 row align-items-center">
-                            <label htmlFor="quantity" className="col-sm-4 col-form-label form-label">
+                            <label htmlFor="quantity" className="col-sm-4 col-form-label form-label" style={{ color: 'black' }}>
                                 <i className="fas fa-cubes" id="icon-quantity"></i> Cantidad
                             </label>
                             <div className="col-sm-8">
@@ -158,7 +158,7 @@ const AddSpaceEquipment = () => {
                         </div>
 
                         <div className="form-group mb-4 row align-items-center">
-                            <label htmlFor="brand" className="col-sm-4 col-form-label form-label">
+                            <label htmlFor="brand" className="col-sm-4 col-form-label form-label" style={{ color: 'black' }}>
                                 <i className="fas fa-tag"></i> Marca
                             </label>
                             <div className="col-sm-8">
@@ -181,7 +181,7 @@ const AddSpaceEquipment = () => {
                         </div>
 
                         <div className="form-group mb-4 row align-items-center">
-                            <label htmlFor="space" className="col-sm-4 col-form-label form-label">
+                            <label htmlFor="space" className="col-sm-4 col-form-label form-label" style={{ color: 'black' }}>
                                 <i className="fas fa-building"></i> Espacio
                             </label>
                             <div className="col-sm-8">

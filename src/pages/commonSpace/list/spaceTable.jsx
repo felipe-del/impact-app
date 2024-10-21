@@ -4,7 +4,8 @@ import SearchBar from '../../../components/searchBar/searchBar.jsx';
 import { useState , useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import { usePage } from '../../../context/pageContext.jsx';
-import {formatTime} from "../functions/commonUseFunctions.jsx";
+import {formatTime} from "../../../declarations/commonUseFunctions.js";
+import {API_URLS} from "../../../declarations/apiConfig.js";
 
 const SpaceTable = () => {
   const [allSpaces, setSpaces] = useState([]);
@@ -13,18 +14,15 @@ const SpaceTable = () => {
 
   useEffect(() => {
       setPageName("Listado de Espacios comunes");
-  }, [setPageName]);
 
-  useEffect(() => {
-      fetch("http://localhost:8080/common-space/all")
+      fetch(API_URLS.COMMON_SPACE.ALL_SPACES)
           .then(response => response.json())
           .then(data => {
               console.log("Datos recibidos: ", data);
               setSpaces(data);
           })
           .catch(error => console.error('Error:', error));
-  }, []);
-    
+  }, [setPageName]);
 
   // Filtrado de productos basado en la búsqueda y las categorías seleccionadas
   const filteredProducts = allSpaces.filter(space => {
