@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { Button, Alert } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import { usePage } from '../../../context/pageContext';
+import {API_URLS} from "../../../declarations/apiConfig.js";
 
 const AddBuildingLocation = () => {
     const [buildings, setBuildings] = useState([]);
@@ -13,14 +14,12 @@ const AddBuildingLocation = () => {
 
     useEffect(() => {
         setPageName("Agregar Ubicacion dentro de edificio");
-    }, [setPageName]);
 
-    useEffect(() => {
-        fetch('http://localhost:8080/common-space/building', { method: 'GET',  credentials: 'include' })
-        .then(response => response.json())
-        .then(data => { setBuildings(data); })
-        .catch(error => console.error('Fetch error:', error));
-    }, []);
+        fetch(API_URLS.COMMON_SPACE.GET_BUILDINGS, { method: 'GET',  credentials: 'include' })
+            .then(response => response.json())
+            .then(data => { setBuildings(data); })
+            .catch(error => console.error('Fetch error:', error));
+    }, [setPageName]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -33,18 +32,10 @@ const AddBuildingLocation = () => {
             floorId: floorId
         };
 
-        fetch('http://localhost:8080/common-space/create/building-location', {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newBuildingLocation)
-        })
+        fetch(API_URLS.COMMON_SPACE.CREATE_BUILDING_LOCATION, { method: 'POST', credentials: 'include',
+            headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(newBuildingLocation) })
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
+                if (!response.ok) { throw new Error('Network response was not ok'); }
                 return response.json();
             })
             .then(() => {
@@ -63,7 +54,6 @@ const AddBuildingLocation = () => {
     const handleRegisterSp = () => {
         window.location.href = 'addSpace';
     };
-
     const handleCancel = () => {
       setBuildingId('');
       setFloorId('');
@@ -74,7 +64,7 @@ const AddBuildingLocation = () => {
             <nav aria-label="breadcrumb">
                 <ol className="breadcrumb">
                     <li className="breadcrumb-item"><a href="/app">Inicio</a></li>
-                    <li className="breadcrumb-item active" aria-current="page">Registro de ubicaciones de edificio</li>
+                    <li className="breadcrumb-item active" aria-current="page">Registro de Ubicaciones en Edificios</li>
                 </ol>
             </nav>
             <div className="mt-5 d-flex justify-content-center">
@@ -99,11 +89,13 @@ const AddBuildingLocation = () => {
                             <h3>Detalles de la ubicación</h3>
                             <form onSubmit={handleSubmit}>
                                 <div className="mb-4 row align-items-center">
-                                    <label htmlFor="buildingId" className="col-sm-4 col-form-label form-label text-black">
+                                    <label htmlFor="buildingId"
+                                           className="col-sm-4 col-form-label form-label text-black">
                                         <i className="fas fa-building"></i> Edificio
+                                        <span className="ml-2 text-danger fw-bold">*</span>
                                     </label>
                                     <div className="col-sm-8">
-                                        <select
+                                    <select
                                             id="buildingId"
                                             className="form-control border-primary"
                                             value={buildingId}
@@ -122,9 +114,10 @@ const AddBuildingLocation = () => {
                                 <div className="mb-5 row align-items-center">
                                     <label htmlFor="floorId" className="col-sm-4 col-form-label form-label text-black">
                                         <i className="fas fa-map-marker-alt"></i> Nombre de la ubicación
+                                        <span className="ml-2 text-danger fw-bold">*</span>
                                     </label>
                                     <div className="col-sm-8">
-                                        <input
+                                    <input
                                             type="text"
                                             id="floorId"
                                             className="form-control border-primary"
