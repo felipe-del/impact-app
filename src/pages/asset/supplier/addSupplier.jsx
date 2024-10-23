@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
+import InputMask from 'react-input-mask'; // Import InputMask
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './addSupplier.css';
 import { usePage } from '../../../context/pageContext';
 
@@ -13,6 +14,7 @@ const AddSupplier = () => {
     const [idNumber, setIdNumber] = useState(''); // State for ID number
     const [entityTypes, setEntityTypes] = useState([]);
     const [selectedEntityType, setSelectedEntityType] = useState(null);
+    const [idMask, setIdMask] = useState(''); // Mask for the ID number
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
     const [showErrorAlert, setShowErrorAlert] = useState(false);
     const { setPageName } = usePage();
@@ -36,6 +38,21 @@ const AddSupplier = () => {
                 console.error('Error fetching entity types:', error);
             });
     }, []);
+
+    // Handle entity type change and update ID mask
+    const handleEntityTypeChange = (e) => {
+        const entityTypeId = e.target.value;
+        setSelectedEntityType(entityTypeId);
+
+        // Update mask based on entity type (e.g., physical or legal entity)
+        if (entityTypeId === '1') { // Assuming 1 is for "Física"
+            setIdMask('9-999-999'); // Example mask for physical person
+        } else if (entityTypeId === '2') { // Assuming 2 is for "Jurídica"
+            setIdMask('9-999-999999'); // Example mask for legal entity
+        } else {
+            setIdMask(''); // Default mask if no entity type is selected
+        }
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -83,10 +100,11 @@ const AddSupplier = () => {
 
     // Function to format phone number
     const formatPhoneNumber = (value) => {
-        const phoneNumber = value.replace(/\D/g, ''); // Remove non-digit characters
-        const formattedNumber = phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3'); // Format to xxx-xxx-xxxx
-        return formattedNumber.length > 12 ? formattedNumber.slice(0, 12) : formattedNumber; // Limit to 12 characters
+        const phoneNumber = value.replace(/\D/g, ''); // Eliminar caracteres no numéricos
+        const formattedNumber = phoneNumber.replace(/(\d{4})(\d{4})/, '$1-$2'); // Formato 9999-9999
+        return formattedNumber.length > 9 ? formattedNumber.slice(0, 9) : formattedNumber; // Limitar a 9 caracteres
     };
+    
 
     return (
         <div className="mt-5 d-flex justify-content-center">
@@ -95,14 +113,14 @@ const AddSupplier = () => {
 
                 <div className="mb-4">
                     <form onSubmit={handleSubmit}>
-                        {/* ID Number */}
+                        {/* ID Number with Mask */}
                         <div className="mb-4 row align-items-center">
                             <label htmlFor="idNumber" className="col-sm-4 col-form-label form-label">
                                 <i className="fas fa-id-card" id="icon-id-number"></i> Cédula
                             </label>
                             <div className="col-sm-8">
-                                <input
-                                    type="text"
+                                <InputMask
+                                    mask={idMask} // Use dynamic mask
                                     id="idNumber"
                                     className="form-control border-primary"
                                     placeholder="Ingresa la cédula del proveedor"
@@ -123,7 +141,7 @@ const AddSupplier = () => {
                                     id="entityType"
                                     className="form-control border-primary"
                                     value={selectedEntityType || ''}
-                                    onChange={(e) => setSelectedEntityType(e.target.value)}
+                                    onChange={handleEntityTypeChange} // Use handler to set entity type and update mask
                                     required
                                 >
                                     <option value="">Seleccione un tipo de entidad</option>
@@ -136,7 +154,7 @@ const AddSupplier = () => {
                             </div>
                         </div>
 
-                        {/* Name */}
+                         {/* Name */}
                         <div className="mb-4 row align-items-center">
                             <label htmlFor="name" className="col-sm-4 col-form-label form-label">
                                 <i className="fas fa-user" id="icon-provider-name"></i> Nombre
@@ -215,11 +233,11 @@ const AddSupplier = () => {
                                     id="clientContact"
                                     className="form-control border-primary"
                                     placeholder="Ingresa el contacto de la empresa"
-                                    value={clientContact}
+                                    value={formatPhoneNumber(clientContact)}
                                     onChange={(e) => setClientContact(e.target.value)}
                                 />
                             </div>
-                        </div>
+                        </div> 
 
                         <div className="text-center">
                             <Button className="btn btn-lg btn-custom w-100 shadow-sm" type="submit">
@@ -228,14 +246,12 @@ const AddSupplier = () => {
                         </div>
                     </form>
 
-                    {/* Success Alert */}
+                    {/* Success and Error Alerts */}
                     {showSuccessAlert && (
                         <div className="alert alert-success mt-4 text-center" role="alert">
                             Proveedor ingresado correctamente!
                         </div>
                     )}
-
-                    {/* Error Alert */}
                     {showErrorAlert && (
                         <div className="alert alert-danger mt-4 text-center" role="alert">
                             Se produjo un error al agregar el proveedor. Por favor inténtalo de nuevo.
