@@ -5,6 +5,8 @@ import './createAsset.css';
 import { API_URLS } from '../../../declarations/apiConfig';
 import { usePage } from '../../../context/pageContext';
 import InputMask from 'react-input-mask';
+import { NumericFormat } from 'react-number-format';
+
 
 const CreateAsset = () => {
     const [formData, setFormData] = useState({
@@ -161,8 +163,8 @@ const CreateAsset = () => {
                             <label htmlFor="assetSeries" className="form-label">
                                 <i className="fas fa-barcode"></i> Serie de Activo
                             </label>
-                            <InputMask
-                                mask="A***" // Adjust the mask as needed
+                            <input
+                                type="text" // Use text input for asset series
                                 name="assetSeries"
                                 id="assetSeries"
                                 className="form-control border-primary"
@@ -296,16 +298,29 @@ const CreateAsset = () => {
                             <label htmlFor="value" className="form-label">
                                 <i className="fas fa-dollar-sign"></i> Valor
                             </label>
-                            <input
-                                type="number"
+                            <NumericFormat
                                 name="value"
                                 id="value"
                                 className="form-control border-primary"
                                 value={formData.value}
-                                onChange={handleChange}
-                                required
+                                onValueChange={(values) => {
+                                    const { floatValue } = values; // Extract raw numeric value
+                                    handleChange({
+                                        target: {
+                                            name: 'value',
+                                            value: floatValue || '', // Send raw value or empty if cleared
+                                        },
+                                    });
+                                }}
+                                thousandSeparator={true} // Adds comma as thousand separator
+                                decimalScale={2} // Sets decimal scale to 2 digits
+                                fixedDecimalScale={true} // Ensures the number has 2 decimal places
+                                allowNegative={false} // Prevents negative numbers
+                                placeholder="Ej: 5000"
+                                isNumericString={true} // Keeps the value as a numeric string
                             />
                         </div>
+
                     </div>
 
                     <div className="row mb-4">
