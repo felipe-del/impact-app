@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Card, ProgressBar } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBox, faChartLine, faBuilding, faClipboardList, faComments, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
-import '../../style/sb-admin-2.css';
 import AreaChart from '../../components/chart/AreaChart';
 import PieChart from '../../components/chart/PieChart';
 import { usePage } from '../../context/pageContext';

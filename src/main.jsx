@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client'
 import './style/index.css'
 import { Routes } from './config/routes'
 import { UserProvider } from './context/userContext'
+import '../src/style/sb-admin-2.css';
 
 
 createRoot(document.getElementById('root')).render(
