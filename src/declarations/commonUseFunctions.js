@@ -12,14 +12,21 @@ const formatEventTime = (eventDate, time) => {
     // Combine the date with the given time
     const dateTime = new Date(`${eventDate}T${time}:00Z`);
 
-    // Return the ISO 8601 format
     return dateTime.toISOString();
 };
 
-const handleTimeSetting = (time) => {
-    const [hours, minutes] = time.split(':');
-    return `${hours}:${minutes}`;
-}
+const handleTimeSetting = (time, timeAdjustment = 0, add = false) => {
+    const [hours, minutes] = time.split(':').map(Number);
+    const date = new Date();
+    date.setHours(hours);
+
+    (add) ? date.setMinutes(minutes + timeAdjustment) : date.setMinutes(minutes - timeAdjustment);
+
+    const adjustedHours = String(date.getHours()).padStart(2, '0');
+    const adjustedMinutes = String(date.getMinutes()).padStart(2, '0');
+
+    return `${adjustedHours}:${adjustedMinutes}`;
+};
 
 const isEmptyString = (string) => {
     return typeof string === 'string' && string.trim() === '';
