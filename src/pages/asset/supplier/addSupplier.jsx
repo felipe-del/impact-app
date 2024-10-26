@@ -4,6 +4,9 @@ import InputMask from 'react-input-mask'; // Import InputMask
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './addSupplier.css';
 import { usePage } from '../../../context/pageContext';
+import ConfirmationModal from '../../../components/confirmation/ConfirmationModal';
+import SuccessModal from '../../../components/modal/success/SuccessModal';
+import ErrorModal from '../../../components/modal/error/ErrorModal';
 
 const AddSupplier = () => {
     const [name, setName] = useState('');
@@ -15,9 +18,12 @@ const AddSupplier = () => {
     const [entityTypes, setEntityTypes] = useState([]);
     const [selectedEntityType, setSelectedEntityType] = useState(null);
     const [idMask, setIdMask] = useState(''); // Mask for the ID number
-    const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-    const [showErrorAlert, setShowErrorAlert] = useState(false);
     const { setPageName } = usePage();
+
+    // Modal states
+    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const [showErrorModal, setShowErrorModal] = useState(false);
 
     useEffect(() => {
         setPageName("Agregar Proveedor");
@@ -56,7 +62,17 @@ const AddSupplier = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setShowConfirmationModal(true); // Show confirmation modal
+    };
 
+    // Function to format phone number
+    const formatPhoneNumber = (value) => {
+        const phoneNumber = value.replace(/\D/g, ''); // Eliminar caracteres no numéricos
+        const formattedNumber = phoneNumber.replace(/(\d{4})(\d{4})/, '$1-$2'); // Formato 9999-9999
+        return formattedNumber.length > 9 ? formattedNumber.slice(0, 9) : formattedNumber; // Limitar a 9 caracteres
+    };
+    
+    const handleConfirm = () => {
         const newSupplier = {
             id: 0,
             name,
@@ -65,7 +81,7 @@ const AddSupplier = () => {
             address,
             entityTypeId: selectedEntityType,
             clientContact,
-            idNumber // Include the ID number
+            idNumber
         };
 
         fetch('http://localhost:8080/supplier', {
@@ -83,26 +99,27 @@ const AddSupplier = () => {
                 return response.json();
             })
             .then(() => {
-                setShowSuccessAlert(true);
-                setName('');
-                setPhone('');
-                setEmail('');
-                setAddress('');
-                setClientContact('');
-                setIdNumber(''); // Reset ID number
-                setSelectedEntityType(null);
+                setShowSuccessModal(true);
+                resetForm(); // Reset form fields
             })
             .catch(error => {
                 console.error('Error adding supplier:', error);
-                setShowErrorAlert(true);
+                setShowErrorModal(true);
+            })
+            .finally(() => {
+                setShowConfirmationModal(false); // Hide confirmation modal
             });
     };
 
-    // Function to format phone number
-    const formatPhoneNumber = (value) => {
-        const phoneNumber = value.replace(/\D/g, ''); // Eliminar caracteres no numéricos
-        const formattedNumber = phoneNumber.replace(/(\d{4})(\d{4})/, '$1-$2'); // Formato 9999-9999
-        return formattedNumber.length > 9 ? formattedNumber.slice(0, 9) : formattedNumber; // Limitar a 9 caracteres
+    const resetForm = () => {
+        setName('');
+        setPhone('');
+        setEmail('');
+        setAddress('');
+        setClientContact('');
+        setIdNumber('');
+        setSelectedEntityType(null);
+        setIdMask(''); // Reset mask to default
     };
     
 
@@ -225,19 +242,20 @@ const AddSupplier = () => {
                         {/* Client Contact */}
                         <div className="mb-4 row align-items-center">
                             <label htmlFor="clientContact" className="col-sm-4 col-form-label form-label">
-                                <i className="fas fa-user" id="icon-client-contact"></i> Contacto de la Empresa
+                                <i className="fas fa-user" id="icon-client-contact"></i> Nombre del Contacto
                             </label>
                             <div className="col-sm-8">
                                 <input
                                     type="text"
                                     id="clientContact"
                                     className="form-control border-primary"
-                                    placeholder="Ingresa el contacto de la empresa"
-                                    value={formatPhoneNumber(clientContact)}
-                                    onChange={(e) => setClientContact(e.target.value)}
+                                    placeholder="Ingresa el nombre del contacto"
+                                    value={clientContact} // No formatting needed for name
+                                    onChange={(e) => setClientContact(e.target.value)} // Keep as is for name input
+                                    required // Optional: if you want to make this field required
                                 />
                             </div>
-                        </div> 
+                        </div>
 
                         <div className="text-center">
                             <Button className="btn btn-lg btn-custom w-100 shadow-sm" type="submit">
@@ -246,17 +264,31 @@ const AddSupplier = () => {
                         </div>
                     </form>
 
-                    {/* Success and Error Alerts */}
-                    {showSuccessAlert && (
-                        <div className="alert alert-success mt-4 text-center" role="alert">
-                            Proveedor ingresado correctamente!
-                        </div>
-                    )}
-                    {showErrorAlert && (
-                        <div className="alert alert-danger mt-4 text-center" role="alert">
-                            Se produjo un error al agregar el proveedor. Por favor inténtalo de nuevo.
-                        </div>
-                    )}
+                    {/* Confirmation Modal */}
+                    <ConfirmationModal
+                        show={showConfirmationModal}
+                        onHide={() => setShowConfirmationModal(false)}
+                        confirmAction="guardar"
+                        onConfirm={handleConfirm}
+                    />
+
+                    {/* Success Modal */}
+                    <SuccessModal
+                        show={showSuccessModal}
+                        onHide={() => setShowSuccessModal(false)}
+                        title="Operación Exitosa"
+                        message="El registro se ha guardado correctamente."
+                    />
+
+
+                    {/* Error Modal */}
+                    <ErrorModal
+                        show={showErrorModal}
+                        onHide={() => setShowErrorModal(false)}
+                        title="Error"
+                        message="Hubo un problema al guardar el registro. Por favor, intenta nuevamente."
+                    />
+
                 </div>
             </div>
         </div>
