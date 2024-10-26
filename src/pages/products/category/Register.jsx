@@ -13,6 +13,8 @@ const Register = () => {
     const [measureUnit, setMeasureUnit] = useState(''); // State for unit of measurement
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const [confirmAction, setConfirmAction] = useState('');
 
     const formRef = useRef(null);
     const { setPageName } = usePage();
@@ -52,51 +54,51 @@ const Register = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const newCategory = {
-            name,
-            cantidadMinima: minQuantity,
-            categoryType: type,
-            unit_of_measurement: measureUnit
-        };
-        console.log(newCategory);
-
-        fetch('http://localhost:8080/product', {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newCategory)
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                setShowSuccessModal(true);
-                // Reset form fields and form reference
-                setName('');
-                setMinQuantity('');
-                setType('');
-                setMeasureUnit('');
-                if (formRef.current) {
-                    formRef.current.reset();
-                }
-            })
-            .catch(error => {
-                console.error('Error al guardar categoría:', error);
-                setShowErrorModal(true);
-            });
+        setConfirmAction('Guardar'); 
+        setShowConfirmModal(true);
 
     };
 
     const handleCancel = () => {
-        setName('');
-        setMinQuantity('');
-        setType(types.length > 0 ? types[0].id : '');
-        setMeasureUnit(measureU.length > 0 ? measureU[0].id : '');
-        if (formRef.current) {
-            formRef.current.reset(); 
+        setConfirmAction('Cancelar'); 
+        setShowConfirmModal(true);
+    };
+
+    const handleConfirm = () => {
+        if (confirmAction === 'Guardar') {
+            const newCategory = {
+                name,
+                cantidadMinima: minQuantity,
+                categoryType: type,
+                unit_of_measurement: measureUnit
+            };
+            fetch('http://localhost:8080/product', {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newCategory)
+            })
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    setShowSuccessModal(true);
+                    // Reset form fields
+                    setName('');
+                    setMinQuantity('');
+                    setType('');
+                    setMeasureUnit('');
+                    formRef.current && formRef.current.reset();
+                })
+                .catch(error => setShowErrorModal(true));
+        } else if (confirmAction === 'Cancelar') {
+            setName('');
+            setMinQuantity('');
+            setType(types.length > 0 ? types[0].id : '');
+            setMeasureUnit(measureU.length > 0 ? measureU[0].id : '');
+            formRef.current && formRef.current.reset();
         }
+        setShowConfirmModal(false); 
     };
 
     const handleRegisterP = () => {
@@ -202,7 +204,7 @@ const Register = () => {
                                 <Button className="btn btn-danger btn-lg w-100 shadow-sm btn-custom" id='cancel' onClick={handleCancel}>
                                     <i className="fas fa-times"></i> Cancelar
                                 </Button>
-                                <Button className="btn btn-lg btn-custom w-100 shadow-sm" type="submit">
+                                <Button className="btn btn-lg btn-custom w-100 shadow-sm btn_test" type="submit">
                                     <i className="fas fa-save"></i> Guardar
                                 </Button>
                             </div>
@@ -210,6 +212,18 @@ const Register = () => {
                         </form>
                     </div>
                 </div>
+
+                 {/* Confirmación Modal */}
+                 <Modal show={showConfirmModal} onHide={() => setShowConfirmModal(false)}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Confirmación</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>¿Está seguro de que desea {confirmAction.toLowerCase()} los cambios?</Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={() => setShowConfirmModal(false)}>No</Button>
+                            <Button variant="primary" onClick={handleConfirm}>Sí</Button>
+                        </Modal.Footer>
+                    </Modal>
 
                 {/* Success Modal */}
                 <Modal show={showSuccessModal} onHide={() => setShowSuccessModal(false)}>

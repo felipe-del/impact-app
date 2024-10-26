@@ -17,6 +17,8 @@ const ProductRegister = () => {
     const [currentStep, setCurrentStep] = useState(1);
     const [showSuccess, setShowSuccess] = useState(false);
     const [showError, setShowError] = useState(false);
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const [confirmAction, setConfirmAction] = useState('');
     const { setPageName } = usePage();
 
     useEffect(() => {
@@ -78,8 +80,10 @@ const ProductRegister = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
-
+        setConfirmAction('Guardar');
+        setShowConfirmModal(true);
+    };
+    const handleConfirm = () => {
         const newProduct = {
             category: category.id,
             purchaseDate,
@@ -105,9 +109,18 @@ const ProductRegister = () => {
                 console.error('Error al guardar el producto:', error);
                 setShowError(true);
             });
+
+        setShowConfirmModal(false);
     };
 
     return (
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol className="breadcrumb">
+                    <li className="breadcrumb-item"><a href="/app">Inicio</a></li>
+                    <li className="breadcrumb-item active" aria-current="page">Ingreso de productos</li>
+                </ol>
+            </nav>
         <div className="mt-5 d-flex justify-content-center">
             <div className="card p-5 shadow-lg" style={{ maxWidth: "700px", borderRadius: "10px" }}>
             <div className="button-container">
@@ -195,7 +208,17 @@ const ProductRegister = () => {
                 )}
             </div>
 
-
+                {/* Confirmación Modal */}
+                 <Modal show={showConfirmModal} onHide={() => setShowConfirmModal(false)}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Confirmación</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>¿Está seguro de que desea {confirmAction.toLowerCase()} los cambios?</Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={() => setShowConfirmModal(false)}>No</Button>
+                            <Button variant="primary" onClick={handleConfirm}>Sí</Button>
+                        </Modal.Footer>
+                    </Modal>
 
             {/* Success Modal */}
             <Modal show={showSuccess} onHide={() => setShowSuccess(false)}>
@@ -222,6 +245,7 @@ const ProductRegister = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
+            </div>
         </div>
     );
 };
