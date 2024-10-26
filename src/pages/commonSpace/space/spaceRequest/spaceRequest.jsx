@@ -74,8 +74,6 @@ const SpaceRequest = () => {
 
         if(isEmptyString(eventObs)) { setEventObs("No hay observaciones"); }
 
-        console.log(eventObs);
-
         const newSpaceRequest = {
             spaceId,
             numPeople,

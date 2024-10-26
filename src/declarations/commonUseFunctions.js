@@ -18,8 +18,8 @@ const formatEventTime = (eventDate, time) => {
 const handleTimeSetting = (time, timeAdjustment = 0, add = false) => {
     const [hours, minutes] = time.split(':').map(Number);
     const date = new Date();
-    date.setHours(hours);
 
+    date.setHours(hours);
     (add) ? date.setMinutes(minutes + timeAdjustment) : date.setMinutes(minutes - timeAdjustment);
 
     const adjustedHours = String(date.getHours()).padStart(2, '0');
