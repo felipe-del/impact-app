@@ -2936,7 +2936,7 @@ fieldset:disabled a.btn {
 
 .btn-sm, .btn-group-sm > .btn {
   padding: 0.25rem 0.5rem;
-  font-size: 0.875rem;
+  font-size: 0.975rem;
   line-height: 1.5;
   border-radius: 0.2rem;
 }
@@ -10368,7 +10368,7 @@ a:focus {
 .sidebar .nav-item .collapsing .collapse-inner {
   padding: .5rem 0;
   min-width: 10rem;
-  font-size: 0.85rem;
+  font-size: 1.05rem;
   margin: 0 0 1rem 0;
 }
 
@@ -10476,7 +10476,7 @@ a:focus {
   text-align: center;
   padding: 0 1rem;
   font-weight: 800;
-  font-size: 0.65rem;
+  font-size: 0.85rem;
 }
 
 .sidebar .sidebar-card {
@@ -10503,13 +10503,13 @@ a:focus {
 }
 
 .sidebar .sidebar-card p {
-  font-size: 0.75rem;
+  font-size: 0.95rem;
   color: rgba(255, 255, 255, 0.5);
 }
 
 @media (min-width: 768px) {
   .sidebar {
-    width: 14rem !important;
+    width: 18rem !important;
   }
   .sidebar .nav-item .collapse {
     position: relative;
@@ -10536,14 +10536,14 @@ a:focus {
     width: 100%;
     text-align: left;
     padding: 1rem;
-    width: 14rem;
+    width: 18rem;
   }
   .sidebar .nav-item .nav-link i {
     font-size: 0.85rem;
     margin-right: 0.25rem;
   }
   .sidebar .nav-item .nav-link span {
-    font-size: 0.85rem;
+    font-size: 1.10rem;
     display: inline;
   }
   .sidebar .nav-item .nav-link[data-toggle="collapse"]::after {

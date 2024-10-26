@@ -2,7 +2,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faList, faClipboardCheck, faMapMarkedAlt, faHashtag, faPenToSquare} from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
-import '../../style/sb-admin-2.min.css';
 import './sidebar.css';
 import { Escudo_UCR } from '../../declarations/imageExports.js';
 
