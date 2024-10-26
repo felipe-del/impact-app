@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { usePage } from "../../../../context/pageContext.jsx";
 import DynamicTable from "../../../../components/dynamicTable/dynamicTable.jsx";
 import {Button, Modal} from "react-bootstrap";
-import {formatEventTime, isEmptyString} from "../../../../declarations/commonUseFunctions.js";
+import {formatEventTime, handleTimeSetting, isEmptyString} from "../../../../declarations/commonUseFunctions.js";
 
 const SpaceRequest = () => {
     const { setPageName } = usePage();
@@ -19,6 +19,8 @@ const SpaceRequest = () => {
     const [eventDate, setEventDate] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
+    const [minTime, setMinTime] = useState('');
+    const [maxTime, setMaxTime] = useState('');
     const [startTime, setStartTime] = useState('');
     const [endTime, setEndTime] = useState('');
     const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -40,15 +42,17 @@ const SpaceRequest = () => {
     }, [setPageName]);
 
     const handleSpaceChange = (e) => {
-        resetForm();
         const curSpaceId = e.target.value;
         const selected = spaces.find(space => space.space.id === parseInt(curSpaceId));
 
         setSpace(selected);
         setSpaceId(curSpaceId);
 
+        setMinTime(handleTimeSetting(selected.space?.openTime, 1));
+        setMaxTime(handleTimeSetting(selected.space?.closeTime, 1, true));
+
         // Map equipment to replace brandId with brand name
-        const equipmentWithBrandNames = selected.equipment.map(eq => {
+        const equipmentWithBrandNames = selected.equipment?.map(eq => {
             const brand = brands.find(b => b.id === eq.brandId);
             return {
                 ...eq,
@@ -62,18 +66,13 @@ const SpaceRequest = () => {
     const handleSubmit = (sp) => {
         sp.preventDefault();
 
-        const selectedOpenTime = space.space.openTime;
-        const selectedCloseTime = space.space.closeTime;
-
-        if (startTime < selectedOpenTime || endTime > selectedCloseTime) {
+        if (startTime < minTime || endTime > maxTime) {
             setShowErrorModal(true);
-            alert(`Error: El horario del evento debe de ser entre ${selectedOpenTime} - ${selectedCloseTime}`);
+            alert(`Error: El horario del evento debe de ser entre ${minTime} - ${maxTime}`);
             return;
         }
 
         if(isEmptyString(eventObs)) { setEventObs("No hay observaciones"); }
-
-        console.log(eventObs);
 
         const newSpaceRequest = {
             spaceId,
@@ -207,8 +206,8 @@ const SpaceRequest = () => {
                                     id="openTime"
                                     className="form-control border-primary"
                                     value={startTime}
-                                    min={space?.space?.openTime}
-                                    max={space?.space?.closeTime}
+                                    min={minTime}
+                                    max={maxTime}
                                     onChange={(e) => setStartTime(e.target.value)}
                                     required
                                 />
@@ -223,8 +222,8 @@ const SpaceRequest = () => {
                                     id="closeTime"
                                     className="form-control border-primary"
                                     value={endTime}
-                                    min={space?.space?.openTime}
-                                    max={space?.space?.closeTime}
+                                    min={minTime}
+                                    max={maxTime}
                                     onChange={(e) => setEndTime(e.target.value)}
                                     required
                                 />
