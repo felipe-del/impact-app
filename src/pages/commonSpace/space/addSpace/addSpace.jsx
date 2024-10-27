@@ -1,11 +1,15 @@
 import React, {useState, useEffect} from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { usePage } from '../../../../context/pageContext.jsx';
 import {API_URLS} from "../../../../declarations/apiConfig.js";
+import SuccessModal from "../../../../components/modal/success/SuccessModal.jsx";
+import ErrorModal from "../../../../components/modal/error/ErrorModal.jsx";
+import ConfirmationModal from "../../../../components/confirmation/ConfirmationModal.jsx";
 
 
 const AddSpace = () => {
+    const { setPageName } = usePage();
     const [name, setName] = useState('');
     const [spaceCode, setSpaceCode] = useState('');
     const [maxPeople, setMaxPeople] = useState('');
@@ -15,9 +19,12 @@ const AddSpace = () => {
     const [buildingLocation, setBuildingLocation] = useState('');
     const [openTime, setOpenTime] = useState('');
     const [closeTime, setCloseTime] = useState('');
+
+    // Modal states
+    const [showCancellationModal, setShowCancellationModal] = useState(false);
+    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
-    const { setPageName } = usePage();
 
     useEffect(() => {
         setPageName("Agregar espacio");
@@ -29,7 +36,12 @@ const AddSpace = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setShowConfirmationModal(true);
+    };
 
+    const verifyCancel = () => setShowCancellationModal(true);
+
+    const handleConfirm = () => {
         const newSpace = {
             name,
             spaceCode,
@@ -54,14 +66,16 @@ const AddSpace = () => {
                 console.error('Error adding brand:', error);
                 setShowErrorModal(true);
             });
-    };
+    }
 
     const handleRegisterBld = () => {
         window.location.href = 'addBuilding';
     };
+
     const handleRegisterBloc = () => {
         window.location.href = 'addBuildingLocation';
     };
+
     const handleCancel = () => {
         setName('');
         setSpaceCode('');
@@ -234,7 +248,7 @@ const AddSpace = () => {
                             <div className="row align-items-center">
                                 <div className="col-sm-6">
                                     <Button className="btn btn-danger btn-lg w-100 shadow-sm me-4" id='cancel'
-                                            onClick={handleCancel}>
+                                            onClick={verifyCancel}>
                                         <i className="fas fa-times"></i> Cancelar
                                     </Button>
                                 </div>
@@ -246,32 +260,37 @@ const AddSpace = () => {
                             </div>
                         </form>
 
+                        {/* Confirmation modal */}
+                        <ConfirmationModal
+                            show={showConfirmationModal}
+                            onHide={() => setShowConfirmationModal(false)}
+                            confirmAction="guardar"
+                            onConfirm={handleConfirm}
+                        />
+
+                        {/* Cancelation modal */}
+                        <ConfirmationModal
+                            show={showCancellationModal}
+                            onHide={() => setShowCancellationModal(false)}
+                            confirmAction="eliminar"
+                            onConfirm={handleCancel}
+                        />
+
                         {/* Success Modal */}
-                        <Modal show={showSuccessModal} onHide={() => setShowSuccessModal(false)}>
-                            <Modal.Header closeButton>
-                                <Modal.Title>Éxito</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>El espacio se ha guardado exitosamente!</Modal.Body>
-                            <Modal.Footer>
-                                <Button variant="secondary" onClick={() => setShowSuccessModal(false)}>
-                                    Cerrar
-                                </Button>
-                            </Modal.Footer>
-                        </Modal>
+                        <SuccessModal
+                            show={showSuccessModal}
+                            onHide={() => setShowSuccessModal(false)}
+                            title="Operación Exitosa"
+                            message="El espacio se ha guardado correctamente."
+                        />
 
                         {/* Error Modal */}
-                        <Modal show={showErrorModal} onHide={() => setShowErrorModal(false)}>
-                            <Modal.Header closeButton>
-                            <Modal.Title>Error</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>Hubo un problema al guardar el espacio. Por favor, intente
-                                nuevamente.</Modal.Body>
-                            <Modal.Footer>
-                                <Button variant="secondary" onClick={() => setShowErrorModal(false)}>
-                                    Cerrar
-                                </Button>
-                            </Modal.Footer>
-                        </Modal>
+                        <ErrorModal
+                            show={showErrorModal}
+                            onHide={() => setShowErrorModal(false)}
+                            title="Error"
+                            message="Hubo un problema al guardar el espacio. Por favor, intenta nuevamente."
+                        />
                     </div>
                 </div>
             </div>

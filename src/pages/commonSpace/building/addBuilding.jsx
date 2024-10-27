@@ -3,19 +3,32 @@ import { Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { usePage } from '../../../context/pageContext';
 import {API_URLS} from "../../../declarations/apiConfig.js";
+import ConfirmationModal from "../../../components/confirmation/ConfirmationModal.jsx";
+import SuccessModal from "../../../components/modal/success/SuccessModal.jsx";
+import ErrorModal from "../../../components/modal/error/ErrorModal.jsx";
 
 const AddBuilding = () => {
-    const [name, setName] = useState('');
-    const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-    const [showErrorAlert, setShowErrorAlert] = useState(false);
     const { setPageName } = usePage();
+    const [name, setName] = useState('');
+
+    // Modal states
+    const [showCancellationModal, setShowCancellationModal] = useState(false);
+    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const [showErrorModal, setShowErrorModal] = useState(false);
 
     useEffect(() => {
         setPageName("Agregar Edificio");
     }, [setPageName]);
+
     const handleSubmit = (e) => {
         e.preventDefault();
+        setShowConfirmationModal(true);
+    };
 
+    const verifyCancel = () => setShowCancellationModal(true);
+
+    const handleConfirm = () => {
         const newBuilding = {
             id: 0,
             name: name
@@ -35,14 +48,16 @@ const AddBuilding = () => {
                 console.error('Error adding brand:', error);
                 setShowErrorAlert(true);
             });
-    };
+    }
 
     const handleRegisterBloc = () => {
         window.location.href = 'addBuildingLocation';
     };
+
     const handleRegisterSp = () => {
         window.location.href = 'addSpace';
     };
+
     const handleCancel = () => {
         setName('');
     }
@@ -94,7 +109,7 @@ const AddBuilding = () => {
                             <div className="mb-4 row justify-content-center align-items-center">
                                 <div className="col-sm-6">
                                     <Button className="btn btn-danger btn-lg w-100 shadow-sm btn-custom" id='cancel'
-                                            onClick={handleCancel}>
+                                            onClick={verifyCancel}>
                                         <i className="fas fa-times"></i> Cancelar
                                     </Button>
                                 </div>
@@ -106,19 +121,37 @@ const AddBuilding = () => {
                             </div>
                         </form>
 
-                        {/* Success Alert */}
-                        {showSuccessAlert && (
-                            <div className="alert alert-success mt-4 text-center" role="alert">
-                                ¡Edificio agregado correctamente!
-                            </div>
-                        )}
+                        {/* Confirmation modal */}
+                        <ConfirmationModal
+                            show={showConfirmationModal}
+                            onHide={() => setShowConfirmationModal(false)}
+                            confirmAction="guardar"
+                            onConfirm={handleConfirm}
+                        />
 
-                        {/* Error Alert */}
-                        {showErrorAlert && (
-                            <div className="alert alert-danger mt-4 text-center" role="alert">
-                                Hubo un error al agregar el edificio. Por favor inténtalo de nuevo.
-                            </div>
-                        )}
+                        {/* Cancelation modal */}
+                        <ConfirmationModal
+                            show={showCancellationModal}
+                            onHide={() => setShowCancellationModal(false)}
+                            confirmAction="eliminar"
+                            onConfirm={handleCancel}
+                        />
+
+                        {/* Success Modal */}
+                        <SuccessModal
+                            show={showSuccessModal}
+                            onHide={() => setShowSuccessModal(false)}
+                            title="Operación Exitosa"
+                            message="El edificio se ha guardado correctamente."
+                        />
+
+                        {/* Error Modal */}
+                        <ErrorModal
+                            show={showErrorModal}
+                            onHide={() => setShowErrorModal(false)}
+                            title="Error"
+                            message="Hubo un problema al guardar el edificio. Por favor, intenta nuevamente."
+                        />
                     </div>
                 </div>
             </div>

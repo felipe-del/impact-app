@@ -1,9 +1,12 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { usePage } from "../../../../context/pageContext.jsx";
 import DynamicTable from "../../../../components/dynamicTable/dynamicTable.jsx";
-import {Button, Modal} from "react-bootstrap";
+import {Button} from "react-bootstrap";
 import {formatEventTime, handleTimeSetting, isEmptyString} from "../../../../declarations/commonUseFunctions.js";
+import ConfirmationModal from "../../../../components/confirmation/ConfirmationModal.jsx";
+import SuccessModal from "../../../../components/modal/success/SuccessModal.jsx";
+import ErrorModal from "../../../../components/modal/error/ErrorModal.jsx";
 
 const SpaceRequest = () => {
     const { setPageName } = usePage();
@@ -23,6 +26,9 @@ const SpaceRequest = () => {
     const [maxTime, setMaxTime] = useState('');
     const [startTime, setStartTime] = useState('');
     const [endTime, setEndTime] = useState('');
+
+    const [showCancellationModal, setShowCancellationModal] = useState(false);
+    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
 
@@ -63,9 +69,14 @@ const SpaceRequest = () => {
         setEquipments(equipmentWithBrandNames);
     };
 
-    const handleSubmit = (sp) => {
-        sp.preventDefault();
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setShowConfirmationModal(true);
+    }
 
+    const verifyCancel = () => setShowCancellationModal(true);
+
+    const handleConfirm = () => {
         if (startTime < minTime || endTime > maxTime) {
             setShowErrorModal(true);
             alert(`Error: El horario del evento debe de ser entre ${minTime} - ${maxTime}`);
@@ -108,7 +119,7 @@ const SpaceRequest = () => {
         { header: 'Marca', accessor: 'brandId' } // Now brandId contains the brand name
     ];
 
-    const resetForm = () => {
+    const handleCancel = () => {
         setNumPeople('');
         setEventDesc('');
         setEventObs('');
@@ -300,7 +311,7 @@ const SpaceRequest = () => {
                             <div className="col-sm-6">
                                 <Button className="btn btn-danger btn-lg w-100 shadow-sm me-4"
                                         id='cancel'
-                                        onClick={resetForm}>
+                                        onClick={verifyCancel}>
                                     <i className="fas fa-times"></i> Cancelar
                                 </Button>
                             </div>
@@ -328,30 +339,37 @@ const SpaceRequest = () => {
                         </div>
                     </div>
                 )}
-                <Modal show={showSuccessModal} onHide={() => setShowSuccessModal(false)}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Éxito</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>Se ha enviado la solicitud exitosamente!</Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={() => setShowSuccessModal(false)}>
-                            Cerrar
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
+                {/* Confirmation modal */}
+                <ConfirmationModal
+                    show={showConfirmationModal}
+                    onHide={() => setShowConfirmationModal(false)}
+                    confirmAction="guardar"
+                    onConfirm={handleConfirm}
+                />
+
+                {/* Cancelation modal */}
+                <ConfirmationModal
+                    show={showCancellationModal}
+                    onHide={() => setShowCancellationModal(false)}
+                    confirmAction="eliminar"
+                    onConfirm={handleCancel}
+                />
+
+                {/* Success Modal */}
+                <SuccessModal
+                    show={showSuccessModal}
+                    onHide={() => setShowSuccessModal(false)}
+                    title="Operación Exitosa"
+                    message="La solicitud se ha realizado correctamente."
+                />
 
                 {/* Error Modal */}
-                <Modal show={showErrorModal} onHide={() => setShowErrorModal(false)}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Error</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>Hubo un problema enviar la solicitud. Por favor, intente nuevamente.</Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={() => setShowErrorModal(false)}>
-                        Cerrar
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
+                <ErrorModal
+                    show={showErrorModal}
+                    onHide={() => setShowErrorModal(false)}
+                    title="Error"
+                    message="Hubo un problema al realizar la solicitud. Por favor, intenta nuevamente."
+                />
             </div>
         </div>
     )
