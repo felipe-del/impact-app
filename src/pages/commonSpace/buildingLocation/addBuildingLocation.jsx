@@ -1,16 +1,23 @@
 import React, {useEffect, useState} from 'react';
-import { Button, Alert } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import { usePage } from '../../../context/pageContext';
 import {API_URLS} from "../../../declarations/apiConfig.js";
+import ConfirmationModal from "../../../components/confirmation/ConfirmationModal.jsx";
+import SuccessModal from "../../../components/modal/success/SuccessModal.jsx";
+import ErrorModal from "../../../components/modal/error/ErrorModal.jsx";
 
 const AddBuildingLocation = () => {
+    const { setPageName } = usePage();
     const [buildings, setBuildings] = useState([]);
     const [buildingId, setBuildingId] = useState('');
     const [floorId, setFloorId] = useState('');
-    const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-    const [showErrorAlert, setShowErrorAlert] = useState(false);
-    const { setPageName } = usePage();
+
+    // Modal states
+    const [showCancellationModal, setShowCancellationModal] = useState(false);
+    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const [showErrorModal, setShowErrorModal] = useState(false);
 
     useEffect(() => {
         setPageName("Agregar Ubicacion dentro de edificio");
@@ -23,7 +30,12 @@ const AddBuildingLocation = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setShowConfirmationModal(true);
+    };
 
+    const verifyCancel = () => setShowCancellationModal(true);
+
+    const handleConfirm = () => {
         console.log(buildingId);
         console.log(floorId);
         const newBuildingLocation = {
@@ -39,21 +51,21 @@ const AddBuildingLocation = () => {
                 return response.json();
             })
             .then(() => {
-                setShowSuccessAlert(true);
-                setFloorId('');
+                handleCancel();
             })
             .catch(error => {
                 console.error('Error adding building location:', error);
-                setShowErrorAlert(true);
             });
-    };
+    }
 
     const handleRegisterBld = () => {
         window.location.href = 'addBuilding';
     };
+
     const handleRegisterSp = () => {
         window.location.href = 'addSpace';
     };
+
     const handleCancel = () => {
       setBuildingId('');
       setFloorId('');
@@ -131,7 +143,7 @@ const AddBuildingLocation = () => {
                                 <div className="mb-4 row align-items-center">
                                     <div className="col-sm-6">
                                         <Button className="btn btn-danger btn-lg w-100 shadow-sm btn-custom" id='cancel'
-                                                onClick={handleCancel}>
+                                                onClick={verifyCancel}>
                                             <i className="fas fa-times"></i> Cancelar
                                         </Button>
                                     </div>
@@ -144,19 +156,37 @@ const AddBuildingLocation = () => {
                                 </div>
                             </form>
 
-                            {/* Success Alert */}
-                            {showSuccessAlert && (
-                                <div className="alert alert-success mt-4 text-center" role="alert">
-                                    Building location added successfully!
-                                </div>
-                            )}
+                            {/* Confirmation modal */}
+                            <ConfirmationModal
+                                show={showConfirmationModal}
+                                onHide={() => setShowConfirmationModal(false)}
+                                confirmAction="guardar"
+                                onConfirm={handleConfirm}
+                            />
 
-                            {/* Error Alert */}
-                            {showErrorAlert && (
-                                <div className="alert alert-danger mt-4 text-center" role="alert">
-                                    There was an error adding the building location. Please try again.
-                                </div>
-                            )}
+                            {/* Cancelation modal */}
+                            <ConfirmationModal
+                                show={showCancellationModal}
+                                onHide={() => setShowCancellationModal(false)}
+                                confirmAction="eliminar"
+                                onConfirm={handleCancel}
+                            />
+
+                            {/* Success Modal */}
+                            <SuccessModal
+                                show={showSuccessModal}
+                                onHide={() => setShowSuccessModal(false)}
+                                title="Operación Exitosa"
+                                message="La ubicación se ha guardado correctamente."
+                            />
+
+                            {/* Error Modal */}
+                            <ErrorModal
+                                show={showErrorModal}
+                                onHide={() => setShowErrorModal(false)}
+                                title="Error"
+                                message="Hubo un problema al guardar la ubicación. Por favor, intenta nuevamente."
+                            />
                         </div>
                     </div>
                 </div>

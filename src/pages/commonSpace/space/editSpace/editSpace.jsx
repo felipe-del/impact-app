@@ -1,10 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import {Modal, Button, ListGroup} from 'react-bootstrap';
+import {Button, ListGroup} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './editSpace.css'
 import {usePage} from "../../../../context/pageContext.jsx";
 import {formatTime, handleTimeSetting} from "../../../../declarations/commonUseFunctions.js";
 import {API_URLS} from "../../../../declarations/apiConfig.js";
+import ConfirmationModal from "../../../../components/confirmation/ConfirmationModal.jsx";
+import SuccessModal from "../../../../components/modal/success/SuccessModal.jsx";
+import ErrorModal from "../../../../components/modal/error/ErrorModal.jsx";
 
 const EditSpace = () => {
     const { setPageName } = usePage();
@@ -20,9 +23,13 @@ const EditSpace = () => {
     const [buildingId, setBuildingId] = useState('');
     const [trackUpdate, setTrackUpdate] = useState([]);
     const [currentStep, setCurrentStep] = useState(1);
-    const [showErrorModal, setShowErrorModal] = useState(false);
     const [buildingLocation, setBuildingLocation] = useState('');
     const [filteredLocations, setFilteredLocations] = useState([]);
+
+    // Modal states
+    const [showCancellationModal, setShowCancellationModal] = useState(false);
+    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+    const [showErrorModal, setShowErrorModal] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
 
     useEffect(() => {
@@ -54,7 +61,12 @@ const EditSpace = () => {
 
     const handleSubmit = (sp) => {
         sp.preventDefault();
+        setShowConfirmationModal(true);
+    }
 
+    const verifyCancel = () => setShowCancellationModal(true);
+
+    const handleConfirm = () => {
         const editedSpace = {
             name,
             spaceCode,
@@ -68,14 +80,14 @@ const EditSpace = () => {
         console.log(editedSpace);
 
         fetch(`http://localhost:8080/common-space/edit/space/${spaceId}`, {method: 'PUT', credentials: 'include',
-        headers: {'Content-Type': 'application/json'}, body: JSON.stringify(editedSpace)})
+            headers: {'Content-Type': 'application/json'}, body: JSON.stringify(editedSpace)})
             .then(response => {
                 if (!response.ok) { throw new Error('Network response was not ok'); }
                 return response.json();
             })
             .then(data => {
                 setShowSuccessModal(true);
-                resetForm();
+                handleCancel();
 
                 setTimeout(() => {
                     setSpace(data)
@@ -90,13 +102,14 @@ const EditSpace = () => {
             });
     }
 
-    const resetForm = () => {
+    const handleCancel = () => {
         setMaxPeople('');
         setBuildingId('');
         setBuildingLocation('');
         setOpenTime('');
         setCloseTime('');
     }
+
     const goBackToPreviousStep = ()=> {
         setName('');
         setSpace('');
@@ -291,7 +304,7 @@ const EditSpace = () => {
                                                 <div className="col-sm-6">
                                                     <Button className="btn btn-danger btn-lg w-100 shadow-sm me-4"
                                                             id='cancel'
-                                                            onClick={resetForm}>
+                                                            onClick={verifyCancel}>
                                                         <i className="fas fa-times"></i> Cancelar
                                                     </Button>
                                                 </div>
@@ -303,28 +316,36 @@ const EditSpace = () => {
                                             </div>
                                         </form>
 
-                                        <Modal show={showSuccessModal} onHide={() => setShowSuccessModal(false)}>
-                                            <Modal.Header closeButton>
-                                                <Modal.Title>Éxito</Modal.Title>
-                                            </Modal.Header>
-                                            <Modal.Body>El espacio se ha editado exitosamente!</Modal.Body>
-                                            <Modal.Footer>
-                                                <Button variant="secondary" onClick={() => setShowSuccessModal(false)}>
-                                                    Cerrar
-                                                </Button>
-                                            </Modal.Footer>
-                                        </Modal>
-                                        <Modal show={showErrorModal} onHide={() => setShowErrorModal(false)}>
-                                            <Modal.Header closeButton>
-                                                <Modal.Title>Error</Modal.Title>
-                                            </Modal.Header>
-                                            <Modal.Body>Hubo un problema al editar el espacio. Por favor, intente nuevamente.</Modal.Body>
-                                            <Modal.Footer>
-                                                <Button variant="secondary" onClick={() => setShowErrorModal(false)}>
-                                                    Cerrar
-                                                </Button>
-                                            </Modal.Footer>
-                                        </Modal>
+                                        {/*Confirmation modal*/}
+                                        <ConfirmationModal
+                                            show={showConfirmationModal}
+                                            onHide={() => setShowConfirmationModal(false)}
+                                            confirmAction="guardar"
+                                            onConfirm={handleConfirm}
+                                        />
+
+                                        <ConfirmationModal
+                                            show={showCancellationModal}
+                                            onHide={() => setShowCancellationModal(false)}
+                                            confirmAction="eliminar"
+                                            onConfirm={handleCancel}
+                                        />
+
+                                        {/* Success Modal */}
+                                        <SuccessModal
+                                            show={showSuccessModal}
+                                            onHide={() => setShowSuccessModal(false)}
+                                            title="Operación Exitosa"
+                                            message="Se ha realizado la edición del espacio correctamente."
+                                        />
+
+                                        {/* Error Modal */}
+                                        <ErrorModal
+                                            show={showErrorModal}
+                                            onHide={() => setShowErrorModal(false)}
+                                            title="Error"
+                                            message="Hubo un problema al editar el espacio. Por favor, intenta nuevamente."
+                                        />
                                     </div>
                                 </div>
                             )}
