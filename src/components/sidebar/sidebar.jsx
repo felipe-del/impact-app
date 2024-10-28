@@ -38,6 +38,7 @@ const Sidebar = () => {
                     <span>Activos</span>
                 </a>
                 <div id="collapseActivos" className="collapse" aria-labelledby="headingActivos" data-parent="#accordionSidebar">
+                    
                     <div className="bg-white py-2 collapse-inner rounded">
                     <Link className="collapse-item" to="/app/createAsset"><FontAwesomeIcon icon={faPlus} /> Activo
                     </Link><Link className="collapse-item" to="/app/addSupplier"><FontAwesomeIcon icon={faPlus} /> Proveedor
@@ -45,6 +46,7 @@ const Sidebar = () => {
                     </Link><Link className="collapse-item" to="/app/addCategory"><FontAwesomeIcon icon={faPlus} /> Categoría
                     </Link><Link className="collapse-item" to="/app/addAssetModel"><FontAwesomeIcon icon={faPlus} /> Modelos</Link>
                     <Link className="collapse-item" to="/app/addSubcategory"><FontAwesomeIcon icon={faPlus} /> Subcategoría</Link>
+                    <Link className="collapse-item" to="/app/addSpaceEquipment"><FontAwesomeIcon icon={faPlus} /> Registro de Equipo Tec</Link>
                     <Link className="collapse-item" to="/app/addLocationType"><FontAwesomeIcon icon={faMapMarkedAlt} /> Tipo de Ubicación</Link>
                     <Link className="collapse-item" to="/app/addLocationNumber"><FontAwesomeIcon icon={faHashtag} /> Número de Ubicación</Link>
                     <Link className="collapse-item" to="/app/assetLoanRequest"><FontAwesomeIcon icon={faClipboardCheck} /> Solicitud</Link>
@@ -63,7 +65,6 @@ const Sidebar = () => {
                 <div id="collapseEspacios" className="collapse" aria-labelledby="headingEspacios" data-parent="#accordionSidebar">
                     <div className="bg-white py-2 collapse-inner rounded">
 
-                        <Link className="collapse-item" to="/app/addSpaceEquipment"><FontAwesomeIcon icon={faPlus} /> Registro de Equipo </Link>
                         <Link className="collapse-item" to="/app/addBuilding"><FontAwesomeIcon icon={faPlus} /> Registro de Edificios</Link>
                         <Link className="collapse-item" to="/app/addBuildingLocation"><FontAwesomeIcon icon={faPlus} /> Ubicación en Edificio</Link>
                         <Link className="collapse-item" to="/app/addSpace"><FontAwesomeIcon icon={faPlus} /> Registro de Espacios</Link>
