@@ -3,6 +3,10 @@ import { Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import { usePage } from '../../../context/pageContext';
 import { API_URLS } from '../../../declarations/apiConfig';
+import ConfirmationModal from "../../../components/confirmation/ConfirmationModal.jsx";
+import SuccessModal from "../../../components/modal/success/SuccessModal.jsx";
+import ErrorModal from "../../../components/modal/error/ErrorModal.jsx";
+
 
 const AddSpaceEquipment = () => {
     const [name, setName] = useState('');
@@ -11,9 +15,12 @@ const AddSpaceEquipment = () => {
     const [space, setSpace] = useState('');
     const [brands, setBrands] = useState([]);
     const [spaces, setSpaces] = useState([]);
-    const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-    const [showErrorAlert, setShowErrorAlert] = useState(false);
     const { setPageName } = usePage();
+
+    const [showCancellationModal, setShowCancellationModal] = useState(false);
+    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+    const [showErrorModal, setShowErrorModal] = useState(false);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
 
     useEffect(() => {
         setPageName("Agregar Equipo Tecnológico");
@@ -52,7 +59,12 @@ const AddSpaceEquipment = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setShowConfirmationModal(true);
+    };
 
+    const verifyCancel = () => setShowCancellationModal(true);
+
+    const handleConfirm = () => {
         const newEquipment = {
             id: 0,
             name: name,
@@ -76,15 +88,21 @@ const AddSpaceEquipment = () => {
                 return response.json();
             })
             .then(() => {
-                setShowSuccessAlert(true);
-                setName('');
-                setBrand('');
-                setSpace('');
-                setQuantity(0);
+                setShowSuccessModal(true);
+                handleCancel();
+
+                setTimeout(() => {
+                    setName('');
+                    setBrand('');
+                    setSpace('');
+                    setQuantity(0);
+                }, 2000);
+
+                setShowConfirmationModal(false);
             })
             .catch(error => {
                 console.error('Error adding equipment:', error);
-                setShowErrorAlert(true);
+                setShowErrorModal(true);
             });
     };
 
@@ -93,6 +111,7 @@ const AddSpaceEquipment = () => {
         setBrand('');
         setSpace('');
         setQuantity(0);
+        setShowCancellationModal(false);
     }
 
     return (
@@ -141,16 +160,11 @@ const AddSpaceEquipment = () => {
                                     id="quantity"
                                     className="form-control border-primary"
                                     placeholder="Cantidad"
+                                    min = "1"
                                     value={quantity}
                                     onChange={(e) => {
                                         const value = Number(e.target.value);
-                                        // Solo actualiza el estado si el valor es mayor a 0
-                                        if (value > 0) {
                                             setQuantity(value);
-                                        } else {
-                                            // Si el valor es menor o igual a 0, puedes manejarlo aquí (opcional)
-                                            setQuantity(0); // O puedes dejarlo como está
-                                        }
                                     }}
                                     required
                                 />
@@ -206,7 +220,7 @@ const AddSpaceEquipment = () => {
                         <div className="mb-4 row justify-content-center align-items-center">
                             <div className="col-sm-6">
                                 <Button className="btn btn-danger btn-lg w-100 shadow-sm btn-custom" id='cancel'
-                                        onClick={handleCancel}>
+                                        onClick={verifyCancel}>
                                     <i className="fas fa-times"></i> Cancelar
                                 </Button>
                             </div>
@@ -218,19 +232,36 @@ const AddSpaceEquipment = () => {
                         </div>
                     </form>
 
-                    {/* Success Alert */}
-                    {showSuccessAlert && (
-                        <div className="alert alert-success mt-4 text-center" role="alert">
-                            ¡Equipo agregado correctamente!
-                        </div>
-                    )}
+                    {/*Confirmation modal*/}
+                    <ConfirmationModal
+                        show={showConfirmationModal}
+                        onHide={() => setShowConfirmationModal(false)}
+                        confirmAction="guardar"
+                        onConfirm={handleConfirm}
+                    />
 
-                    {/* Error Alert */}
-                    {showErrorAlert && (
-                        <div className="alert alert-danger mt-4 text-center" role="alert">
-                            Hubo un error al agregar el equipo. Por favor inténtalo de nuevo.
-                        </div>
-                    )}
+                    <ConfirmationModal
+                        show={showCancellationModal}
+                        onHide={() => setShowCancellationModal(false)}
+                        confirmAction="eliminar"
+                        onConfirm={handleCancel}
+                    />
+
+                    {/* Success Modal */}
+                    <SuccessModal
+                        show={showSuccessModal}
+                        onHide={() => setShowSuccessModal(false)}
+                        title="Operación Exitosa"
+                        message="Se ha realizado la edición del espacio correctamente."
+                    />
+
+                    {/* Error Modal */}
+                    <ErrorModal
+                        show={showErrorModal}
+                        onHide={() => setShowErrorModal(false)}
+                        title="Error"
+                        message="Hubo un problema al editar el espacio. Por favor, intenta nuevamente."
+                    />
                 </div>
             </div>
         </div>
