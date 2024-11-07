@@ -46,7 +46,7 @@ const Sidebar = () => {
                     </Link><Link className="collapse-item" to="/app/addCategory"><FontAwesomeIcon icon={faPlus} /> Categoría
                     </Link><Link className="collapse-item" to="/app/addAssetModel"><FontAwesomeIcon icon={faPlus} /> Modelos</Link>
                     <Link className="collapse-item" to="/app/addSubcategory"><FontAwesomeIcon icon={faPlus} /> Subcategoría</Link>
-                    <Link className="collapse-item" to="/app/addSpaceEquipment"><FontAwesomeIcon icon={faPlus} /> Registro de Equipo Tec</Link>
+                    <Link className="collapse-item" to="/app/addSpaceEquipment"><FontAwesomeIcon icon={faPlus} /> Equipo Tecnológico</Link>
                     <Link className="collapse-item" to="/app/addLocationType"><FontAwesomeIcon icon={faMapMarkedAlt} /> Tipo de Ubicación</Link>
                     <Link className="collapse-item" to="/app/addLocationNumber"><FontAwesomeIcon icon={faHashtag} /> Número de Ubicación</Link>
                     <Link className="collapse-item" to="/app/assetLoanRequest"><FontAwesomeIcon icon={faClipboardCheck} /> Solicitud</Link>

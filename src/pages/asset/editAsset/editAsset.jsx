@@ -6,6 +6,9 @@ import './editAsset.css';
 import { Link } from 'react-router-dom';
 import { API_URLS } from '../../../declarations/apiConfig';
 import { usePage } from '../../../context/pageContext';
+import ConfirmationModal from "../../../components/confirmation/ConfirmationModal.jsx";
+import SuccessModal from "../../../components/modal/success/SuccessModal.jsx";
+import ErrorModal from "../../../components/modal/error/ErrorModal.jsx";
 
 const EditAsset = () => {
     const { id } = useParams();
@@ -31,12 +34,15 @@ const EditAsset = () => {
     const [plateNumber, setPlateNumber] = useState('');
     const [locationNumber, setLocationNumber] = useState('');
 
-    const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-    const [showErrorAlert, setShowErrorAlert] = useState(false);
+    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+    const [showErrorModal, setShowErrorModal] = useState(false);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+    const [isLoading, setIsLoading] = useState(false);
 
     const formRef = useRef(null);
     const { setPageName } = usePage();
-    const [isLoading, setIsLoading] = useState(true);
+
 
     useEffect(() => {
         setPageName("Editar Activo");
@@ -104,7 +110,10 @@ const EditAsset = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setShowConfirmationModal(true);
+    };
 
+    const handleConfirm = () => {
         const updatedAsset = {
             id, // existing asset ID
             purchaseDate,
@@ -137,11 +146,14 @@ const EditAsset = () => {
                     throw new Error('Network response was not ok');
                 });
             }
-            setShowSuccessAlert(true);
+        })
+        .then(() => {
+            setShowConfirmationModal(false);
+            setShowSuccessModal(true);
         })
         .catch(error => {
             console.error('Error updating asset:', error);
-            setShowErrorAlert(true);
+            setShowErrorModal(true);
         });
     };
 
@@ -384,19 +396,31 @@ const EditAsset = () => {
                 <div className="text-center mb-4">
                     <Link to="/app/assetList" className="btn btn-secondary">Volver</Link>
                 </div>
-    
-                {showSuccessAlert && (
-                    <div className="alert alert-success" role="alert">
-                        Activo actualizado exitosamente
-                    </div>
-                )}
-    
-                {showErrorAlert && (
-                    <div className="alert alert-danger" role="alert">
-                        Hubo un error al actualizar el activo
-                    </div>
-                )}
             </form>
+
+                    {/*Confirmation modal*/}
+                    <ConfirmationModal
+                        show={showConfirmationModal}
+                        onHide={() => setShowConfirmationModal(false)}
+                        confirmAction="guardar"
+                        onConfirm={handleConfirm}
+                    />
+
+                    {/* Success Modal */}
+                    <SuccessModal
+                        show={showSuccessModal}
+                        onHide={() => setShowSuccessModal(false)}
+                        title="Operación Exitosa"
+                        message="Se ha realizado la edición del espacio correctamente."
+                    />
+
+                    {/* Error Modal */}
+                    <ErrorModal
+                        show={showErrorModal}
+                        onHide={() => setShowErrorModal(false)}
+                        title="Error"
+                        message="Hubo un problema al editar el espacio. Por favor, intenta nuevamente."
+                    />
         </div>
     </div>
     
