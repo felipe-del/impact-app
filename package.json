@@ -15,10 +15,12 @@
     "@fortawesome/react-fontawesome": "^0.2.2",
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.4",
+    "i18next": "^24.2.0",
     "impact-app": "file:",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.4",
     "react-dom": "^18.3.1",
+    "react-i18next": "^15.2.0",
     "react-input-mask": "^2.0.4",
     "react-number-format": "^5.4.2",
     "react-router-dom": "^6.26.1"
