@@ -8,6 +8,10 @@ import Escudo_UCR from '../assets/Escudo_UCR.png';
 import ReturnArrow from '../assets/return.png';
 import InfoIcon from '../assets/info_icon.png';
 import Pencil from '../assets/pencil.png';
+import Login_Cover from '../assets/login_cover.jpg'
+import Logo_Blue from '../assets/logos/logo_3_2blue.svg'
+import Logo_LBlue from '../assets/logos/logo_3_lightblue.svg'
+import Logo_Black from '../assets/logos/logo_3_black.svg'
 
 // Exporta todas las imágenes de una vez
 export {
@@ -19,5 +23,9 @@ export {
   Escudo_UCR,
   ReturnArrow,
   InfoIcon,
-  Pencil
+  Pencil,
+  Login_Cover,
+  Logo_Blue,
+  Logo_LBlue,
+  Logo_Black
 };
