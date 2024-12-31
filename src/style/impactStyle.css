@@ -1,0 +1,199 @@
+input[type="email"]:focus,  input[type="password"]:focus{
+    outline:none;
+}
+
+.w-80 {
+    width: 80% !important;
+}
+
+.mt-6 {
+    margin-top: 5rem !important;
+}
+
+.mb-6 {
+    margin-bottom: 5rem !important;
+}
+
+.input-1 {
+    background: none;
+    border-bottom-color: #80A9BA;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+}
+
+.no-bg {
+    background:none !important;
+}
+
+.no-border {
+    border:none !important;
+}
+
+.small-letters{
+    font-size: small;
+}
+
+.large-letters{
+    font-size: larger;
+}
+
+.underline-w-spacing {
+    text-decoration: underline;
+    text-decoration-color: #00C0F3;
+    text-decoration-thickness: .3vh;
+    text-underline-offset: 1.3vh;
+}
+
+.myriad-pro {
+    font-family: "myriad-pro", sans-serif;
+    font-style: normal;
+}
+
+.eb-garamond {
+    font-family: "eb-garamond", serif;
+    font-style: normal;
+}
+
+.trueno-reg {
+    font-family: "Trueno Regular", serif;
+}
+.trueno-regIt {
+    font-family: "Trueno Regular Italic", serif;
+}
+
+.trueno-light {
+    font-family: "Trueno Light", serif;
+}
+.trueno-lightIt {
+    font-family: "Trueno Light Italic", serif;
+}
+
+.trueno-ultraLight {
+    font-family: "Trueno UltraLight", serif;
+}
+.trueno-ultraLightIt {
+    font-family: "Trueno UltraLight Italic", serif;
+}
+
+.trueno-semibold {
+    font-family: "Trueno SemiBold", serif;
+}
+.trueno-semiboldIt {
+    font-family: "Trueno SemiBold Italic", serif;
+}
+
+.trueno-bold {
+    font-family: "Trueno Bold", serif;
+}
+.trueno-boldIt {
+    font-family: "Trueno Bold Italic", serif;
+}
+
+@font-face {
+    font-family: 'Trueno Regular';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Trueno Regular'), url('../assets/fonts/TruenoRg.woff') format('woff');
+}
+@font-face {
+    font-family: 'Trueno Regular Italic';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Trueno Regular Italic'), url('../assets/fonts/TruenoRgIt.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Trueno Light';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Trueno Light'), url('../assets/fonts/TruenoLt.woff') format('woff');
+}
+@font-face {
+    font-family: 'Trueno Light Italic';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Trueno Light Italic'), url('../assets/fonts/TruenoLtIt.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Trueno SemiBold';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Trueno SemiBold'), url('../assets/fonts/TruenoSBd.woff') format('woff');
+}
+@font-face {
+    font-family: 'Trueno SemiBold Italic';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Trueno SemiBold Italic'), url('../assets/fonts/TruenoSBdIt.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Trueno UltraLight';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Trueno UltraLight'), url('../assets/fonts/TruenoUltLt.woff') format('woff');
+}
+@font-face {
+    font-family: 'Trueno UltraLight Italic';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Trueno UltraLight Italic'), url('../assets/fonts/TruenoUltLtIt.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Trueno Bold';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Trueno Bold'), url('../assets/fonts/TruenoBd.woff') format('woff');
+}
+@font-face {
+    font-family: 'Trueno Bold Italic';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Trueno Bold Italic'), url('../assets/fonts/TruenoBdIt.woff') format('woff');
+}
+
+.blue-1 {
+    color: #00C0F3;
+}
+.blue-2 {
+    color: #005DA4;
+}
+.blue-3 {
+    color: #8ED8F8;
+}
+.blue-4 {
+    color: #BAD2CD;
+}
+.blue-5 {
+    color: #80A9BA;
+}
+
+.orange-1 {
+    color: #E5B365;
+}
+.orange-2 {
+    color: #F99D1C;
+}
+
+.yellow-1 {
+    color: #FDB912;
+}
+
+.brown-1 {
+    color: #670000;
+}
+.brown-2 {
+    color: #7B3400;
+}
+
+.green-1 {
+    color: #8DC63F;
+}
+.green-2 {
+    color: #008641;
+}
+.green-3 {
+    color: #B9D989;
+}
