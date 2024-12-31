@@ -29,6 +29,7 @@ import EditAsset from '../pages/asset/editAsset/editAsset.jsx';
 import AddSpaceEquipment from '../pages/commonSpace/equipment/addEquipment.jsx';
 import SpaceRequest from "../pages/commonSpace/space/spaceRequest/spaceRequest.jsx";
 import Users from '../pages/users/users.jsx';
+import LoginRegister from "../pages/login_register/LoginRegister.jsx";
 
 export const Routes = createBrowserRouter([
     {
@@ -38,6 +39,10 @@ export const Routes = createBrowserRouter([
     {
         path: '/auth',
         element: <Authentication/>,
+    },
+    {
+        path: '/loginRegister',
+        element: <LoginRegister/>
     },
     {
         path: '/app',
@@ -153,7 +158,7 @@ export const Routes = createBrowserRouter([
             },
 			{
                 path: 'manageUsers',
-            	 element: <Users/>
+            	element: <Users/>
 			}
         ]
     }
