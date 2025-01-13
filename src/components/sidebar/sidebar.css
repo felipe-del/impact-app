@@ -1,0 +1,17 @@
+
+.bg-custom {
+    background-color: rgba(0, 93, 164, 1);
+}
+
+#dashboard-item:hover,
+#pages-item:hover,
+#charts-item:hover,
+#tables-item:hover,
+#components-item:hover,
+#utilities-item:hover,
+#activos-item:hover,
+#espacios-item:hover,
+#productos-item:hover,
+#user-item:hover {
+    background-color: #007bff; /* Change to your desired color */
+}
