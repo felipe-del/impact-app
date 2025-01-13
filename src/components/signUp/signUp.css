@@ -1,0 +1,76 @@
+.password-container {
+    position: relative;
+    width: 100%;
+}
+
+.icon-container {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.icon-container img:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+
+.info-message {
+    position: absolute;
+    top: 190%;
+    left: -210%;
+    transform: translateX(-50%) translateY(10px);
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    width: 160px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #333;
+    opacity: 0;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    pointer-events: none;
+}
+
+.password-container .info-message.active {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+}
+
+
+.icon-container:hover + .info-message {
+    opacity: 1;
+}
+
+.password-container img {
+    width: 23px;
+    height: 22px;
+}
+
+.password-input {
+    width: 100%;
+    padding-left: 55px;
+    padding-right: 60px;
+    height: 40px;
+    box-sizing: border-box;
+}
+
+.input-field {
+    width: 100%;
+    padding-left: 60px;
+    padding-right: 60px;
+    height: 40px;
+    box-sizing: border-box;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 46px;
+    top: 55%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
