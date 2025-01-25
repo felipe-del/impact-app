@@ -28,7 +28,8 @@ const SignIn = ({ switchToSignUp }) => {
             localStorage.setItem('AUTH_TOKEN', response.data.token)
             navigate('/app')
         } catch (error) {
-            toast.error(error.message)
+            console.log(error)
+            toast.error(error.response)
         }
     }
 
