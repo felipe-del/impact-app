@@ -8,6 +8,7 @@ export async function login(email, password) {
         const { data } = await api.post(`${root}/login`, {email, password})
         return data
     } catch (error) {
+        console.log(error)
         handleAxiosError(error)
     }
 }
