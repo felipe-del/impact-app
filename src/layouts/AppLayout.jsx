@@ -3,6 +3,9 @@ import {Navigate, Outlet} from "react-router-dom";
 import {getUser} from "../api/Auth_API.js";
 import IMPACT from "../components/IMPACT.jsx";
 
+import LoadingSpinner from "../components/spinner/loadingSpinner/LoadingSpinner.jsx";
+import {Toaster} from "react-hot-toast";
+
 export default function AppLayout() {
 
     const { data, isLoading, isError } = useQuery({
@@ -11,7 +14,18 @@ export default function AppLayout() {
         retry: 2,
         refetchOnWindowFocus: false
     })
-    if(isLoading) return <p>Cargando...</p>
+    if(isLoading) return <LoadingSpinner />
     if(isError) return <Navigate to={'/auth'} />
-    if (data) return <IMPACT responseWrapper={data}><Outlet/></IMPACT>
+    if (data) return (
+        <>
+            <Toaster
+                position="bottom-right"
+                reverseOrder={false}
+            />
+            <IMPACT responseWrapper={data}>
+                <Outlet />
+            </IMPACT>
+        </>
+    );
+
 }
