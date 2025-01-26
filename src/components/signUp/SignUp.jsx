@@ -3,7 +3,14 @@ import './signUp.css'
 
 import PropTypes from 'prop-types'
 
-const SignUp = ({ switchToSignIn }) => {
+// MUI icons
+import PersonIcon from '@mui/icons-material/Person'
+import EmailIcon from '@mui/icons-material/Email'
+import LockIcon from '@mui/icons-material/Lock'
+import InfoIcon from '@mui/icons-material/Info'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+
+const SignUp = () => {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -17,22 +24,23 @@ const SignUp = ({ switchToSignIn }) => {
         e.preventDefault()
 
         if (!name || !email || !password) {
-            setRegisterError('All fields must be filled.')
+            setRegisterError('Todos los campos son requeridos.')
             return;
         }
 
         if (!email.endsWith('@ucr.ac.cr')) {
-            setRegisterError('You must register with an institutional email.')
+            setRegisterError('El correo electrónico debe ser institucional (@ucr.ac.cr)')
             return
         }
 
         const passwordRegex = /^(?=.*[0-9].*[0-9])(?=.*[!@#$%"^&*.])[A-Za-z0-9!@#$%^&*."]{8,}$/
 
         if (!passwordRegex.test(password)) {
-            setRegisterError('Password must be at least 8 characters, including 2 numbers and 1 special character (!@#$%"^&*.)')
+            setRegisterError('La contraseña debe tener al menos ocho caracteres, incluyendo dos números y un caracter especial (!@#$%"^&*.).')
             return
         }
 
+        // Register logic here (e.g., API call)
     };
 
     // Handle input changes and reset success/error messages
@@ -45,49 +53,69 @@ const SignUp = ({ switchToSignIn }) => {
     return (
         <div className="form-container sign-up">
             <form onSubmit={handleSubmit}>
-                <h1>Create Account</h1>
-                <input
-                    type="text"
-                    placeholder="Name"
-                    value={name}
-                    onChange={handleInputChange(setName)}
-                    className="input-field"
-                />
-                <input
-                    type="email"
-                    placeholder="Institutional Email"
-                    value={email}
-                    onChange={handleInputChange(setEmail)}
-                    className="input-field"
-                />
-                <div className="password-container">
-                    <div className="icon-container" onClick={() => setShowInfoMessage(!showInfoMessage)}>
-                        <img src="/info_icon.png" alt="Info Icon"/>
-                        <div className={`info-message ${showInfoMessage ? 'active' : ''}`}>
-                            Your password must be at least 8 characters long, including 2 numbers and 1 special character.
-                        </div>
-                    </div>
+                <h1 id='register-title'>Crear cuenta</h1>
+
+                {/* Name Field */}
+                <div className={'input-wrapper'}>
+                    <PersonIcon />
                     <input
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Password"
-                        value={password}
-                        onChange={handleInputChange(setPassword)}
-                        className="input-field password-input"
+                        type="text"
+                        placeholder="Nombre"
+                        value={name}
+                        onChange={handleInputChange(setName)}
+                        className="input-field"
                     />
-                    {password && (
-                        <span
-                            className="toggle-password"
-                            onClick={() => setShowPassword(!showPassword)}
-                        >
-                            {showPassword ? 'HIDE' : 'SHOW'}
-                        </span>
-                    )}
                 </div>
 
+                {/* Email Field */}
+                <div className={'input-wrapper'}>
+                    <EmailIcon />
+                    <input
+                        type="email"
+                        placeholder="Correo electrónico institucional"
+                        value={email}
+                        onChange={handleInputChange(setEmail)}
+                        className="input-field"
+                    />
+                </div>
+
+                {/* Password Field */}
+                <div className="password-container">
+                    <div className="icon-container" onClick={() => setShowInfoMessage(!showInfoMessage)}>
+                        <InfoIcon />
+                        <div className={`info-message ${showInfoMessage ? 'active' : ''}`}>
+                            La contraseña debe tener al menos ocho caracteres, incluyendo dos números y un caracter especial (!@#$%"^&*.)
+                        </div>
+                    </div>
+                    <div className={'input-wrapper'}>
+                        <LockIcon />
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Contraseña"
+                            value={password}
+                            onChange={handleInputChange(setPassword)}
+                            className="input-field password-input"
+                        />
+                        {password && (
+                            <span
+                                className="toggle-password"
+                                onClick={() => setShowPassword(!showPassword)}
+                            >
+                                {showPassword ? 'Ocultar' : 'Mostrar'}
+                            </span>
+                        )}
+                    </div>
+                </div>
+
+                {/* Success and Error Messages */}
                 {registerSuccess && <div style={{ color: 'green' }}>{registerSuccess}</div>}
                 {registerError && <div style={{ color: 'red' }}>{registerError}</div>}
-                <button type="submit">REGISTER</button>
-                <button className="hidden" onClick={switchToSignIn}>Sign In</button>
+
+                {/* Submit Button */}
+                <button type="submit" id="register-button">
+                    <CheckCircleIcon style={{ marginRight: '8px' }} />
+                    Registrar
+                </button>
             </form>
         </div>
     );
