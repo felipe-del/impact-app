@@ -53,7 +53,7 @@ const GenericModal = ({
                 </Typography>
                 <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
                     <Button variant="outlined" onClick={onHide} sx={{ mr: 1 }}>
-                        Cancel
+                        Cancelar
                     </Button>
                     <Button variant="contained" color="primary" onClick={handleButtonClick}>
                         {buttonText}
