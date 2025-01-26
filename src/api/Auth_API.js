@@ -8,7 +8,6 @@ export async function login(email, password) {
         const { data } = await api.post(`${root}/login`, {email, password})
         return data
     } catch (error) {
-        console.log(error)
         handleAxiosError(error)
     }
 }
@@ -17,6 +16,16 @@ export async function getUser() {
     try {
         const { data } = await api.get(`${root}/user-session`)
         return data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}
+
+export async function logout(jwtToken) {
+    try {
+        const response = await api.post(`${root}/logout`, {jwtToken})
+        console.log(response)
+        return response.data
     } catch (error) {
         handleAxiosError(error)
     }
