@@ -1,11 +1,28 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import Logout from "../popUp/logout/Logout.jsx";
+import GenericModal from "../popUp/generic/GenericModal.jsx";
+import {logout} from "../../api/Auth_API.js";
+import {toast} from "sonner";
+import {useNavigate} from "react-router-dom";
 
 const TopBar = ({ userName }) => {
-    const [showLogoutModal, setShowLogoutModal] = useState(false);
-    const handleShowLogoutModal = () => setShowLogoutModal(true);
-    const handleCloseLogoutModal = () => setShowLogoutModal(false);
+    const [showModal, setShowModal] = useState(false);
+    const handleShowModal = () => setShowModal(true);
+    const handleHideModal = () => setShowModal(false);
+
+    const navigate = useNavigate()
+
+    const handleLogout = async () => {
+        try {
+            const jwtToken = localStorage.getItem('AUTH_TOKEN');
+            const response = await logout(jwtToken);
+            localStorage.removeItem('AUTH_TOKEN');
+            toast.success(response.message);
+            navigate('/')
+        } catch (error) {
+            toast.error(error.message);
+        }
+    };
 
     return (
         <nav className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
@@ -66,26 +83,33 @@ const TopBar = ({ userName }) => {
                     <div className="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                         <a className="dropdown-item" href="#">
                             <i className="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                            Profile
+                            Perfil
                         </a>
                         <a className="dropdown-item" href="#">
                             <i className="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                            Settings
+                            Configuración
                         </a>
                         <a className="dropdown-item" href="#">
                             <i className="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                            Activity Log
+                            Registro de Actividad
                         </a>
                         <div className="dropdown-divider"></div>
-                        <a className="dropdown-item" href="#" onClick={handleShowLogoutModal}>
+                        <a className="dropdown-item" href="#" onClick={handleShowModal}>
                             <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                            Logout
+                            Cerrar Sesión
                         </a>
                     </div>
                 </li>
             </ul>
 
-            <Logout show={showLogoutModal} onClose={handleCloseLogoutModal} onHide={handleCloseLogoutModal}/>
+            <GenericModal
+                show={showModal}
+                onHide={handleHideModal}
+                title="¿Estás seguro de que deseas cerrar sesión?"
+                bodyText="Si cierras sesión, tendrás que volver a introducir tus credenciales para acceder de nuevo."
+                buttonText="Cerrar Sesión"
+                onButtonClick={handleLogout}
+            />
         </nav>
     );
 };
