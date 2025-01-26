@@ -6,6 +6,7 @@ import SignUp from "../../components/signUp/SignUp.jsx";
 
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LoginIcon from '@mui/icons-material/Login';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
 
 const AuthToggle = () => {
     const [isSignIn, setIsSignIn] = useState(false); // Default to Sign In view
@@ -34,13 +35,17 @@ const AuthToggle = () => {
                         <div className={`toggle ${isSignIn ? '' : 'active'}`}>
                             <div className="toggle-panel toggle-left">
                                 <img src="/IMPACT_BLACK_LOGO.png" alt="IMPACT LOGO"/>
-                                <h1>{isSignIn ? 'Bienvenido!' : ''}</h1>
-                                <a href="/IMPACT.pdf" target="_blank" id="pdf_link">Manual del Usuario</a>
+                                <h1>{isSignIn ? '¡Bienvenido!' : ''}</h1>
+                                <a href="/IMPACT.pdf" target="_blank" id="pdf_link">
+                                    <MenuBookIcon
+                                        style={{marginRight: '6px', verticalAlign: 'middle', fontSize: '1.3rem'}}/>
+                                    Manual del Usuario
+                                </a>
                                 <p>Si ya tienes una cuenta, inicia sesión aquí</p>
                                 <button className="hidden" onClick={toggleSignIn}>
                                     {isSignIn ? (
                                         <>
-                                            <LoginIcon style={{marginRight: '8px', verticalAlign: 'middle'}}/>
+                                        <LoginIcon style={{marginRight: '8px', verticalAlign: 'middle'}}/>
                                             Iniciar Sesión
                                         </>
                                     ) : (
@@ -54,7 +59,10 @@ const AuthToggle = () => {
                             <div className="toggle-panel toggle-right">
                             <img src="/Escudo_UCR.png" alt="Escudo UCR"/>
                                 <h1>{isSignIn ? '' : 'IMPACT | CIMPA'}</h1>
-                                <a href="/IMPACT.pdf" target="_blank" id="pdf_link">Manual del Usuario</a>
+                                <a href="/IMPACT.pdf" target="_blank" id="pdf_link">
+                                    <MenuBookIcon style={{marginRight: '6px', verticalAlign: 'middle', fontSize: '1.3rem'}}/>
+                                    Manual del Usuario
+                                </a>
                                 <p>{isSignIn ? '' : 'Si no tienes una cuenta, puedes crear una aquí'}</p>
                                 <button className="hidden" onClick={toggleSignIn}>
                                     {isSignIn ? '' : (
