@@ -2,6 +2,9 @@ import {isAxiosError} from "axios";
 
 export default function handleAxiosError(error) {
     if (isAxiosError(error) && error.response) {
-        throw new Error(error)
+        const backendError = error.response.data?.message || 'Error de conexión'
+        throw new Error(backendError)
+    } else {
+        throw new Error('Error de conexión')
     }
 }
