@@ -1,16 +1,28 @@
-import  { useState } from 'react';
+import {useEffect, useState} from 'react';
 import './authToggle.css';
 import { useNavigate } from 'react-router-dom';
 import SignIn from "../../components/signIn/SignIn.jsx";
 import SignUp from "../../components/signUp/SignUp.jsx";
+
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import LoginIcon from '@mui/icons-material/Login';
+
 const AuthToggle = () => {
     const [isSignIn, setIsSignIn] = useState(false); // Default to Sign In view
+
     const navigate = useNavigate();
 
     // Toggle between Sign In and Sign Up forms
     const toggleSignIn = () => {
         setIsSignIn(prevState => !prevState);
     };
+
+    useEffect(() => {
+        const token = localStorage.getItem('AUTH_TOKEN');
+        if (token) {
+            navigate('/app');
+        }
+    }, [navigate]);
 
     return (
         <>
@@ -21,20 +33,36 @@ const AuthToggle = () => {
                     <div className="toggle-container">
                         <div className={`toggle ${isSignIn ? '' : 'active'}`}>
                             <div className="toggle-panel toggle-left">
+                                <img src="/IMPACT_BLACK_LOGO.png" alt="IMPACT LOGO"/>
                                 <h1>{isSignIn ? 'Bienvenido!' : ''}</h1>
-                                <p>Ingresa tus datos personales para utilizar todas las funciones del sitio</p>
                                 <a href="/IMPACT.pdf" target="_blank" id="pdf_link">Manual del Usuario</a>
+                                <p>Si ya tienes una cuenta, inicia sesión aquí</p>
                                 <button className="hidden" onClick={toggleSignIn}>
-                                    {isSignIn ? 'Inicio de sesión' : 'Registrar cuenta'}
+                                    {isSignIn ? (
+                                        <>
+                                            <LoginIcon style={{marginRight: '8px', verticalAlign: 'middle'}}/>
+                                            Iniciar Sesión
+                                        </>
+                                    ) : (
+                                        <>
+                                            <AccountCircleIcon style={{marginRight: '8px', verticalAlign: 'middle'}}/>
+                                            Registrar cuenta
+                                        </>
+                                    )}
                                 </button>
                             </div>
                             <div className="toggle-panel toggle-right">
-                                <img src="/Escudo_UCR.png" alt="Escudo UCR" />
+                            <img src="/Escudo_UCR.png" alt="Escudo UCR"/>
                                 <h1>{isSignIn ? '' : 'IMPACT | CIMPA'}</h1>
-                                <p>{isSignIn ? '' : 'Si no tiene una cuenta, puede registrarse aquí'}</p>
                                 <a href="/IMPACT.pdf" target="_blank" id="pdf_link">Manual del Usuario</a>
+                                <p>{isSignIn ? '' : 'Si no tienes una cuenta, puedes crear una aquí'}</p>
                                 <button className="hidden" onClick={toggleSignIn}>
-                                    {isSignIn ? '' : 'Sign Up'}
+                                    {isSignIn ? '' : (
+                                        <>
+                                            <AccountCircleIcon style={{marginRight: '8px', verticalAlign: 'middle'}}/>
+                                            Crear cuenta
+                                        </>
+                                    )}
                                 </button>
                             </div>
                         </div>
