@@ -6,7 +6,6 @@ import './sidebar.css';
 import PropTypes from 'prop-types';
 
 const Sidebar = ({ role }) => {
-    console.log(role);
 
     return (
         <ul className="navbar-nav bg-custom sidebar sidebar-dark accordion" id="accordionSidebar">
