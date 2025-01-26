@@ -11,14 +11,15 @@
     overflow: hidden;
     width: 700px;
     min-height: 480px;
-
 }
 
 .container p{
     font-size: 14px;
     line-height: 20px;
-    letter-spacing: 0.3px;
+    letter-spacing: 0.4px;
     margin: 20px 0;
+    /* cant copy text */
+    user-select: none;
 }
 
 .container span{
@@ -49,6 +50,11 @@
 .container button.hidden{
     background-color: transparent;
     border-color: #fff;
+}
+
+.container button.hidden:hover{
+    background-color: #005da4;
+    border-color: transparent;
 }
 
 .container form{
@@ -196,9 +202,26 @@
     transition: all 0.6s ease-in-out;
 }
 
+.toggle-panel h1 {
+    font-size: 2.5rem;
+    font-family: 'Montserrat', sans-serif;
+    color: #fff;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+    /* add shadow to text */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    /* cant copy text */
+    user-select: none;
+}
+
 .toggle-panel img {
-    width: 150px;
+    width: 160px;
     margin-bottom: 20px;
+    transition: transform 0.3s ease;
+}
+
+.toggle-panel img:hover {
+    transform: scale(1.05);
 }
 
 .toggle-left{
@@ -249,4 +272,14 @@
     width: 100%;  /* Ensure the input field takes up full width */
 }
 
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
