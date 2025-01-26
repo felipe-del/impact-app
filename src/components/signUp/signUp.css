@@ -6,7 +6,7 @@
 .icon-container {
     position: absolute;
     right: 10px;
-    top: 50%;
+    top: 43%;
     transform: translateY(-50%);
 }
 
@@ -18,8 +18,8 @@
 
 .info-message {
     position: absolute;
-    top: 190%;
-    left: -210%;
+    top: 140%;
+    left: -200%;
     transform: translateX(-50%) translateY(10px);
     background-color: #f0f0f0;
     padding: 10px;
@@ -28,7 +28,7 @@
     z-index: 100;
     width: 160px;
     text-align: center;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: #333;
     opacity: 0;
     transition: opacity 0.5s ease, transform 0.5s ease;
@@ -70,7 +70,7 @@
 .toggle-password {
     position: absolute;
     right: 46px;
-    top: 55%;
+    top: 45%;
     transform: translateY(-50%);
     cursor: pointer;
 }
