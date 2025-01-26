@@ -27,6 +27,7 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import SearchIcon from '@mui/icons-material/Search';
 import { visuallyHidden } from '@mui/utils';
 import {TextField} from "@mui/material";
+import {useEffect} from "react";
 
 function createData(id, name, calories, fat, carbs, protein) {
     return {
