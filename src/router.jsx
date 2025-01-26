@@ -2,8 +2,8 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import AuthToggle from "./views/auth/AuthToggle.jsx";
 import AuthLayout from "./layouts/AuthLayout.jsx";
 import AppLayout from "./layouts/AppLayout.jsx";
-import TestPage from "./components/TestPage.jsx";
 import About from "./components/about/About.jsx";
+import DataTable from "./components/DataTable.jsx";
 
 export default function Router() {
     return (
@@ -16,7 +16,7 @@ export default function Router() {
                 </Route>
 
                 <Route element={<AppLayout />}>
-                    <Route path="/app" element={<TestPage />} />
+                    <Route path="/app" element={<DataTable />} />
                 </Route>
             </Routes>
         </BrowserRouter>
