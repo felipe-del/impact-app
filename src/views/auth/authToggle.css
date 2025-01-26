@@ -11,6 +11,7 @@
     overflow: hidden;
     width: 700px;
     min-height: 480px;
+
 }
 
 .container p{
@@ -25,7 +26,7 @@
 }
 
 .container a{
-    color: #333;
+    color: #ac3434;
     font-size: 13px;
     text-decoration: none;
     margin: 15px 0 10px;
@@ -69,6 +70,24 @@
     border-radius: 8px;
     width: 100%;
     outline: none;
+}
+
+#login-title {
+    margin-bottom: 35px; /* Adjust the space below the title */
+    color: #0a65aa;
+}
+
+#register-title {
+    margin-bottom: 35px; /* Adjust the space below the title */
+    color: #0a65aa;
+}
+
+#sign-button {
+    margin-top: 35px; /* Adjust the space above the button */
+}
+
+#register-button {
+    margin-top: 35px; /* Adjust the space above the button */
 }
 
 .form-container{
@@ -202,3 +221,32 @@
     color: #ffff;
     text-decoration: underline;
 }
+
+.input-wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.input-wrapper svg {
+    margin-right: 10px; /* Space between icon and input */
+    font-size: 1.5rem;  /* Adjust the size if needed */
+}
+
+.input-field {
+    background-color: #eee;
+    border: none;
+    margin: 8px 0;
+    padding: 10px 15px;
+    font-size: 13px;
+    border-radius: 8px;
+    width: 100%;
+    outline: none;
+}
+
+.input-wrapper .MuiInputBase-root {
+    width: 100%;  /* Ensure the input field takes up full width */
+}
+
+
