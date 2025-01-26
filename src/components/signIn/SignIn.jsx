@@ -4,7 +4,7 @@ import './signIn.css'
 
 import PropTypes from 'prop-types'
 import { login } from '../../api/Auth_API.js'
-import { toast } from 'sonner'
+import { toast } from 'react-hot-toast'
 
 // MUI icons
 import EmailIcon from '@mui/icons-material/Email'
@@ -29,6 +29,7 @@ const SignIn = () => {
         try {
             const response = await login(formData.email, formData.password)
             localStorage.setItem('AUTH_TOKEN', response.data.token)
+            toast('Inicio de sesión exitoso', { icon: '🚀' })
             navigate('/app')
         } catch (error) {
             toast.error(error.message)
