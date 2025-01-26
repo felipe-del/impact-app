@@ -4,6 +4,7 @@ import AuthLayout from "./layouts/AuthLayout.jsx";
 import AppLayout from "./layouts/AppLayout.jsx";
 import About from "./components/about/About.jsx";
 import DataTable from "./components/DataTable.jsx";
+import NotFound from "./components/notFound/NotFound.jsx";
 
 export default function Router() {
     return (
@@ -18,6 +19,10 @@ export default function Router() {
                 <Route element={<AppLayout />}>
                     <Route path="/app" element={<DataTable />} />
                 </Route>
+
+                {/* Page not found */}
+                <Route path="*" element={<NotFound />} />
+
             </Routes>
         </BrowserRouter>
     )
