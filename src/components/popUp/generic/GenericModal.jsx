@@ -48,6 +48,16 @@ const GenericModal = ({
                 <Typography id="modal-title" variant="h6" component="h2">
                     {title}
                 </Typography>
+
+                {/* add line gray break */}
+                <Box
+                    sx={{
+                        height: '0px',
+                        bgcolor: 'grey.500',
+                        my: 2, // Add vertical margin
+                    }}
+                />
+
                 <Typography id="modal-description" sx={{ mt: 2 }}>
                     {bodyText}
                 </Typography>
