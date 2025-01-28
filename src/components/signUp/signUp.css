@@ -12,8 +12,11 @@
 
 .icon-container img:hover {
     transform: scale(1.1);
-    cursor: pointer;
     transition: transform 0.2s ease-in-out;
+}
+
+.infoIcon{
+    cursor: pointer;
 }
 
 .info-message {
@@ -69,8 +72,18 @@
 
 .toggle-password {
     position: absolute;
-    right: 46px;
+    right: 45px;
     top: 45%;
     transform: translateY(-50%);
     cursor: pointer;
+    user-select: none;
+}
+
+.toggle-password-login {
+    position: absolute;
+    right: 55px;
+    top: 270px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    user-select: none;
 }
