@@ -1,8 +1,8 @@
 import {useEffect, useState} from 'react';
 import './authToggle.css';
 import { useNavigate } from 'react-router-dom';
-import SignIn from "../../components/signIn/SignIn.jsx";
-import SignUp from "../../components/signUp/SignUp.jsx";
+import SignIn from "../../../components/signIn/SignIn.jsx";
+import SignUp from "../../../components/signUp/SignUp.jsx";
 
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LoginIcon from '@mui/icons-material/Login';
