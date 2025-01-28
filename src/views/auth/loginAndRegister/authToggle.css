@@ -14,7 +14,7 @@
 }
 
 .container p{
-    font-size: 14px;
+    font-size: 16px;
     line-height: 20px;
     letter-spacing: 0.4px;
     margin: 20px 0;
@@ -28,7 +28,7 @@
 
 .container a{
     color: #ac3434;
-    font-size: 13px;
+    font-size: 14px;
     text-decoration: none;
     margin: 15px 0 10px;
 }
@@ -72,7 +72,7 @@
     border: none;
     margin: 8px 0;
     padding: 10px 15px;
-    font-size: 13px;
+    font-size: 14px;
     border-radius: 8px;
     width: 100%;
     outline: none;
@@ -107,6 +107,19 @@
     left: 0;
     width: 50%;
     z-index: 2;
+}
+
+.sign-in a#forgot-password {
+    position: absolute;
+    top: 280px;
+    right: 43px;
+    font-size: 12px;
+    color: #333;
+    cursor: pointer; /* Añade un cursor de mano para indicar interactividad */
+}
+
+.sign-in a#forgot-password :hover {
+    text-decoration: underline; /* Subraya el texto al pasar el ratón por encima */
 }
 
 .container.active .sign-in{
@@ -266,6 +279,7 @@
     border-radius: 8px;
     width: 100%;
     outline: none;
+    padding-left: 60px; /* Space for the icon */
 }
 
 .input-wrapper .MuiInputBase-root {
