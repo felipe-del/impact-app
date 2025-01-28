@@ -9,6 +9,8 @@ import EmailIcon from '@mui/icons-material/Email'
 import LockIcon from '@mui/icons-material/Lock'
 import InfoIcon from '@mui/icons-material/Info'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import {toast} from "react-hot-toast";
+import {register} from "../../api/Auth_API.js";
 
 const SignUp = () => {
     const [name, setName] = useState('')
@@ -40,7 +42,13 @@ const SignUp = () => {
             return
         }
 
-        // Register logic here (e.g., API call)
+        try {
+            const response = await register(name, email, password)
+            toast(response.message, { icon: '🆕' })
+            resetForm()
+        } catch (error) {
+            toast.error(error.message)
+        }
     };
 
     // Handle input changes and reset success/error messages
@@ -49,6 +57,14 @@ const SignUp = () => {
         setRegisterSuccess('')
         setRegisterError('')
     };
+
+    const resetForm = () => {
+        setName('')
+        setEmail('')
+        setPassword('')
+        setRegisterSuccess('')
+        setRegisterError('')
+    }
 
     return (
         <div className="form-container sign-up">
@@ -82,7 +98,7 @@ const SignUp = () => {
                 {/* Password Field */}
                 <div className="password-container">
                     <div className="icon-container" onClick={() => setShowInfoMessage(!showInfoMessage)}>
-                        <InfoIcon />
+                        <InfoIcon className={'infoIcon'} />
                         <div className={`info-message ${showInfoMessage ? 'active' : ''}`}>
                             La contraseña debe tener al menos ocho caracteres, incluyendo dos números y un caracter especial (!@#$%"^&*.)
                         </div>
