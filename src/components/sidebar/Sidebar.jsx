@@ -160,12 +160,15 @@ const Sidebar = ({ role }) => {
                 </Link>
             </li>
 
+            {(role === 'MANAGER' || role === 'ADMINISTRATOR') && (
             <li className="nav-item" id="user-item">
-                <Link className="nav-link" to="/app/manageUsers">
+                <Link className="nav-link" to="/app/userManagement">
                     <i className="fas fa-fw fa-users"></i>
                     <span>Gestión de usuarios</span>
                 </Link>
             </li>
+
+            )}
             <hr className="sidebar-divider" />
 
             <div className="sidebar-card d-none d-lg-flex">
