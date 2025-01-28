@@ -4,7 +4,6 @@ import {getUser} from "../api/Auth_API.js";
 import IMPACT from "../components/IMPACT.jsx";
 
 import LoadingSpinner from "../components/spinner/loadingSpinner/LoadingSpinner.jsx";
-import {Toaster} from "react-hot-toast";
 
 export default function AppLayout() {
 
@@ -18,10 +17,6 @@ export default function AppLayout() {
     if(isError) return <Navigate to={'/auth'} />
     if (data) return (
         <>
-            <Toaster
-                position="bottom-right"
-                reverseOrder={false}
-            />
             <IMPACT responseWrapper={data}>
                 <Outlet />
             </IMPACT>
