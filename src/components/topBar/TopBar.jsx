@@ -2,8 +2,8 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import GenericModal from "../popUp/generic/GenericModal.jsx";
 import {logout} from "../../api/Auth_API.js";
-import {toast} from "sonner";
 import {useNavigate} from "react-router-dom";
+import {toast} from "react-hot-toast";
 
 const TopBar = ({ userName }) => {
     const [showModal, setShowModal] = useState(false);
@@ -17,7 +17,7 @@ const TopBar = ({ userName }) => {
             const jwtToken = localStorage.getItem('AUTH_TOKEN');
             const response = await logout(jwtToken);
             localStorage.removeItem('AUTH_TOKEN');
-            toast.success(response.message);
+            toast.success(response.message, { icon: '🔒'});
             navigate('/')
         } catch (error) {
             toast.error(error.message);
