@@ -24,8 +24,34 @@ export async function getUser() {
 export async function logout(jwtToken) {
     try {
         const response = await api.post(`${root}/logout`, {jwtToken})
-        console.log(response)
         return response.data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}
+
+export async function register(name, email, password) {
+    try {
+        const { data } = await api.post(`${root}/register`, {name, email, password})
+        return data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}
+
+export async function forgotPassword(email) {
+    try {
+        const { data } = await api.post(`${root}/forgot-password`, {email})
+        return data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}
+
+export async function resetPassword(token, password) {
+    try {
+        const { data } = await api.post(`${root}/reset-password`, {token, password})
+        return data
     } catch (error) {
         handleAxiosError(error)
     }
