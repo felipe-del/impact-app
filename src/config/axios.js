@@ -13,9 +13,9 @@ api.interceptors.request.use((config) => {
 })
 
 // view the request created by axios
-api.interceptors.request.use(request => {
+/*api.interceptors.request.use(request => {
     console.log('Starting Request', request)
     return request
-})
+})*/
 
 export default api
