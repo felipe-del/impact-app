@@ -7,7 +7,7 @@ import LockIcon from '@mui/icons-material/Lock';
 import InfoIcon from '@mui/icons-material/Info';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { toast } from 'react-hot-toast';
-import {resetPassword} from "../../../api/Auth_API.js";
+import {resetPassword} from "../../../api/auth_API.js";
 import {useNavigate} from "react-router-dom";
 
 const ResetPassword = () => {
