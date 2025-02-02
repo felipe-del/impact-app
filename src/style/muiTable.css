@@ -1,0 +1,14 @@
+/* tabla */
+
+.MuiTableCell-head {
+    font-weight: bold;
+    background-color: #1976d2; /* Color de fondo para la cabecera */
+    color: white;
+    text-align: center;
+    padding: 12px;
+}
+
+.MuiTableCell-body {
+    font-family: 'Montserrat', sans-serif;
+}
+
