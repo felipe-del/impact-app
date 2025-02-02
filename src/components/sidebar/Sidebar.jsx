@@ -10,17 +10,21 @@ const Sidebar = ({ role }) => {
     return (
         <ul className="navbar-nav bg-custom sidebar sidebar-dark accordion" id="accordionSidebar">
 
-            <a className="sidebar-brand d-flex align-items-center justify-content-center">
+            <a className="sidebar-brand d-flex align-items-center justify-content-center" href="/app">
+                {/*<div className="logo-container">
+                    <img className="small-logo" src='/logo_3_lightblue.png' alt="IMPACT LOGO"/>
+                </div>*/}
+
                 <div className="sidebar-brand-icon rotate-n-15">
                     <i className="fas fa-clipboard-list"></i>
                 </div>
                 <div className="sidebar-brand-text mx-3">IMPACT <sup>BETA</sup></div>
             </a>
 
-            <hr className="sidebar-divider my-0" />
+            <hr className="sidebar-divider my-0"/>
 
             <li className="nav-item active" id="dashboard-item">
-                <Link className="nav-link" to="/app/dashboard">
+            <Link className="nav-link" to="/app/dashboard">
                     <i className="fas fa-fw fa-tachometer-alt"></i>
                     <span>Panel</span>
                 </Link>
