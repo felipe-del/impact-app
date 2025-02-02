@@ -162,7 +162,7 @@ const Sidebar = ({ role }) => {
 
             {(role === 'MANAGER' || role === 'ADMINISTRATOR') && (
             <li className="nav-item" id="user-item">
-                <Link className="nav-link" to="/app/userManagement">
+                <Link className="nav-link" to="/app/userTable">
                     <i className="fas fa-fw fa-users"></i>
                     <span>Gestión de usuarios</span>
                 </Link>
