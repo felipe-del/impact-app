@@ -10,7 +10,7 @@ import LockIcon from '@mui/icons-material/Lock'
 import InfoIcon from '@mui/icons-material/Info'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import {toast} from "react-hot-toast";
-import {register} from "../../api/Auth_API.js";
+import {register} from "../../api/auth_API.js";
 
 const SignUp = () => {
     const [name, setName] = useState('')
