@@ -14,7 +14,7 @@ export default function IMPACT({ responseWrapper, children }) {
                 {/* Main Content */}
                 <div id="content">
                     {/* TopBar */}
-                    <TopBar userName={user.name}/>
+                    <TopBar user={user || { userName: 'Default User' }}/>
 
                     {/* Page Content */}
                     <div className="container-fluid">
