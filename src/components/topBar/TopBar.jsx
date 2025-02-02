@@ -4,8 +4,9 @@ import GenericModal from "../popUp/generic/GenericModal.jsx";
 import {logout} from "../../api/auth_API.js";
 import {useNavigate} from "react-router-dom";
 import {toast} from "react-hot-toast";
+import {capitalizeFirstLetter} from "../../util/StringUtils.js";
 
-const TopBar = ({ userName }) => {
+const TopBar = ({ user }) => {
     const [showModal, setShowModal] = useState(false);
     const handleShowModal = () => setShowModal(true);
     const handleHideModal = () => setShowModal(false);
@@ -34,7 +35,7 @@ const TopBar = ({ userName }) => {
             </button>
 
             <span className="navbar-text mr-auto d-none d-md-block">
-                Welcome, {userName}!
+                {capitalizeFirstLetter(user.userRoleResponse.roleName)} - {user.name}
             </span>
             {/* TopBar Navbar */}
             <ul className="navbar-nav ml-auto">
@@ -115,7 +116,13 @@ const TopBar = ({ userName }) => {
 };
 
 TopBar.propTypes = {
-    userName: PropTypes.string,
+    user: PropTypes.shape({
+        userName: PropTypes.string,
+        name: PropTypes.string.isRequired,
+        userRoleResponse: PropTypes.shape({
+            roleName: PropTypes.string.isRequired,
+        }).isRequired,
+    }).isRequired,
 };
 
 export default TopBar;
