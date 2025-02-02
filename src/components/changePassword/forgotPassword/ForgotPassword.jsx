@@ -5,7 +5,7 @@ import { toast } from 'react-hot-toast';
 // MUI icons
 import EmailIcon from '@mui/icons-material/Email';
 import SendIcon from '@mui/icons-material/Send';
-import {forgotPassword} from "../../../api/Auth_API.js";
+import {forgotPassword} from "../../../api/auth_API.js";
 
 import PropTypes from 'prop-types';
 
