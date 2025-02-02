@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import { getAllUsers } from "../../api/User_API.js";
+import { getAllUsers } from "../../api/user_API.js";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import DataTable from "../../components/dataTable/DataTable.jsx";
 import AddUser from "./AddUser.jsx";
