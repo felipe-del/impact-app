@@ -9,6 +9,6 @@ export async function getAllUsers() {
         return data
     } catch (error) {
         handleAxiosError(error)
-        return [];
     }
 }
+
