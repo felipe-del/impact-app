@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import GenericModal from "../popUp/generic/GenericModal.jsx";
-import {logout} from "../../api/Auth_API.js";
+import {logout} from "../../api/auth_API.js";
 import {useNavigate} from "react-router-dom";
 import {toast} from "react-hot-toast";
 
