@@ -1,7 +1,12 @@
 /* muiTable.css */
+.MuiPaper-root {
+    border-radius: 15px !important;
+}
+
 .MuiTableCell-head {
-    background-color: #1976d2 !important; /* Forzar el color de fondo */
-    color: white !important;
+    background-color: #005DA4 !important; /* Forzar el color de fondo */
+    font-weight: 500 !important;
+    color: #f8f9fa !important;
     font-family: 'Montserrat', sans-serif !important;
     padding: 12px !important;
 }
@@ -14,4 +19,6 @@
 .MuiTableRow-root:nth-child(even) {
     background-color: #f8f9fa !important;
 }
+
+
 
