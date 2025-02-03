@@ -58,7 +58,7 @@ const SignIn = () => {
                         {...register('email', {
                             required: 'El correo electrónico es requerido',
                             pattern: {
-                                value: /^[a-zA-Z0-9._%+-]+@(gmail\.com|ucr\.ac\.cr)$/,
+                                //value: /^[a-zA-Z0-9._%+-]+@(gmail\.com|ucr\.ac\.cr)$/,
                                 message: 'El correo electrónico no es válido',
                             },
                         })}
