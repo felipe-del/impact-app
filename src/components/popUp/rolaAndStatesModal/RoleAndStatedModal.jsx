@@ -1,58 +1,26 @@
-import { Modal, Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button }
-    from '@mui/material';
-
-import '../../../style/muiTable.css'
+import { Modal, Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
 import PropTypes from 'prop-types';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import './roleAndStateModal.css';
 
 const RoleAndStateModal = ({ open, onClose, roles, states }) => {
     return (
-        <Modal
-            open={open}
-            onClose={onClose}
-            aria-labelledby="modal-title"
-            aria-describedby="modal-description"
-        >
+        <Modal open={open} onClose={onClose} aria-labelledby="modal-title" aria-describedby="modal-description">
             <Box sx={modalStyle}>
-                {/* Título con diseño personalizado */}
-                <Typography
-                    id="modal-title"
-                    variant="h6"
-                    component="h2"
-                    sx={{
-                        fontSize: '24px',           // Tamaño de fuente para el título
-                        fontWeight: '600',          // Peso de la fuente para un título fuerte
-                        color: '#333',              // Color oscuro para legibilidad
-                        textTransform: 'uppercase', // Hace que el texto sea mayúscula
-                        letterSpacing: '2px',       // Espaciado entre letras
-                        marginBottom: '15px',       // Espacio abajo
-                        borderBottom: '2px solid #1976d2', // Línea debajo para resaltar
-                        paddingBottom: '10px',      // Espacio entre el texto y la línea
-                    }}
-                >
+                {/* Título */}
+                <Typography id="modal-title" variant="h6" component="h2" sx={titleStyle}>
                     Información de Roles y Estados
                 </Typography>
 
-                {/* Sección Roles de Usuario */}
-                <div style={{ marginTop: '20px' }}>
-                    <Typography
-                        variant="subtitle1"
-                        sx={{
-                            fontSize: '18px',
-                            fontWeight: '500',
-                            color: '#333',
-                            textTransform: 'uppercase',
-                            letterSpacing: '1px',
-                            paddingBottom: '5px',
-                        }}
-                    >
-                        Roles de Usuario
-                    </Typography>
-                    <TableContainer component={Paper}>
-                        <Table sx={{ minWidth: 650 }} aria-label="roles table">
-                            <TableHead>
-                                <TableRow>
+                {/* Sección Roles */}
+                <div style={{ marginTop: '15px' }}>
+                    <Typography variant="subtitle1" sx={sectionTitleStyle}>Roles de Usuario</Typography>
+                    <TableContainer component={Paper} sx={tableContainerStyle}>
+                        <Table aria-label="roles table">
+                            <TableHead className="table-head">
+                                <TableRow className="table-row">
                                     <TableCell>ID</TableCell>
-                                    <TableCell>Nombre de Role</TableCell>
+                                    <TableCell>Nombre de Rol</TableCell>
                                     <TableCell>Descripción</TableCell>
                                 </TableRow>
                             </TableHead>
@@ -69,24 +37,12 @@ const RoleAndStateModal = ({ open, onClose, roles, states }) => {
                     </TableContainer>
                 </div>
 
-                {/* Sección Estados de Usuario */}
-                <div style={{ marginTop: '20px' }}>
-                    <Typography
-                        variant="subtitle1"
-                        sx={{
-                            fontSize: '18px',
-                            fontWeight: '500',
-                            color: '#333',
-                            textTransform: 'uppercase',
-                            letterSpacing: '1px',
-                            paddingBottom: '5px',
-                        }}
-                    >
-                        Estados de Usuario
-                    </Typography>
-                    <TableContainer component={Paper}>
-                        <Table sx={{ minWidth: 650 }} aria-label="states table">
-                            <TableHead>
+                {/* Sección Estados */}
+                <div style={{ marginTop: '15px' }}>
+                    <Typography variant="subtitle1" sx={sectionTitleStyle}>Estados de Usuario</Typography>
+                    <TableContainer component={Paper} sx={tableContainerStyle}>
+                        <Table aria-label="states table">
+                            <TableHead className="table-head">
                                 <TableRow>
                                     <TableCell>ID</TableCell>
                                     <TableCell>Nombre de Estado</TableCell>
@@ -106,12 +62,13 @@ const RoleAndStateModal = ({ open, onClose, roles, states }) => {
                     </TableContainer>
                 </div>
 
-                {/* Botón de Cierre */}
+                {/* Botón de cierre */}
                 <Button
                     onClick={onClose}
                     variant="contained"
-                    color="primary"
-                    sx={{ marginTop: '20px' }}
+                    color="warning"
+                    sx={{ marginTop: '20px', width: '25%', borderRadius: '15px', }}
+                    startIcon={<VisibilityOffIcon />}
                 >
                     Ocultar
                 </Button>
@@ -120,18 +77,47 @@ const RoleAndStateModal = ({ open, onClose, roles, states }) => {
     );
 };
 
-// Estilo para el modal
+// **Estilos Responsivos**
 const modalStyle = {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 750,
+    width: '90%',    // En móviles ocupará casi todo el ancho
+    maxWidth: 750,   // En pantallas grandes no pasará de 750px
     bgcolor: 'background.paper',
     boxShadow: 24,
     p: 4,
+    borderRadius: 2, // Bordes redondeados
 };
 
+const titleStyle = {
+    fontSize: '22px',
+    fontWeight: 'bold',
+    color: '#333',
+    textAlign: 'center',
+    textTransform: 'uppercase',
+    letterSpacing: '1px',
+    marginBottom: '15px',
+    borderBottom: '2px solid #1976d2',
+    paddingBottom: '10px',
+};
+
+const sectionTitleStyle = {
+    fontSize: '16px',
+    fontWeight: '500',
+    color: '#333',
+    textTransform: 'uppercase',
+    letterSpacing: '1px',
+    paddingBottom: '5px',
+};
+
+const tableContainerStyle = {
+    maxHeight: '300px', // Hace que las tablas sean scrollables
+    overflowX: 'auto',  // Permite scroll horizontal si es necesario
+};
+
+// **PropTypes**
 RoleAndStateModal.propTypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
