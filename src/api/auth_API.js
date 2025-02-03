@@ -56,3 +56,21 @@ export async function resetPassword(token, password) {
         handleAxiosError(error)
     }
 }
+
+export async function changeUserState(userId, stateId) {
+    try {
+        const { data } = await api.post(`${root}/change-user-state/${userId}`, {stateId})
+        return data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}
+
+export async function changeUserRole(userId, roleId) {
+    try {
+        const { data } = await api.post(`${root}/change-user-role/${userId}`, {roleId})
+        return data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}
