@@ -15,6 +15,13 @@ import { getAllUserStates } from "../../api/userState_API.js";
 import RoleAndStateModal from "../../components/popUp/rolaAndStatesModal/RoleAndStatedModal.jsx";
 import './userTable.css';
 import UserBanner from "./UserBanner.jsx";
+import EditIcon from '@mui/icons-material/Edit';
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
+import IconButton from '@mui/material/IconButton';
+import {changeUserRole, changeUserState} from "../../api/auth_API.js";
+import {toast} from "react-hot-toast";
+import {useUser} from "../../components/IMPACT.jsx";
 
 const UserTable = () => {
     const [openModal, setOpenModal] = useState(false);
@@ -24,11 +31,12 @@ const UserTable = () => {
     const [editRowId, setEditRowId] = useState(null);
     const [tempState, setTempState] = useState({});
     const [tempRole, setTempRole] = useState({});
+    const userSession = useUser();
 
     const handleOpen = () => setOpenModal(true);
     const handleClose = () => setOpenModal(false);
 
-    const { data: usersData, isLoading: isUsersLoading, isError: isUsersError, error: usersError } = useQuery({
+    const { data: usersData, refetch,  isLoading: isUsersLoading, isError: isUsersError, error: usersError } = useQuery({
         queryKey: ['users'],
         queryFn: getAllUsers,
         retry: 2,
@@ -71,16 +79,56 @@ const UserTable = () => {
         setEditRowId(null);
     };
 
-    const saveChanges = (rowId) => {
-        setUsers(prevData =>
-            prevData.map(user =>
-                user.id === rowId
-                    ? { ...user, userRoleResponse: { ...user.userRoleResponse, roleName: tempRole[rowId] }, userStateResponse: { ...user.userStateResponse, stateName: tempState[rowId] } }
-                    : user
-            )
-        );
-        setEditRowId(null);
+
+    const saveChanges = async (rowId) => {
+        if (userSession.id === rowId) {
+            toast.error('No puedes cambiar tu propio rol o estado');
+            return;
+        }
+        const roleChanged = tempRole[rowId] !== users.find(user => user.id === rowId).userRoleResponse.roleName;
+        const stateChanged = tempState[rowId] !== users.find(user => user.id === rowId).userStateResponse.stateName;
+
+        let serverResponse = {};
+
+        const roleId = roles.find(role => role.roleName === tempRole[rowId])?.id;
+        const stateId = states.find(state => state.stateName === tempState[rowId])?.id;
+
+        try {
+            if (roleChanged) {
+                serverResponse.roleResponse = await changeUserRole(rowId, roleId);
+            }
+
+            if (stateChanged) {
+                serverResponse.stateResponse = await changeUserState(rowId, stateId);
+            }
+
+            setUsers(prevData =>
+                prevData.map(user =>
+                    user.id === rowId
+                        ? {
+                            ...user,
+                            userRoleResponse: { ...user.userRoleResponse, roleName: tempRole[rowId] },
+                            userStateResponse: { ...user.userStateResponse, stateName: tempState[rowId] }
+                        }
+                        : user
+                )
+            );
+
+            const successMessage = [
+                serverResponse.roleResponse?.message && `Role: ${serverResponse.roleResponse.message}`,
+                serverResponse.stateResponse?.message && `Estado: ${serverResponse.stateResponse.message}`
+            ].filter(Boolean).join(' ');
+
+            if (successMessage) {
+                toast.success(successMessage, { timeout: 6000 });
+            }
+            setEditRowId(null);
+        } catch (error) {
+            toast.error(`Failed to save changes. Error: ${error.response?.data?.message || 'Unknown error occurred'}`);
+        }
     };
+
+
 
     const columns = useMemo(
         () => [
@@ -94,8 +142,7 @@ const UserTable = () => {
                 Cell: ({ row }) => (
                     editRowId === row.original.id ? (
                         <FormControl fullWidth sx={{
-                            width: '70%',
-                            backgroundColor: '#f0f5ff',
+                            width: 'auto',
                             boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
                             '&:hover': {
                                 backgroundColor: '#e2efff',
@@ -144,8 +191,7 @@ const UserTable = () => {
                 Cell: ({ row }) => (
                     editRowId === row.original.id ? (
                         <FormControl fullWidth sx={{
-                            width: '70%',
-                            backgroundColor: '#f0f5ff',
+                            width: 'auto',
                             boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
                             '&:hover': {
                                 backgroundColor: '#e2efff',
@@ -198,13 +244,53 @@ const UserTable = () => {
                 Cell: ({ row }) => (
                     editRowId === row.original.id ? (
                         <>
-                            <Button onClick={() => saveChanges(row.original.id)} color="success">Aceptar</Button>
-                            <Button onClick={cancelEditing} color="error">Cancelar</Button>
+                            <div style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                gap: '10px',
+                                flexWrap: 'wrap' // Para que los botones se apilen en pantallas pequeñas
+                            }}>
+                                <IconButton
+                                    onClick={() => saveChanges(row.original.id)}
+                                    color="success"
+                                    style={{
+                                        borderRadius: '15px',
+                                        padding: '0px',
+                                    }}
+                                >
+                                    <CheckIcon />
+                                </IconButton>
+                                <IconButton
+                                    onClick={cancelEditing}
+                                    color="error"
+                                    style={{
+                                        borderRadius: '15px',
+                                        padding: '0px',
+                                        marginRight: '20px',
+                                    }}
+                                >
+                                    <CloseIcon />
+                                </IconButton>
+                            </div>
                         </>
+
                     ) : (
-                        <Button onClick={() => startEditing(row.original.id, row.original.userRoleResponse.roleName, row.original.userStateResponse.stateName)} color="primary">
-                            Editar
-                        </Button>
+                        <IconButton
+                            onClick={() => startEditing(
+                                row.original.id,
+                                row.original.userRoleResponse.roleName,
+                                row.original.userStateResponse.stateName
+                            )}
+                            color="default"
+                            variant="contained"
+                            style={{
+                                borderRadius: '15px',
+                                textTransform: 'none',
+                                padding: '0px',
+                            }}
+                        >
+                            <EditIcon />
+                        </IconButton>
                     )
                 ),
             },
@@ -215,13 +301,14 @@ const UserTable = () => {
     const table = useMaterialReactTable({
         columns,
         data: users,
+        createDisplayMode: 'row',
         initialState: {
             columnVisibility: { id: false },
             density: 'comfortable',
             pagination: {
                 pageSize: 5,
             },
-        }
+        },
     });
 
     const exportToPDF = () => {
@@ -274,8 +361,11 @@ UserTable.propTypes = {
     row: PropTypes.shape({
         original: PropTypes.shape({
             id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+            userRoleResponse: PropTypes.shape({
+                roleName: PropTypes.string,
+            }),
             userStateResponse: PropTypes.shape({
-                state: PropTypes.string,
+                stateName: PropTypes.string,
             }),
         }),
     }),
