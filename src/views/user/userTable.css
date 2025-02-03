@@ -10,7 +10,6 @@
     padding: 10px 20px; /* Ajusta el tamaño de los botones */
     font-size: 14px; /* Tamaño de la fuente */
     border-radius: 8px; /* Bordes más redondeados para un look más suave */
-    background-color: #1976d2; /* Color inicial */
     color: white; /* Color del texto */
     font-weight: 500;
     border: none; /* Sin borde para un look más limpio */
@@ -20,14 +19,13 @@
 }
 
 .export-buttons button:hover {
-    background-color: #1565c0; /* Color más oscuro al pasar el ratón */
-    transform: translateY(-3px); /* Ligera animación hacia arriba */
+    transform: translateY(-1px); /* Ligera animación hacia arriba */
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Sombra más profunda al hacer hover */
 }
 
 .export-buttons .csv-link-button {
     background-color: #388e3c; /* Color para el botón de CSV */
-    transition: all 0.3s ease-in-out; /* Transición suave para todos los efectos */
+    transition: all 0.2s ease-in-out; /* Transición suave para todos los efectos */
 }
 
 .export-buttons .csv-link-button:hover {
