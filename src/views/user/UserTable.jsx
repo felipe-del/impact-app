@@ -5,7 +5,17 @@ import {
 } from 'material-react-table';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
-import { Button, MenuItem, Select, FormControl, InputLabel } from '@mui/material';
+import {
+    Button,
+    MenuItem,
+    Select,
+    FormControl,
+    InputLabel,
+    Typography,
+    DialogTitle,
+    DialogContent,
+    DialogActions, Box, Tooltip
+} from '@mui/material';
 import { getAllUsers } from "../../api/user_API.js";
 import { useQuery } from "@tanstack/react-query";
 import LoadingPointsSpinner from "../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
@@ -19,6 +29,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import GroupIcon from '@mui/icons-material/Group';
 import {changeUserRole, changeUserState} from "../../api/auth_API.js";
 import {toast} from "react-hot-toast";
 import {useUser} from "../../components/IMPACT.jsx";
@@ -128,13 +140,24 @@ const UserTable = () => {
         }
     };
 
-
+    const getStateColor = (state) => {
+        switch (state.toUpperCase()) {
+            case 'ACTIVE':
+                return 'green';
+            case 'SUSPENDED':
+                return 'orange';
+            case 'INACTIVE':
+                return 'red';
+            default:
+                return 'inherit';
+        }
+    };
 
     const columns = useMemo(
         () => [
             { accessorKey: 'id', header: 'ID', size: 50 },
-            { accessorKey: 'name', header: 'Name', size: 150 },
-            { accessorKey: 'email', header: 'Email', size: 200 },
+            { accessorKey: 'name', header: 'Nombre', size: 150 },
+            { accessorKey: 'email', header: 'Correo', size: 200 },
             {
                 accessorKey: 'userRoleResponse.roleName',
                 header: 'Role',
@@ -186,7 +209,7 @@ const UserTable = () => {
             },
             {
                 accessorKey: 'userStateResponse.stateName',
-                header: 'State',
+                header: 'Estado',
                 size: 150,
                 Cell: ({ row }) => (
                     editRowId === row.original.id ? (
@@ -230,13 +253,20 @@ const UserTable = () => {
                         </FormControl>
 
                     ) : (
-                        row.original.userStateResponse.stateName
+                        <Typography
+                            sx={{
+                                color: getStateColor(row.original.userStateResponse.stateName),
+                                fontFamily: 'Montserrat, sans-serif',
+                            }}
+                        >
+                            {row.original.userStateResponse.stateName}
+                        </Typography>
                     )
                 )
             },
             {
                 accessorKey: 'actions',
-                header: 'Actions',
+                header: 'Acciones',
                 size: 80,
                 enableSorting: false,
                 enableColumnFilter: false,
@@ -309,6 +339,39 @@ const UserTable = () => {
                 pageSize: 5,
             },
         },
+        renderRowActions: ({ row, table }) => (
+            <Box sx={{ display: 'flex', gap: '1rem' }}>
+                <Tooltip title="Edit">
+                    <IconButton onClick={() => table.setEditingRow(row)}>
+                        <EditIcon />
+                    </IconButton>
+                </Tooltip>
+                <Tooltip title="Delete">
+                    <IconButton color="error" onClick={() => (row)}>
+                        <DeleteIcon />
+                    </IconButton>
+                </Tooltip>
+            </Box>
+        ),
+        renderTopToolbarCustomActions: () => (
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+
+                <Typography
+                    variant="h6"
+                    sx={{
+                        color: 'primary.main', // Adding color (if you're using MUI theme)
+                        //letterSpacing: 1, // Adding letter spacing for a more modern look
+                        fontFamily: 'Montserrat, sans-serif', // Custom font family
+                        padding: '8px 16px', // Adding padding for more spacing around the text
+                    }}
+                >
+                    Tabla de Usuarios
+                </Typography>
+                <GroupIcon sx={{ marginRight: 1, color: 'primary.main' }} /> {/* Adding the icon */}
+            </Box>
+        ),
+
+
     });
 
     const exportToPDF = () => {
