@@ -4,11 +4,10 @@
 }
 
 .MuiTableCell-head {
-    background-color: #005DA4 !important; /* Forzar el color de fondo */
+    background-color: #005DA4 !important;
     font-weight: 500 !important;
     color: #f8f9fa !important;
     font-family: 'Montserrat', sans-serif !important;
-    padding: 12px !important;
 }
 
 .MuiTableCell-body {
