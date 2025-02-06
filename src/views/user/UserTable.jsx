@@ -6,15 +6,12 @@ import {
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import {
-    Button,
     MenuItem,
     Select,
     FormControl,
     InputLabel,
     Typography,
-    DialogTitle,
-    DialogContent,
-    DialogActions, Box, Tooltip
+    Box, Tooltip
 } from '@mui/material';
 import { getAllUsers } from "../../api/user_API.js";
 import { useQuery } from "@tanstack/react-query";
@@ -48,7 +45,7 @@ const UserTable = () => {
     const handleOpen = () => setOpenModal(true);
     const handleClose = () => setOpenModal(false);
 
-    const { data: usersData, refetch,  isLoading: isUsersLoading, isError: isUsersError, error: usersError } = useQuery({
+    const { data: usersData,  isLoading: isUsersLoading, isError: isUsersError, error: usersError } = useQuery({
         queryKey: ['users'],
         queryFn: getAllUsers,
         retry: 2,
