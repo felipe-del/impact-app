@@ -9,7 +9,7 @@ class UserBanner extends React.Component {
         let {flatUsers, exportToPDF, handleOpen} = this.props;
         return (
             <div className="export-buttons" style={styles.banner}>
-                <h3 style={styles.title}>Gestión Usuarios</h3> {/* Título a la izquierda */}
+                <h3 style={styles.title}>Gestión de Usuarios</h3> {/* Título a la izquierda */}
                 <div style={styles.buttonsContainer}>
                     <CSVLink data={flatUsers} filename="users.csv">
                         <Button
