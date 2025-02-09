@@ -30,7 +30,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import GroupIcon from '@mui/icons-material/Group';
 import {changeUserRole, changeUserState} from "../../api/auth_API.js";
 import {toast} from "react-hot-toast";
-import {useUser} from "../../components/IMPACT.jsx";
+import {useUser} from "../../hooks/user/useUser.jsx";
 
 const UserTable = () => {
     const [openModal, setOpenModal] = useState(false);
@@ -402,6 +402,7 @@ const UserTable = () => {
             {isUsersLoading && <LoadingPointsSpinner />}
             {isUsersError && <div>Error: {usersError.message}</div>}
             <UserBanner
+                title="Gestión de Usuarios"
                 flatUsers={flatUsers}
                 exportToPDF={exportToPDF}
                 handleOpen={handleOpen}
