@@ -10,7 +10,7 @@ const NotFound = () => {
                 <p className="notfound-page-description">
                     Lo sentimos, pero la página que estás buscando no existe. Es posible que hayas ingresado una URL incorrecta o que la página haya sido movida.
                 </p>
-                <Link to="/" className="notfound-page-button">Regresar al Inicio</Link>
+                <Link to="#" onClick={() => window.history.back()} className="notfound-page-button">Regresar</Link>
             </div>
         </div>
     );
