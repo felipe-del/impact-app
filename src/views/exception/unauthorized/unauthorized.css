@@ -1,0 +1,84 @@
+/* General styling for the container */
+.unauthorized-page-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full height */
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* Centering content with a shadowed box */
+.unauthorized-page-content {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 100%;
+    animation: fadeIn 1s ease-in-out;
+}
+
+/* Logo styling */
+.unauthorized-page-logo {
+    width: 180px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+/* Hover effect for the logo */
+.unauthorized-page-logo:hover {
+    transform: scale(1.05);
+}
+
+/* Heading styles */
+.unauthorized-page-heading {
+    font-size: 2.5rem;
+    font-family: 'Roboto', sans-serif;
+    color: #c0392b;
+    margin-bottom: 15px;
+}
+
+/* Paragraph styling */
+.unauthorized-page-description {
+    font-size: 1.2rem;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+/* Button styling */
+.unauthorized-page-button {
+    display: inline-block;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: #fff;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 18px;
+    transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+
+/* Button hover effect */
+.unauthorized-page-button:hover {
+    background: linear-gradient(135deg, #c0392b, #e74c3c);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+    text-decoration: none; /* Prevent text underline */
+}
+
+/* Keyframe animation for fade-in effect */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
