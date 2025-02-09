@@ -10,7 +10,7 @@ const ProtectedRoute = ({ allowedRoles }) => {
     const navigate = useNavigate();
 
     if (!user) {
-        navigate('/auth/login');
+        navigate('/auth');
     }
 
     if (!allowedRoles.includes(user.userRoleResponse.roleName)) {
