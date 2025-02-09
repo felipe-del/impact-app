@@ -1,105 +1,104 @@
-import React from "react";
+import { useState } from "react";
 import { Button, Menu, MenuItem } from "@mui/material";
 import { FileDownload, AssignmentInd, ArrowBack, PersonAdd } from "@mui/icons-material";
-import * as PropTypes from "prop-types";
-import {CSVLink} from "react-csv";
+import { CSVLink } from "react-csv";
+import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 
-class UserBanner extends React.Component {
-    state = {
-        anchorEl: null, // Estado para el menú
-    };
+const UserBanner = ({ title, flatUsers, exportToPDF, handleOpen, visibleButtons }) => {
+    const navigate = useNavigate(); // Hook para la navegación
+    const [anchorEl, setAnchorEl] = useState(null);
 
     // Abre el menú
-    handleClick = (event) => {
-        this.setState({ anchorEl: event.currentTarget });
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
     };
 
     // Cierra el menú
-    handleClose = () => {
-        this.setState({ anchorEl: null });
+    const handleClose = () => {
+        setAnchorEl(null);
     };
 
-    render() {
-        const { title, flatUsers, exportToPDF, handleOpen, visibleButtons } = this.props;
-        const { anchorEl } = this.state;
-
-        return (
-            <div className="export-buttons" style={styles.banner}>
-                <h3 style={styles.title}>{title}</h3>
-                <div style={styles.buttonsContainer}>
-                    {visibleButtons.includes("goBack") && (
-                        <Button
-                            variant="contained"
-                            color="error"
-                            onClick={() => window.history.back()}
-                            startIcon={<ArrowBack />}
-                            style={styles.button}
-                        >
-                            Volver
-                        </Button>
-                    )}
-                    {visibleButtons.includes("createUser") && (
-                        <Button
-                            variant="contained"
-                            color="error"
-                            onClick={() => window.history.back()}
-                            startIcon={<PersonAdd />}
-                            style={styles.button}
-                        >
-                            Crear Usuario
-                        </Button>
-                    )}
-
-                    {visibleButtons.includes("roles") && (
-                        <Button
-                            variant="contained"
-                            color="warning"
-                            onClick={handleOpen}
-                            startIcon={<AssignmentInd />}
-                            style={styles.button}
-                        >
-                            Mostrar Roles y Estados
-                        </Button>
-                    )}
-
-                    {visibleButtons.includes("export") && (
-                        <Button
-                            variant="contained"
-                            color="info"
-                            onClick={this.handleClick} // Abre el menú
-                            startIcon={<FileDownload />}
-                            style={styles.button}
-                        >
-                            Exportar
-                        </Button>
-                    )}
-                    <Menu
-                        anchorEl={anchorEl}
-                        open={Boolean(anchorEl)}
-                        onClose={this.handleClose}
+    return (
+        <div className="export-buttons" style={styles.banner}>
+            <h3 style={styles.title}>{title}</h3>
+            <div style={styles.buttonsContainer}>
+                {visibleButtons.includes("goBack") && (
+                    <Button
+                        variant="contained"
+                        color="error"
+                        onClick={() => navigate(-1)} // Regresar una página atrás
+                        startIcon={<ArrowBack />}
+                        style={styles.button}
                     >
-                        {visibleButtons.includes("csv") && (
-                            // delete underline from CSVLink
-                            <CSVLink data={flatUsers} filename="users.csv" style={{textDecoration: "none", color: "black"}}>
-                                <MenuItem onClick={this.handleClose}>Exportar a CSV</MenuItem>
-                            </CSVLink>
-                        )}
-                        {visibleButtons.includes("pdf") && (
-                            <MenuItem onClick={() => { exportToPDF(); this.handleClose(); }} style={{color: "black"}}>
-                                Exportar a PDF
-                            </MenuItem>
-                        )}
+                        Volver
+                    </Button>
+                )}
+                {visibleButtons.includes("createUser") && (
+                    <Button
+                        variant="contained"
+                        color="error"
+                        onClick={() => navigate("/app/createUser")}
+                        startIcon={<PersonAdd />}
+                        style={styles.button}
+                    >
+                        Crear Usuario
+                    </Button>
+                )}
 
-                    </Menu>
-                </div>
+                {visibleButtons.includes("roles") && (
+                    <Button
+                        variant="contained"
+                        color="warning"
+                        onClick={handleOpen}
+                        startIcon={<AssignmentInd />}
+                        style={styles.button}
+                    >
+                        Mostrar Roles y Estados
+                    </Button>
+                )}
+
+                {visibleButtons.includes("export") && (
+                    <Button
+                        variant="contained"
+                        color="info"
+                        onClick={handleClick} // Abre el menú
+                        startIcon={<FileDownload />}
+                        style={styles.button}
+                    >
+                        Exportar
+                    </Button>
+                )}
+                <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
+                    {visibleButtons.includes("csv") && (
+                        <CSVLink
+                            data={flatUsers}
+                            filename="users.csv"
+                            style={{ textDecoration: "none", color: "black" }}
+                        >
+                            <MenuItem onClick={handleClose}>Exportar a CSV</MenuItem>
+                        </CSVLink>
+                    )}
+                    {visibleButtons.includes("pdf") && (
+                        <MenuItem
+                            onClick={() => {
+                                exportToPDF();
+                                handleClose();
+                            }}
+                            style={{ color: "black" }}
+                        >
+                            Exportar a PDF
+                        </MenuItem>
+                    )}
+                </Menu>
             </div>
-        );
-    }
-}
+        </div>
+    );
+};
 
 UserBanner.propTypes = {
     title: PropTypes.string,
-    flatUsers: PropTypes.any,
+    flatUsers: PropTypes.array,
     exportToPDF: PropTypes.func,
     handleOpen: PropTypes.func,
     visibleButtons: PropTypes.arrayOf(PropTypes.string),
