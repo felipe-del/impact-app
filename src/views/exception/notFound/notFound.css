@@ -39,7 +39,7 @@
 .notfound-page-heading {
     font-size: 2.5rem;
     font-family: 'Roboto', sans-serif;
-    color: #333;
+    color: #c0392b; /* Same red as unauthorized */
     margin-bottom: 15px;
 }
 
@@ -55,7 +55,7 @@
 .notfound-page-button {
     display: inline-block;
     padding: 12px 24px;
-    background: linear-gradient(135deg, #f39c12, #f1c40f);
+    background: linear-gradient(135deg, #e74c3c, #c0392b); /* Same red gradient as unauthorized */
     color: #fff;
     border-radius: 8px;
     text-decoration: none;
@@ -65,7 +65,7 @@
 
 /* Button hover effect */
 .notfound-page-button:hover {
-    background: linear-gradient(135deg, #f1c40f, #f39c12);
+    background: linear-gradient(135deg, #c0392b, #e74c3c);
     transform: translateY(-3px);
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
     text-decoration: none; /* Prevent text underline */
