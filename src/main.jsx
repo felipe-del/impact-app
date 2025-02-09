@@ -1,7 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import Router from "./router.jsx";
+import Router from "./config/router.jsx";
 //import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import '../src/style/sb-admin-2.css';
 import {Toaster} from "react-hot-toast";
