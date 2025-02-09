@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Menu, MenuItem } from "@mui/material";
-import { FileDownload, PictureAsPdf, AssignmentInd, ArrowBack, PersonAdd } from "@mui/icons-material";
+import { FileDownload, AssignmentInd, ArrowBack, PersonAdd } from "@mui/icons-material";
 import * as PropTypes from "prop-types";
 import {CSVLink} from "react-csv";
 
