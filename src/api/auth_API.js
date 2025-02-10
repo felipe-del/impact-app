@@ -12,7 +12,7 @@ export async function login(email, password) {
     }
 }
 
-export async function getUser() {
+export async function getUserSession() {
     try {
         const { data } = await api.get(`${root}/user-session`)
         return data
