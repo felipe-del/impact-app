@@ -8,6 +8,7 @@ import UserTable from "../views/user/UserTable.jsx";
 import Unauthorized from "../views/exception/unauthorized/Unauthorized.jsx";
 import ProtectedRoute from "./protectedRoute.jsx";
 import CreateUser from "../views/user/CreateUser.jsx";
+import AssetTable from "../views/asset/AssetTable.jsx";
 
 export default function Router() {
     return (
@@ -19,9 +20,12 @@ export default function Router() {
                 <Route path='/forgot-password' element={<ResetPasswordToggle/>}/>
 
                 <Route element={<AppLayout/>} path="/app">
+                    <Route index="true" element={<h1>Info de Impact</h1>}/>
                     <Route element={<ProtectedRoute allowedRoles={["ADMINISTRATOR", "MANAGER"]} />}>
                         <Route path="userTable" element={<UserTable/>}/>
                         <Route path="createUser" element={<CreateUser/>}/>
+
+                        <Route path="assetTable" element={<AssetTable/>}/>
                     </Route>
                 </Route>
 
