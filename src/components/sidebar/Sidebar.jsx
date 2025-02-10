@@ -1,9 +1,11 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faList, faClipboardCheck, faMapMarkedAlt, faHashtag, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import DevicesIcon from '@mui/icons-material/Devices';
 import { Link } from 'react-router-dom';
 import './sidebar.css';
 
 import PropTypes from 'prop-types';
+
 
 const Sidebar = ({ role }) => {
 
@@ -32,7 +34,7 @@ const Sidebar = ({ role }) => {
             <hr className="sidebar-divider" />
 
             <div className="sidebar-heading" id="complementos-heading">
-                Complementos
+                Recursos del Sistema
             </div>
 
             {/* Activos Section */}
@@ -45,7 +47,7 @@ const Sidebar = ({ role }) => {
                     </a>
                     <div id="collapseActivos" className="collapse" aria-labelledby="headingActivos" data-parent="#accordionSidebar">
                         <div className="bg-white py-2 collapse-inner rounded">
-                            <Link className="collapse-item" to="/app/createAsset"><FontAwesomeIcon icon={faPlus} /> Activo</Link>
+                            <Link className="collapse-item" to="/app/assetTable"><DevicesIcon/> Activo</Link>
                             <Link className="collapse-item" to="/app/addSupplier"><FontAwesomeIcon icon={faPlus} /> Proveedor</Link>
                             <Link className="collapse-item" to="/app/addBrand"><FontAwesomeIcon icon={faPlus} /> Marca</Link>
                             <Link className="collapse-item" to="/app/addCategory"><FontAwesomeIcon icon={faPlus} /> Categoría</Link>
@@ -83,7 +85,7 @@ const Sidebar = ({ role }) => {
                     <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEspacios"
                        aria-expanded="true" aria-controls="collapseEspacios">
                         <i className="fas fa-fw fa-building"></i>
-                        <span>Espacios Comunes</span>
+                        <span>Espacios</span>
                     </a>
                     <div id="collapseEspacios" className="collapse" aria-labelledby="headingEspacios" data-parent="#accordionSidebar">
                         <div className="bg-white py-2 collapse-inner rounded">
@@ -104,7 +106,7 @@ const Sidebar = ({ role }) => {
                     <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEspacios"
                        aria-expanded="true" aria-controls="collapseEspacios">
                         <i className="fas fa-fw fa-building"></i>
-                        <span>Espacios Comunes</span>
+                        <span>Espacios</span>
                     </a>
                     <div id="collapseEspacios" className="collapse" aria-labelledby="headingEspacios" data-parent="#accordionSidebar">
                         <div className="bg-white py-2 collapse-inner rounded">
@@ -154,15 +156,15 @@ const Sidebar = ({ role }) => {
             <hr className="sidebar-divider" />
 
             <div className="sidebar-heading" id="complementos-heading">
-                Visuales
+                Administrativo
             </div>
 
-            <li className="nav-item" id="charts-item">
+            {/*<li className="nav-item" id="charts-item">
                 <Link className="nav-link" to="/charts">
                     <i className="fas fa-fw fa-chart-area"></i>
                     <span>Gráficos</span>
                 </Link>
-            </li>
+            </li>*/}
 
             {(role === 'MANAGER' || role === 'ADMINISTRATOR') && (
             <li className="nav-item" id="user-item">
@@ -175,11 +177,23 @@ const Sidebar = ({ role }) => {
             )}
             <hr className="sidebar-divider" />
 
-            <div className="sidebar-card d-none d-lg-flex">
-                <img className="sidebar-card-illustration mb-2 img-fluid" src='/Escudo_UCR.png' alt="Escudo de la Universidad" />
-                <p className="text-center mb-2"><strong>Conoce más sobre CIMPA</strong> y su impacto en nuestros proyectos y en la comunidad.</p>
-                <a className="btn btn-info btn-sm" href="https://www.cimpa.ucr.ac.cr/" target="_blank" rel="noopener noreferrer">Visita el sitio web de CIMPA</a>
+            {/* Checkbox oculto para controlar la animación */}
+            <input type="checkbox" id="toggle-info" className="sidebar-checkbox" />
+
+            {/* Ícono para mostrar/ocultar información */}
+            <label htmlFor="toggle-info" className="sidebar-toggle">
+                <i className="fa-solid fa-caret-down" style={{ color: '#d3d3d3', fontSize: '20px'}}></i>
+            </label>
+
+            <div className="sidebar-card">
+                <img className="sidebar-card-illustration img-fluid" src="/Escudo_UCR.png" alt="Escudo de la Universidad" />
+                <p className="text-center"><strong>Conoce más sobre CIMPA</strong> y su impacto en nuestros proyectos y en la comunidad.</p>
+                <a className="btn btn-info btn-sm" href="https://www.cimpa.ucr.ac.cr/" target="_blank" rel="noopener noreferrer">
+                    Visita el sitio web de CIMPA
+                </a>
             </div>
+
+
         </ul>
     );
 }
