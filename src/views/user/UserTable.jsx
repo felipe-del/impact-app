@@ -20,7 +20,7 @@ import PropTypes from 'prop-types';
 import { getAllUserRoles } from "../../api/userRole_API.js";
 import { getAllUserStates } from "../../api/userState_API.js";
 import RoleAndStateModal from "../../components/popUp/rolaAndStatesModal/RoleAndStatedModal.jsx";
-import './userTable.css';
+import '../../style/banner.css';
 import UserBanner from "./UserBanner.jsx";
 import EditIcon from '@mui/icons-material/Edit';
 import CheckIcon from '@mui/icons-material/Check';
@@ -353,7 +353,7 @@ const UserTable = () => {
                         color: 'primary.main', // Adding color (if you're using MUI theme)
                         //letterSpacing: 1, // Adding letter spacing for a more modern look
                         fontFamily: 'Montserrat, sans-serif', // Custom font family
-                        padding: '8px 16px', // Adding padding for more spacing around the text
+                        padding: '8px 10px', // Adding padding for more spacing around the text
                     }}
                 >
                     Tabla de Usuarios
