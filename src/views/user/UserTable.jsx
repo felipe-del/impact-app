@@ -67,15 +67,9 @@ const UserTable = () => {
     });
 
     useEffect(() => {
-        if (usersData) {
-            setUsers(usersData.data);
-        }
-        if (userRolesData) {
-            setRoles(userRolesData.data);
-        }
-        if (userStatesData) {
-            setStates(userStatesData.data);
-        }
+        if (usersData) setUsers(usersData.data);
+        if (userRolesData) setRoles(userRolesData.data);
+        if (userStatesData) setStates(userStatesData.data);
     }, [usersData, userRolesData, userStatesData]);
 
     const startEditing = (rowId, currentRole, currentState) => {
