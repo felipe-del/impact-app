@@ -39,10 +39,24 @@
 
 
 
-/* Ocultar el checkbox */
+
+/* Ocultar checkbox */
 .sidebar-checkbox {
     display: none;
 }
+
+/* Estilos básicos del ícono */
+.sidebar-icon {
+    color: #d3d3d3;
+    font-size: 20px;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Cuando el checkbox está marcado, girar el ícono */
+.sidebar-checkbox:checked + .sidebar-toggle .sidebar-icon {
+    transform: rotate(180deg);
+}
+
 
 /* Estilo del icono */
 .sidebar-toggle {
