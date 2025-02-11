@@ -20,9 +20,9 @@ export default function IMPACT({ responseWrapper, children }) {
                         <TopBar user={user || { userName: "Default User" }} />
                         {/* Page Content */}
                         <div className="container-fluid">
-                            <h1 className="h3 mb-4 text-gray-800">
+                            <div className="h3 mb-4 text-gray-800">
                                 {children || <h1 className="h3 mb-4 text-gray-800">IMPACT</h1>}
-                            </h1>
+                            </div>
                         </div>
                     </div>
                 </div>
