@@ -7,20 +7,21 @@ import LoadingSpinner from "../components/spinner/loadingSpinner/LoadingSpinner.
 
 export default function AppLayout() {
 
-    const { data, isLoading, isError } = useQuery({
+    const { data, isLoading, isError} = useQuery({
         queryFn: getUserSession,
         queryKey: ['user'],
         retry: 2,
-        refetchOnWindowFocus: false
+        refetchOnWindowFocus: false,
     })
     if(isLoading) return <LoadingSpinner />
-    if(isError) return <Navigate to={'/auth'} />
+    if(isError) {
+        if(localStorage.getItem('AUTH_TOKEN')) localStorage.removeItem('AUTH_TOKEN')
+        return <Navigate to={'/auth'} />
+    }
     if (data) return (
-        <>
-            <IMPACT responseWrapper={data}>
-                <Outlet />
-            </IMPACT>
-        </>
+        <IMPACT responseWrapper={data}>
+            <Outlet />
+        </IMPACT>
     );
 
 }
