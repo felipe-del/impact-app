@@ -5,8 +5,19 @@ import { CSVLink } from "react-csv";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
-const AssetBanner = ({ title, visibleButtons }) => {
+const AssetBanner = ({ title = "", visibleButtons, exportToPDF }) => {
     const navigate = useNavigate(); // Hook para la navegación
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    // Abre el menú
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    // Cierra el menú
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
     return (
         <div className="export-buttons" style={styles.banner}>
@@ -23,6 +34,30 @@ const AssetBanner = ({ title, visibleButtons }) => {
                         Volver
                     </Button>
                 )}
+                {visibleButtons.includes("export") && (
+                    <Button
+                        variant="contained"
+                        color="info"
+                        onClick={handleClick} // Abre el menú
+                        startIcon={<FileDownload />}
+                        style={styles.button}
+                    >
+                        Exportar
+                    </Button>
+                )}
+                <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
+                    {visibleButtons.includes("pdf") && (
+                        <MenuItem
+                            onClick={() => {
+                                exportToPDF();
+                                handleClose();
+                            }}
+                            style={{ color: "black" }}
+                        >
+                            Exportar a PDF
+                        </MenuItem>
+                    )}
+                </Menu>
 
             </div>
         </div>
