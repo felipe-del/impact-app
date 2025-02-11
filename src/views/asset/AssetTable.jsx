@@ -3,7 +3,7 @@ import {
     MaterialReactTable,
     useMaterialReactTable,
 } from 'material-react-table';
-import { Box, Typography } from '@mui/material';
+import {Box, Typography} from '@mui/material';
 import { useQuery } from "@tanstack/react-query";
 import { getAllAssets } from "../../api/asset/asset_API.js";
 import LoadingPointsSpinner from "../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
@@ -16,6 +16,10 @@ import {getAllCurrencies} from "../../api/currency/currency_API.js";
 import {getAllLocationNumber} from "../../api/locationNumber_API/locationNumber_API.js";
 import AssetBanner from "./AssetBanner.jsx";
 import DevicesIcon from '@mui/icons-material/Devices';
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+import EditIcon from "@mui/icons-material/Edit";
+import IconButton from "@mui/material/IconButton";
 
 const AssetTable = () => {
 
@@ -39,12 +43,35 @@ const AssetTable = () => {
         if (assetsData) setAssets(assetsData.data)
     }, [assetsData]);
 
+    const handleEdit = (row) => {
+        console.log('Edit', row.original);
+    }
+
     const columns = useMemo(
         () => [
             { accessorKey: 'id', header: 'ID'},
             { accessorKey: 'plateNumber', header: 'Placa'},
             { accessorKey: 'purchaseDate', header: 'Fecha de Compra'},
-            { accessorKey: 'value', header: 'Valor'},
+            {
+                accessorKey: 'value',
+                header: 'Valor',
+                Cell: ({ row }) => {
+                    const value = row.original.value;
+                    const currencyCode = row.original.currency?.code;
+
+                    if (typeof value === 'number' && currencyCode) {
+                        const formattedValue = new Intl.NumberFormat('es-ES', {
+                            style: 'currency',
+                            currency: currencyCode,
+                        }).format(value);
+
+                        return <span>{formattedValue}</span>;
+                    }
+
+                    // Si no se cumplen las condiciones, devolver un valor por defecto
+                    return <span>N/A</span>;
+                },
+            },
             { accessorKey: 'user.email', header: 'Usuario Responsable'},
             { accessorKey: 'supplier.name', header: 'Proveedor'},
             { accessorKey: 'category.name', header: 'Categoria'},
@@ -55,6 +82,29 @@ const AssetTable = () => {
             { accessorKey: 'currency.stateName', header: 'Tipo de Moneda'},
             { accessorKey: 'assetSeries', header: 'Serie'},
             { accessorKey: 'locationNumber.locationTypeName', header: 'Ubicación'},
+            {
+                id: 'actions',
+                header: 'Acciones',
+                size: 'small',
+                Cell: ({ row }) => (
+                    <IconButton
+                        onClick={() => handleEdit(row)}
+                        color="primary"
+                        style={{
+                            width: '24px',
+                            height: '24px',
+                            borderRadius: '5px',
+                            padding: '0',
+                            backgroundColor: '#1976d2',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <EditIcon style={{ fontSize: '14px', color: 'white' }} />  {/* Icono más pequeño */}
+                    </IconButton>
+                ),
+            },
         ],
             []
     );
@@ -62,7 +112,7 @@ const AssetTable = () => {
     const table = useMaterialReactTable({
         columns,
         data: assets,
-        enableExpandAll: false, // Deshabilitar botón de expandir todo
+        enableExpandAll: false,
         initialState: {
             columnVisibility: {
                 id: false,
@@ -71,7 +121,7 @@ const AssetTable = () => {
                 value: true,
                 'user.email': false,
                 'supplier.name': false,
-                'category.name': true,
+                'category.name': false,
                 'subcategory.name': true,
                 'brand.name': false,
                 'status.name': true,
@@ -167,15 +217,69 @@ const AssetTable = () => {
                         <Typography sx={{ fontWeight: 'bold', color: '#f8f9fa', fontFamily: '"Montserrat", sans-serif' }}>
                             {item.label}
                         </Typography>
-                        <Typography>{item.value || 'N/A'}</Typography>
+                        <Typography sx={{fontFamily: '"Montserrat", sans-serif' }}>{item.value || 'N/A'}</Typography>
                     </Box>
                 ))}
             </Box>
-
-
-
-        )
+        ),
+        state: {
+            isLoading: isLoading,
+            showAlertBanner: isError
+        }
     });
+
+
+
+    const exportToPDF = () => {
+        const doc = new jsPDF();
+
+        const tableDate = assets.map(asset => [
+            asset.id,
+            asset.plateNumber,
+            asset.purchaseDate,
+            asset.value,
+            asset.user?.email || 'N/A',
+            asset.supplier?.name || 'N/A',
+            asset.category?.name || 'N/A',
+            asset.subcategory?.name || 'N/A',
+            asset.brand?.name || 'N/A',
+            asset.status?.name || 'N/A',
+            asset.model?.modelName || 'N/A',
+            asset.currency?.stateName || 'N/A',
+            asset.assetSeries || 'N/A',
+            asset.locationNumber?.locationTypeName || 'N/A',
+        ]);
+
+        autoTable(doc, {
+            head: [[
+                'ID', 'Placa', 'Fecha de Compra', 'Valor', 'Usuario Responsable',
+                'Proveedor', 'Categoría', 'Subcategoría', 'Marca', 'Estado',
+                'Modelo', 'Tipo de Moneda', 'Serie', 'Ubicación'
+            ]],
+            body: tableDate,
+            startY: 20,
+            margin: { top: 20, left: 10, right: 10 },
+            styles: {
+                fontSize: 8,
+                cellPadding: 2,
+            },
+            headStyles: {
+                fillColor: [0, 60, 116],
+                textColor: 255,
+                fontSize: 9,
+                fontStyle: 'bold',
+            },
+            bodyStyles: {
+                textColor: 50,
+            },
+            alternateRowStyles: {
+                fillColor: [240, 240, 240]
+            },
+        });
+
+        doc.save('assets.pdf');
+    };
+
 
     return (
         <>
@@ -183,7 +287,8 @@ const AssetTable = () => {
             {isError && <div>Error fetching data</div>}
 
             <AssetBanner
-                title="Gestión de Usuarios"
+                title="Gestión de Activos"
+                exportToPDF={exportToPDF}
             />
             <MaterialReactTable table={table} />
         </>
