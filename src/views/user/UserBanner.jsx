@@ -4,6 +4,7 @@ import { FileDownload, AssignmentInd, ArrowBack, PersonAdd } from "@mui/icons-ma
 import { CSVLink } from "react-csv";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
+import ActionButton from "../../components/button/ActionButton.jsx";
 
 const UserBanner = ({ title = "", flatUsers, exportToPDF, handleOpen,
                         visibleButtons = ["csv", "pdf", "roles", "createUser", "export"] }) => {
@@ -36,45 +37,38 @@ const UserBanner = ({ title = "", flatUsers, exportToPDF, handleOpen,
                     </Button>
                 )}
                 {visibleButtons.includes("createUser") && (
-                    <Button
-                        variant="contained"
-                        color="error"
+                    <ActionButton
                         onClick={() => navigate("/app/createUser")}
-                        startIcon={<PersonAdd />}
+                        text={"Crear Usuario"}
+                        icon={<PersonAdd />}
+                        color="error"
                         style={styles.button}
-                    >
-                        Crear Usuario
-                    </Button>
-                )}
+                        widthWhenIsHover={"150px"}
+                    />
 
+                )}
                 {visibleButtons.includes("roles") && (
-                    <Button
-                        variant="contained"
+                    <ActionButton
+                        onClick={handleOpen} text={"Roles y Estados"}
+                        icon={<AssignmentInd />}
                         color="warning"
-                        onClick={handleOpen}
-                        startIcon={<AssignmentInd />}
                         style={styles.button}
-                    >
-                        Mostrar Roles y Estados
-                    </Button>
+                        widthWhenIsHover={"150px"}
+                    />
                 )}
-
-                {visibleButtons.includes("export") && (
-                    <Button
-                        variant="contained"
-                        color="info"
-                        onClick={handleClick} // Abre el menú
-                        startIcon={<FileDownload />}
-                        style={styles.button}
-                    >
-                        Exportar
-                    </Button>
-                )}
+               {visibleButtons.includes("export") && (
+                   <ActionButton
+                       onClick={handleClick}
+                       icon={<FileDownload />}
+                       text="Exportar" color="info"
+                       style={styles.button}
+                   />
+               )}
                 <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
                     {visibleButtons.includes("csv") && (
                         <CSVLink
                             data={flatUsers}
-                            filename="users.csv"
+                            filename="usuarios.csv"
                             style={{ textDecoration: "none", color: "black" }}
                         >
                             <MenuItem onClick={handleClose}>Exportar a CSV</MenuItem>
