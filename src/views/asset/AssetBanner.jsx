@@ -1,11 +1,17 @@
 import { useState } from "react";
-import { Button, Menu, MenuItem } from "@mui/material";
-import { FileDownload, AssignmentInd, ArrowBack, PersonAdd } from "@mui/icons-material";
+import { Menu, MenuItem } from "@mui/material";
+import {FileDownload, ArrowBack, PersonAdd} from "@mui/icons-material";
+import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
 import { CSVLink } from "react-csv";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
+import ActionButton from "../../components/button/ActionButton.jsx";
 
-const AssetBanner = ({ title = "", visibleButtons = ["csv", "pdf", "roles", "createUser", "export"], exportToPDF }) => {
+const AssetBanner = ({ title = "",
+                         visibleButtons = ["csv", "pdf", "statusModal", "export", "createAsset"],
+                         exportToPDF,
+                         flatAssets,
+                         handleOpen }) => {
     const navigate = useNavigate(); // Hook para la navegación
     const [anchorEl, setAnchorEl] = useState(null);
 
@@ -23,29 +29,56 @@ const AssetBanner = ({ title = "", visibleButtons = ["csv", "pdf", "roles", "cre
         <div className="export-buttons" style={styles.banner}>
             <h3 style={styles.title}>{title}</h3>
             <div style={styles.buttonsContainer}>
-                {visibleButtons.includes("goBack") && (
-                    <Button
-                        variant="contained"
+
+                {visibleButtons.includes("createAsset") && (
+                    <ActionButton
+                        onClick={() => navigate("/app/createAsset")}
+                        text={"Crear Activo"} icon={<PersonAdd />}
                         color="error"
-                        onClick={() => navigate(-1)} // Regresar una página atrás
-                        startIcon={<ArrowBack />}
                         style={styles.button}
-                    >
-                        Volver
-                    </Button>
+                        widthWhenIsHover={"150px"}
+                    />
+                )}
+                {visibleButtons.includes("statusModal") && (
+                    <ActionButton
+                        onClick={handleOpen}
+                        text={"Estados del Activo"}
+                        icon={<ManageHistoryIcon />}
+                        color="warning"
+                        style={styles.button}
+                        widthWhenIsHover={"170px"}
+                    />
+
+                )}
+                {visibleButtons.includes("goBack") && (
+                    <ActionButton
+                        onClick={() => navigate(-1)}
+                        text={"Volver"}
+                        icon={<ArrowBack />}
+                        color={"error"}
+                        style={styles.button}
+                    />
+
                 )}
                 {visibleButtons.includes("export") && (
-                    <Button
-                        variant="contained"
+                    <ActionButton
+                        onClick={handleClick}
+                        icon={<FileDownload />}
+                        text="Exportar"
                         color="info"
-                        onClick={handleClick} // Abre el menú
-                        startIcon={<FileDownload />}
                         style={styles.button}
-                    >
-                        Exportar
-                    </Button>
+                    />
                 )}
                 <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
+                    {visibleButtons.includes("csv") && (
+                        <CSVLink
+                            data={flatAssets}
+                            filename="activos.csv"
+                            style={{ textDecoration: "none", color: "black" }}
+                        >
+                            <MenuItem onClick={handleClose}>Exportar a CSV</MenuItem>
+                        </CSVLink>
+                    )}
                     {visibleButtons.includes("pdf") && (
                         <MenuItem
                             onClick={() => {
@@ -66,7 +99,7 @@ const AssetBanner = ({ title = "", visibleButtons = ["csv", "pdf", "roles", "cre
 
 AssetBanner.propTypes = {
     title: PropTypes.string,
-    flatUsers: PropTypes.array,
+    flatAssets: PropTypes.array,
     exportToPDF: PropTypes.func,
     handleOpen: PropTypes.func,
     visibleButtons: PropTypes.arrayOf(PropTypes.string),
