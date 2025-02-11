@@ -146,13 +146,12 @@ const UserTable = () => {
 
     const columns = useMemo(
         () => [
-            { accessorKey: 'id', header: 'ID', size: 50 },
-            { accessorKey: 'name', header: 'Nombre', size: 150 },
-            { accessorKey: 'email', header: 'Correo', size: 200 },
+            { accessorKey: 'id', header: 'ID'},
+            { accessorKey: 'name', header: 'Nombre'},
+            { accessorKey: 'email', header: 'Correo'},
             {
                 accessorKey: 'userRoleResponse.roleName',
                 header: 'Role',
-                size: 150,
                 Cell: ({ row }) => (
                     editRowId === row.original.id ? (
                         <FormControl fullWidth sx={{
@@ -201,7 +200,11 @@ const UserTable = () => {
             {
                 accessorKey: 'userStateResponse.stateName',
                 header: 'Estado',
-                size: 150,
+                editVariant: 'select',
+                editSelectOptions: states.map(state => state.stateName),
+                muiEditTextFieldProps: {
+                    select: true,
+                },
                 Cell: ({ row }) => (
                     editRowId === row.original.id ? (
                         <FormControl fullWidth sx={{
@@ -258,7 +261,7 @@ const UserTable = () => {
             {
                 accessorKey: 'actions',
                 header: 'Acciones',
-                size: 80,
+                size: 'small',
                 enableSorting: false,
                 enableColumnFilter: false,
                 enableHiding: false,
@@ -271,27 +274,45 @@ const UserTable = () => {
                                 gap: '10px',
                                 flexWrap: 'wrap' // Para que los botones se apilen en pantallas pequeñas
                             }}>
-                                <IconButton
-                                    onClick={() => saveChanges(row.original.id)}
-                                    color="success"
-                                    style={{
-                                        borderRadius: '15px',
-                                        padding: '0px',
-                                    }}
-                                >
-                                    <CheckIcon />
-                                </IconButton>
-                                <IconButton
-                                    onClick={cancelEditing}
-                                    color="error"
-                                    style={{
-                                        borderRadius: '15px',
-                                        padding: '0px',
-                                        marginRight: '20px',
-                                    }}
-                                >
-                                    <CloseIcon />
-                                </IconButton>
+                                <div style={{
+                                    display: 'flex',
+                                    gap: '0', // Sin espacio entre los iconos
+                                }}>
+                                    <IconButton
+                                        onClick={() => saveChanges(row.original.id)}
+                                        color="success"
+                                        style={{
+                                            width: '40px',   // Tamaño del cuadrado
+                                            height: '40px',  // Tamaño del cuadrado
+                                            borderRadius: '10px 0 0 10px', // Bordes redondeados solo a la izquierda
+                                            padding: '0',    // Sin padding adicional
+                                            backgroundColor: '#4caf50',  // Color de fondo verde
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                        }}
+                                    >
+                                        <CheckIcon style={{ fontSize: '20px', color: 'white' }} />
+                                    </IconButton>
+                                    <IconButton
+                                        onClick={cancelEditing}
+                                        color="error"
+                                        style={{
+                                            width: '40px',   // Tamaño del cuadrado
+                                            height: '40px',  // Tamaño del cuadrado
+                                            borderRadius: '0 10px 10px 0', // Bordes redondeados solo a la derecha
+                                            padding: '0',    // Sin padding adicional
+                                            backgroundColor: '#f44336',  // Color de fondo
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                        }}
+                                    >
+                                        <CloseIcon style={{ fontSize: '20px', color: 'white' }} />
+                                    </IconButton>
+                                </div>
+
+
                             </div>
                         </>
 
@@ -302,16 +323,21 @@ const UserTable = () => {
                                 row.original.userRoleResponse.roleName,
                                 row.original.userStateResponse.stateName
                             )}
-                            color="default"
-                            variant="contained"
+                            color="primary"
                             style={{
-                                borderRadius: '15px',
-                                textTransform: 'none',
-                                padding: '0px',
+                                width: '24px',   // Tamaño más pequeño del cuadrado
+                                height: '24px',  // Tamaño más pequeño del cuadrado
+                                borderRadius: '5px', // Bordes suaves y redondeados
+                                padding: '0',    // Sin padding adicional
+                                backgroundColor: '#1976d2',  // Color de fondo azul
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
                             }}
                         >
-                            <EditIcon />
+                            <EditIcon style={{ fontSize: '14px', color: 'white' }} />  {/* Icono más pequeño */}
                         </IconButton>
+
                     )
                 ),
             },
@@ -322,7 +348,6 @@ const UserTable = () => {
     const table = useMaterialReactTable({
         columns,
         data: users,
-        createDisplayMode: 'row',
         initialState: {
             columnVisibility: { id: false },
             density: 'comfortable',
@@ -330,20 +355,6 @@ const UserTable = () => {
                 pageSize: 5,
             },
         },
-        renderRowActions: ({ row, table }) => (
-            <Box sx={{ display: 'flex', gap: '1rem' }}>
-                <Tooltip title="Edit">
-                    <IconButton onClick={() => table.setEditingRow(row)}>
-                        <EditIcon />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Delete">
-                    <IconButton color="error" onClick={() => (row)}>
-                        <DeleteIcon />
-                    </IconButton>
-                </Tooltip>
-            </Box>
-        ),
         renderTopToolbarCustomActions: () => (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
 
@@ -361,7 +372,6 @@ const UserTable = () => {
                 <GroupIcon sx={{ marginRight: 1, color: 'primary.main' }} /> {/* Adding the icon */}
             </Box>
         ),
-
 
     });
 
