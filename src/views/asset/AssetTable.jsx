@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import {
     MaterialReactTable,
     useMaterialReactTable,
@@ -14,8 +14,13 @@ import {getAllAssetStatus} from "../../api/asset/assetStatus_API.js";
 import {getAllAssetModels} from "../../api/asset/assetModel_API.js";
 import {getAllCurrencies} from "../../api/currency/currency_API.js";
 import {getAllLocationNumber} from "../../api/locationNumber_API/locationNumber_API.js";
+import AssetBanner from "./AssetBanner.jsx";
+import DevicesIcon from '@mui/icons-material/Devices';
 
 const AssetTable = () => {
+
+    const [assets, setAssets] = useState([]);
+
     const { data: assetsData, isLoading, isError } = useQuery({
         queryKey: ['assets'],
         queryFn: getAllAssets,
@@ -30,46 +35,50 @@ const AssetTable = () => {
     const {data: currencyData} = useQuery({queryKey: ['currencies'], queryFn: getAllCurrencies})
     const {data: locationsData} = useQuery({queryKey: ['locations'], queryFn: getAllLocationNumber})
 
+    useEffect(() => {
+        if (assetsData) setAssets(assetsData.data)
+    }, [assetsData]);
+
     const columns = useMemo(
         () => [
-            { accessorKey: 'id', header: 'ID', size: 50 },
-            { accessorKey: 'plateNumber', header: 'Placa' },
-            { accessorKey: 'purchaseDate', header: 'Fecha de Compra', size: 100 },
-            { accessorKey: 'value', header: 'Valor', size: 80 },
-            { accessorKey: 'user.email', header: 'Usuario Responsable', size: 120 },
-            { accessorKey: 'supplier.name', header: 'Proveedor', size: 120 },
-            { accessorKey: 'category.name', header: 'Categoria' },
-            { accessorKey: 'subcategory.name', header: 'Subcategoria', size: 120 },
-            { accessorKey: 'brand.name', header: 'Marca', size: 100 },
-            { accessorKey: 'status.name', header: 'Estado', size: 120 },
-            { accessorKey: 'model.modelName', header: 'Modelo' },
-            { accessorKey: 'currency.stateName', header: 'Tipo de Moneda' },
-            { accessorKey: 'assetSeries', header: 'Serie', size: 120 },
-            { accessorKey: 'locationNumber.locationTypeName', header: 'Ubicación' },
+            { accessorKey: 'id', header: 'ID'},
+            { accessorKey: 'plateNumber', header: 'Placa'},
+            { accessorKey: 'purchaseDate', header: 'Fecha de Compra'},
+            { accessorKey: 'value', header: 'Valor'},
+            { accessorKey: 'user.email', header: 'Usuario Responsable'},
+            { accessorKey: 'supplier.name', header: 'Proveedor'},
+            { accessorKey: 'category.name', header: 'Categoria'},
+            { accessorKey: 'subcategory.name', header: 'Subcategoria'},
+            { accessorKey: 'brand.name', header: 'Marca'},
+            { accessorKey: 'status.name', header: 'Estado'},
+            { accessorKey: 'model.modelName', header: 'Modelo'},
+            { accessorKey: 'currency.stateName', header: 'Tipo de Moneda'},
+            { accessorKey: 'assetSeries', header: 'Serie'},
+            { accessorKey: 'locationNumber.locationTypeName', header: 'Ubicación'},
         ],
             []
     );
 
     const table = useMaterialReactTable({
         columns,
-        data: assetsData?.data || [],
+        data: assets,
         enableExpandAll: false, // Deshabilitar botón de expandir todo
         initialState: {
             columnVisibility: {
                 id: false,
-                plateNumber: false,
+                plateNumber: true,
                 purchaseDate: false,
-                value: false,
-                user: false,
-                supplier: false,
-                category: false,
-                subcategory: false,
-                brand: false,
-                status: false,
-                model: false,
-                currency: false,
-                assetSeries: false,
-                locationNumber: false,
+                value: true,
+                'user.email': false,
+                'supplier.name': false,
+                'category.name': true,
+                'subcategory.name': true,
+                'brand.name': false,
+                'status.name': true,
+                'model.modelName': false,
+                'currency.stateName': false,
+                assetSeries: true,
+                'locationNumber.locationTypeName': false,
             },
             density: 'comfortable',
             pagination: {
@@ -89,35 +98,82 @@ const AssetTable = () => {
                 transition: 'transform 0.2s'
             }
         }),
+        renderTopToolbarCustomActions: () => (
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+
+                <Typography
+                    variant="h6"
+                    sx={{
+                        color: 'primary.main', // Adding color (if you're using MUI theme)
+                        //letterSpacing: 1, // Adding letter spacing for a more modern look
+                        fontFamily: 'Montserrat, sans-serif', // Custom font family
+                        padding: '8px 10px', // Adding padding for more spacing around the text
+                    }}
+                >
+                    Tabla de Activos
+                </Typography>
+                <DevicesIcon sx={{ marginRight: 1, color: 'primary.main' }} />
+            </Box>
+        ),
         renderDetailPanel: ({ row }) => (
             <Box
                 sx={{
                     display: 'grid',
                     margin: 'auto',
-                    gridTemplateColumns: '1fr 1fr',
+                    gridTemplateColumns: 'repeat(5, 1fr)',
                     width: '100%',
-                    padding: '10px',
-                    background: '#f8f9fa',
-                    borderRadius: '8px',
-                    boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.2)'
+                    padding: '20px',
+                    background: 'linear-gradient(135deg, #003c74 0%, #005DA4 100%)',
+                    borderRadius: '15px',
+                    boxShadow: '0px 4px 10px rgba(0, 93, 164, 0.3)',
+                    color: '#f8f9fa',
+                    fontFamily: '"Montserrat", sans-serif',
+                    letterSpacing: '0.5px',
+                    gap: '15px',
+                    border: '1px solid rgba(255, 255, 255, 0.2)',
                 }}
             >
-                <Typography><strong>ID:</strong> {row.original.id}</Typography>
-                <Typography><strong>Placa:</strong> {row.original.plateNumber}</Typography>
-                <Typography><strong>Fecha de Compra:</strong> {row.original.purchaseDate}</Typography>
-                <Typography><strong>Valor:</strong> {row.original.value}</Typography>
-                <Typography><strong>Usuario Responsable:</strong> {row.original.user?.email}</Typography>
-                <Typography><strong>Proveedor:</strong> {row.original.supplier?.name}</Typography>
-                <Typography><strong>Categoria:</strong> {row.original.category?.name}</Typography>
-                <Typography><strong>Subcategoria:</strong> {row.original.subcategory?.name}</Typography>
-                <Typography><strong>Marca:</strong> {row.original.brand?.name}</Typography>
-                <Typography><strong>Estado:</strong> {row.original.status?.name}</Typography>
-                <Typography><strong>Modelo:</strong> {row.original.model?.modelName}</Typography>
-                <Typography><strong>Tipo de Moneda:</strong> {row.original.currency?.stateName}</Typography>
-                <Typography><strong>Serie:</strong> {row.original.assetSeries}</Typography>
-                <Typography><strong>Ubicación:</strong> {row.original.locationNumber?.locationTypeName}</Typography>
-
+                {[
+                    { label: 'ID', value: row.original.id },
+                    { label: 'Placa', value: row.original.plateNumber },
+                    { label: 'Fecha de Compra', value: row.original.purchaseDate },
+                    { label: 'Valor', value: `${row.original.value} ${row.original.currency?.symbol}` },
+                    { label: 'Usuario Responsable', value: row.original.user?.email },
+                    { label: 'Proveedor', value: row.original.supplier?.name },
+                    { label: 'Categoría', value: row.original.category?.name },
+                    { label: 'Subcategoría', value: row.original.subcategory?.name },
+                    { label: 'Marca', value: row.original.brand?.name },
+                    { label: 'Estado', value: row.original.status?.name },
+                    { label: 'Modelo', value: row.original.model?.modelName },
+                    { label: 'Tipo de Moneda', value: `${row.original.currency?.stateName} - ${row.original.currency?.code} - ${row.original.currency?.symbol}` },
+                    { label: 'Serie', value: row.original.assetSeries },
+                    { label: 'Ubicación', value: row.original.locationNumber?.locationTypeName },
+                ].map((item, index) => (
+                    <Box
+                        key={index}
+                        sx={{
+                            background: 'rgba(255, 255, 255, 0.1)',
+                            padding: '8px',
+                            borderRadius: '10px',
+                            textAlign: 'left',
+                            boxShadow: '0px 2px 5px rgba(255, 255, 255, 0.1)',
+                            transition: '0.3s ease-in-out',
+                            '&:hover': {
+                                transform: 'scale(1.03)',
+                                boxShadow: '0px 4px 12px rgba(255, 255, 255, 0.3)',
+                            },
+                        }}
+                    >
+                        <Typography sx={{ fontWeight: 'bold', color: '#f8f9fa', fontFamily: '"Montserrat", sans-serif' }}>
+                            {item.label}
+                        </Typography>
+                        <Typography>{item.value || 'N/A'}</Typography>
+                    </Box>
+                ))}
             </Box>
+
+
+
         )
     });
 
@@ -125,6 +181,10 @@ const AssetTable = () => {
         <>
             {isLoading && <LoadingPointsSpinner />}
             {isError && <div>Error fetching data</div>}
+
+            <AssetBanner
+                title="Gestión de Usuarios"
+            />
             <MaterialReactTable table={table} />
         </>
     );
