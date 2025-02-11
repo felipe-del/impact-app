@@ -182,7 +182,7 @@ const Sidebar = ({ role }) => {
 
             {/* Ícono para mostrar/ocultar información */}
             <label htmlFor="toggle-info" className="sidebar-toggle">
-                <i className="fa-solid fa-caret-down" style={{ color: '#d3d3d3', fontSize: '20px'}}></i>
+                <i className="fa-solid fa-caret-down sidebar-icon" style={{ color: '#d3d3d3', fontSize: '20px'}}></i>
             </label>
 
             <div className="sidebar-card">
