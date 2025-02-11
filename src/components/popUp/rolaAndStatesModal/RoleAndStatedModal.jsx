@@ -1,7 +1,6 @@
 import { Modal, Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import './roleAndStateModal.css';
 
 const RoleAndStateModal = ({ open, onClose, roles, states }) => {
     return (
