@@ -21,9 +21,79 @@ import autoTable from "jspdf-autotable";
 import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
 
+const initialArray = [
+    {
+        "id": 1,
+        "purchaseDate": "2024-01-01",
+        "value": 1000,
+        "user": {
+            "id": 1,
+            "name": "John Doe",
+            "email": "johndoe@example.com",
+            "userRoleResponse": {
+                "id": 1,
+                "roleName": "USER",
+                "description": "Standard system user"
+            },
+            "userStateResponse": {
+                "id": 1,
+                "stateName": "ACTIVE",
+                "description": "User is active and can log in"
+            }
+        },
+        "supplier": {
+            "id": 1,
+            "name": "Supplier Inc.",
+            "phone": "1234-5678",
+            "email": "supplier@example.com",
+            "address": "123 Main Street",
+            "entityTypeName": "PHYSICAL",
+            "clientContact": "5678-1234",
+            "idNumber": "1-2345-6789"
+        },
+        "subcategory": {
+            "id": 1,
+            "name": "Laptop",
+            "description": "Portable computer",
+            "assetCategoryName": "Electronics"
+        },
+        "category": {
+            "id": 1,
+            "name": "Electronics"
+        },
+        "brand": {
+            "id": 1,
+            "name": "Dell"
+        },
+        "status": {
+            "id": 1,
+            "name": "AVAILABLE",
+            "description": "The asset is available for use."
+        },
+        "assetSeries": "SER_001",
+        "plateNumber": "PLA_001",
+        "model": {
+            "id": 1,
+            "modelName": "XPS 15"
+        },
+        "currency": {
+            "id": 1,
+            "code": "USD",
+            "symbol": "$",
+            "stateName": "DOLLAR"
+        },
+        "locationNumber": {
+            "id": 1,
+            "locationTypeName": "Building",
+            "locationNumber": 101
+        }
+    }
+];
+
+
 const AssetTable = () => {
 
-    const [assets, setAssets] = useState([]);
+    const [assets, setAssets] = useState(initialArray);
 
     const { data: assetsData, isLoading, isError } = useQuery({
         queryKey: ['assets'],
