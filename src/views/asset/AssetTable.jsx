@@ -18,8 +18,7 @@ import AssetBanner from "./AssetBanner.jsx";
 import DevicesIcon from '@mui/icons-material/Devices';
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import EditIcon from "@mui/icons-material/Edit";
-import IconButton from "@mui/material/IconButton";
+import AssetStatusModal from "../../components/popUp/assetStatusModal/AssetStatusModal.jsx";
 
 const initialArray = [
     {
@@ -91,9 +90,17 @@ const initialArray = [
 ];
 
 
+import PropTypes from 'prop-types';
+import EditButton from "../../components/button/EditButton.jsx";
+
 const AssetTable = () => {
 
     const [assets, setAssets] = useState(initialArray);
+    const [assetStatus, setAssetStatus] = useState([]);
+    const [openModal, setOpenModal] = useState(false);
+
+    const handleOpen = () => setOpenModal(true);
+    const handleClose = () => setOpenModal(false);
 
     const { data: assetsData, isLoading, isError } = useQuery({
         queryKey: ['assets'],
@@ -111,7 +118,9 @@ const AssetTable = () => {
 
     useEffect(() => {
         if (assetsData) setAssets(assetsData.data)
-    }, [assetsData]);
+        if (assetStatusData) setAssetStatus(assetStatusData.data)
+        console.log('assetsData', assetsData)
+    }, [assetsData, assetStatusData]);
 
     const handleEdit = (row) => {
         console.log('Edit', row.original);
@@ -157,27 +166,29 @@ const AssetTable = () => {
                 header: 'Acciones',
                 size: 'small',
                 Cell: ({ row }) => (
-                    <IconButton
-                        onClick={() => handleEdit(row)}
-                        color="primary"
-                        style={{
-                            width: '24px',
-                            height: '24px',
-                            borderRadius: '5px',
-                            padding: '0',
-                            backgroundColor: '#1976d2',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                        }}
-                    >
-                        <EditIcon style={{ fontSize: '14px', color: 'white' }} />  {/* Icono más pequeño */}
-                    </IconButton>
+                    <EditButton handleEdit={handleEdit} row={row} />
                 ),
             },
         ],
             []
     );
+
+    const flatAssets = assets.map(asset => ({
+        id: asset.id,
+        plateNumber: asset.plateNumber,
+        purchaseDate: new Date(asset.purchaseDate).toString(),
+        value: asset.value,
+        user: asset.user?.email,
+        supplier: asset.supplier?.name,
+        category: asset.category?.name,
+        subcategory: asset.subcategory?.name,
+        brand: asset.brand?.name,
+        status: asset.status?.name,
+        model: asset.model?.modelName,
+        currency: asset.currency?.stateName,
+        assetSeries: asset.assetSeries,
+        locationNumber: asset.locationNumber?.locationTypeName,
+    }));
 
     const table = useMaterialReactTable({
         columns,
@@ -355,14 +366,17 @@ const AssetTable = () => {
         <>
             {isLoading && <LoadingPointsSpinner />}
             {isError && <div>Error fetching data</div>}
-
             <AssetBanner
                 title="Gestión de Activos"
                 exportToPDF={exportToPDF}
+                handleOpen={handleOpen}
+                flatAssets={flatAssets}
             />
             <MaterialReactTable table={table} />
+            <AssetStatusModal  open={openModal} onClose={handleClose} assetStatuses={assetStatus} />
         </>
     );
 };
+
 
 export default AssetTable;
