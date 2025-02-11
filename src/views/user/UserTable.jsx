@@ -30,6 +30,8 @@ import GroupIcon from '@mui/icons-material/Group';
 import {changeUserRole, changeUserState} from "../../api/auth_API.js";
 import {toast} from "react-hot-toast";
 import {useUser} from "../../hooks/user/useUser.jsx";
+import EditButton from "../../components/button/EditButton.jsx";
+import ActionButtons from "../../components/button/ActionButtons.jsx";
 
 const UserTable = () => {
     const [openModal, setOpenModal] = useState(false);
@@ -76,6 +78,10 @@ const UserTable = () => {
         setTempRole({ ...tempRole, [rowId]: currentRole });
         setTempState({ ...tempState, [rowId]: currentState });
     };
+
+    function handleEdit(row) {
+        startEditing(row.original.id, row.original.userRoleResponse.roleName, row.original.userStateResponse.stateName);
+    }
 
     const cancelEditing = () => {
         setEditRowId(null);
@@ -273,70 +279,12 @@ const UserTable = () => {
                                 gap: '10px',
                                 flexWrap: 'wrap' // Para que los botones se apilen en pantallas pequeñas
                             }}>
-                                <div style={{
-                                    display: 'flex',
-                                    gap: '0', // Sin espacio entre los iconos
-                                }}>
-                                    <IconButton
-                                        onClick={() => saveChanges(row.original.id)}
-                                        color="success"
-                                        style={{
-                                            width: '40px',   // Tamaño del cuadrado
-                                            height: '40px',  // Tamaño del cuadrado
-                                            borderRadius: '10px 0 0 10px', // Bordes redondeados solo a la izquierda
-                                            padding: '0',    // Sin padding adicional
-                                            backgroundColor: '#4caf50',  // Color de fondo verde
-                                            display: 'flex',
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
-                                        }}
-                                    >
-                                        <CheckIcon style={{ fontSize: '20px', color: 'white' }} />
-                                    </IconButton>
-                                    <IconButton
-                                        onClick={cancelEditing}
-                                        color="error"
-                                        style={{
-                                            width: '40px',   // Tamaño del cuadrado
-                                            height: '40px',  // Tamaño del cuadrado
-                                            borderRadius: '0 10px 10px 0', // Bordes redondeados solo a la derecha
-                                            padding: '0',    // Sin padding adicional
-                                            backgroundColor: '#f44336',  // Color de fondo
-                                            display: 'flex',
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
-                                        }}
-                                    >
-                                        <CloseIcon style={{ fontSize: '20px', color: 'white' }} />
-                                    </IconButton>
-                                </div>
-
-
+                                <ActionButtons saveChanges={saveChanges} cancelEditing={cancelEditing} row={row} />
                             </div>
                         </>
 
                     ) : (
-                        <IconButton
-                            onClick={() => startEditing(
-                                row.original.id,
-                                row.original.userRoleResponse.roleName,
-                                row.original.userStateResponse.stateName
-                            )}
-                            color="primary"
-                            style={{
-                                width: '24px',   // Tamaño más pequeño del cuadrado
-                                height: '24px',  // Tamaño más pequeño del cuadrado
-                                borderRadius: '5px', // Bordes suaves y redondeados
-                                padding: '0',    // Sin padding adicional
-                                backgroundColor: '#1976d2',  // Color de fondo azul
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                            }}
-                        >
-                            <EditIcon style={{ fontSize: '14px', color: 'white' }} />  {/* Icono más pequeño */}
-                        </IconButton>
-
+                        <EditButton  handleEdit={handleEdit} row={row} />
                     )
                 ),
             },
@@ -389,7 +337,7 @@ const UserTable = () => {
             body: tableData,
         });
 
-        doc.save('users.pdf');
+        doc.save('usuarios.pdf');
     };
 
     const flatUsers = users.map(user => ({
