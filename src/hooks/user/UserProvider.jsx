@@ -1,7 +1,7 @@
 import { createContext } from "react";
 import PropTypes from "prop-types";
 
-export const UserContext = createContext();
+export const UserContext = createContext(null);
 
 export const UserProvider = ({ children, user }) => {
     return (
