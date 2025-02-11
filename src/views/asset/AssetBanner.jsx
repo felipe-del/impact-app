@@ -5,19 +5,8 @@ import { CSVLink } from "react-csv";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
-const AssetBanner = ({ title, flatUsers, exportToPDF, handleOpen, visibleButtons }) => {
+const AssetBanner = ({ title, visibleButtons }) => {
     const navigate = useNavigate(); // Hook para la navegación
-    const [anchorEl, setAnchorEl] = useState(null);
-
-    // Abre el menú
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    // Cierra el menú
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
 
     return (
         <div className="export-buttons" style={styles.banner}>
@@ -34,63 +23,7 @@ const AssetBanner = ({ title, flatUsers, exportToPDF, handleOpen, visibleButtons
                         Volver
                     </Button>
                 )}
-                {visibleButtons.includes("createUser") && (
-                    <Button
-                        variant="contained"
-                        color="error"
-                        onClick={() => navigate("/app/createUser")}
-                        startIcon={<PersonAdd />}
-                        style={styles.button}
-                    >
-                        Crear Usuario
-                    </Button>
-                )}
 
-                {visibleButtons.includes("roles") && (
-                    <Button
-                        variant="contained"
-                        color="warning"
-                        onClick={handleOpen}
-                        startIcon={<AssignmentInd />}
-                        style={styles.button}
-                    >
-                        Mostrar Roles y Estados
-                    </Button>
-                )}
-
-                {visibleButtons.includes("export") && (
-                    <Button
-                        variant="contained"
-                        color="info"
-                        onClick={handleClick} // Abre el menú
-                        startIcon={<FileDownload />}
-                        style={styles.button}
-                    >
-                        Exportar
-                    </Button>
-                )}
-                <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
-                    {visibleButtons.includes("csv") && (
-                        <CSVLink
-                            data={flatUsers}
-                            filename="users.csv"
-                            style={{ textDecoration: "none", color: "black" }}
-                        >
-                            <MenuItem onClick={handleClose}>Exportar a CSV</MenuItem>
-                        </CSVLink>
-                    )}
-                    {visibleButtons.includes("pdf") && (
-                        <MenuItem
-                            onClick={() => {
-                                exportToPDF();
-                                handleClose();
-                            }}
-                            style={{ color: "black" }}
-                        >
-                            Exportar a PDF
-                        </MenuItem>
-                    )}
-                </Menu>
             </div>
         </div>
     );
