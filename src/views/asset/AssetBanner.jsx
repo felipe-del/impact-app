@@ -5,7 +5,7 @@ import { CSVLink } from "react-csv";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
-const AssetBanner = ({ title = "", visibleButtons, exportToPDF }) => {
+const AssetBanner = ({ title = "", visibleButtons = ["csv", "pdf", "roles", "createUser", "export"], exportToPDF }) => {
     const navigate = useNavigate(); // Hook para la navegación
     const [anchorEl, setAnchorEl] = useState(null);
 
@@ -70,10 +70,6 @@ AssetBanner.propTypes = {
     exportToPDF: PropTypes.func,
     handleOpen: PropTypes.func,
     visibleButtons: PropTypes.arrayOf(PropTypes.string),
-};
-
-AssetBanner.defaultProps = {
-    visibleButtons: ["csv", "pdf", "roles", "createUser", "export"], // Todos visibles por defecto
 };
 
 const styles = {
