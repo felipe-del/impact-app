@@ -11,7 +11,7 @@ import {
     FormControl,
     InputLabel,
     Typography,
-    Box, Tooltip
+    Box,
 } from '@mui/material';
 import { getAllUsers } from "../../api/user_API.js";
 import { useQuery } from "@tanstack/react-query";
@@ -26,7 +26,6 @@ import EditIcon from '@mui/icons-material/Edit';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
 import GroupIcon from '@mui/icons-material/Group';
 import {changeUserRole, changeUserState} from "../../api/auth_API.js";
 import {toast} from "react-hot-toast";
