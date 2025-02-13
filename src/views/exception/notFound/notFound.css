@@ -69,6 +69,7 @@
     transform: translateY(-3px);
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
     text-decoration: none; /* Prevent text underline */
+    color: white;
 }
 
 /* Keyframe animation for fade-in effect */
