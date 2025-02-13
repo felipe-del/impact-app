@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import {Navigate, Outlet} from "react-router-dom";
-import {getUserSession} from "../api/auth_API.js";
+import {getUserSession} from "../api/auth/auth_API.js";
 import IMPACT from "../components/IMPACT.jsx";
 
 import LoadingSpinner from "../components/spinner/loadingSpinner/LoadingSpinner.jsx";
