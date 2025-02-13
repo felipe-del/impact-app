@@ -65,8 +65,7 @@ const RoleAndStateModal = ({ open, onClose, roles, states }) => {
                 <Button
                     onClick={onClose}
                     variant="contained"
-                    color="warning"
-                    sx={{ marginTop: '20px', width: '25%', borderRadius: '15px', float: 'right' }}
+                    sx={{ marginTop: '20px', width: '25%', borderRadius: '15px', float: 'right',backgroundColor: "#005DA4", '&:hover': { backgroundColor: "#003B73" } }}
                     startIcon={<VisibilityOffIcon />}
                 >
                     Ocultar
