@@ -63,9 +63,12 @@ const GenericModal = ({
                     }}
                 />
 
-                <Typography id="modal-description" sx={{ color: 'white', mt: 2, fontSize: '16px', lineHeight: 1.5, fontFamily: 'Montserrat' }}>
-                    {bodyText}
-                </Typography>
+                <Typography
+                    id="modal-description"
+                    sx={{ color: 'white', mt: 2, fontSize: '16px', lineHeight: 1.5, fontFamily: 'Montserrat' }}
+                    dangerouslySetInnerHTML={{ __html: bodyText }}
+                />
+
 
                 {/* Action Buttons styled to match futuristic theme */}
                 <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
