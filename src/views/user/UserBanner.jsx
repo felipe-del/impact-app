@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Button, Menu, MenuItem } from "@mui/material";
+import { Menu, MenuItem } from "@mui/material";
+import LockResetIcon from '@mui/icons-material/LockReset';
 import { FileDownload, AssignmentInd, ArrowBack, PersonAdd } from "@mui/icons-material";
 import { CSVLink } from "react-csv";
 import { useNavigate } from "react-router-dom";
@@ -8,7 +9,7 @@ import BannerActionButton from "../../components/button/BannerActionButton.jsx";
 import {bannerStyle} from "../../style/codeStyle.js";
 
 const UserBanner = ({ title = "", flatUsers, exportToPDF, handleOpen,
-                        visibleButtons = ["csv", "pdf", "roles", "createUser", "export"] }) => {
+                        visibleButtons = ["csv", "pdf", "roles", "createUser", "export"], showChangePasswordForm }) => {
     const navigate = useNavigate(); // Hook para la navegación
     const [anchorEl, setAnchorEl] = useState(null);
 
@@ -29,15 +30,23 @@ const UserBanner = ({ title = "", flatUsers, exportToPDF, handleOpen,
             <h3 style={styles.title}>{title}</h3>
             <div style={styles.buttonsContainer}>
                 {visibleButtons.includes("goBack") && (
-                    <Button
-                        variant="contained"
+                    <BannerActionButton
+                        onClick={() => navigate(-1)}
+                        text={"Volver"}
+                        icon={<ArrowBack />}
                         color="error"
-                        onClick={() => navigate(-1)} // Regresar una página atrás
-                        startIcon={<ArrowBack />}
                         style={styles.button}
-                    >
-                        Volver
-                    </Button>
+                    />
+                )}
+                {visibleButtons.includes("changePassword") && (
+                    <BannerActionButton
+                        onClick={showChangePasswordForm}
+                        text={"Restablecer Contraseña"}
+                        icon={<LockResetIcon />}
+                        color="warning"
+                        style={styles.button}
+                        widthWhenIsHover={"200px"}
+                    />
                 )}
                 {visibleButtons.includes("createUser") && (
                     <BannerActionButton
@@ -100,6 +109,7 @@ UserBanner.propTypes = {
     exportToPDF: PropTypes.func,
     handleOpen: PropTypes.func,
     visibleButtons: PropTypes.arrayOf(PropTypes.string),
+    showChangePasswordForm: PropTypes.func,
 };
 
 export default UserBanner;
