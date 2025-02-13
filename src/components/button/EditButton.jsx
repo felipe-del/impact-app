@@ -29,7 +29,7 @@ const EditButton = ({ handleEdit, row }) => {
                 }}
             >
                 <EditIcon style={{ fontSize: '14px', color: 'white', marginRight: hover ? '5px' : '0' }} />
-                {hover && <Typography variant="caption" style={{ color: 'white' }}>Editar</Typography>}
+                {hover && <Typography variant="caption" style={{ color: 'white', fontFamily: 'Montserrat' }}>Editar</Typography>}
             </IconButton>
         </Tooltip>
     );
