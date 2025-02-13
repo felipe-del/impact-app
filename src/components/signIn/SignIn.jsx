@@ -23,15 +23,15 @@ const SignIn = () => {
     const {
         register,
         handleSubmit,
-        formState: { errors },
         watch,
+        formState: { errors }, // <-- Agregado aquí para manejar errores
     } = useForm({ defaultValues: initialValues });
 
     const handleLogin = async (formData) => {
         try {
             const response = await login(formData.email, formData.password);
             localStorage.setItem('AUTH_TOKEN', response.data.token);
-            toast(response.message, { icon: '🚀' });
+            toast.success(response.message, { icon: '🚀' });
             navigate('/app');
         } catch (error) {
             toast.error(error.message);
@@ -48,41 +48,37 @@ const SignIn = () => {
                 <h1 id='login-title'>Inicio de sesión</h1>
 
                 {/* Email Field */}
-                <div className={'input-wrapper'}>
+                <div className='input-wrapper'>
                     <EmailIcon />
                     <input
                         id='email'
                         type='email'
                         placeholder='Correo electrónico institucional'
-                        className='input-field'
+                        className={`input-field ${errors.email ? 'error-input' : ''}`}
                         {...register('email', {
                             required: 'El correo electrónico es requerido',
                             pattern: {
-                                //value: /^[a-zA-Z0-9._%+-]+@(gmail\.com|ucr\.ac\.cr)$/,
+                                value: /^[a-zA-Z0-9._%+-]+@(gmail\.com|ucr\.ac\.cr)$/,
                                 message: 'El correo electrónico no es válido',
                             },
                         })}
                     />
                 </div>
-                {errors.email && (
-                    <div className="error-message">
-                        {errors.email.message}
-                    </div>
-                )}
+                {errors.email && <div className='error-message'>{errors.email.message}</div>}
 
                 {/* Password Field */}
-                <div className={'input-wrapper'}>
+                <div className="input-wrapper password-wrapper">
                     <LockIcon />
                     <input
-                        id='password'
-                        type={showPassword ? 'text' : 'password'}
-                        placeholder='Contraseña'
-                        className='input-field'
-                        {...register('password', {
-                            required: 'La contraseña es requerida',
+                        id="password"
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Contraseña"
+                        className={`input-field ${errors.password ? "error-input" : ""}`}
+                        {...register("password", {
+                            required: "La contraseña es requerida",
                             minLength: {
                                 value: 8,
-                                message: 'La contraseña debe tener al menos 8 caracteres',
+                                message: "La contraseña debe tener al menos 8 caracteres",
                             },
                         })}
                     />
@@ -91,23 +87,18 @@ const SignIn = () => {
                             className="toggle-password-login"
                             onClick={() => setShowPassword(!showPassword)}
                         >
-                            {showPassword ? 'Ocultar' : 'Mostrar'}
+                            {showPassword ? "Ocultar" : "Mostrar"}
                         </span>
                     )}
+                    <a href="/forgot-password" className="forgot-password-link">
+                        ¿Olvidaste tu contraseña?
+                    </a>
                 </div>
-                {errors.password && (
-                    <div className="error-message">
-                        {errors.password.message}
-                    </div>
-                )}
+                {errors.password && <div className="error-message">{errors.password.message}</div>}
 
-                {/* Forgot Password */}
-                <a href='/forgot-password' id='forgot-password'>
-                    ¿Olvidaste tu contraseña?
-                </a>
 
                 {/* Submit Button */}
-                <button type="submit" id='sign-button'>
+                <button type='submit' id='sign-button'>
                     <LoginIcon /> Iniciar sesión
                 </button>
             </form>
