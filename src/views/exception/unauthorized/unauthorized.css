@@ -13,7 +13,8 @@
 
 /* Centering content with a shadowed box */
 .unauthorized-page-content {
-    background-color: #fff;
+    /*    background-color: #fff; */
+    background-color: rgba(255, 255, 255, 0.91); /* Slight transparency for better contrast */
     padding: 30px;
     border-radius: 15px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
