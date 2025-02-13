@@ -6,7 +6,6 @@ const PieChart = () => {
     useEffect(() => {
         const ctx = document.getElementById('myPieChart');
 
-        // Create a new pie chart
         const myPieChart = new Chart(ctx, {
             type: 'doughnut',
             data: {
@@ -22,25 +21,28 @@ const PieChart = () => {
                 maintainAspectRatio: false,
                 plugins: {
                     legend: {
-                        display: true
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            padding: 20
+                        }
                     },
-                    datalabels: { // Configuración de datalabels
-                        color: '#fff', // Color de las etiquetas
+                    datalabels: {
+                        color: '#fff',
                         font: {
                             weight: 'bold',
                             size: 14,
                         },
-                        formatter: (value) => `${value}%`, // Mostrar el porcentaje
-                        align: 'center', // Centrado horizontal
-                        anchor: 'center', // Centrado vertical
+                        formatter: (value) => `${value}%`,
+                        align: 'center',
+                        anchor: 'center',
                     }
                 },
-                cutout: 60
+                cutout: 50
             },
-            plugins: [ChartDataLabels] // Incluir el plugin en la configuración
+            plugins: [ChartDataLabels]
         });
 
-        // Clean up the effect
         return () => {
             if (myPieChart) {
                 myPieChart.destroy();
