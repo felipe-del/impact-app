@@ -18,7 +18,6 @@ const SignUp = () => {
     const [password, setPassword] = useState('')
     const [showPassword, setShowPassword] = useState(false)
     const [registerError, setRegisterError] = useState('')
-    const [registerSuccess, setRegisterSuccess] = useState('')
     const [showInfoMessage, setShowInfoMessage] = useState(false)
 
     // Handle form submission for registration
@@ -54,7 +53,6 @@ const SignUp = () => {
     // Handle input changes and reset success/error messages
     const handleInputChange = (setter) => (e) => {
         setter(e.target.value)
-        setRegisterSuccess('')
         setRegisterError('')
     };
 
@@ -62,7 +60,6 @@ const SignUp = () => {
         setName('')
         setEmail('')
         setPassword('')
-        setRegisterSuccess('')
         setRegisterError('')
     }
 
@@ -123,8 +120,6 @@ const SignUp = () => {
                     </div>
                 </div>
 
-                {/* Success and Error Messages */}
-                {registerSuccess && <div style={{ color: 'green' }}>{registerSuccess}</div>}
                 {registerError && <div style={{ color: 'red' }}>{registerError}</div>}
 
                 {/* Submit Button */}
