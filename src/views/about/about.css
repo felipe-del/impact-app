@@ -1,4 +1,7 @@
 /* General styling for the container */
+body {
+    /*background-image: url(https://media.giphy.com/media/U3qYN8S0j3bpK/giphy.gif)*/
+}
 .about-page-container {
     display: flex;
     flex-direction: column;
@@ -13,7 +16,7 @@
 
 /* Centering content with a shadowed box */
 .about-page-content {
-    background-color: #fff;
+    background-color: rgba(255, 255, 255, 0.91); /* Slight transparency for better contrast */
     padding: 30px;
     border-radius: 15px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
