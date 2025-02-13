@@ -1,11 +1,12 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import { Card, CardContent, Typography, Divider, TextField, Button, Grid, Box, IconButton, InputAdornment } from "@mui/material";
+import { Card, CardContent, Typography, Divider, TextField, Grid, Box, IconButton, InputAdornment } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { motion } from "framer-motion";
 import { toast } from "react-hot-toast";
 import { changePassword } from "../../api/auth/auth_API.js";
 import GenericModal from "../../components/popUp/generic/GenericModal.jsx";
+import SaveButton from "../../components/button/SaveButton.jsx";
 
 const ChangePasswordForm = ({ showForm }) => {
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
@@ -127,9 +128,7 @@ const ChangePasswordForm = ({ showForm }) => {
 
                                 <Grid item xs={12}>
                                     <Box sx={{ display: "flex", justifyContent: "flex-end", marginBottom: -2 }}>
-                                        <Button variant="contained" color="primary" type="submit">
-                                            Guardar
-                                        </Button>
+                                        <SaveButton acceptAction={handleSubmit} labelAccept="Guardar" />
                                     </Box>
                                 </Grid>
                             </Grid>
