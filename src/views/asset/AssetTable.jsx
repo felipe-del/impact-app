@@ -15,7 +15,7 @@ import {getAllAssetModels} from "../../api/asset/assetModel_API.js";
 import {getAllCurrencies} from "../../api/currency/currency_API.js";
 import {getAllLocationNumber} from "../../api/locationNumber_API/locationNumber_API.js";
 import AssetBanner from "./AssetBanner.jsx";
-import DevicesIcon from '@mui/icons-material/Devices';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import AssetStatusModal from "../../components/popUp/assetStatusModal/AssetStatusModal.jsx";
@@ -88,9 +88,6 @@ const initialArray = [
         }
     }
 ];
-
-
-import PropTypes from 'prop-types';
 import EditButton from "../../components/button/EditButton.jsx";
 
 const AssetTable = () => {
@@ -119,7 +116,6 @@ const AssetTable = () => {
     useEffect(() => {
         if (assetsData) setAssets(assetsData.data)
         if (assetStatusData) setAssetStatus(assetStatusData.data)
-        console.log('assetsData', assetsData)
     }, [assetsData, assetStatusData]);
 
     const handleEdit = (row) => {
@@ -229,23 +225,7 @@ const AssetTable = () => {
                 transition: 'transform 0.2s'
             }
         }),
-        renderTopToolbarCustomActions: () => (
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-
-                <Typography
-                    variant="h6"
-                    sx={{
-                        color: 'primary.main', // Adding color (if you're using MUI theme)
-                        //letterSpacing: 1, // Adding letter spacing for a more modern look
-                        fontFamily: 'Montserrat, sans-serif', // Custom font family
-                        padding: '8px 10px', // Adding padding for more spacing around the text
-                    }}
-                >
-                    Tabla de Activos
-                </Typography>
-                <DevicesIcon sx={{ marginRight: 1, color: 'primary.main' }} />
-            </Box>
-        ),
+        
         renderDetailPanel: ({ row }) => (
             <Box
                 sx={{
@@ -374,6 +354,7 @@ const AssetTable = () => {
             />
             <MaterialReactTable table={table} />
             <AssetStatusModal  open={openModal} onClose={handleClose} assetStatuses={assetStatus} />
+
         </>
     );
 };
