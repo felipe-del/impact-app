@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './signIn.css';
 
 import PropTypes from 'prop-types';
-import { login } from '../../api/auth_API.js';
+import { login } from '../../api/auth/auth_API.js';
 import { toast } from 'react-hot-toast';
 
 // MUI icons
