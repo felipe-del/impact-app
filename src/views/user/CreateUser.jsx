@@ -3,8 +3,8 @@ import UserBanner from "./UserBanner.jsx";
 import RoleAndStateModal from "../../components/popUp/rolaAndStatesModal/RoleAndStatedModal.jsx";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { getAllUserRoles } from "../../api/userRole_API.js";
-import { getAllUserStates } from "../../api/userState_API.js";
+import { getAllUserRoles } from "../../api/user/userRole_API.js";
+import { getAllUserStates } from "../../api/user/userState_API.js";
 
 export default function CreateUser() {
     const [openModal, setOpenModal] = useState(false);
