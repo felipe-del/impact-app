@@ -63,15 +63,46 @@ const TopBar = ({ user }) => {
                 <li className="nav-item dropdown no-arrow mx-1">
                     <a className="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i className="fas fa-envelope fa-fw"></i>
-                        <span className="badge badge-danger badge-counter">7</span>
+                        <span className="badge badge-danger badge-counter">3</span>
                     </a>
                     {/* Dropdown - Messages */}
                     <div className="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
                         <h6 className="dropdown-header">Message Center</h6>
-                        {/* Message items here... */}
+
+                        <a className="dropdown-item d-flex align-items-center" href="#">
+                            <div className="dropdown-list-image mr-3">
+                                <div className="status-indicator bg-success"></div>
+                            </div>
+                            <div className="font-weight-bold">
+                                <div className="text-truncate">Hey! Are you available for a quick meeting?</div>
+                                <div className="small text-gray-500">John Doe · 2m ago</div>
+                            </div>
+                        </a>
+
+                        <a className="dropdown-item d-flex align-items-center" href="#">
+                            <div className="dropdown-list-image mr-3">
+                                <div className="status-indicator bg-warning"></div>
+                            </div>
+                            <div>
+                                <div className="text-truncate">Dont forget to submit the report by EOD.</div>
+                                <div className="small text-gray-500">Jane Smith · 30m ago</div>
+                            </div>
+                        </a>
+
+                        <a className="dropdown-item d-flex align-items-center" href="#">
+                            <div className="dropdown-list-image mr-3">
+                                <div className="status-indicator bg-danger"></div>
+                            </div>
+                            <div>
+                                <div className="text-truncate">Urgent: Please check your email ASAP.</div>
+                                <div className="small text-gray-500">Michael Brown · 1h ago</div>
+                            </div>
+                        </a>
+
                         <a className="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
                     </div>
                 </li>
+
 
                 <div className="topbar-divider d-none d-sm-block"></div>
 
@@ -108,7 +139,6 @@ const TopBar = ({ user }) => {
                 onHide={handleHideModal}
                 title="¿Estás seguro de que deseas cerrar sesión?"
                 bodyText="Si cierras sesión, tendrás que volver a introducir tus credenciales para acceder de nuevo."
-                buttonText="Cerrar Sesión"
                 onButtonClick={handleLogout}
             />
         </nav>
