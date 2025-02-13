@@ -105,13 +105,9 @@ const AssetTable = () => {
         retry: 1,
         refetchOnWindowFocus: false
     })
-    const {data: suppliersData} = useQuery({queryKey: ['suppliers'], queryFn: getAllSupplier})
-    const {data: subCategoriesData} = useQuery({queryKey: ['subCategories'], queryFn: getAllSubCategory})
-    const {data: brandsData} = useQuery({queryKey: ['brands'], queryFn: getAllBrands})
+
+
     const {data: assetStatusData} = useQuery({queryKey: ['assetStatus'], queryFn: getAllAssetStatus})
-    const {data: assetModelsData} = useQuery({queryKey: ['assetModels'], queryFn: getAllAssetModels})
-    const {data: currencyData} = useQuery({queryKey: ['currencies'], queryFn: getAllCurrencies})
-    const {data: locationsData} = useQuery({queryKey: ['locations'], queryFn: getAllLocationNumber})
 
     useEffect(() => {
         if (assetsData) setAssets(assetsData.data)
