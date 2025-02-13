@@ -11,7 +11,6 @@ import {
     FormControl,
     InputLabel,
     Typography,
-    Box,
 } from '@mui/material';
 import { getAllUsers } from "../../api/user_API.js";
 import { useQuery } from "@tanstack/react-query";
@@ -22,16 +21,12 @@ import { getAllUserStates } from "../../api/userState_API.js";
 import RoleAndStateModal from "../../components/popUp/rolaAndStatesModal/RoleAndStatedModal.jsx";
 import '../../style/banner.css';
 import UserBanner from "./UserBanner.jsx";
-import EditIcon from '@mui/icons-material/Edit';
-import CheckIcon from '@mui/icons-material/Check';
-import CloseIcon from '@mui/icons-material/Close';
-import IconButton from '@mui/material/IconButton';
-import GroupIcon from '@mui/icons-material/Group';
 import {changeUserRole, changeUserState} from "../../api/auth_API.js";
 import {toast} from "react-hot-toast";
 import {useUser} from "../../hooks/user/useUser.jsx";
 import EditButton from "../../components/button/EditButton.jsx";
-import ActionButtons from "../../components/button/ActionButtons.jsx";
+import TableActionButtons from "../../components/button/TableActionButtons.jsx";
+import GenericModal from "../../components/popUp/generic/GenericModal.jsx";
 
 const UserTable = () => {
     const [openModal, setOpenModal] = useState(false);
@@ -41,6 +36,41 @@ const UserTable = () => {
     const [editRowId, setEditRowId] = useState(null);
     const [tempState, setTempState] = useState({});
     const [tempRole, setTempRole] = useState({});
+    const [confirmationModalBodyText, setConfirmationModalBodyText] = useState('');
+
+    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+    const handleShowConfirmationModal = () => {
+        const roleChanged = tempRole[editRowId] !== users.find(user => user.id === editRowId)?.userRoleResponse.roleName;
+        const stateChanged = tempState[editRowId] !== users.find(user => user.id === editRowId)?.userStateResponse.stateName;
+        const name = users.find(user => user.id === editRowId)?.name;
+
+        if (roleChanged || stateChanged) {
+            let changesText = `Los siguientes cambios serán aplicados al usuario ${name},\n`;
+
+            if (roleChanged) {
+                const oldRole = users.find(user => user.id === editRowId)?.userRoleResponse.roleName;
+                const newRole = tempRole[editRowId];
+                changesText += `Rol: De "${oldRole}" a "${newRole}"\n`;
+            }
+
+            if (stateChanged) {
+                const oldState = users.find(user => user.id === editRowId)?.userStateResponse.stateName;
+                const newState = tempState[editRowId];
+                changesText += `Estado: De "${oldState}" a "${newState}"\n`;
+            }
+
+            setConfirmationModalBodyText(changesText); // Set the dynamic changes text
+            setShowConfirmationModal(true);
+
+        } else {
+            toast.error('No se han realizado cambios');
+            cancelEditing();
+        }
+
+    };
+
+    const handleHideConfirmationModal = () => setShowConfirmationModal(false);
+
     const userSession = useUser();
 
     const handleOpen = () => setOpenModal(true);
@@ -122,14 +152,14 @@ const UserTable = () => {
                 )
             );
 
-            const successMessage = [
-                serverResponse.roleResponse?.message && `Role: ${serverResponse.roleResponse.message}`,
-                serverResponse.stateResponse?.message && `Estado: ${serverResponse.stateResponse.message}`
-            ].filter(Boolean).join(' ');
-
-            if (successMessage) {
-                toast.success(successMessage, { timeout: 6000 });
+            if (serverResponse.roleResponse?.message) {
+                toast.success(serverResponse.roleResponse.message, { duration: 8000 });
             }
+
+            if (serverResponse.stateResponse?.message) {
+                toast.success(serverResponse.stateResponse.message, { duration: 8000 });
+            }
+
             setEditRowId(null);
         } catch (error) {
             toast.error(`Failed to save changes. Error: ${error.response?.data?.message || 'Unknown error occurred'}`);
@@ -187,9 +217,6 @@ const UserTable = () => {
                             >
                                 {roles.map((role) => (
                                     <MenuItem key={role.id} value={role.roleName} sx={{
-                                        '&:hover': {
-                                            backgroundColor: '#e2efff', // Hover effect
-                                        },
                                         fontFamily: 'Montserrat, sans-serif',
                                     }}>
                                         {role.roleName}
@@ -205,11 +232,6 @@ const UserTable = () => {
             {
                 accessorKey: 'userStateResponse.stateName',
                 header: 'Estado',
-                editVariant: 'select',
-                editSelectOptions: states.map(state => state.stateName),
-                muiEditTextFieldProps: {
-                    select: true,
-                },
                 Cell: ({ row }) => (
                     editRowId === row.original.id ? (
                         <FormControl fullWidth sx={{
@@ -240,9 +262,6 @@ const UserTable = () => {
                             >
                                 {states.map((state) => (
                                     <MenuItem key={state.id} value={state.stateName} sx={{
-                                        '&:hover': {
-                                            backgroundColor: '#e2efff', // Hover effect
-                                        },
                                         fontFamily: 'Montserrat, sans-serif',
                                     }}>
                                         {state.stateName}
@@ -279,7 +298,7 @@ const UserTable = () => {
                                 gap: '10px',
                                 flexWrap: 'wrap' // Para que los botones se apilen en pantallas pequeñas
                             }}>
-                                <ActionButtons saveChanges={saveChanges} cancelEditing={cancelEditing} row={row} />
+                                <TableActionButtons confirmationModal={handleShowConfirmationModal} cancelEditing={cancelEditing} row={row} />
                             </div>
                         </>
 
@@ -302,24 +321,6 @@ const UserTable = () => {
                 pageSize: 5,
             },
         },
-        renderTopToolbarCustomActions: () => (
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-
-                <Typography
-                    variant="h6"
-                    sx={{
-                        color: 'primary.main', // Adding color (if you're using MUI theme)
-                        //letterSpacing: 1, // Adding letter spacing for a more modern look
-                        fontFamily: 'Montserrat, sans-serif', // Custom font family
-                        padding: '8px 10px', // Adding padding for more spacing around the text
-                    }}
-                >
-                    Tabla de Usuarios
-                </Typography>
-                <GroupIcon sx={{ marginRight: 1, color: 'primary.main' }} /> {/* Adding the icon */}
-            </Box>
-        ),
-
     });
 
     const exportToPDF = () => {
@@ -364,6 +365,13 @@ const UserTable = () => {
                 onClose={handleClose}
                 roles={roles}
                 states={states}
+            />
+            <GenericModal
+                show={showConfirmationModal}
+                onHide={handleHideConfirmationModal}
+                title="¿Desea guardar los cambios?"
+                bodyText={confirmationModalBodyText}
+                onButtonClick={() => saveChanges(editRowId)}
             />
         </div>
     );
