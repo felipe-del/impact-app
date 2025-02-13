@@ -18,7 +18,7 @@ const TableActionButtons = ({ confirmationModal, cancelEditing, row }) => {
                     onMouseLeave={() => setHover('save')}
                     style={{
                         width: hover === 'save' ? '90px' : '40px',
-                        height: '30px',
+                        height: '34px',
                         borderRadius: '8px 0 0 8px',
                         padding: '0',
                         backgroundColor: '#4caf50',
@@ -44,7 +44,7 @@ const TableActionButtons = ({ confirmationModal, cancelEditing, row }) => {
                     onMouseLeave={() => setHover('save')}
                     style={{
                         width: hover === 'cancel' ? '90px' : '40px',
-                        height: '30px',
+                        height: '34px',
                         borderRadius: '0 8px 8px 0',
                         padding: '0',
                         backgroundColor: '#f44336',
