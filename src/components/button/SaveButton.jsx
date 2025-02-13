@@ -18,7 +18,7 @@ const SaveButton = ({ acceptAction, labelAccept = "Aceptar"}) => {
                         width: hover === 'accept' ? '130px' : '80px',
                         height: '50px',
                         borderRadius: '15px',
-                        backgroundColor: '#4caf50',
+                        backgroundColor: hover === 'accept' ? '#4caf50' : ' #005DA4',
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
