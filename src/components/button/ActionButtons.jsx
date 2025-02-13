@@ -2,62 +2,84 @@ import { useState } from 'react';
 import { IconButton, Tooltip, Typography } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
-const ActionButtons = ({ saveChanges, cancelEditing, row }) => {
+const ActionButtons = ({ acceptAction, cancelAction, labelAccept = "Aceptar", labelCancel = "Cancelar" }) => {
     const [hover, setHover] = useState(null);
 
     return (
-        <div style={{ display: 'flex', gap: '0' }}>
-            {/* Botón Guardar */}
-            <Tooltip title="Guardar" arrow>
+        <div style={{ display: 'flex', justifyContent: 'space-between', gap: '20px' }}>
+            {/* Botón Aceptar */}
+            <Tooltip title={labelAccept} arrow>
                 <IconButton
-                    onClick={() => saveChanges(row.original.id)}
+                    onClick={acceptAction}
                     color="success"
-                    onMouseEnter={() => setHover('save')}
+                    onMouseEnter={() => setHover('accept')}
                     onMouseLeave={() => setHover(null)}
                     style={{
-                        width: hover === 'save' ? '80px' : '30px',
-                        height: '30px',
-                        borderRadius: '8px 0 0 8px',
-                        padding: '0',
+                        width: hover === 'accept' ? '150px' : '80px',
+                        height: '50px',
+                        borderRadius: '25px',
                         backgroundColor: '#4caf50',
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        transition: 'width 0.2s ease-in-out',
+                        transition: 'width 0.2s ease-in-out, background-color 0.2s ease-in-out',
+                        padding: '0',
                         overflow: 'hidden',
-                        whiteSpace: 'nowrap',
                     }}
                 >
-                    <CheckIcon style={{ fontSize: '16px', color: 'white', marginRight: hover === 'save' ? '6px' : '0' }} />
-                    {hover === 'save' && <Typography variant="caption" style={{ color: 'white', fontSize: '12px' }}>Guardar</Typography>}
+                    <CheckIcon style={{ fontSize: '18px', color: 'white' }} />
+                    {hover === 'accept' && (
+                        <Typography
+                            variant="body2"
+                            style={{
+                                color: 'white',
+                                fontSize: '14px',
+                                fontFamily: 'Montserrat',
+                                marginLeft: '8px',
+                            }}
+                        >
+                            {labelAccept}
+                        </Typography>
+                    )}
                 </IconButton>
             </Tooltip>
 
             {/* Botón Cancelar */}
-            <Tooltip title="Cancelar" arrow>
+            <Tooltip title={labelCancel} arrow>
                 <IconButton
-                    onClick={cancelEditing}
+                    onClick={cancelAction}
                     color="error"
                     onMouseEnter={() => setHover('cancel')}
                     onMouseLeave={() => setHover(null)}
                     style={{
-                        width: hover === 'cancel' ? '80px' : '30px',
-                        height: '30px',
-                        borderRadius: '0 8px 8px 0',
-                        padding: '0',
+                        width: hover === 'cancel' ? '150px' : '80px',
+                        height: '50px',
+                        borderRadius: '25px',
                         backgroundColor: '#f44336',
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        transition: 'width 0.2s ease-in-out',
+                        transition: 'width 0.2s ease-in-out, background-color 0.2s ease-in-out',
+                        padding: '0',
                         overflow: 'hidden',
-                        whiteSpace: 'nowrap',
                     }}
                 >
-                    <CloseIcon style={{ fontSize: '16px', color: 'white', marginRight: hover === 'cancel' ? '6px' : '0' }} />
-                    {hover === 'cancel' && <Typography variant="caption" style={{ color: 'white', fontSize: '12px' }}>Cancelar</Typography>}
+                    <CloseIcon style={{ fontSize: '18px', color: 'white' }} />
+                    {hover === 'cancel' && (
+                        <Typography
+                            variant="body2"
+                            style={{
+                                color: 'white',
+                                fontSize: '14px',
+                                fontFamily: 'Montserrat',
+                                marginLeft: '8px',
+                            }}
+                        >
+                            Cancelar
+                        </Typography>
+                    )}
                 </IconButton>
             </Tooltip>
         </div>
@@ -65,13 +87,10 @@ const ActionButtons = ({ saveChanges, cancelEditing, row }) => {
 };
 
 ActionButtons.propTypes = {
-    saveChanges: PropTypes.func.isRequired,
-    cancelEditing: PropTypes.func.isRequired,
-    row: PropTypes.shape({
-        original: PropTypes.shape({
-            id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-        }).isRequired,
-    }).isRequired,
+    acceptAction: PropTypes.func.isRequired,
+    cancelAction: PropTypes.func.isRequired,
+    labelAccept: PropTypes.string,
+    labelCancel: PropTypes.string,
 };
 
 export default ActionButtons;
