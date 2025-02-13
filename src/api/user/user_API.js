@@ -1,5 +1,5 @@
-import api from "../config/axios.js";
-import handleAxiosError from "./handleAxiosError.js";
+import api from "../../config/axios.js";
+import handleAxiosError from "../handleAxiosError.js";
 
 const root = '/api/user'
 
