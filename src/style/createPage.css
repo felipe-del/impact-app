@@ -1,0 +1,22 @@
+.form-label {
+    color: #005DA4;
+    font-size: 1rem;
+}
+
+.mask {
+
+}
+
+.form-select {
+    color: gray;
+    font-size: .9rem;
+}
+
+.fas {
+    margin-right: 5px;
+}
+
+.fas:hover {
+    transform: scale(1.1);
+}
+
