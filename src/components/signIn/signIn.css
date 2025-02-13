@@ -7,16 +7,12 @@
     box-sizing: border-box; /* Optional: Include padding and border in element's total width and height */
 }
 
-.error-message {
-    color: red; /* Color rojo para el texto del mensaje de error */
-    border: 1px solid #f44336; /* Borde rojo para resaltar */
-    background-color: #ffe6e6; /* Fondo rojo claro para mayor visibilidad */
-    padding: 10px; /* Mantén el mismo padding que input-field */
-    margin-bottom: 10px; /* Espaciado inferior */
-    width: 100%; /* Ancho completo */
-    box-sizing: border-box; /* Incluye padding y borde en las dimensiones totales */
-    font-size: 14px; /* Tamaño de fuente ligeramente más pequeño */
-    border-radius: 4px; /* Bordes redondeados para consistencia */
+.error-input {
+    border: 1px solid #f44336; /* Set border color to red */
+}
+
+.error-message-auth {
+
 }
 
 
@@ -24,3 +20,55 @@
     color: black; /* Set placeholder text color to black */
 }
 
+.input-wrapper {
+    position: relative; /* Necesario para posicionar elementos hijos */
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.password-wrapper {
+    position: relative;
+}
+
+.toggle-password-login {
+    position: absolute;
+    right: 12px;
+    top: 20px;
+    cursor: pointer;
+    user-select: none;
+    font-size: 14px;
+    color: #555;
+    transition: color 0.3s ease-in-out;
+}
+
+.toggle-password-login:hover {
+    color: #222;
+}
+
+/* Estilos para el enlace de 'Olvidaste tu contraseña' */
+.forgot-password-link {
+    position: absolute;
+    right: 6px;
+    bottom: -28px; /* Lo coloca debajo del input */
+    font-size: 12px;
+    color: #555 !important;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.forgot-password-link:hover {
+    color: #0056b3;
+
+}
+
+
+.error-message {
+    color: #f44336; /* Rojo para mensajes de error */
+    font-size: 14px; /* Tamaño de fuente */
+    margin-top: -10px; /* Ajuste opcional */
+    margin-right: 0; /* Eliminar margen derecho */
+    text-align: left; /* Alinear completamente a la izquierda */
+
+    width: 100%; /* Ocupar todo el ancho del contenedor padre */
+}
