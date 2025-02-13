@@ -8,6 +8,13 @@ import {useQuery} from "@tanstack/react-query";
 import {getAllAssetStatus} from "../../api/asset/assetStatus_API.js";
 import SaveButton from "../../components/button/SaveButton.jsx";
 import GenericModal from "../../components/popUp/generic/GenericModal.jsx";
+import {getAllSupplier} from "../../api/supplier/Supplier.js";
+import {getAllSubCategory} from "../../api/asset/subCategory_API.js";
+import {getAllUsers} from "../../api/user/user_API.js";
+import {getAllBrands} from "../../api/brand/brand_API.js";
+import {getAllAssetModels} from "../../api/asset/assetModel_API.js";
+import {getAllCurrencies} from "../../api/currency/currency_API.js";
+import {getAllLocationNumber} from "../../api/locationNumber_API/locationNumber_API.js";
 
 const initialData = {
     purchaseDate: '',
@@ -27,6 +34,8 @@ const initialData = {
 const CreateAsset = () => {
 
     const [formData, setFormData] = useState(initialData);
+    const [formErrors, setFormErrors] = useState({});
+
 
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const handleShowConfirmationModal = () => setShowConfirmationModal(true);
@@ -35,7 +44,6 @@ const CreateAsset = () => {
     const [suppliers, setSuppliers] = useState([]);
     const [brands, setBrands] = useState([]);
     const [subcategories, setSubcategories] = useState([]);
-    const [statuses, setStatuses] = useState([]);
     const [users, setUsers] = useState([]);
     const [currencies, setCurrencies] = useState([]);
     const [assetModels, setAssetModels] = useState([]);
@@ -54,18 +62,54 @@ const CreateAsset = () => {
     const formRef = useRef(null);
 
     const {data: assetStatusData} = useQuery({queryKey: ['assetStatus'], queryFn: getAllAssetStatus})
+    const {data: suppliersData} = useQuery({queryKey: ['suppliers'], queryFn: getAllSupplier})
+    const {data: subCategoriesData} = useQuery({queryKey: ['subCategories'], queryFn: getAllSubCategory})
+    const {data: usersData} = useQuery({queryKey: ['users'], queryFn: getAllUsers});
+    const {data: brandsData} = useQuery({queryKey: ['brands'], queryFn: getAllBrands});
+    const {data: assetModelsData} = useQuery({queryKey: ['assetModels'], queryFn: getAllAssetModels})
+    const {data: currencyData} = useQuery({queryKey: ['currencies'], queryFn: getAllCurrencies})
+    const {data: locationsData} = useQuery({queryKey: ['locations'], queryFn: getAllLocationNumber})
+
 
     useEffect(() => {
         if (assetStatusData) setAssetStatus(assetStatusData.data)
-    }, [assetStatusData]);
+        if (suppliersData) setSuppliers(suppliersData.data)
+        if (subCategoriesData) setSubcategories(subCategoriesData.data)
+        if (usersData) setUsers(usersData.data)
+        if (brandsData) setBrands(brandsData.data)
+        if (assetModelsData) setAssetModels(assetModelsData.data)
+        if (currencyData) setCurrencies(currencyData.data)
+        if (locationsData) setLocationNumbers(locationsData.data)
+    }, [assetStatusData, suppliersData, subCategoriesData, usersData, brandsData, assetModelsData, currencyData, locationsData])
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prevState => ({ ...prevState, [name]: value }));
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+
+
+    const checkErrors = () => {
+        const errors = {};
+        setFormErrors(errors);
+
+        if (!formData.plateNumber) errors.plateNumber = "El número de placa es obligatorio.";
+        if (!formData.assetSeries) errors.assetSeries = "La serie del activo es obligatoria.";
+        if (!formData.value || formData.value <= 0) errors.value = "El valor debe ser mayor a 0.";
+        if (!formData.purchaseDate) errors.purchaseDate = "La fecha de compra es obligatoria.";
+        if (!formData.subcategory) errors.subcategory = "Debe seleccionar una subcategoría.";
+        if (!formData.responsible) errors.responsible = "Debe seleccionar un responsable.";
+        if (!formData.supplier) errors.supplier = "Debe seleccionar un proveedor.";
+
+        setFormErrors(errors);
+
+        // Solo enviar si no hay errores
+        if (Object.keys(errors).length === 0) {
+            handleShowConfirmationModal();
+        }
+    }
+
+    const handleSubmit = () => {
         console.log(formData);
 
     };
@@ -84,7 +128,7 @@ const CreateAsset = () => {
                     <div className="row mb-4">
                         <div className="col-md-3 col-sm-6 col-12 mb-3">
                             <label htmlFor="plateNumber" className="form-label">
-                                <i className="fas fa-id-badge"></i> Número de Placa
+                                <i className="fas fa-id-badge"></i> Número de Placa <span className="text-danger">*</span>
                             </label>
                             <InputMask
                                 mask="***-***"
@@ -97,10 +141,11 @@ const CreateAsset = () => {
                                 style={{ fontSize: ".9rem" }}
                                 required
                             />
+                            {formErrors.plateNumber && <div className="error-message">{formErrors.plateNumber}</div>}
                         </div>
                         <div className="col-md-3 col-sm-6 col-12 mb-3">
                             <label htmlFor="assetSeries" className="form-label">
-                                <i className="fas fa-barcode"></i> Serie de Activo
+                                <i className="fas fa-barcode"></i> Serie de Activo <span className="text-danger">*</span>
                             </label>
                             <input
                                 type="text"
@@ -116,7 +161,7 @@ const CreateAsset = () => {
                         </div>
                         <div className="col-md-3 col-sm-6 col-12 mb-3">
                             <label htmlFor="value" className="form-label">
-                                <i className="fas fa-dollar-sign"></i> Valor
+                                <i className="fas fa-dollar-sign"></i> Valor <span className="text-danger">*</span>
                             </label>
                             <NumericFormat
                                 name="value"
@@ -143,7 +188,7 @@ const CreateAsset = () => {
                         </div>
                         <div className="col-md-3 col-sm-6 col-12 mb-3">
                             <label htmlFor="purchaseDate" className="form-label">
-                                <i className="fas fa-calendar-alt"></i> Fecha de Compra
+                                <i className="fas fa-calendar-alt"></i> Fecha de Compra <span className="text-danger">*</span>
                             </label>
                             <input
                                 type="date"
@@ -160,7 +205,7 @@ const CreateAsset = () => {
                     <div className="row mb-4">
                         <div className="col-md-3 col-sm-6 col-12 mb-3">
                             <label htmlFor="subcategory" className="form-label">
-                                <i className="fas fa-list-alt"></i> Subcategoría
+                                <i className="fas fa-list-alt"></i> Subcategoría <span className="text-danger">*</span>
                             </label>
                             <select
                                 name="subcategory"
@@ -180,7 +225,7 @@ const CreateAsset = () => {
                         </div>
                         <div className="col-md-3 col-sm-6 col-12 mb-3">
                             <label htmlFor="responsible" className="form-label">
-                                <i className="fas fa-user"></i> Responsable
+                                <i className="fas fa-user"></i> Responsable <span className="text-danger">*</span>
                             </label>
                             <select
                                 name="responsible"
@@ -193,14 +238,14 @@ const CreateAsset = () => {
                                 <option value="">Seleccionar responsable</option>
                                 {users.map((user) => (
                                     <option key={user.id} value={user.id}>
-                                        {user.name}
+                                        {user.name} - {user.userRoleResponse.roleName}
                                     </option>
                                 ))}
                             </select>
                         </div>
                         <div className="col-md-3 col-sm-6 col-12 mb-3">
                             <label htmlFor="supplier" className="form-label">
-                                <i className="fas fa-store"></i> Proveedor
+                                <i className="fas fa-store"></i> Proveedor <span className="text-danger">*</span>
                             </label>
                             <select
                                 name="supplier"
@@ -213,14 +258,14 @@ const CreateAsset = () => {
                                 <option value="">Seleccionar proveedor</option>
                                 {suppliers.map((supplier) => (
                                     <option key={supplier.id} value={supplier.id}>
-                                        {supplier.name}
+                                        {supplier.name} - {supplier.phone}
                                     </option>
                                 ))}
                             </select>
                         </div>
                         <div className="col-md-3 col-sm-6 col-12 mb-3">
                             <label htmlFor="brand" className="form-label">
-                                <i className="fas fa-tag"></i> Marca
+                                <i className="fas fa-tag"></i> Marca <span className="text-danger">*</span>
                             </label>
                             <select
                                 name="brand"
@@ -242,7 +287,7 @@ const CreateAsset = () => {
                     <div className="row mb-4">
                         <div className="col-md-3 col-sm-6 col-12 mb-3">
                             <label htmlFor="assetModel" className="form-label">
-                                <i className="fas fa-laptop"></i> Modelo del Activo
+                                <i className="fas fa-laptop"></i> Modelo del Activo <span className="text-danger">*</span>
                             </label>
                             <select
                                 name="assetModel"
@@ -262,7 +307,7 @@ const CreateAsset = () => {
                         </div>
                         <div className="col-md-3 col-sm-6 col-12 mb-3">
                             <label htmlFor="currency" className="form-label">
-                                <i className="fas fa-money-bill-wave"></i> Moneda
+                                <i className="fas fa-money-bill-wave"></i> Moneda <span className="text-danger">*</span>
                             </label>
                             <select
                                 name="currency"
@@ -275,14 +320,14 @@ const CreateAsset = () => {
                                 <option value="">Seleccionar moneda</option>
                                 {currencies.map((currency) => (
                                     <option key={currency.id} value={currency.id}>
-                                        {currency.currencyName} - {currency.code}
+                                        {currency.stateName} - {currency.code} - {currency.symbol}
                                     </option>
                                 ))}
                             </select>
                         </div>
                         <div className="col-md-3 col-sm-6 col-12 mb-3">
                             <label htmlFor="status" className="form-label">
-                                <i className="fas fa-exclamation-circle"></i> Estado
+                                <i className="fas fa-exclamation-circle"></i> Estado <span className="text-danger">*</span>
                             </label>
                             <select
                                 name="status"
@@ -293,16 +338,24 @@ const CreateAsset = () => {
                                 required
                             >
                                 <option value="">Seleccionar estado</option>
-                                {statuses.map((status) => (
-                                    <option key={status.id} value={status.id}>
-                                        {status.name} - {status.description}
-                                    </option>
-                                ))}
+                                {assetStatus.map((status) => {
+                                    const isDisabled = [3, 4, 5].includes(status.id); // IDs de opciones deshabilitadas
+                                    return (
+                                        <option
+                                            key={status.id}
+                                            value={status.id}
+                                            disabled={isDisabled}
+                                            style={isDisabled ? { color: "#999", backgroundColor: "#f0f0f0", cursor: "not-allowed" } : {}}
+                                        >
+                                            {status.name} - {status.description}
+                                        </option>
+                                    );
+                                })}
                             </select>
                         </div>
                         <div className="col-md-3 col-sm-6 col-12 mb-3">
                             <label htmlFor="locationNumber" className="form-label">
-                                <i className="fas fa-map-marker-alt"></i> Número de Ubicación
+                                <i className="fas fa-map-marker-alt"></i> Número de Ubicación <span className="text-danger">*</span>
                             </label>
                             <select
                                 name="locationNumber"
@@ -315,7 +368,7 @@ const CreateAsset = () => {
                                 <option value="">Seleccionar número de ubicación</option>
                                 {locationNumbers.map((location) => (
                                     <option key={location.id} value={location.id}>
-                                        {location.locationType} - {location.locationNumber}
+                                        {location.locationTypeName} - {location.locationNumber}
                                     </option>
                                 ))}
                             </select>
@@ -323,7 +376,7 @@ const CreateAsset = () => {
                     </div>
 
                     <div className="d-flex justify-content-end mb-0">
-                        <SaveButton acceptAction={handleShowConfirmationModal} labelAccept="Guardar" />
+                        <SaveButton acceptAction={checkErrors} labelAccept="Guardar" />
                     </div>
                 </form>
             </div>
