@@ -4,7 +4,8 @@ import { FileDownload, AssignmentInd, ArrowBack, PersonAdd } from "@mui/icons-ma
 import { CSVLink } from "react-csv";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-import ActionButton from "../../components/button/ActionButton.jsx";
+import BannerActionButton from "../../components/button/BannerActionButton.jsx";
+import {bannerStyle} from "../../style/codeStyle.js";
 
 const UserBanner = ({ title = "", flatUsers, exportToPDF, handleOpen,
                         visibleButtons = ["csv", "pdf", "roles", "createUser", "export"] }) => {
@@ -20,6 +21,8 @@ const UserBanner = ({ title = "", flatUsers, exportToPDF, handleOpen,
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const styles = bannerStyle;
 
     return (
         <div className="export-buttons" style={styles.banner}>
@@ -37,7 +40,7 @@ const UserBanner = ({ title = "", flatUsers, exportToPDF, handleOpen,
                     </Button>
                 )}
                 {visibleButtons.includes("createUser") && (
-                    <ActionButton
+                    <BannerActionButton
                         onClick={() => navigate("/app/createUser")}
                         text={"Crear Usuario"}
                         icon={<PersonAdd />}
@@ -48,7 +51,7 @@ const UserBanner = ({ title = "", flatUsers, exportToPDF, handleOpen,
 
                 )}
                 {visibleButtons.includes("roles") && (
-                    <ActionButton
+                    <BannerActionButton
                         onClick={handleOpen} text={"Roles y Estados"}
                         icon={<AssignmentInd />}
                         color="warning"
@@ -57,7 +60,7 @@ const UserBanner = ({ title = "", flatUsers, exportToPDF, handleOpen,
                     />
                 )}
                {visibleButtons.includes("export") && (
-                   <ActionButton
+                   <BannerActionButton
                        onClick={handleClick}
                        icon={<FileDownload />}
                        text="Exportar" color="info"
@@ -97,38 +100,6 @@ UserBanner.propTypes = {
     exportToPDF: PropTypes.func,
     handleOpen: PropTypes.func,
     visibleButtons: PropTypes.arrayOf(PropTypes.string),
-};
-
-const styles = {
-    banner: {
-        display: "flex",
-        justifyContent: "space-between",
-        padding: "15px 15px",
-        marginBottom: "20px",
-        backgroundColor: "white",
-        boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
-        position: "sticky",
-        borderRadius: "15px",
-        top: 0,
-        zIndex: 100,
-    },
-    title: {
-        fontFamily: "Montserrat, sans-serif",
-        fontSize: "20px",
-        margin: 5,
-        color: "#333",
-    },
-    buttonsContainer: {
-        display: "flex",
-        justifyContent: "flex-end",
-        gap: "15px",
-    },
-    button: {
-        fontFamily: "Montserrat, sans-serif",
-        borderRadius: "15px",
-        textTransform: "none",
-        fontSize: "12px",
-    },
 };
 
 export default UserBanner;
