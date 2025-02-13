@@ -1,20 +1,20 @@
-import { Button, Modal, Box, Typography } from '@mui/material';
+import { Modal, Box, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
+import ActionButtons from "../../button/ActionButtons.jsx";
 
 const GenericModal = ({
                           show,
                           onHide,
                           title,
                           bodyText,
-                          buttonText,
+                          buttonText = 'Aceptar',
                           onButtonClick
                       }) => {
 
     const handleButtonClick = async () => {
         try {
-            // Ejecuta la función pasada como prop (puede ser una función personalizada para manejar logout, etc.)
             await onButtonClick();
-            onHide(); // Cierra el modal después de ejecutar la acción
+            onHide(); // Close the modal after executing the action
         } catch (error) {
             console.error('Error executing button action:', error);
             alert('An error occurred. Please try again.');
@@ -34,40 +34,47 @@ const GenericModal = ({
                     top: '50%',
                     left: '50%',
                     transform: 'translate(-50%, -50%)',
-                    width: { xs: '90%', sm: 400 }, // 90% width on small screens, 400px on larger screens
+                    width: { xs: '90%', sm: 450 }, // 90% width on small screens, 450px on larger screens
                     maxWidth: 600, // Maximum width
-                    bgcolor: 'background.paper',
-                    boxShadow: 24,
+                    bgcolor: 'linear-gradient(to right, #6a11cb, #2575fc)', // Futuristic gradient background
+                    boxShadow: 10,
                     p: 4,
-                    borderRadius: 2,
+                    borderRadius: 4, // Rounded corners
+                    backdropFilter: 'blur(10px)', // Add a subtle blur effect to the background
+                    overflow: 'hidden',
+                    transition: 'all 0.3s ease-in-out', // Smooth transition
+
                     '@media (max-width: 600px)': {
                         padding: 2, // Reduce padding on smaller screens
                     },
                 }}
             >
-                <Typography id="modal-title" variant="h6" component="h2">
+                <Typography id="modal-title" variant="h5" component="h2" sx={{ fontWeight: 'bold', color: 'white', letterSpacing: '0.5px', fontFamily: 'Montserrat' }}>
                     {title}
                 </Typography>
 
-                {/* add line gray break */}
+                {/* Add a sleek horizontal line */}
                 <Box
                     sx={{
-                        height: '0px',
-                        bgcolor: 'grey.500',
+                        height: '2px',
+                        bgcolor: 'white',
                         my: 2, // Add vertical margin
+                        opacity: 0.6,
                     }}
                 />
 
-                <Typography id="modal-description" sx={{ mt: 2 }}>
+                <Typography id="modal-description" sx={{ color: 'white', mt: 2, fontSize: '16px', lineHeight: 1.5, fontFamily: 'Montserrat' }}>
                     {bodyText}
                 </Typography>
+
+                {/* Action Buttons styled to match futuristic theme */}
                 <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
-                    <Button variant="outlined" onClick={onHide} sx={{ mr: 1 }}>
-                        Cancelar
-                    </Button>
-                    <Button variant="contained" color="primary" onClick={handleButtonClick}>
-                        {buttonText}
-                    </Button>
+                    <ActionButtons
+                        acceptAction={handleButtonClick}
+                        cancelAction={onHide}
+                        labelAcept={buttonText}
+                        labelCancel="Cancelar"
+                    />
                 </Box>
             </Box>
         </Modal>
@@ -79,7 +86,7 @@ GenericModal.propTypes = {
     onHide: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
     bodyText: PropTypes.string.isRequired,
-    buttonText: PropTypes.string.isRequired,
+    buttonText: PropTypes.string,
     onButtonClick: PropTypes.func.isRequired,
 };
 
