@@ -1,20 +1,12 @@
-import { useState } from 'react';
-import { IconButton, Tooltip, Typography } from '@mui/material';
+import {useState} from 'react';
+import {IconButton, Tooltip, Typography} from '@mui/material';
 import PropTypes from 'prop-types';
+import {gradientMapping} from "../../style/codeStyle.js";
 
 const BannerActionButton = ({ onClick, icon, text, color = "primary", style = {}, widthWhenIsHover = '100px' }) => {
     const [hover, setHover] = useState(false);
 
     // Define a mapping for gradient colors
-    const gradientMapping = {
-        primary: 'linear-gradient(45deg, #1976d2, #42a5f5)', // Primary Gradient
-        secondary: 'linear-gradient(45deg, #dc004e, #f73378)', // Secondary Gradient
-        error: 'linear-gradient(45deg, #d32f2f, #f44336)', // Error Gradient
-        warning: 'linear-gradient(45deg, #f57c00, #ff9800)', // Warning Gradient
-        info: 'linear-gradient(45deg, #0288d1, #03a9f4)', // Info Gradient
-        success: 'linear-gradient(45deg, #388e3c, #4caf50)', // Success Gradient
-    };
-
     return (
         <Tooltip title={text} arrow>
             <IconButton
