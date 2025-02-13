@@ -24,6 +24,7 @@
     "axios": "^1.7.9",
     "chart.js": "^4.4.7",
     "chartjs-plugin-datalabels": "^2.2.0",
+    "framer-motion": "^12.4.2",
     "jspdf": "^2.5.2",
     "jspdf-autotable": "^3.8.4",
     "material-react-table": "^3.1.0",
