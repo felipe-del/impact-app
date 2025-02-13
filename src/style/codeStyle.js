@@ -26,8 +26,17 @@ export const bannerStyle = {
     },
     button: {
         fontFamily: "Montserrat, sans-serif",
-        borderRadius: "15px",
+        borderRadius: "12px",
         textTransform: "none",
         fontSize: "12px",
     },
+};
+
+export const gradientMapping = {
+    primary: 'linear-gradient(45deg, #1976d2, #42a5f5)', // Primary Gradient
+    secondary: 'linear-gradient(45deg, #dc004e, #f73378)', // Secondary Gradient
+    error: 'linear-gradient(45deg, #d32f2f, #f44336)', // Error Gradient
+    warning: 'linear-gradient(45deg, #f57c00, #ff9800)', // Warning Gradient
+    info: 'linear-gradient(45deg, #0288d1, #03a9f4)', // Info Gradient
+    success: 'linear-gradient(45deg, #388e3c, #4caf50)', // Success Gradient
 };
