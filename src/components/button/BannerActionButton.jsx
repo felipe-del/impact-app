@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { IconButton, Tooltip, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 
-const ActionButton = ({ onClick, icon, text, color = "primary", style = {}, widthWhenIsHover = '100px' }) => {
+const BannerActionButton = ({ onClick, icon, text, color = "primary", style = {}, widthWhenIsHover = '100px' }) => {
     const [hover, setHover] = useState(false);
 
     // Define a mapping for gradient colors
@@ -43,7 +43,7 @@ const ActionButton = ({ onClick, icon, text, color = "primary", style = {}, widt
     );
 };
 
-ActionButton.propTypes = {
+BannerActionButton.propTypes = {
     onClick: PropTypes.func.isRequired,
     icon: PropTypes.node.isRequired,
     text: PropTypes.string.isRequired,
@@ -52,4 +52,4 @@ ActionButton.propTypes = {
     widthWhenIsHover: PropTypes.string,
 };
 
-export default ActionButton;
+export default BannerActionButton;
