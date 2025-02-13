@@ -15,9 +15,9 @@ const SaveButton = ({ acceptAction, labelAccept = "Aceptar"}) => {
                     onMouseEnter={() => setHover('accept')}
                     onMouseLeave={() => setHover(null)}
                     style={{
-                        width: hover === 'accept' ? '150px' : '80px',
+                        width: hover === 'accept' ? '130px' : '80px',
                         height: '50px',
-                        borderRadius: '25px',
+                        borderRadius: '15px',
                         backgroundColor: '#4caf50',
                         display: 'flex',
                         justifyContent: 'center',
