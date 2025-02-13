@@ -12,16 +12,16 @@ import {
     InputLabel,
     Typography,
 } from '@mui/material';
-import { getAllUsers } from "../../api/user_API.js";
+import { getAllUsers } from "../../api/user/user_API.js";
 import { useQuery } from "@tanstack/react-query";
 import LoadingPointsSpinner from "../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
 import PropTypes from 'prop-types';
-import { getAllUserRoles } from "../../api/userRole_API.js";
-import { getAllUserStates } from "../../api/userState_API.js";
+import { getAllUserRoles } from "../../api/user/userRole_API.js";
+import { getAllUserStates } from "../../api/user/userState_API.js";
 import RoleAndStateModal from "../../components/popUp/rolaAndStatesModal/RoleAndStatedModal.jsx";
 import '../../style/banner.css';
 import UserBanner from "./UserBanner.jsx";
-import {changeUserRole, changeUserState} from "../../api/auth_API.js";
+import {changeUserRole, changeUserState} from "../../api/auth/auth_API.js";
 import {toast} from "react-hot-toast";
 import {useUser} from "../../hooks/user/useUser.jsx";
 import EditButton from "../../components/button/EditButton.jsx";
@@ -29,52 +29,59 @@ import TableActionButtons from "../../components/button/TableActionButtons.jsx";
 import GenericModal from "../../components/popUp/generic/GenericModal.jsx";
 
 const UserTable = () => {
-    const [openModal, setOpenModal] = useState(false);
+    const [openRoleAndStateModal, setOpenRoleAndStateModal] = useState(false);
     const [users, setUsers] = useState([]);
     const [roles, setRoles] = useState([]);
     const [states, setStates] = useState([]);
+
+    const handleOpenRoleAndStateModal = () => setOpenRoleAndStateModal(true);
+    const handleCloseRoleAndStateModal = () => setOpenRoleAndStateModal(false);
+
+    const userSession = useUser();
+
+
+    // EDIT LOGIC
     const [editRowId, setEditRowId] = useState(null);
     const [tempState, setTempState] = useState({});
     const [tempRole, setTempRole] = useState({});
+
     const [confirmationModalBodyText, setConfirmationModalBodyText] = useState('');
 
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+
+    const handleHideConfirmationModal = () => setShowConfirmationModal(false);
+
     const handleShowConfirmationModal = () => {
-        const roleChanged = tempRole[editRowId] !== users.find(user => user.id === editRowId)?.userRoleResponse.roleName;
-        const stateChanged = tempState[editRowId] !== users.find(user => user.id === editRowId)?.userStateResponse.stateName;
-        const name = users.find(user => user.id === editRowId)?.name;
+        const user = users.find(user => user.id === editRowId);
+        if (!user) return;
+
+        const roleChanged = tempRole[editRowId] !== user.userRoleResponse.roleName;
+        const stateChanged = tempState[editRowId] !== user.userStateResponse.stateName;
+        const name = user.name;
 
         if (roleChanged || stateChanged) {
-            let changesText = `Los siguientes cambios serán aplicados al usuario ${name},\n`;
+            let changesText = `Al aceptar se guardarán los siguientes cambios para el usuario ${name}:<br>`;
 
             if (roleChanged) {
-                const oldRole = users.find(user => user.id === editRowId)?.userRoleResponse.roleName;
+                const oldRole = user.userRoleResponse.roleName;
                 const newRole = tempRole[editRowId];
-                changesText += `Rol: De "${oldRole}" a "${newRole}"\n`;
+                changesText += `Rol: <del>${oldRole}</del> → <strong>${newRole}</strong><br>`;
             }
 
             if (stateChanged) {
-                const oldState = users.find(user => user.id === editRowId)?.userStateResponse.stateName;
+                const oldState = user.userStateResponse.stateName;
                 const newState = tempState[editRowId];
-                changesText += `Estado: De "${oldState}" a "${newState}"\n`;
+                changesText += `Estado: <del>${oldState}</del> → <strong>${newState}</strong><br>`;
             }
 
-            setConfirmationModalBodyText(changesText); // Set the dynamic changes text
+            setConfirmationModalBodyText(changesText);
             setShowConfirmationModal(true);
-
         } else {
             toast.error('No se han realizado cambios');
             cancelEditing();
         }
-
     };
 
-    const handleHideConfirmationModal = () => setShowConfirmationModal(false);
-
-    const userSession = useUser();
-
-    const handleOpen = () => setOpenModal(true);
-    const handleClose = () => setOpenModal(false);
 
     const { data: usersData,  isLoading: isUsersLoading, isError: isUsersError, error: usersError } = useQuery({
         queryKey: ['users'],
@@ -189,14 +196,26 @@ const UserTable = () => {
                 header: 'Role',
                 Cell: ({ row }) => (
                     editRowId === row.original.id ? (
-                        <FormControl fullWidth sx={{
-                            width: 'auto',
-                            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-                            '&:hover': {
-                                backgroundColor: '#e2efff',
-                            },
-                            fontFamily: 'Montserrat, sans-serif',
-                        }}>
+                        <FormControl
+                            variant="outlined"
+                            sx={{
+                                 width: '100%',
+                                 minWidth: 120,
+                                 '& .MuiInputBase-root': {
+                                     backgroundColor: 'white',
+                                     borderRadius: '6px',
+                                     fontSize: '14px',
+                                     fontWeight: '500',
+                                     height: '34px',
+                                     fontFamily: 'Montserrat, sans-serif',
+                                 },
+                                 '& .MuiOutlinedInput-notchedOutline': {
+                                     border: '1px solid #ccc',
+                                 },
+                                 '&:hover .MuiOutlinedInput-notchedOutline': {
+                                     border: '1px solid #888',
+                                 },
+                             }}>
                             <InputLabel sx={{
                                 fontFamily: 'Montserrat, sans-serif',
                                 color: '#555',
@@ -234,14 +253,26 @@ const UserTable = () => {
                 header: 'Estado',
                 Cell: ({ row }) => (
                     editRowId === row.original.id ? (
-                        <FormControl fullWidth sx={{
-                            width: 'auto',
-                            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-                            '&:hover': {
-                                backgroundColor: '#e2efff',
-                            },
-                            fontFamily: 'Montserrat, sans-serif',
-                        }}>
+                        <FormControl
+                            variant="outlined"
+                            sx={{
+                                width: '100%',
+                                minWidth: 120,
+                                '& .MuiInputBase-root': {
+                                    backgroundColor: 'white',
+                                    borderRadius: '6px',
+                                    fontSize: '14px',
+                                    fontWeight: '500',
+                                    height: '34px',
+                                    fontFamily: 'Montserrat, sans-serif',
+                                },
+                                '& .MuiOutlinedInput-notchedOutline': {
+                                    border: '1px solid #ccc',
+                                },
+                                '&:hover .MuiOutlinedInput-notchedOutline': {
+                                    border: '1px solid #888',
+                                },
+                            }}>
                             <InputLabel sx={{
                                 fontFamily: 'Montserrat, sans-serif',
                                 color: '#555',
@@ -357,19 +388,19 @@ const UserTable = () => {
                 title="Gestión de Usuarios"
                 flatUsers={flatUsers}
                 exportToPDF={exportToPDF}
-                handleOpen={handleOpen}
+                handleOpen={handleOpenRoleAndStateModal}
             />
             <MaterialReactTable table={table} />
             <RoleAndStateModal
-                open={openModal}
-                onClose={handleClose}
+                open={openRoleAndStateModal}
+                onClose={handleCloseRoleAndStateModal}
                 roles={roles}
                 states={states}
             />
             <GenericModal
                 show={showConfirmationModal}
                 onHide={handleHideConfirmationModal}
-                title="¿Desea guardar los cambios?"
+                title="¿Desea guardar cambios?"
                 bodyText={confirmationModalBodyText}
                 onButtonClick={() => saveChanges(editRowId)}
             />
