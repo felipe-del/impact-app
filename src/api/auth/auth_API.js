@@ -1,5 +1,5 @@
-import api from "../config/axios.js";
-import handleAxiosError from "./handleAxiosError.js";
+import api from "../../config/axios.js";
+import handleAxiosError from "../handleAxiosError.js";
 
 const root = '/api/auth'
 
@@ -51,6 +51,15 @@ export async function forgotPassword(email) {
 export async function resetPassword(token, password) {
     try {
         const { data } = await api.post(`${root}/reset-password`, {token, password})
+        return data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}
+
+export async function changePassword(oldPassword, newPassword, confirmNewPassword) {
+    try {
+        const { data } = await api.post(`${root}/change-password`, {oldPassword, newPassword, confirmNewPassword})
         return data
     } catch (error) {
         handleAxiosError(error)
