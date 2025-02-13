@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import GenericModal from "../popUp/generic/GenericModal.jsx";
-import {logout} from "../../api/auth_API.js";
-import {useNavigate} from "react-router-dom";
+import {logout} from "../../api/auth/auth_API.js";
+import {Link, useNavigate} from "react-router-dom";
 import {toast} from "react-hot-toast";
 import {capitalizeFirstLetter} from "../../util/StringUtils.js";
 
@@ -113,10 +113,10 @@ const TopBar = ({ user }) => {
                     </a>
                     {/* Dropdown - User Information */}
                     <div className="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                        <a className="dropdown-item" href="#">
+                        <Link className="dropdown-item" to="/app/profile">
                             <i className="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                             Perfil
-                        </a>
+                        </Link>
                         <a className="dropdown-item" href="#">
                             <i className="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                             Configuración
