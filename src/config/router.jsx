@@ -11,6 +11,7 @@ import CreateUser from "../views/user/CreateUser.jsx";
 import AssetTable from "../views/asset/AssetTable.jsx";
 import Dashboard from "../views/dashboard/Dashboard.jsx";
 import CreateAsset from "../views/asset/CreateAsset.jsx";
+import Profile from "../views/user/Profile.jsx";
 
 export default function Router() {
     return (
@@ -23,6 +24,7 @@ export default function Router() {
 
                 <Route element={<AppLayout />} path="/app">
                     <Route index element={<h1>Info de Impact</h1>} />
+                    <Route path="profile" element={<Profile/>} />
                     <Route element={<ProtectedRoute allowedRoles={["ADMINISTRATOR", "MANAGER"]} />}>
                         <Route path="dashboard" element={<Dashboard />} />
 
