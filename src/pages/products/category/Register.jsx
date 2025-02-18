@@ -110,7 +110,7 @@ const Register = () => {
         <div>
             <nav aria-label="breadcrumb">
                 <ol className="breadcrumb">
-                    <li className="breadcrumb-item"><a href="/app">Inicio</a></li>
+                    <li className="breadcrumb-item"><a href="/app/welcome">Inicio</a></li>
                     <li className="breadcrumb-item active" aria-current="page">Registro de Categorías</li>
                 </ol>
             </nav>

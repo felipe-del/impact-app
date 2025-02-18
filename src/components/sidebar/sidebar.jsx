@@ -94,6 +94,20 @@ const Sidebar = () => {
                 </div>
             </li>
 
+            {/* Solicitudes Section */}
+            <li className="nav-item" id="solicitudes-item">
+                <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSolicitudes"
+                    aria-expanded="true" aria-controls="collapseSolicitudes">
+                    <i className="fas fa-fw fa-box"></i>
+                    <span>Mis solicitudes</span>
+                </a>
+                <div id="collapseSolicitudes" className="collapse" aria-labelledby="headingSolicitudes" data-parent="#accordionSidebar">
+                    <div className="bg-white py-2 collapse-inner rounded">
+                    <Link className="collapse-item" to="/app/myRequest"><FontAwesomeIcon icon={faPlus} /> Ver mis solicitudes</Link>
+                    </div>
+                </div>
+            </li>
+
             <hr className="sidebar-divider" />
 
             <div className="sidebar-heading" id="complementos-heading">
