@@ -28,7 +28,7 @@ const SignIn = ({ switchToSignUp, setUser }) => {
             if (data && data.authenticated) {
                 console.log(data);
                 setUser(data); // Set user in context
-                navigate('/app'); // Navigate to app route
+                navigate('/app/welcome'); // Navigate to app route
                 setLoginError('');
             } else {
                 setLoginError('Por favor, verifique sus credenciales e inténtelo nuevamente.');
@@ -56,7 +56,7 @@ const SignIn = ({ switchToSignUp, setUser }) => {
 
                 if (result && result.authenticated) {
                     setUser(result);
-                    navigate('/app'); // Navigate if authenticated
+                    navigate('/app/welcome'); // Navigate if authenticated
                 }
             } catch (error) {
                 console.error('Error checking session:', error);

@@ -29,6 +29,7 @@ import EditAsset from '../pages/asset/editAsset/editAsset.jsx';
 import AddSpaceEquipment from '../pages/commonSpace/equipment/addEquipment.jsx';
 import SpaceRequest from "../pages/commonSpace/space/spaceRequest/spaceRequest.jsx";
 import Users from '../pages/users/users.jsx';
+import Welcome from '../pages/about/welcome.jsx';
 
 export const Routes = createBrowserRouter([
     {
@@ -46,6 +47,10 @@ export const Routes = createBrowserRouter([
             {
                 path: 'about',
                 element: <About/>
+            },
+            {
+                path: 'welcome',
+                element: <Welcome/>
             },
             {
                 path: 'createAsset',

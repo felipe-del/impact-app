@@ -1,0 +1,47 @@
+.welcome-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 80px;
+  max-width: 1100px;
+  margin: 0 auto;
+  text-align: center;
+  background-color: #ffff;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+}
+.paragraph{
+  color:black;
+  text-align: justify;
+}
+.entities{
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+.UCR, .CIMPA {
+  border: 2px solid #e2d2d2;  
+  padding:15px;
+  border-radius: 5px;
+}
+.escudo-img{
+  width: 100px;  
+  display: block;
+}
+.escudo-img2{
+  width: 50px;  
+  display: block;
+}
+.ucr-link {
+  display: inline-block;
+  margin-top: 10px;
+  text-decoration: none;
+  color: #0066cc;  
+  font-weight: bold;
+  transition: color 0.3s ease-in-out;
+}
+
+.ucr-link:hover {
+  color: #023061; 
+  text-decoration: underline;
+}
