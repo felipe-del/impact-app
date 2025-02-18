@@ -30,6 +30,7 @@ import AddSpaceEquipment from '../pages/commonSpace/equipment/addEquipment.jsx';
 import SpaceRequest from "../pages/commonSpace/space/spaceRequest/spaceRequest.jsx";
 import Users from '../pages/users/users.jsx';
 import Welcome from '../pages/about/welcome.jsx';
+import Myrequest from '../pages/request/myrequest.jsx';
 
 export const Routes = createBrowserRouter([
     {
@@ -159,7 +160,11 @@ export const Routes = createBrowserRouter([
 			{
                 path: 'manageUsers',
             	 element: <Users/>
-			}
+			},
+            {
+                path:'myRequest',
+                element: <Myrequest/>
+            }
         ]
     }
 ]);

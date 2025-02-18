@@ -8,6 +8,8 @@ import Escudo_UCR from '../assets/Escudo_UCR.png';
 import ReturnArrow from '../assets/return.png';
 import InfoIcon from '../assets/info_icon.png';
 import Pencil from '../assets/pencil.png';
+import UCR from '../assets/UCR.png';
+import CIMPA from '../assets/CIMPA.png';
 
 // Exporta todas las imágenes de una vez
 export {
@@ -19,5 +21,7 @@ export {
   Escudo_UCR,
   ReturnArrow,
   InfoIcon,
-  Pencil
+  Pencil,
+  UCR,
+  CIMPA
 };
