@@ -5,7 +5,7 @@ const root = '/api/supplier'
 
 export async function updateSupplier(id, supplier) {
     try {
-        const { data } = await api.get(`${root}/${id}`, supplier)
+        const { data } = await api.put(`${root}/${id}`, supplier)
         return data
     } catch (error) {
         handleAxiosError(error)
