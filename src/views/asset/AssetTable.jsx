@@ -89,6 +89,7 @@ const initialArray = [
     }
 ];
 import EditButton from "../../components/button/EditButton.jsx";
+import {useNavigate} from "react-router-dom";
 
 const AssetTable = () => {
 
@@ -114,8 +115,10 @@ const AssetTable = () => {
         if (assetStatusData) setAssetStatus(assetStatusData.data)
     }, [assetsData, assetStatusData]);
 
+    const navigate = useNavigate();
+
     const handleEdit = (row) => {
-        console.log('Edit', row.original);
+        navigate("/app/editAsset/" + row.original.id)
     }
 
     const columns = useMemo(
