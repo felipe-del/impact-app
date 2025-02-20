@@ -54,7 +54,7 @@ const SignIn = () => {
                         id='email'
                         type='email'
                         placeholder='Correo electrónico institucional'
-                        className={`input-field ${errors.email ? 'error-input' : ''}`}
+                        className="input-field"
                         {...register('email', {
                             required: 'El correo electrónico es requerido',
                             pattern: {
@@ -73,7 +73,7 @@ const SignIn = () => {
                         id="password"
                         type={showPassword ? "text" : "password"}
                         placeholder="Contraseña"
-                        className={`input-field ${errors.password ? "error-input" : ""}`}
+                        className="input-field"
                         {...register("password", {
                             required: "La contraseña es requerida",
                             minLength: {
