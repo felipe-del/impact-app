@@ -1,6 +1,7 @@
 import {isAxiosError} from "axios";
 
 export default function handleAxiosError(error) {
+    console.log({error})
     if (isAxiosError(error) && error.response) {
         const backendError = createErrorMessage(error.response.data)
         throw new Error(backendError)
@@ -10,5 +11,15 @@ export default function handleAxiosError(error) {
 }
 
 function createErrorMessage(responseWrapper) {
-    return `${responseWrapper.message} - ${responseWrapper.data.message}`
+    let detailMessage = "";
+
+    if (!responseWrapper.data.message) {
+        detailMessage = Object.entries(responseWrapper.data)
+            .map(([field, error]) => `${field}: ${error}`)
+            .join("\n");
+    } else {
+        detailMessage = responseWrapper.data.message;
+    }
+
+    return `${responseWrapper.message} - ${detailMessage}`;
 }
