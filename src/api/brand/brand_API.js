@@ -6,7 +6,7 @@ const root = '/api/brand'
 
 export async function updateBrand(id, brand) {
     try {
-        const { data } = await api.get(`${root}/${id}`, brand)
+        const { data } = await api.put(`${root}/${id}`, brand)
         return data
     } catch (error) {
         handleAxiosError(error)
