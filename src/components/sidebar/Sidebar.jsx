@@ -3,6 +3,8 @@ import { faPlus, faList, faClipboardCheck, faMapMarkedAlt, faHashtag, faPenToSqu
 import DevicesIcon from '@mui/icons-material/Devices';
 import { Link } from 'react-router-dom';
 import './sidebar.css';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 
 import PropTypes from 'prop-types';
 
@@ -48,8 +50,8 @@ const Sidebar = ({ role }) => {
                     <div id="collapseActivos" className="collapse" aria-labelledby="headingActivos" data-parent="#accordionSidebar">
                         <div className="bg-white py-2 collapse-inner rounded">
                             <Link className="collapse-item" to="/app/assetTable"><DevicesIcon/> Activo</Link>
-                            <Link className="collapse-item" to="/app/addSupplier"><FontAwesomeIcon icon={faPlus} /> Proveedor</Link>
-                            <Link className="collapse-item" to="/app/addBrand"><FontAwesomeIcon icon={faPlus} /> Marca</Link>
+                            <Link className="collapse-item" to="/app/supplierManagement"><LocalShippingIcon/> Proveedor</Link>
+                            <Link className="collapse-item" to="/app/brandManagement"><LocalOfferIcon icon={faPlus} /> Marca</Link>
                             <Link className="collapse-item" to="/app/addCategory"><FontAwesomeIcon icon={faPlus} /> Categoría</Link>
                             <Link className="collapse-item" to="/app/addAssetModel"><FontAwesomeIcon icon={faPlus} /> Modelos</Link>
                             <Link className="collapse-item" to="/app/addSubcategory"><FontAwesomeIcon icon={faPlus} /> Subcategoría</Link>
