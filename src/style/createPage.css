@@ -19,3 +19,15 @@
 .fas:hover {
     transform: scale(1.1);
 }
+
+.input-text-error {
+    margin-top: 5px;
+    color: #f44336; /* Rojo para el mensaje de error */
+    font-family: 'Montserrat', sans-serif;
+    font-size: .85rem;
+    display: none; /* Inicialmente está oculto */
+}
+
+.input-text-error.show {
+    display: block; /* Muestra el error cuando se añade la clase 'show' */
+}
