@@ -1,54 +1,55 @@
-import { useState } from 'react';
-import { IconButton, Tooltip, Typography } from '@mui/material';
-import SaveIcon from '@mui/icons-material/Save';
-import PropTypes from 'prop-types';
+import { useState } from "react";
+import { Tooltip, Typography } from "@mui/material";
+import SaveIcon from "@mui/icons-material/Save";
+import PropTypes from "prop-types";
 
-const SaveButton = ({ acceptAction, labelAccept = "Aceptar"}) => {
-    const [hover, setHover] = useState(null);
+const SaveButton = ({ acceptAction, labelAccept = "Aceptar" }) => {
+    const [hover, setHover] = useState(false);
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'space-between', gap: '20px' }}>
+        <div style={{ display: "flex", justifyContent: "space-between", gap: "20px" }}>
             <Tooltip title={labelAccept} arrow>
-                <IconButton
-                    onClick={acceptAction}
-                    color="success"
-                    onMouseEnter={() => setHover('accept')}
-                    onMouseLeave={() => setHover(null)}
+                <button
+                    type={acceptAction ? "button" : "submit"} // Si no hay acción, es un submit
+                    onClick={acceptAction || undefined} // Solo si existe la acción
+                    onMouseEnter={() => setHover(true)}
+                    onMouseLeave={() => setHover(false)}
                     style={{
-                        width: hover === 'accept' ? '130px' : '80px',
-                        height: '50px',
-                        borderRadius: '15px',
-                        backgroundColor: hover === 'accept' ? '#4caf50' : ' #005DA4',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        transition: 'width 0.2s ease-in-out, background-color 0.2s ease-in-out',
-                        padding: '0',
-                        overflow: 'hidden',
+                        width: hover ? "130px" : "80px",
+                        height: "50px",
+                        borderRadius: "15px",
+                        backgroundColor: hover ? "#4caf50" : "#005DA4",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        transition: "width 0.2s ease-in-out, background-color 0.2s ease-in-out",
+                        padding: "0",
+                        border: "none",
+                        cursor: "pointer",
                     }}
                 >
-                    <SaveIcon style={{ fontSize: '18px', color: 'white' }} />
-                    {hover === 'accept' && (
+                    <SaveIcon style={{ fontSize: "18px", color: "white" }} />
+                    {hover && (
                         <Typography
                             variant="body2"
                             style={{
-                                color: 'white',
-                                fontSize: '14px',
-                                fontFamily: 'Montserrat',
-                                marginLeft: '8px',
+                                color: "white",
+                                fontSize: "14px",
+                                fontFamily: "Montserrat",
+                                marginLeft: "8px",
                             }}
                         >
                             {labelAccept}
                         </Typography>
                     )}
-                </IconButton>
+                </button>
             </Tooltip>
         </div>
     );
 };
 
 SaveButton.propTypes = {
-    acceptAction: PropTypes.func.isRequired,
+    acceptAction: PropTypes.func,
     labelAccept: PropTypes.string,
 };
 
