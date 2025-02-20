@@ -12,6 +12,9 @@ import AssetTable from "../views/asset/AssetTable.jsx";
 import Dashboard from "../views/dashboard/Dashboard.jsx";
 import CreateAsset from "../views/asset/CreateAsset.jsx";
 import Profile from "../views/user/Profile.jsx";
+import UpdateAsset from "../views/asset/UpdateAsset.jsx";
+import BrandManagement from "../views/brand/BrandManagement.jsx";
+import SupplierManagement from "../views/supplier/SupplierManagement.jsx";
 
 export default function Router() {
     return (
@@ -28,11 +31,17 @@ export default function Router() {
                     <Route element={<ProtectedRoute allowedRoles={["ADMINISTRATOR", "MANAGER"]} />}>
                         <Route path="dashboard" element={<Dashboard />} />
 
+                        <Route path="brandManagement" element={<BrandManagement/>} />
+
+                        <Route path="supplierManagement" element={<SupplierManagement/>} />
+
                         <Route path="userTable" element={<UserTable />} />
                         <Route path="createUser" element={<CreateUser />} />
 
                         <Route path="assetTable" element={<AssetTable />} />
                         <Route path="createAsset" element={<CreateAsset/>} />
+                        <Route path="editAsset/:id" element={<UpdateAsset/>} />
+
                     </Route>
                 </Route>
 
