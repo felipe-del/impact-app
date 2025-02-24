@@ -1,0 +1,143 @@
+import AssetCategoryBanner from "./AssetCategoryBanner.jsx";
+import useAssetCategory from "../../hooks/apiData/assetCategory/AssetCategoryData.jsx";
+import {useEffect, useMemo, useState} from "react";
+import {
+    deleteAssetCategory,
+    saveAssetCategory,
+    updateAssetCategory
+} from "../../api/assetCategory/assetCategory_API.js";
+import {toast} from "react-hot-toast";
+import {MaterialReactTable, useMaterialReactTable} from "material-react-table";
+import {Box, IconButton, Tooltip} from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from "@mui/icons-material/Edit";
+import GenericModal from "../../components/popUp/generic/GenericModal.jsx";
+import LoadingPointsSpinner from "../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
+
+
+const AssetCategoryManagement = () => {
+
+    const { assetCategories, isLoading, isError, refetch } = useAssetCategory();
+    const [data, setData] = useState([]);
+
+    const [rowToEdit, setRowToEdit] = useState(null);
+
+    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+    const handleShowConfirmationModal = (row) => {
+        setRowToEdit(row)
+        setShowConfirmationModal(true);
+    }
+    const handleHideConfirmationModal = () => setShowConfirmationModal(false);
+
+
+    useEffect(() => {
+        if (assetCategories?.data && Array.isArray(assetCategories.data)) setData(assetCategories.data);
+
+    }, [assetCategories]);
+
+    const columns = useMemo(() => [
+        { accessorKey: "id", header: "ID", enableEditing: false, size: 80 },
+        { accessorKey: "name", header: "Nombre", enableEditing: true },
+    ], []);
+
+    const validateAssetCategory = (values) => {
+        if (!values.name) {
+            toast.error("El nombre no puede estar vacío.");
+            return false;
+        }
+        return true;
+    }
+
+    const handleCreateAssetCategory = async ({ values, table }) => {
+        if (!validateAssetCategory(values)) return;
+        try {
+            const response = await saveAssetCategory({ name: values.name });
+            toast.success(response.message);
+            table.setCreatingRow(null);
+            refetch();
+        } catch (error) {
+            toast.error(error.message);
+        }
+    }
+
+    const handleDeleteAssetCategory = async () => {
+        if (!rowToEdit?.original?.id) {
+            toast.error("Error al eliminar: ID no encontrado.");
+            return;
+        }
+        try {
+            const response = await deleteAssetCategory(rowToEdit.original.id);
+            toast.success(response.message);
+            table.setEditingRow(null);
+            refetch();
+        } catch (error) {
+            toast.error(error.message);
+        }
+    }
+
+    const handleUpdateAssetCategory = async ({ values, row }) => {
+        if (!validateAssetCategory(values)) return;
+        try {
+            const response = await updateAssetCategory(row.original.id, { name: values.name });
+            toast.success(response.message);
+            table.setEditingRow(null);
+            refetch();
+        } catch (error) {
+            toast.error(error.message);
+        }
+    }
+
+    const table = useMaterialReactTable({
+        columns,
+        data: data || [],
+        createDisplayMode: "row",
+        enableEditing: true,
+        editingMode: "row",
+        enableExpandAll: false,
+        manualFiltering: true,
+        manualPagination: true,
+        manualSorting: true,
+        initialState: { density: "comfortable", pagination: { pageSize: 5 } },
+        onCreatingRowSave: handleCreateAssetCategory,
+        onEditingRowSave: handleUpdateAssetCategory,
+        renderRowActions: ({ row, table }) => {
+            if (!row?.original) return null;
+
+            return (
+                <Box sx={{ display: 'flex', gap: '1rem' }}>
+                    <Tooltip title="Editar">
+                        <IconButton onClick={() => table.setEditingRow(row)}>
+                            <EditIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Eliminar">
+                        <IconButton color="error" onClick={() => handleShowConfirmationModal(row)}>
+                            <DeleteIcon />
+                        </IconButton>
+                    </Tooltip>
+                </Box>
+            );
+        },
+    });
+
+    if (isError) return <p>Error al cargar los datos.</p>;
+
+    return (
+        <>
+            {isLoading && <LoadingPointsSpinner />}
+            <AssetCategoryBanner
+                title="Gestión de Categorías de Activos"
+                visibleButtons={["goBack", "createAssetCategory"]}
+                createAssetCategory={() => table.setCreatingRow(true)}
+            />
+            <MaterialReactTable table={table} />
+            <GenericModal show={showConfirmationModal}
+                          onHide={handleHideConfirmationModal}
+                          title={"Eliminar Categoria de Activo"}
+                          bodyText={"¿Estás seguro que deseas eliminar esta categoría de activo?"}
+                          onButtonClick={handleDeleteAssetCategory} />
+        </>
+    )
+}
+
+export default AssetCategoryManagement
