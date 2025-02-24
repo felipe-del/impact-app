@@ -23,6 +23,8 @@ import SpaceManagement from "../views/space/SpaceManagement.jsx";
 import ProductManagement from "../views/product/ProductManagement.jsx";
 import LocationTypeManagement from "../views/locationType/LocationTypeManagement.jsx";
 import LocationNumberManagement from "../views/locationNumber/LocationNumberManagement.jsx";
+import ProductCategoryManagement from "../views/productCategory/ProductCategoryManagement.jsx";
+import ProductCategoryTypeManagement from "../views/productCategoryType/ProductCategoryTypeManagement.jsx";
 
 export default function Router() {
     return (
@@ -46,6 +48,8 @@ export default function Router() {
                         <Route path="spaceEquipmentManagement" element={<SpaceEquipmentManagement/>} />
                         <Route path="locationTypeManagement" element={<LocationTypeManagement/>} />
                         <Route path="locationNumberManagement" element={<LocationNumberManagement/>} />
+                        <Route path="productCategoryManagement" element={<ProductCategoryManagement/>} />
+                        <Route path="productCategoryTypeManagement" element={<ProductCategoryTypeManagement/>} />
 
                         <Route path="spaceManagement" element={<SpaceManagement/>} />
                         <Route path="productManagement" element={<ProductManagement/>} />
