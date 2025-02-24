@@ -1,5 +1,5 @@
 import {useQuery} from "@tanstack/react-query";
-import {getAllSupplier} from "../../../api/supplier/Supplier.js";
+import {getAllSupplier} from "../../../api/supplier/Supplier_API.js";
 
 const useSupplierData = () => {
     const { data: wrapperResponse, isLoading, isError, refetch} = useQuery({
