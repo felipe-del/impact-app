@@ -1,7 +1,6 @@
 import {isAxiosError} from "axios";
 
 export default function handleAxiosError(error) {
-    console.log({error})
     if (isAxiosError(error) && error.response) {
         const backendError = createErrorMessage(error.response.data)
         throw new Error(backendError)
