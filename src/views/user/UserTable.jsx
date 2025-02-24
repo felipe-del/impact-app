@@ -27,6 +27,7 @@ import {useUser} from "../../hooks/user/useUser.jsx";
 import EditButton from "../../components/button/EditButton.jsx";
 import TableActionButtons from "../../components/button/TableActionButtons.jsx";
 import GenericModal from "../../components/popUp/generic/GenericModal.jsx";
+import { MRT_Localization_ES } from 'material-react-table/locales/es';
 
 const UserTable = () => {
     const [openRoleAndStateModal, setOpenRoleAndStateModal] = useState(false);
@@ -343,6 +344,7 @@ const UserTable = () => {
     );
 
     const table = useMaterialReactTable({
+        localization: MRT_Localization_ES,
         columns,
         data: users,
         initialState: {

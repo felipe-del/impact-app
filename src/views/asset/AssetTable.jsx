@@ -7,18 +7,12 @@ import {Box, Typography} from '@mui/material';
 import { useQuery } from "@tanstack/react-query";
 import { getAllAssets } from "../../api/asset/asset_API.js";
 import LoadingPointsSpinner from "../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
-import {getAllSupplier} from "../../api/supplier/Supplier_API.js";
-import {getAllSubCategory} from "../../api/assetSubCategory/subCategory_API.js";
-import {getAllBrands} from "../../api/brand/brand_API.js";
 import {getAllAssetStatus} from "../../api/asset/assetStatus_API.js";
-import {getAllAssetModels} from "../../api/assetModel/assetModel_API.js";
-import {getAllCurrencies} from "../../api/currency/currency_API.js";
-import {getAllLocationNumber} from "../../api/locationNumber_API/locationNumber_API.js";
 import AssetBanner from "./AssetBanner.jsx";
-import RefreshIcon from '@mui/icons-material/Refresh';
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import AssetStatusModal from "../../components/popUp/assetStatusModal/AssetStatusModal.jsx";
+import { MRT_Localization_ES } from 'material-react-table/locales/es';
 
 const initialArray = [
     {
@@ -186,6 +180,7 @@ const AssetTable = () => {
     }));
 
     const table = useMaterialReactTable({
+        localization: MRT_Localization_ES,
         columns,
         data: assets,
         enableExpandAll: false,

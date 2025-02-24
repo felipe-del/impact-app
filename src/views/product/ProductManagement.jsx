@@ -4,7 +4,7 @@ import {useEffect, useMemo, useState} from "react";
 import {MaterialReactTable, useMaterialReactTable} from "material-react-table";
 import {Box, Typography} from "@mui/material";
 import LoadingPointsSpinner from "../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
-
+import { MRT_Localization_ES } from 'material-react-table/locales/es';
 
 const ProductManagement = () => {
 
@@ -28,6 +28,7 @@ const ProductManagement = () => {
     )
 
     const table = useMaterialReactTable({
+        localization: MRT_Localization_ES,
         columns,
         data: productData,
         enableExpandAll: false,

@@ -7,13 +7,14 @@ import {Box, IconButton, MenuItem, Tooltip} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit.js";
 import DeleteIcon from "@mui/icons-material/Delete.js";
 import {toast} from "react-hot-toast";
-import {deleteLocationType, saveLocationType, updateLocationType} from "../../api/locationType/locationType_API.js";
+import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import {
     deleteLocationNumber,
     saveLocationNumber,
     updateLocationNumber
 } from "../../api/locationNumber_API/locationNumber_API.js";
 import GenericModal from "../../components/popUp/generic/GenericModal.jsx";
+import LoadingPointsSpinner from "../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
 
 
 const LocationNumberManagement = () => {
@@ -121,6 +122,7 @@ const LocationNumberManagement = () => {
     }
 
     const table = useMaterialReactTable({
+        localization: MRT_Localization_ES,
         columns,
         data: locationNumberData || [],
         createDisplayMode: "row",
@@ -153,9 +155,10 @@ const LocationNumberManagement = () => {
         },
     });
 
-
+    if (isError) return <div>Error al cargar los datos</div>;
     return (
         <>
+            {isLoading && <LoadingPointsSpinner />}
             <LocationNumberBanner
                 title="Gestión de Números de Ubicación"
                 visibleButtons={["goBack", "createLocationNumber"]}

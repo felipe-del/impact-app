@@ -9,6 +9,7 @@ import EditIcon from "@mui/icons-material/Edit.js";
 import DeleteIcon from "@mui/icons-material/Delete.js";
 import GenericModal from "../../components/popUp/generic/GenericModal.jsx";
 import LoadingPointsSpinner from "../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
+import { MRT_Localization_ES } from 'material-react-table/locales/es';
 
 const AssetModelManagement = () => {
 
@@ -82,6 +83,7 @@ const AssetModelManagement = () => {
     }
 
     const table = useMaterialReactTable({
+        localization: MRT_Localization_ES,
         columns,
         data: data || [],
         createDisplayMode: "row",

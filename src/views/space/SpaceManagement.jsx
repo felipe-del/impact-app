@@ -4,6 +4,7 @@ import SpaceBanner from "./SpaceBanner.jsx";
 import {MaterialReactTable, useMaterialReactTable} from "material-react-table";
 import {Box, Typography} from "@mui/material";
 import LoadingPointsSpinner from "../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
+import { MRT_Localization_ES } from 'material-react-table/locales/es';
 
 const SpaceManagement = () => {
 
@@ -30,6 +31,7 @@ const SpaceManagement = () => {
     )
 
     const table = useMaterialReactTable({
+        localization: MRT_Localization_ES,
         columns,
         data: spaceData,
         enableExpandAll: false,

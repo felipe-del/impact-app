@@ -10,7 +10,7 @@ import DeleteIcon from "@mui/icons-material/Delete.js";
 import GenericModal from "../../components/popUp/generic/GenericModal.jsx";
 import useAssetCategory from "../../hooks/apiData/assetCategory/AssetCategoryData.jsx";
 import LoadingPointsSpinner from "../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
-
+import { MRT_Localization_ES } from 'material-react-table/locales/es';
 
 const AssetSubCategoryManagement = () => {
 
@@ -120,6 +120,7 @@ const AssetSubCategoryManagement = () => {
     }
 
     const table = useMaterialReactTable({
+        localization: MRT_Localization_ES,
         columns,
         data: data || [],
         createDisplayMode: "row",
