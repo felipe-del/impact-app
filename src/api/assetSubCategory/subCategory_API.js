@@ -5,7 +5,7 @@ const root = '/api/asset-sub-category'
 
 export async function updateSubCategory(id, subCategory) {
     try {
-        const { data } = await api.get(`${root}/${id}`, subCategory)
+        const { data } = await api.put(`${root}/${id}`, subCategory)
         return data
     } catch (error) {
         handleAxiosError(error)
