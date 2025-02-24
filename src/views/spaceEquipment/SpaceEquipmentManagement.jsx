@@ -68,7 +68,6 @@ const SpaceEquipmentManagement = () => {
         if (spaceEquipment) setSpaceEquipmentData(spaceEquipment.data);
         if (space) setSpaceData(space.data);
         if (brands) setBrandsData(brands.data);
-        console.log(spaceEquipmentData);
     }, [spaceEquipment, space, brands]);
 
     const validateAssetEquipment = (values) => {
@@ -119,7 +118,6 @@ const SpaceEquipmentManagement = () => {
 
     const handleUpdateSpaceEquipment = async ({ values, row }) => {
         if (!validateAssetEquipment(values)) return;
-        console.log(values);
         const brandId = brandsData.find(brand => brand.name === values["brandResponse.name"])?.id;
         const spaceId = spaceData.find(space => space.name === values["spaceResponse.name"])?.id;
         try {
@@ -170,7 +168,7 @@ const SpaceEquipmentManagement = () => {
         }
 
 
-    ], []);
+    ], [brandsData, spaceData]);
 
     const table = useMaterialReactTable({
         columns,
@@ -241,9 +239,9 @@ const SpaceEquipmentManagement = () => {
                         Equipamiento
                     </Typography>
                     {[
-                        { label: 'ID', value: row.original.id },
-                        { label: 'Nombre', value: row.original.name },
-                        { label: 'Cantidad', value: row.original.quantity },
+                        { label: 'ID', value: row.original.id || 'N/A' },
+                        { label: 'Nombre', value: row.original.name || 'N/A' },
+                        { label: 'Cantidad', value: row.original.quantity || 'N/A' },
                     ].map((item, index) => (
                         <DetailItem key={index} label={item.label} value={item.value} />
                     ))}
