@@ -34,7 +34,6 @@ const LocationNumberManagement = () => {
     useEffect(() => {
         if (locationNumber) setLocationNumberData(locationNumber.data);
         if (locationType) setLocationTypeData(locationType.data);
-        console.log(locationType.data);
     }, [locationNumber, locationType]);
 
     const columns = useMemo(() => [
@@ -63,7 +62,6 @@ const LocationNumberManagement = () => {
     ], [locationTypeData]);
 
     const validateLocationNumber = (values) => {
-        console.log(values);
         if (!values.locationTypeName) {
             toast.error("El nombre no puede estar vacío.");
             return false;
