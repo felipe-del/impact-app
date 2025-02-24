@@ -13,7 +13,6 @@ const ProductManagement = () => {
 
     useEffect(() => {
         if (products?.data && Array.isArray(products.data)) setProductData(products.data);
-        console.log(products)
     }, [products]);
 
     const columns = useMemo(
