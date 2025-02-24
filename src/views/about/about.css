@@ -4,8 +4,12 @@ body {
 }
 
 .background {
-    background-image: url(https://media.giphy.com/media/U3qYN8S0j3bpK/giphy.gif);
+    background-image: url("public/cool-background-about.png");
+    background-repeat: no-repeat; /* No repite la imagen */
+    background-size: cover; /* Expande la imagen para cubrir el área */
+    background-position: center; /* Centra la imagen */
 }
+
 
 .about-page-container {
     display: flex;
