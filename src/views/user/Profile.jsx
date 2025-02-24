@@ -5,6 +5,7 @@ import ChangePasswordForm from "./ChangePasswordForm.jsx";
 import {useState} from "react";
 
 const Profile = () => {
+
     const userSession = useUser();
 
     const [showChangePasswordForm, setShowChangePasswordForm] = useState(false);
