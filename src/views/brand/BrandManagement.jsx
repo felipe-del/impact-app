@@ -9,6 +9,7 @@ import { toast } from "react-hot-toast";
 import { deleteBrand, saveBrand, updateBrand } from "../../api/brand/brand_API.js";
 import GenericModal from "../../components/popUp/generic/GenericModal.jsx";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
+import LoadingPointsSpinner from "../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
 
 const BrandManagement = () => {
     const { brands, isLoading, isError, refetch } = useBrandData();
@@ -35,19 +36,6 @@ const BrandManagement = () => {
         { accessorKey: "id", header: "ID", enableEditing: false, size: 80 },
         { accessorKey: "name", header: "Nombre", enableEditing: true },
     ], []);
-
-    function useCreateBrand() {
-        const queryClient = useQueryClient();
-        return useMutation(saveBrand, {
-            onMutate: async (newBrand) => {
-                await queryClient.cancelQueries('brands')
-                const previousBrands = queryClient.getQueryData('brands')
-                queryClient.setQueryData('brands', (old) => [...old, newBrand])
-                return { previousBrands }
-            },
-            onSuccess: () => queryClient.invalidateQueries({ queryKey: ['brands'] }),
-        })
-    }
 
     const handleCreateBrand = async ({ values, table }) => {
         if (!values.name) {
@@ -130,11 +118,11 @@ const BrandManagement = () => {
         },
     });
 
-    if (isLoading) return <p>Cargando marcas...</p>;
     if (isError) return <p>Error al cargar las marcas.</p>;
 
     return (
         <div>
+            {isLoading && <LoadingPointsSpinner />}
             <BrandBanner
                 title="Gestión de Marcas"
                 createBrandMethod={() => table.setCreatingRow(true)}
