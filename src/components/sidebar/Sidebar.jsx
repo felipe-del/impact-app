@@ -5,7 +5,14 @@ import { Link } from 'react-router-dom';
 import './sidebar.css';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-
+import CategoryIcon from '@mui/icons-material/Category';
+import ScatterPlotIcon from '@mui/icons-material/ScatterPlot';
+import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
+import ConstructionIcon from '@mui/icons-material/Construction';
+import RoomIcon from '@mui/icons-material/Room';
+import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
+import MapIcon from '@mui/icons-material/Map';
+import FmdGoodIcon from '@mui/icons-material/FmdGood';
 import PropTypes from 'prop-types';
 
 
@@ -52,12 +59,13 @@ const Sidebar = ({ role }) => {
                             <Link className="collapse-item" to="/app/assetTable"><DevicesIcon/> Activo</Link>
                             <Link className="collapse-item" to="/app/supplierManagement"><LocalShippingIcon/> Proveedor</Link>
                             <Link className="collapse-item" to="/app/brandManagement"><LocalOfferIcon icon={faPlus} /> Marca</Link>
-                            <Link className="collapse-item" to="/app/addCategory"><FontAwesomeIcon icon={faPlus} /> Categoría</Link>
-                            <Link className="collapse-item" to="/app/addAssetModel"><FontAwesomeIcon icon={faPlus} /> Modelos</Link>
-                            <Link className="collapse-item" to="/app/addSubcategory"><FontAwesomeIcon icon={faPlus} /> Subcategoría</Link>
-                            <Link className="collapse-item" to="/app/addSpaceEquipment"><FontAwesomeIcon icon={faPlus} /> Equipo Tecnológico</Link>
-                            <Link className="collapse-item" to="/app/addLocationType"><FontAwesomeIcon icon={faMapMarkedAlt} /> Tipo de Ubicación</Link>
-                            <Link className="collapse-item" to="/app/addLocationNumber"><FontAwesomeIcon icon={faHashtag} /> Número de Ubicación</Link>
+                            <Link className="collapse-item" to="/app/assetCategoryManagement"><CategoryIcon/> Categoría</Link>
+                            <Link className="collapse-item" to="/app/assetModelManagement"><ScatterPlotIcon/> Modelos</Link>
+                            <Link className="collapse-item" to="/app/assetSubCategoryManagement"><DragIndicatorIcon/> Subcategoría</Link>
+                            <Link className="collapse-item" to="/app/spaceEquipmentManagement"><ConstructionIcon/> Equipo Tecnológico</Link>
+                            <Link className="collapse-item" to="/app/locationTypeManagement"><MapIcon/> Tipo de Ubicación</Link>
+                            <Link className="collapse-item" to="/app/locationNumberManagement"><FmdGoodIcon/> Número de Ubicación</Link>
+
                             <Link className="collapse-item" to="/app/assetLoanRequest"><FontAwesomeIcon icon={faClipboardCheck} /> Solicitud</Link>
                             <Link className="collapse-item" to="/app/assetList"><FontAwesomeIcon icon={faList} /> Activos</Link>
                         </div>
@@ -91,6 +99,9 @@ const Sidebar = ({ role }) => {
                     </a>
                     <div id="collapseEspacios" className="collapse" aria-labelledby="headingEspacios" data-parent="#accordionSidebar">
                         <div className="bg-white py-2 collapse-inner rounded">
+                            <Link className="collapse-item" to="/app/spaceManagement"><RoomIcon /> Espacios</Link>
+
+
                             <Link className="collapse-item" to="/app/addBuilding"><FontAwesomeIcon icon={faPlus} /> Registro de Edificios</Link>
                             <Link className="collapse-item" to="/app/addBuildingLocation"><FontAwesomeIcon icon={faPlus} /> Ubicación en Edificio</Link>
                             <Link className="collapse-item" to="/app/addSpace"><FontAwesomeIcon icon={faPlus} /> Registro de Espacios</Link>
@@ -129,6 +140,8 @@ const Sidebar = ({ role }) => {
                     </a>
                     <div id="collapseProductos" className="collapse" aria-labelledby="headingProductos" data-parent="#accordionSidebar">
                         <div className="bg-white py-2 collapse-inner rounded">
+                            <Link className="collapse-item" to="/app/productManagement"><ProductionQuantityLimitsIcon /> Productos</Link>
+
                             <Link className="collapse-item" to="/app/categoryRegister"><FontAwesomeIcon icon={faPlus} /> Categoría</Link>
                             <Link className="collapse-item" to="/app/productRegister"><FontAwesomeIcon icon={faPlus} /> Productos</Link>
                             <Link className="collapse-item" to="/app/productLoanRequest"><FontAwesomeIcon icon={faClipboardCheck} /> Solicitud</Link>
