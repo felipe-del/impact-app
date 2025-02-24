@@ -14,7 +14,6 @@ const SpaceManagement = () => {
         if (space?.data && Array.isArray(space.data)) {
             setSpaceData(space.data);
         }
-        console.log(space)
     }, [space]);
 
     const columns = useMemo(
