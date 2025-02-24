@@ -15,6 +15,14 @@ import Profile from "../views/user/Profile.jsx";
 import UpdateAsset from "../views/asset/UpdateAsset.jsx";
 import BrandManagement from "../views/brand/BrandManagement.jsx";
 import SupplierManagement from "../views/supplier/SupplierManagement.jsx";
+import AssetCategoryManagement from "../views/category/AssetCategoryManagement.jsx";
+import AssetModelManagement from "../views/assetModel/AssetModelManagement.jsx";
+import AssetSubCategoryManagement from "../views/assetSubCategory/AssetSubCategoryManagement.jsx";
+import SpaceEquipmentManagement from "../views/spaceEquipment/SpaceEquipmentManagement.jsx";
+import SpaceManagement from "../views/space/SpaceManagement.jsx";
+import ProductManagement from "../views/product/ProductManagement.jsx";
+import LocationTypeManagement from "../views/locationType/LocationTypeManagement.jsx";
+import LocationNumberManagement from "../views/locationNumber/LocationNumberManagement.jsx";
 
 export default function Router() {
     return (
@@ -32,6 +40,15 @@ export default function Router() {
                         <Route path="dashboard" element={<Dashboard />} />
 
                         <Route path="brandManagement" element={<BrandManagement/>} />
+                        <Route path="assetCategoryManagement" element={<AssetCategoryManagement/>} />
+                        <Route path="assetModelManagement" element={<AssetModelManagement/>} />
+                        <Route path="assetSubCategoryManagement" element={<AssetSubCategoryManagement/>} />
+                        <Route path="spaceEquipmentManagement" element={<SpaceEquipmentManagement/>} />
+                        <Route path="locationTypeManagement" element={<LocationTypeManagement/>} />
+                        <Route path="locationNumberManagement" element={<LocationNumberManagement/>} />
+
+                        <Route path="spaceManagement" element={<SpaceManagement/>} />
+                        <Route path="productManagement" element={<ProductManagement/>} />
 
                         <Route path="supplierManagement" element={<SupplierManagement/>} />
 
