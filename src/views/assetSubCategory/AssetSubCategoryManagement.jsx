@@ -36,7 +36,6 @@ const AssetSubCategoryManagement = () => {
         if (assetCategories?.data && Array.isArray(assetCategories.data)) {
             setAssetCategoriesData(assetCategories.data);
         }
-        console.log(assetCategoriesData);
     }, [assetSubCategory, assetCategoriesData]);
 
     const columns = useMemo(() => {
