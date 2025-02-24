@@ -3,13 +3,19 @@ import {useEffect, useMemo, useState} from "react";
 import useEntityTypeData from "../../hooks/apiData/entityType/entityTypeData.jsx";
 import {MaterialReactTable, useMaterialReactTable} from "material-react-table";
 import {toast} from "react-hot-toast";
-import {deleteSupplier, saveSupplier, updateSupplier} from "../../api/supplier/Supplier.js";
+import {deleteSupplier, saveSupplier, updateSupplier} from "../../api/supplier/Supplier_API.js";
 import {updateBrand} from "../../api/brand/brand_API.js";
 import {Box, IconButton, MenuItem, Tooltip} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit.js";
 import DeleteIcon from "@mui/icons-material/Delete.js";
 import GenericModal from "../../components/popUp/generic/GenericModal.jsx";
 import SupplierBanner from "./SupplierBanner.jsx";
+
+const entityTypesStatic = [
+    { value: 'PHYSICAL', label: 'Fisica' },
+    { value: 'LEGAL', label: 'Jurídica' },
+];
+
 
 
 const SupplierManagement = () => {
@@ -47,9 +53,9 @@ const SupplierManagement = () => {
         { accessorKey: "entityTypeName", header: "Tipo de entidad", enableEditing: true,
             muiEditTextFieldProps: {
                 select: true,
-                children: entityTypesData.map((type) => (
-                    <MenuItem key={type.id} value={type.typeName}>
-                        {type.typeName}
+                children: entityTypesStatic.map((type) => (
+                    <MenuItem key={type.value} value={type.value}>
+                        {type.label}
                     </MenuItem>
                 )),
             },
