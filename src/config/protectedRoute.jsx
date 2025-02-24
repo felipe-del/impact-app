@@ -9,9 +9,7 @@ const ProtectedRoute = ({ allowedRoles }) => {
 
     const navigate = useNavigate();
 
-    if (!user) {
-        navigate('/auth');
-    }
+    if (!user) navigate('/auth');
 
     if (!allowedRoles.includes(user.userRoleResponse.roleName)) {
         return <Navigate to="/unauthorized" replace />;
