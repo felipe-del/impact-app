@@ -1,11 +1,7 @@
 import ProductCategoryTypeBanner from "./ProductCategoryTypeBanner.jsx";
 import useProductCategoryTypeData from "../../hooks/apiData/productCategoryType/productCategoryTypeData.jsx";
 import {useEffect, useMemo, useState} from "react";
-import {
-    deleteLocationNumber,
-    saveLocationNumber,
-    updateLocationNumber
-} from "../../api/locationNumber_API/locationNumber_API.js";
+import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import {toast} from "react-hot-toast";
 import GenericModal from "../../components/popUp/generic/GenericModal.jsx";
 import {MaterialReactTable, useMaterialReactTable} from "material-react-table";
@@ -16,6 +12,7 @@ import {
     deleteProductCategoryType, saveProductCategoryType,
     updateProductCategoryType
 } from "../../api/productCategoryType/productCategoryType_API.js";
+import LoadingPointsSpinner from "../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
 
 
 const ProductCategoryTypeManagement = () => {
@@ -102,6 +99,7 @@ const ProductCategoryTypeManagement = () => {
     }
 
     const table = useMaterialReactTable({
+        localization: MRT_Localization_ES,
         columns,
         data: productCategoryTypeData || [],
         createDisplayMode: "row",
@@ -134,9 +132,10 @@ const ProductCategoryTypeManagement = () => {
         },
     });
 
-
+    if (isError) return <div>Error al cargar los datos</div>
     return (
         <>
+            {isLoading && <LoadingPointsSpinner />}
             <ProductCategoryTypeBanner
                 title="Gestión de Tipo de Categorías de Producto"
                 visibleButtons={["goBack", "createProductCategoryType"]}

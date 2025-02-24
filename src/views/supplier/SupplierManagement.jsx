@@ -4,12 +4,13 @@ import useEntityTypeData from "../../hooks/apiData/entityType/entityTypeData.jsx
 import {MaterialReactTable, useMaterialReactTable} from "material-react-table";
 import {toast} from "react-hot-toast";
 import {deleteSupplier, saveSupplier, updateSupplier} from "../../api/supplier/Supplier_API.js";
-import {updateBrand} from "../../api/brand/brand_API.js";
+import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import {Box, IconButton, MenuItem, Tooltip} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit.js";
 import DeleteIcon from "@mui/icons-material/Delete.js";
 import GenericModal from "../../components/popUp/generic/GenericModal.jsx";
 import SupplierBanner from "./SupplierBanner.jsx";
+import LoadingPointsSpinner from "../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
 
 const entityTypesStatic = [
     { value: 'PHYSICAL', label: 'Fisica' },
@@ -46,6 +47,7 @@ const SupplierManagement = () => {
 
     const columns = useMemo(() => [
         { accessorKey: "id", header: "ID", enableEditing: false },
+        { accessorKey: "idNumber", header: "Número de identificación", enableEditing: true },
         { accessorKey: "name", header: "Nombre", enableEditing: true },
         { accessorKey: "phone", header: "Teléfono", enableEditing: true },
         { accessorKey: "email", header: "Email", enableEditing: true },
@@ -61,7 +63,7 @@ const SupplierManagement = () => {
             },
         },
         { accessorKey: "clientContact", header: "Contacto de cliente", enableEditing: true },
-        { accessorKey: "idNumber", header: "Número de identificación", enableEditing: true },
+
     ], []);
 
     const validateSupplier = (values) => {
@@ -138,6 +140,7 @@ const SupplierManagement = () => {
     };
 
     const table = useMaterialReactTable({
+        localization: MRT_Localization_ES,
         columns,
         data: suppliersData || [],
         updateData: setSuppliersData,
@@ -150,7 +153,7 @@ const SupplierManagement = () => {
         manualSorting: true,
         manualPagination: true,
         manualGrouping: true,
-        initialState: { columnVisibility: { id: false  }, density: "comfortable", pagination: { pageSize: 5 } },
+        initialState: { columnVisibility: { id: false, address: false, idNumber: false  }, density: "comfortable", pagination: { pageSize: 5 } },
         onCreatingRowSave: handleCreateSupplier,
         onEditingRowSave: handleUpdateSupplier,
         renderRowActions: ({ row, table }) => {
@@ -174,13 +177,12 @@ const SupplierManagement = () => {
 
     });
 
-    if (isLoading) return <p>Cargando marcas...</p>;
     if (isError) return <p>Error al cargar los proveedores.</p>;
-    if (isLoadingEntityTypes) return <p>Cargando tipos de entidad...</p>;
-    if (isErrorEntityTypes) return <p>Error al cargar los tipos de entidad.</p>;
-
     return (
         <div>
+            {isLoading && <LoadingPointsSpinner />}
+            {isLoadingEntityTypes && <LoadingPointsSpinner />}
+            {isLoadingEntityTypes && <LoadingPointsSpinner />}
             <SupplierBanner
                 title="Gestión de Proveedores"
                 visibleButtons={["createSupplier", "goBack"]}

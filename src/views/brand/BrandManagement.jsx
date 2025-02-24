@@ -8,7 +8,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { toast } from "react-hot-toast";
 import { deleteBrand, saveBrand, updateBrand } from "../../api/brand/brand_API.js";
 import GenericModal from "../../components/popUp/generic/GenericModal.jsx";
-import {useMutation, useQueryClient} from "@tanstack/react-query";
+import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import LoadingPointsSpinner from "../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
 
 const BrandManagement = () => {
@@ -86,6 +86,7 @@ const BrandManagement = () => {
     };
 
     const table = useMaterialReactTable({
+        localization: MRT_Localization_ES,
         columns,
         data: data || [],
         createDisplayMode: "row",

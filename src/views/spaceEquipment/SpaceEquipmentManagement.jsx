@@ -16,6 +16,7 @@ import useSpaceData from "../../hooks/apiData/space/SpaceData.jsx";
 import useBrandData from "../../hooks/apiData/brandData/BrandData.jsx";
 import PropTypes from "prop-types";
 import LoadingPointsSpinner from "../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
+import { MRT_Localization_ES } from 'material-react-table/locales/es';
 
 
 const DetailItem = ({ label, value = "N/A" }) => (
@@ -171,6 +172,7 @@ const SpaceEquipmentManagement = () => {
     ], [brandsData, spaceData]);
 
     const table = useMaterialReactTable({
+        localization: MRT_Localization_ES,
         columns,
         data: spaceEquipmentData || [],
         createDisplayMode: "row",

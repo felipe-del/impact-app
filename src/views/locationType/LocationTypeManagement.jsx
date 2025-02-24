@@ -6,7 +6,7 @@ import {Box, IconButton, Tooltip} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import GenericModal from "../../components/popUp/generic/GenericModal.jsx";
-import {deleteAssetModel, saveAssetModel, updateAssetModel} from "../../api/assetModel/assetModel_API.js";
+import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import {toast} from "react-hot-toast";
 import {deleteLocationType, saveLocationType, updateLocationType} from "../../api/locationType/locationType_API.js";
 import LoadingPointsSpinner from "../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
@@ -84,6 +84,7 @@ const LocationTypeManagement = () => {
     }
 
     const table = useMaterialReactTable({
+        localization: MRT_Localization_ES,
         columns,
         data: locationTypeData || [],
         createDisplayMode: "row",

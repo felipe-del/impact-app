@@ -4,11 +4,7 @@ import {useEffect, useMemo, useState} from "react";
 import useUnitOfMeasurementData from "../../hooks/apiData/unitOfMeasurement/UnitOfMeasurementData.jsx";
 import {Box, IconButton, MenuItem, Tooltip, Typography} from "@mui/material";
 import useProductCategoryTypeData from "../../hooks/apiData/productCategoryType/productCategoryTypeData.jsx";
-import {
-    deleteSpaceEquipment,
-    saveSpaceEquipment,
-    updateSpaceEquipment
-} from "../../api/space_equipment/SpaceEquipment_API.js";
+import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import {toast} from "react-hot-toast";
 import GenericModal from "../../components/popUp/generic/GenericModal.jsx";
 import {MaterialReactTable, useMaterialReactTable} from "material-react-table";
@@ -157,6 +153,7 @@ const ProductCategoryManagement = () => {
     ], [unitOfMeasurementData, productCategoryTypeData]);
 
     const table = useMaterialReactTable({
+        localization: MRT_Localization_ES,
         columns,
         data: productCategoryData || [],
         createDisplayMode: "row",
