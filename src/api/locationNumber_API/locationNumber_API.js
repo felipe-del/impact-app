@@ -5,7 +5,7 @@ const root = '/api/location-number'
 
 export async function updateLocationNumber(id, locationNumber) {
     try {
-        const { data } = await api.get(`${root}/${id}`, locationNumber)
+        const { data } = await api.put(`${root}/${id}`, locationNumber)
         return data
     } catch (error) {
         handleAxiosError(error)
