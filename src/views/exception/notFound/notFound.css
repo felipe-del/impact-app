@@ -1,4 +1,12 @@
 /* General styling for the container */
+
+.background-notfound {
+    background-image: url("public/cool-background-notFound.svg");
+    background-repeat: no-repeat; /* No repite la imagen */
+    background-size: cover; /* Expande la imagen para cubrir el área */
+    background-position: center; /* Centra la imagen */
+}
+
 .notfound-page-container {
     display: flex;
     flex-direction: column;
