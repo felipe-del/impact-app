@@ -14,6 +14,7 @@ import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantity
 import MapIcon from '@mui/icons-material/Map';
 import FmdGoodIcon from '@mui/icons-material/FmdGood';
 import FitbitIcon from '@mui/icons-material/Fitbit';
+import CreditScoreIcon from '@mui/icons-material/CreditScore';
 import PropTypes from 'prop-types';
 
 
@@ -64,8 +65,7 @@ const Sidebar = ({ role }) => {
                             <Link className="collapse-item" to="/app/assetModelManagement"><ScatterPlotIcon/> Modelos</Link>
                             <Link className="collapse-item" to="/app/assetSubCategoryManagement"><DragIndicatorIcon/> Subcategoría</Link>
                             <Link className="collapse-item" to="/app/spaceEquipmentManagement"><ConstructionIcon/> Equipo Tecnológico</Link>
-
-                            <Link className="collapse-item" to="/app/assetLoanRequest"><FontAwesomeIcon icon={faClipboardCheck} /> Solicitud</Link>
+                            <Link className="collapse-item" to="/app/assetLoan"><CreditScoreIcon /> Solicitud</Link>
                             </div>
                     </div>
                 </li>
