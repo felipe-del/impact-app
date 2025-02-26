@@ -1,0 +1,40 @@
+import api from "../../config/axios.js";
+import handleAxiosError from "../handleAxiosError.js";
+
+const root = '/api/asset-request'
+
+export async function updateAssetRequest(id, assetRequest) {
+    try {
+        const { data } = await api.put(`${root}/${id}`, assetRequest)
+        return data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}
+
+export async function deleteAssetRequest(id) {
+    try {
+        const response = await api.delete(`${root}/${id}`)
+        return response.data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}
+
+export async function getAllAssetRequest() {
+    try {
+        const { data } = await api.get(root)
+        return data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}
+
+export async function saveAssetRequest(subCategory) {
+    try {
+        const { data } = await api.post(root, subCategory)
+        return data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}
