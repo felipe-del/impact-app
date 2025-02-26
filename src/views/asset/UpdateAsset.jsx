@@ -15,9 +15,9 @@ import {getAllBrands} from "../../api/brand/brand_API.js";
 import {getAllAssetModels} from "../../api/assetModel/assetModel_API.js";
 import {getAllCurrencies} from "../../api/currency/currency_API.js";
 import {getAllLocationNumber} from "../../api/locationNumber_API/locationNumber_API.js";
-import {getAllAssets, saveAsset} from "../../api/asset/asset_API.js";
+import {getAllAssets, saveAsset, updateAsset} from "../../api/asset/asset_API.js";
 import {toast} from "react-hot-toast";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 const initialData = {
     purchaseDate: '',
@@ -35,14 +35,10 @@ const initialData = {
 };
 
 const UpdateAsset = () => {
-
+    const { id } = useParams();
     const [formData, setFormData] = useState(initialData);
     const [formErrors, setFormErrors] = useState({});
-
-    const { id } = useParams();
     const [assetId, setAssetId] = useState(id);
-    const [assetToEdit, setAssetToEdit] = useState({});
-
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const handleShowConfirmationModal = () => setShowConfirmationModal(true);
     const handleHideConfirmationModal = () => setShowConfirmationModal(false);
@@ -58,6 +54,8 @@ const UpdateAsset = () => {
     const [assetStatus, setAssetStatus] = useState([]);
 
     const [openStatesAssetModal, setOpenStatesAssetModal] = useState(false);
+
+    const navigate= useNavigate()
 
     const clearForm = () => {
         setFormData(initialData);
@@ -85,12 +83,32 @@ const UpdateAsset = () => {
     const {data: locationsData} = useQuery({queryKey: ['locations'], queryFn: getAllLocationNumber})
 
 
-    useEffect(() => {
-        if (assetsData) {
-            setAssets(assetsData.data)
-            setAssetToEdit(assets.find(asset => asset.id === parseInt(assetId)))
 
+    useEffect(() => {
+        if (assetsData?.data) {
+            const selectedAsset = assetsData.data.find(asset => asset.id === parseInt(id));
+            if (selectedAsset) {
+                console.log({ selectedAsset });
+                setFormData({
+                    purchaseDate: selectedAsset.purchaseDate,
+                    value: selectedAsset.value,
+                    supplier: selectedAsset.supplier.id,
+                    brand: selectedAsset.brand.id,
+                    subcategory: selectedAsset.subcategory.id,
+                    responsible: selectedAsset.user.id,
+                    status: selectedAsset.status.id,
+                    currency: selectedAsset.currency.id,
+                    assetModel: selectedAsset.model.id,
+                    assetSeries: selectedAsset.assetSeries,
+                    plateNumber: selectedAsset.plateNumber,
+                    locationNumber: selectedAsset.locationNumber.id,
+                });
+            }
         }
+    }, [assetsData, id]);
+
+
+    useEffect(() => {
         if (assetStatusData) setAssetStatus(assetStatusData.data)
         if (suppliersData) setSuppliers(suppliersData.data)
         if (subCategoriesData) setSubcategories(subCategoriesData.data)
@@ -101,7 +119,6 @@ const UpdateAsset = () => {
         if (locationsData) setLocationNumbers(locationsData.data)
 
     }, [
-        assetsData,
         assetStatusData,
         suppliersData,
         subCategoriesData,
@@ -167,9 +184,9 @@ const UpdateAsset = () => {
             locationNumberId: parseInt(formData.locationNumber),
         };
         try {
-            const response = await saveAsset(requestData);
+            const response = await updateAsset(id, requestData);
             toast.success(response.message, { duration: 7000 });
-            // clear form
+            navigate('/app/assetTable')
             clearForm();
         } catch (error) {
             console.log({ error });
@@ -459,8 +476,8 @@ const UpdateAsset = () => {
             <GenericModal
                 show={showConfirmationModal}
                 onHide={handleHideConfirmationModal}
-                title="¿Desea guardar el activo?"
-                bodyText="Si guarda el activo se podrá solicitar posteriormente por otro usuario."
+                title="¿Desea actualizar el activo?"
+                bodyText="Si actualiza el activo, los cambios serán permanentes."
                 onButtonClick={handleSubmit}
             />
             <AssetStatusModal  open={openStatesAssetModal} onClose={handleCloseStatesAssetModal} assetStatuses={assetStatus} />
