@@ -17,6 +17,7 @@ import {getAllCurrencies} from "../../api/currency/currency_API.js";
 import {getAllLocationNumber} from "../../api/locationNumber_API/locationNumber_API.js";
 import {saveAsset} from "../../api/asset/asset_API.js";
 import {toast} from "react-hot-toast";
+import {useNavigate} from "react-router-dom";
 
 const initialData = {
     purchaseDate: '',
@@ -53,7 +54,7 @@ const CreateAsset = () => {
     const [assetStatus, setAssetStatus] = useState([]);
 
     const [openStatesAssetModal, setOpenStatesAssetModal] = useState(false);
-
+    const navigate = useNavigate()
     const clearForm = () => {
         setFormData(initialData);
     }
@@ -141,7 +142,7 @@ const CreateAsset = () => {
         try {
             const response = await saveAsset(requestData);
             toast.success(response.message, { duration: 7000 });
-            // clear form
+            navigate('/app/assetTable')
             clearForm();
         } catch (error) {
             console.log({ error });
