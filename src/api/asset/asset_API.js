@@ -5,7 +5,7 @@ const root = '/api/asset'
 
 export async function updateAsset(id, asset) {
     try {
-        const { data } = await api.get(`${root}/${id}`, asset)
+        const { data } = await api.put(`${root}/${id}`, asset)
         return data
     } catch (error) {
         handleAxiosError(error)
