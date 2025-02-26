@@ -25,6 +25,7 @@ import LocationTypeManagement from "../views/locationType/LocationTypeManagement
 import LocationNumberManagement from "../views/locationNumber/LocationNumberManagement.jsx";
 import ProductCategoryManagement from "../views/productCategory/ProductCategoryManagement.jsx";
 import ProductCategoryTypeManagement from "../views/productCategoryType/ProductCategoryTypeManagement.jsx";
+import AssetLoan from "../views/asset/AssetLoan.jsx";
 
 export default function Router() {
     return (
@@ -62,6 +63,7 @@ export default function Router() {
                         <Route path="assetTable" element={<AssetTable />} />
                         <Route path="createAsset" element={<CreateAsset/>} />
                         <Route path="editAsset/:id" element={<UpdateAsset/>} />
+                        <Route path="assetLoan" element={<AssetLoan/>} />
 
                     </Route>
                 </Route>
