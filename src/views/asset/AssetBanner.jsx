@@ -7,12 +7,14 @@ import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import BannerActionButton from "../../components/button/BannerActionButton.jsx";
 import {bannerStyle} from "../../style/codeStyle.js";
+import InfoIcon from '@mui/icons-material/Info';
 
 const AssetBanner = ({ title = "",
                          visibleButtons = ["csv", "pdf", "statusModal", "export", "createAsset"],
                          exportToPDF,
                          flatAssets,
-                         handleOpen }) => {
+                         handleOpen,
+                     assetInfo}) => {
     const navigate = useNavigate(); // Hook para la navegación
     const [anchorEl, setAnchorEl] = useState(null);
 
@@ -42,6 +44,18 @@ const AssetBanner = ({ title = "",
                     />
 
                 )}
+                {visibleButtons.includes("assetInfo") && (
+                    <BannerActionButton
+                        onClick={assetInfo}
+                        text={"Información del Activo"}
+                        icon={<InfoIcon />}
+                        color={"warning"}
+                        style={styles.button}
+                        widthWhenIsHover={"200px"}
+                    />
+
+                )}
+
                 {visibleButtons.includes("createAsset") && (
                     <BannerActionButton
                         onClick={() => navigate("/app/createAsset")}
@@ -105,6 +119,7 @@ AssetBanner.propTypes = {
     exportToPDF: PropTypes.func,
     handleOpen: PropTypes.func,
     visibleButtons: PropTypes.arrayOf(PropTypes.string),
+    assetInfo: PropTypes.func,
 };
 
 
