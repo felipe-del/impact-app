@@ -328,7 +328,7 @@ const UserTable = () => {
                                 display: 'flex',
                                 justifyContent: 'space-between',
                                 gap: '10px',
-                                flexWrap: 'wrap' // Para que los botones se apilen en pantallas pequeñas
+                                flexWrap: 'wrap'
                             }}>
                                 <TableActionButtons confirmationModal={handleShowConfirmationModal} cancelEditing={cancelEditing} row={row} />
                             </div>
