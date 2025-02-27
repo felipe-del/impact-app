@@ -15,6 +15,7 @@ import MapIcon from '@mui/icons-material/Map';
 import FmdGoodIcon from '@mui/icons-material/FmdGood';
 import FitbitIcon from '@mui/icons-material/Fitbit';
 import CreditScoreIcon from '@mui/icons-material/CreditScore';
+import ReceiptIcon from '@mui/icons-material/Receipt';
 import PropTypes from 'prop-types';
 
 
@@ -59,11 +60,12 @@ const Sidebar = ({ role }) => {
                     <div id="collapseActivos" className="collapse" aria-labelledby="headingActivos" data-parent="#accordionSidebar">
                         <div className="bg-white py-2 collapse-inner rounded">
                             <Link className="collapse-item" to="/app/assetTable"><DevicesIcon/> Activo</Link>
-                            <Link className="collapse-item" to="/app/supplierManagement"><LocalShippingIcon/> Proveedor</Link>
-                            <Link className="collapse-item" to="/app/brandManagement"><LocalOfferIcon icon={faPlus} /> Marca</Link>
-                            <Link className="collapse-item" to="/app/assetCategoryManagement"><CategoryIcon/> Categoría de Activo</Link>
-                            <Link className="collapse-item" to="/app/assetModelManagement"><ScatterPlotIcon/> Modelos</Link>
                             <Link className="collapse-item" to="/app/assetSubCategoryManagement"><DragIndicatorIcon/> Subcategoría</Link>
+                            <Link className="collapse-item" to="/app/supplierManagement"><LocalShippingIcon/> Proveedor</Link>
+
+                            <Link className="collapse-item" to="/app/assetCategoryManagement"><CategoryIcon/> Categoría</Link>
+                            <Link className="collapse-item" to="/app/assetModelManagement"><ScatterPlotIcon/> Modelos</Link>
+                            <Link className="collapse-item" to="/app/brandManagement"><LocalOfferIcon icon={faPlus} /> Marca</Link>
                             <Link className="collapse-item" to="/app/spaceEquipmentManagement"><ConstructionIcon/> Equipo Tecnológico</Link>
                             <Link className="collapse-item" to="/app/assetLoan"><CreditScoreIcon /> Solicitud</Link>
                             </div>
@@ -158,6 +160,35 @@ const Sidebar = ({ role }) => {
                         <div className="bg-white py-2 collapse-inner rounded">
                             <Link className="collapse-item" to="/app/productLoanRequest"><FontAwesomeIcon icon={faClipboardCheck} /> Solicitud</Link>
                          </div>
+                    </div>
+                </li>
+            )}
+
+            <hr className="sidebar-divider" />
+
+            <div className="sidebar-heading" id="complementos-heading">
+                Historial
+            </div>
+
+            {/* Historial Section */}
+            {(role === 'MANAGER' || role === 'ADMINISTRATOR') && (
+                <li className="nav-item" id="misSolicitudes-item">
+                    <a
+                        className="nav-link collapsed"
+                        href="#"
+                        data-toggle="collapse"
+                        data-target="#collapseMisSolicitudes"
+                        aria-expanded="false"
+                        aria-controls="collapseMisSolicitudes"
+                    >
+                        <i className="fas fa-fw fa-clipboard-list"></i>
+                        <span>Mis Solicitudes</span>
+                    </a>
+                    <div id="collapseMisSolicitudes" className="collapse" aria-labelledby="headingMisSolicitudes" data-parent="#accordionSidebar">
+                        <div className="bg-white py-2 collapse-inner rounded">
+                            <Link className="collapse-item" to="/app/requestHistory">
+                                <i className="fas fa-fw fa-list-ol"></i> Registros </Link>
+                        </div>
                     </div>
                 </li>
             )}
