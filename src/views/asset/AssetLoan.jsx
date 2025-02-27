@@ -126,7 +126,7 @@ const AssetLoan = () => {
                                     {...register("selectedAsset", { required: "Seleccione un activo" })}
                                     onChange={(e) => {
                                         setSelectedAsset(e.target.value);
-                                        setShowAssetInfo(false);
+                                        if (e.target.value === "") setAssetInfo(null);
                                         clearErrors("selectedAsset"); // Clear the error when selecting a new asset
                                     }}
                                 >
