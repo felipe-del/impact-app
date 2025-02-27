@@ -27,6 +27,7 @@ import ProductCategoryManagement from "../views/productCategory/ProductCategoryM
 import ProductCategoryTypeManagement from "../views/productCategoryType/ProductCategoryTypeManagement.jsx";
 import AssetLoan from "../views/asset/AssetLoan.jsx";
 import RequestHistory from "../views/requestHistory/RequestHistory.jsx";
+import Home from "../views/home/Home.jsx";
 
 export default function Router() {
     return (
@@ -38,7 +39,7 @@ export default function Router() {
 
 
                 <Route element={<AppLayout />} path="/app">
-                    <Route index element={<h1>Info de Impact</h1>} />
+                    <Route index element={<Home/>} />
                     <Route path="profile" element={<Profile/>} />
                     <Route element={<ProtectedRoute allowedRoles={["ADMINISTRATOR", "MANAGER"]} />}>
                         <Route path="dashboard" element={<Dashboard />} />
