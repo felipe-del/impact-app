@@ -33,6 +33,7 @@ export const bannerStyle = {
 };
 
 export const gradientMapping = {
+    darkPrimary: 'linear-gradient(45deg, #005DA4, #0078D4)', // Dark Primary Gradient
     primary: 'linear-gradient(45deg, #1976d2, #42a5f5)', // Primary Gradient
     secondary: 'linear-gradient(45deg, #dc004e, #f73378)', // Secondary Gradient
     error: 'linear-gradient(45deg, #d32f2f, #f44336)', // Error Gradient
