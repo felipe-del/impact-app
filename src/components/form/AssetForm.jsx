@@ -61,7 +61,6 @@ const AssetForm = ({ formData = initialData, onChange, onSubmit }) => {
 
         setFormErrors(errors);
 
-        // Solo enviar si no hay errores
         if (Object.keys(errors).length === 0) {
             handleShowConfirmationModal();
         }
