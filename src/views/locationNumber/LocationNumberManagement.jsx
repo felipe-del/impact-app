@@ -47,7 +47,7 @@ const LocationNumberManagement = () => {
         },
         {
             accessorKey: "locationTypeName",
-            header: "Nombre de Ubicación",
+            header: "Tipo de Ubicación",
             enableEditing: true,
             muiEditTextFieldProps: ({ row }) => ({
                 select: true,
