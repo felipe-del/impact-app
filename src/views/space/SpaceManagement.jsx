@@ -6,6 +6,7 @@ import {Box, Typography} from "@mui/material";
 import LoadingPointsSpinner from "../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
 
+
 const SpaceManagement = () => {
 
     const {space, isError, isLoading, refetch} = useSpaceData();
@@ -124,7 +125,7 @@ const SpaceManagement = () => {
             {isLoading && <LoadingPointsSpinner />}
             <SpaceBanner
                 title="Gestión de Espacios"
-                visibleButtons={["goBack"]}
+                visibleButtons={["createSpace"]}
             />
             <MaterialReactTable table={table} />
         </>
