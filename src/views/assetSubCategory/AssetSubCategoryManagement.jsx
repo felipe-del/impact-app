@@ -39,11 +39,6 @@ const AssetSubCategoryManagement = () => {
     }, [assetSubCategory, assetCategoriesData]);
 
     const columns = useMemo(() => {
-        // Check if assetCategoriesData has been populated
-        if (!assetCategoriesData.length) {
-            return []; // Return an empty array or you can handle loading state here
-        }
-
         return [
             { accessorKey: "id", header: "ID", enableEditing: false, size: 80 },
             { accessorKey: "name", header: "Nombre", enableEditing: true },
