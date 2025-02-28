@@ -28,6 +28,9 @@ import ProductCategoryTypeManagement from "../views/productCategoryType/ProductC
 import AssetLoan from "../views/asset/AssetLoan.jsx";
 import RequestHistory from "../views/requestHistory/RequestHistory.jsx";
 import Home from "../views/home/Home.jsx";
+import CreateSpace from "../views/space/CreateSpace.jsx";
+import BuildingManagement from "../views/building/BuildingManagement.jsx";
+import BuildingLocationManagement from "../views/buildingLocation/BuildingLocationManagement.jsx";
 
 export default function Router() {
     return (
@@ -56,6 +59,9 @@ export default function Router() {
 
                         <Route path="spaceManagement" element={<SpaceManagement/>} />
                         <Route path="productManagement" element={<ProductManagement/>} />
+                        <Route path="createSpace" element={<CreateSpace />} />
+                        <Route path="buildingManagement" element={<BuildingManagement />} />
+                        <Route path="buildingLocationManagement" element={<BuildingLocationManagement />} />
 
                         <Route path="supplierManagement" element={<SupplierManagement/>} />
 
