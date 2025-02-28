@@ -1,0 +1,187 @@
+import BuildingLocationBanner from "./BuildingLocationBanner.jsx";
+import useBuildingLocationData from "../../hooks/apiData/buildingLocation/BuildingLocationData.jsx";
+import LoadingPointsSpinner from "../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
+import {useEffect, useMemo, useState} from "react";
+import GenericModal from "../../components/popUp/generic/GenericModal.jsx";
+import {Box, IconButton, MenuItem, Tooltip} from "@mui/material";
+import useBuildingData from "../../hooks/apiData/building/BuildingData.jsx";
+import {toast} from "react-hot-toast";
+import {deleteBrand, saveBrand, updateBrand} from "../../api/brand/brand_API.js";
+import {
+    deleteBuildingLocation,
+    saveBuildingLocation,
+    updateBuildingLocation
+} from "../../api/buildingLocation/buildingLocation_API.js";
+import {MaterialReactTable, useMaterialReactTable} from "material-react-table";
+import {MRT_Localization_ES} from "material-react-table/locales/es/index.js";
+import EditIcon from "@mui/icons-material/Edit.js";
+import DeleteIcon from "@mui/icons-material/Delete.js";
+
+const BuildingLocationManagement = () => {
+
+    const {buildingLocation,isError,refetch,isLoading} = useBuildingLocationData();
+    const {building} = useBuildingData();
+    const [buildingLocationData, setbuildingLocationData] = useState([]);
+    const [buildingData, setBuildingData] = useState([]);
+
+    const [rowToEdit, setRowToEdit] = useState(null);
+
+    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+    const handleShowConfirmationModal = (row) => {
+        setRowToEdit(row)
+        setShowConfirmationModal(true);
+    }
+    const handleHideConfirmationModal = () => setShowConfirmationModal(false);
+
+    useEffect(() => {
+        if (buildingLocation?.data && Array.isArray(buildingLocation.data)) {
+            setbuildingLocationData(buildingLocation.data);
+        }
+        if (building?.data && Array.isArray(building.data)) {
+            setBuildingData(building.data);
+        }
+        console.log(buildingLocation.data)
+    }, [buildingLocation, building]);
+
+    const columns = useMemo(() => [
+        { accessorKey: "id", header: "ID", enableEditing: false, size: 80 },
+        { accessorKey: "floor", header: "Número de Piso", enableEditing: true,
+            muiEditTextFieldProps: ({ row }) => ({
+                type: "number",
+                inputProps: {
+                    min: 0,
+                    max: 10
+                },
+            }),
+        },
+        { accessorKey: "building.name", header: "Edificio", enableEditing: true,
+            muiEditTextFieldProps: ({ row }) => ({
+                select: true,
+                defaultValue: row.original.locationTypeName || "",
+                children: buildingData.map((type) => (
+                    <MenuItem key={type.id} value={type.name}>
+                        {type.name}
+                    </MenuItem>
+                )),
+            }),},
+    ], [buildingData]);
+
+    const validateBuildingLocation = (values) => {
+        console.log(values)
+        if (!values.floor) {
+            toast.error("El número de piso no puede estar vacío.");
+            return false;
+        }
+        if (!values["building.name"]) {
+            toast.error("El edificio no puede estar vacío.");
+            return false;
+        }
+        return true;
+    }
+
+    const handleCreateBuildingLocation = async ({ values, table }) => {
+        if (!validateBuildingLocation(values)) {
+            return;
+        }
+        try {
+            const buildingId = buildingData.find((type) => type.name === values["building.name"])?.id;
+            const response = await saveBuildingLocation({
+                buildingId: buildingId,
+                floor: values.floor
+            });
+            toast.success(response.message);
+            table.setCreatingRow(null);
+            refetch();
+        } catch (error) {
+            toast.error(error.message);
+        }
+    };
+
+    const handleDeleteBuildingLocation  = async () => {
+        if (!rowToEdit?.original?.id) {
+            toast.error("Error al eliminar: ID no encontrado.");
+            return;
+        }
+        try {
+            const response = await deleteBuildingLocation(rowToEdit.original.id);
+            toast.success(response.message);
+            table.setEditingRow(null);
+            refetch();
+        } catch (error) {
+            toast.error(error.message);
+        }
+    };
+
+    const handleUpdateBuildingLocation  = async ({ values, row }) => {
+        if (!validateBuildingLocation(values)) {
+            return;
+        }
+        try {
+            const buildingId = buildingData.find((type) => type.name === values["building.name"])?.id;
+            const response = await updateBuildingLocation(row.original.id, {
+                buildingId: buildingId,
+                floor: values.floor
+            });
+            toast.success(response.message);
+            refetch()
+            table.setEditingRow(null);
+        } catch (error) {
+            toast.error(error.message);
+        }
+    };
+
+    const table = useMaterialReactTable({
+        localization: MRT_Localization_ES,
+        columns,
+        data: buildingLocationData || [],
+        createDisplayMode: "row",
+        enableEditing: true,
+        editingMode: "row",
+        enableExpandAll: false,
+        manualFiltering: true, //turn off built-in client-side filtering
+        manualPagination: true, //turn off built-in client-side pagination
+        manualSorting: true, //turn off built-in client-side sorting
+        initialState: { density: "comfortable", pagination: { pageSize: 5 } },
+        onCreatingRowSave: handleCreateBuildingLocation,
+        onEditingRowSave: handleUpdateBuildingLocation,
+        renderRowActions: ({ row, table }) => {
+            if (!row?.original) return null;
+
+            return (
+                <Box sx={{ display: 'flex', gap: '1rem' }}>
+                    <Tooltip title="Editar">
+                        <IconButton onClick={() => table.setEditingRow(row)}>
+                            <EditIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Eliminar">
+                        <IconButton color="error" onClick={() => handleShowConfirmationModal(row)}>
+                            <DeleteIcon />
+                        </IconButton>
+                    </Tooltip>
+                </Box>
+            );
+        },
+    });
+
+    if (isError) return <p>Error al cargar las marcas.</p>;
+
+    return (
+        <>
+            {isLoading && <LoadingPointsSpinner />}
+            <BuildingLocationBanner
+                title={"Gestión de Números de Piso"}
+                visibleButtons={[ "createBuildingLocation"]}
+                createBuildingLocation={() => table.setCreatingRow(true)}
+            />
+            <MaterialReactTable table={table} />
+            <GenericModal show={showConfirmationModal}
+                          onHide={handleHideConfirmationModal}
+                          title={"Eliminar Número de Piso"}
+                          bodyText={"¿Estás seguro que deseas eliminar este Número de Piso?"}
+                          onButtonClick={handleDeleteBuildingLocation} />
+        </>
+    );
+}
+
+export default BuildingLocationManagement;
