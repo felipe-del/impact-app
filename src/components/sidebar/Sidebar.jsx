@@ -15,7 +15,8 @@ import MapIcon from '@mui/icons-material/Map';
 import FmdGoodIcon from '@mui/icons-material/FmdGood';
 import FitbitIcon from '@mui/icons-material/Fitbit';
 import CreditScoreIcon from '@mui/icons-material/CreditScore';
-import ReceiptIcon from '@mui/icons-material/Receipt';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import LocalConvenienceStoreIcon from '@mui/icons-material/LocalConvenienceStore';
 import PropTypes from 'prop-types';
 
 
@@ -103,6 +104,8 @@ const Sidebar = ({ role }) => {
 
                             <Link className="collapse-item" to="/app/locationTypeManagement"><MapIcon/> Tipo de Ubicación</Link>
                             <Link className="collapse-item" to="/app/locationNumberManagement"><FmdGoodIcon/> Número de Ubicación</Link>
+                            <Link className="collapse-item" to="/app/buildingManagement"><AccountBalanceIcon /> Edificio</Link>
+                            <Link className="collapse-item" to="/app/buildingLocationManagement"><LocalConvenienceStoreIcon /> Pisos de Edificio </Link>
 
                             <Link className="collapse-item" to="/app/spaceRequest"><FontAwesomeIcon icon={faClipboardCheck} /> Solicitud de Espacios</Link>
                          </div>
