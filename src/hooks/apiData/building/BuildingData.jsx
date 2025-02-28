@@ -1,5 +1,5 @@
 import {useQuery} from "@tanstack/react-query";
-import {getAllBuilding} from "../../../api/buildingLocation/buildingLocation_API.js";
+import {getAllBuilding} from "../../../api/building/building_API.js";
 
 
 const useBuildingData = () => {
