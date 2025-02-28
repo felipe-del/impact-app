@@ -1,10 +1,11 @@
-import { ArrowBack, AddBusiness } from "@mui/icons-material";
+import { ArrowBack } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import BannerActionButton from "../../components/button/BannerActionButton.jsx";
 import {bannerStyle} from "../../style/codeStyle.js";
+import AddLocationIcon from '@mui/icons-material/AddLocation';
 
-const SpaceBanner = ({ title = "", visibleButtons = [""], createSpace}) => {
+const SpaceBanner = ({ title = "", visibleButtons = [""]}) => {
     const navigate = useNavigate();
 
     const styles = bannerStyle;
@@ -25,8 +26,8 @@ const SpaceBanner = ({ title = "", visibleButtons = [""], createSpace}) => {
                 )}
                 {visibleButtons.includes("createSpace") && (
                     <BannerActionButton
-                        onClick={createSpace}
-                        text={"Agregar Espacio"} icon={<AddBusiness  />}
+                        onClick={() => navigate("/app/createSpace")}
+                        text={"Agregar Espacio"} icon={<AddLocationIcon  />}
                         color="error"
                         style={styles.button}
                         widthWhenIsHover={"170px"}
