@@ -3,8 +3,11 @@ import './notFound.css';
 
 const NotFound = () => {
     return (
-        <main className={"background-notfound"}>
-            <div className="notfound-page-container">
+        <main
+            className="background-notfound"
+            style={{ backgroundImage: `url("/cool-background-notFound.svg")` }}
+        >
+        <div className="notfound-page-container">
                 <div className="notfound-page-content">
                     <img src="/IMPACT_BLACK_LOGO.png" alt="IMPACT LOGO" className="notfound-page-logo" />
                     <h1 className="notfound-page-heading">¡Oops! Página No Encontrada</h1>
