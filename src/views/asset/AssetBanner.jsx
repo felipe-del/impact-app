@@ -8,6 +8,7 @@ import PropTypes from "prop-types";
 import BannerActionButton from "../../components/button/BannerActionButton.jsx";
 import {bannerStyle} from "../../style/codeStyle.js";
 import InfoIcon from '@mui/icons-material/Info';
+import AddToQueueIcon from '@mui/icons-material/AddToQueue';
 
 const AssetBanner = ({ title = "",
                          visibleButtons = ["csv", "pdf", "statusModal", "export", "createAsset"],
@@ -59,7 +60,7 @@ const AssetBanner = ({ title = "",
                 {visibleButtons.includes("createAsset") && (
                     <BannerActionButton
                         onClick={() => navigate("/app/createAsset")}
-                        text={"Crear Activo"} icon={<PersonAdd />}
+                        text={"Crear Activo"} icon={<AddToQueueIcon />}
                         color="error"
                         style={styles.button}
                         widthWhenIsHover={"150px"}
