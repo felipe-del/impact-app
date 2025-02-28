@@ -39,7 +39,7 @@ const RequestHistoryBanner = ({ title = "" }) => {
                 <BannerToggleButton
                     onClick={() => handleButtonClick("spaceRequest", "/app/spaceManagement")}
                     text="Espacios"
-                    icon={<i className="fa-solid fa-building"></i>}
+                    icon={<i className="fa-solid fa-buildingLocation"></i>}
                     color={activeButton === "spaceRequest" ? "secondary" : "darkPrimary"}
                     style={styles.button}
                     widthWhenIsHover="110px"
