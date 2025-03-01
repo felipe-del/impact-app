@@ -142,8 +142,8 @@ const Sidebar = ({ role }) => {
                         <div className="bg-white py-2 collapse-inner rounded">
                             <Link className="collapse-item" to="/app/productManagement"><ProductionQuantityLimitsIcon /> Productos</Link>
 
-                            <Link className="collapse-item" to="/app/productCategoryManagement"><CategoryIcon/> Categoría de Producto</Link>
-                            <Link className="collapse-item" to="/app/productCategoryTypeManagement"><FitbitIcon/> Tipo de Categoría de Producto</Link>
+                            <Link className="collapse-item" to="/app/productCategoryManagement"><CategoryIcon/> Categoría</Link>
+                            <Link className="collapse-item" to="/app/productCategoryTypeManagement"><FitbitIcon/> Tipo de Categoría</Link>
                             <Link className="collapse-item" to="/app/productLoanRequest"><FontAwesomeIcon icon={faClipboardCheck} /> Solicitud</Link>
 
                         </div>
