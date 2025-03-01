@@ -228,7 +228,6 @@ const CreateSpace = () => {
                                 </select>
                                 {formErrors.buildingLocation && <div className="input-text-error show">{formErrors.buildingLocation}</div>}
                             </div>
-
                         </div>
 
                         <div className="row mb-4">
@@ -299,8 +298,6 @@ const CreateSpace = () => {
                             </div>
 
                         </div>
-
-
 
                         <div className="d-flex justify-content-end mb-0">
                             <SaveButton acceptAction={checkErrors} labelAccept="Guardar" />
