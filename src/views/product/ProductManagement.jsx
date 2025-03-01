@@ -117,7 +117,7 @@ const ProductManagement = () => {
             {isLoading && <LoadingPointsSpinner />}
             <ProductBanner
                 title="Gestión de Productos"
-                visibleButtons={["goBack"]}
+                visibleButtons={[ "createProduct"]}
             />
             <MaterialReactTable table={table} />
         </>
