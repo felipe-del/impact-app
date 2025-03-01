@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faList, faClipboardCheck, faMapMarkedAlt, faHashtag, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faClipboardCheck } from '@fortawesome/free-solid-svg-icons';
 import DevicesIcon from '@mui/icons-material/Devices';
 import { Link } from 'react-router-dom';
 import './sidebar.css';
