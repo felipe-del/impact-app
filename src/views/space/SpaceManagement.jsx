@@ -5,6 +5,18 @@ import {MaterialReactTable, useMaterialReactTable} from "material-react-table";
 import {Box, Typography} from "@mui/material";
 import LoadingPointsSpinner from "../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
+import EditButton from "../../components/button/EditButton.jsx";
+import {useNavigate} from "react-router-dom";
+
+const initialData = {
+    name: '',
+    spaceCode: '',
+    buildingLocation: '',
+    maxPeople: '',
+    openTime: '',
+    closeTime: '',
+    spaceStatusId: 0
+};
 
 
 const SpaceManagement = () => {
@@ -18,6 +30,12 @@ const SpaceManagement = () => {
         }
     }, [space]);
 
+    const navigate = useNavigate()
+
+    const handleEdit = (row) => {
+        navigate("/app/editSpace/" + row.original.id)
+    }
+
     const columns = useMemo(
         () => [
             { accessorKey: "id", header: "ID", size: 80 },
@@ -28,6 +46,14 @@ const SpaceManagement = () => {
             { accessorKey: "maxPeople", header: "Capacidad Máxima" },
             { accessorKey: "spaceStatus.name", header: "Estado" },
             { accessorKey: "buildingLocationResponse.building.name", header: "Edificio" },
+            {
+                id: 'actions',
+                header: 'Acciones',
+                size: 'small',
+                Cell: ({ row }) => (
+                    <EditButton handleEdit={handleEdit} row={row} />
+                ),
+            },
         ],
         []
     )
