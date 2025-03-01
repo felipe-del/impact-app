@@ -1,35 +1,25 @@
-
 import PropTypes from "prop-types";
-import { useState } from "react";
-
 import { bannerStyle } from "../../style/codeStyle.js";
 import BannerToggleButton from "../../components/button/BannerToggleButton.jsx";
 
-const RequestHistoryBanner = ({ title = "" }) => {
-
-    const [activeButton, setActiveButton] = useState(null);
-    const [showAdditionalButtons, setShowAdditionalButtons] = useState(false);
-    const [activeAdditionalButton, setActiveAdditionalButton] = useState(null); // State for additional buttons
+const RequestHistoryBanner = ({
+                                  title = "",
+                                  activeFilters = [],
+                                  handleButtonClick,
+                                  handleAdditionalButtonClick,
+                                  activeButton,
+                                  activeAdditionalButton,
+                                  showAdditionalButtons,
+                              }) => {
     const styles = bannerStyle;
-
-    const handleButtonClick = (buttonKey, path) => {
-        setActiveButton(buttonKey);
-        setShowAdditionalButtons(
-            buttonKey === "spaceRequest" || buttonKey === "productRequest" || buttonKey === "assetRequest"
-        );
-
-    };
-
-    const handleAdditionalButtonClick = (buttonKey) => {
-        setActiveAdditionalButton(buttonKey); // Set active button for additional buttons
-    };
 
     return (
         <div className="export-buttons" style={styles.banner}>
             <h3 style={styles.title}>{title}</h3>
-            {/*<div style={styles.buttonsContainer}>
+            <div style={styles.buttonsContainer}>
+                {/* Botones principales */}
                 <BannerToggleButton
-                    onClick={() => handleButtonClick("assetRequest", "/app/assetTable")}
+                    onClick={() => handleButtonClick("assetRequest")}
                     text="Activos"
                     icon={<i className="fa-solid fa-desktop"></i>}
                     color={activeButton === "assetRequest" ? "secondary" : "darkPrimary"}
@@ -37,15 +27,15 @@ const RequestHistoryBanner = ({ title = "" }) => {
                     widthWhenIsHover="110px"
                 />
                 <BannerToggleButton
-                    onClick={() => handleButtonClick("spaceRequest", "/app/spaceManagement")}
+                    onClick={() => handleButtonClick("spaceRequest")}
                     text="Espacios"
-                    icon={<i className="fa-solid fa-buildingLocation"></i>}
+                    icon={<i className="fa-solid fa-building"></i>}
                     color={activeButton === "spaceRequest" ? "secondary" : "darkPrimary"}
                     style={styles.button}
                     widthWhenIsHover="110px"
                 />
                 <BannerToggleButton
-                    onClick={() => handleButtonClick("productRequest", "/app/productManagement")}
+                    onClick={() => handleButtonClick("productRequest")}
                     text="Productos"
                     icon={<i className="fa-solid fa-box"></i>}
                     color={activeButton === "productRequest" ? "secondary" : "darkPrimary"}
@@ -53,16 +43,18 @@ const RequestHistoryBanner = ({ title = "" }) => {
                     widthWhenIsHover="110px"
                 />
 
+                {/* Separador vertical si hay botones adicionales */}
                 {showAdditionalButtons && (
                     <div style={{
-                        margin: "0 10px", // Adjust horizontal spacing
-                        width: "2px", // Width of the vertical line
-                        height: "40px", // Height of the vertical line
-                        backgroundColor: "#ccc", // Choose a light gray color
-                        display: "inline-block", // Ensure it displays inline with buttons
+                        margin: "0 10px",
+                        width: "2px",
+                        height: "40px",
+                        backgroundColor: "#ccc",
+                        display: "inline-block",
                     }} />
                 )}
 
+                {/* Botones adicionales */}
                 {showAdditionalButtons && (
                     <div style={styles.buttonsContainer}>
                         <BannerToggleButton
@@ -91,13 +83,20 @@ const RequestHistoryBanner = ({ title = "" }) => {
                         />
                     </div>
                 )}
-            </div>*/}
+            </div>
+            
         </div>
     );
 };
 
 RequestHistoryBanner.propTypes = {
     title: PropTypes.string,
+    activeFilters: PropTypes.array,
+    handleButtonClick: PropTypes.func,
+    handleAdditionalButtonClick: PropTypes.func,
+    activeButton: PropTypes.string,
+    activeAdditionalButton: PropTypes.string,
+    showAdditionalButtons: PropTypes.bool,
 };
 
 export default RequestHistoryBanner;
