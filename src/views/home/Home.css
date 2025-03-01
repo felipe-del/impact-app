@@ -27,13 +27,6 @@
     line-height: 1.6;
 }
 
-/* Sección de Entidades */
-.entities {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    flex-wrap: wrap;
-}
 
 /* Card de Entidades */
 .entity-card {
@@ -81,12 +74,6 @@
     text-decoration: underline;
 }
 
-/* Media Queries for Responsiveness */
-@media (min-width: 768px) {
-    .entity-card {
-        width: 45%; /* Set width to 45% for 2 columns on medium and larger screens */
-    }
-}
 
 @media (max-width: 768px) {
     .entities {
@@ -116,3 +103,4 @@
         font-size: 0.9rem; /* Further reduce paragraph size */
     }
 }
+
