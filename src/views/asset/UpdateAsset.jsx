@@ -38,12 +38,10 @@ const UpdateAsset = () => {
     const { id } = useParams();
     const [formData, setFormData] = useState(initialData);
     const [formErrors, setFormErrors] = useState({});
-    const [assetId, setAssetId] = useState(id);
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const handleShowConfirmationModal = () => setShowConfirmationModal(true);
     const handleHideConfirmationModal = () => setShowConfirmationModal(false);
 
-    const [assets, setAssets] = useState([]);
     const [suppliers, setSuppliers] = useState([]);
     const [brands, setBrands] = useState([]);
     const [subcategories, setSubcategories] = useState([]);

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import BannerActionButton from "../../components/button/BannerActionButton.jsx";
 import {bannerStyle} from "../../style/codeStyle.js";
-import AddLocationIcon from '@mui/icons-material/AddLocation';
+import DomainAddIcon from '@mui/icons-material/DomainAdd';
 import ManageHistoryIcon from "@mui/icons-material/ManageHistory.js";
 
 const SpaceBanner = ({ title = "", visibleButtons = [""], handleOpen} ) => {
@@ -28,7 +28,7 @@ const SpaceBanner = ({ title = "", visibleButtons = [""], handleOpen} ) => {
                 {visibleButtons.includes("createSpace") && (
                     <BannerActionButton
                         onClick={() => navigate("/app/createSpace")}
-                        text={"Agregar Espacio"} icon={<AddLocationIcon  />}
+                        text={"Agregar Espacio"} icon={<DomainAddIcon  />}
                         color="error"
                         style={styles.button}
                         widthWhenIsHover={"170px"}
