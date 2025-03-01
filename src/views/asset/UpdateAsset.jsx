@@ -167,6 +167,7 @@ const UpdateAsset = () => {
     }
 
     const handleSubmit = async () => {
+        const currencyName = currencies.find(currency => currency.id === parseInt(formData.currency)).stateName;
         const requestData = {
             purchaseDate: formData.purchaseDate,
             value: formData.value,
@@ -178,7 +179,7 @@ const UpdateAsset = () => {
             assetSeries: formData.assetSeries,
             plateNumber: formData.plateNumber,
             assetModelId: parseInt(formData.assetModel),
-            currencyName: parseInt(formData.currency),
+            currencyName: currencyName,
             locationNumberId: parseInt(formData.locationNumber),
         };
         try {
