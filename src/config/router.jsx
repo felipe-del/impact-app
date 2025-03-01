@@ -33,6 +33,7 @@ import BuildingManagement from "../views/building/BuildingManagement.jsx";
 import BuildingLocationManagement from "../views/buildingLocation/BuildingLocationManagement.jsx";
 import UpdateSpace from "../views/space/UpdateSpace.jsx";
 import CreateProduct from "../views/product/CreateProduct.jsx";
+import UpdateProduct from "../views/product/UpdateProduct.jsx";
 
 export default function Router() {
     return (
@@ -59,6 +60,7 @@ export default function Router() {
                         <Route path="productCategoryManagement" element={<ProductCategoryManagement/>} />
                         <Route path="createProduct" element={<CreateProduct/>} />
                         <Route path="productCategoryTypeManagement" element={<ProductCategoryTypeManagement/>} />
+                        <Route path="updateProduct/:id" element={<UpdateProduct/>} />
 
                         <Route path="spaceManagement" element={<SpaceManagement/>} />
                         <Route path="editSpace/:id" element={<UpdateSpace/>} />

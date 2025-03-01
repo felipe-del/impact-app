@@ -5,15 +5,22 @@ import {MaterialReactTable, useMaterialReactTable} from "material-react-table";
 import {Box, Typography} from "@mui/material";
 import LoadingPointsSpinner from "../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
+import EditButton from "../../components/button/EditButton.jsx";
+import {useNavigate} from "react-router-dom";
 
 const ProductManagement = () => {
 
     const { products, isLoading, isError, refetch } = useProductData();
-    const [productData, setProductData] = useState([]);
+    const [productData, setProductData] = useState([])
+    const navigate = useNavigate()
 
     useEffect(() => {
         if (products?.data && Array.isArray(products.data)) setProductData(products.data);
     }, [products]);
+
+    const handleEdit = (row) => {
+        navigate("/app/updateProduct/" + row.original.id)
+    }
 
     const columns = useMemo(
         () => [
@@ -23,6 +30,14 @@ const ProductManagement = () => {
             { accessorKey: "status.name", header: "Estado" },
             { accessorKey: "category.unitOfMeasurement.name", header: "Unidad de Medida" },
             { accessorKey: "category.categoryType.name", header: "Categoría" },
+            {
+                id: 'actions',
+                header: 'Acciones',
+                size: 'small',
+                Cell: ({ row }) => (
+                    <EditButton handleEdit={handleEdit} row={row} />
+                ),
+            },
         ],
         []
     )
