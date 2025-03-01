@@ -21,7 +21,7 @@
 }
 
 .input-text-error {
-    margin-top: 5px;
+    margin-top: 7px;
     color: #f44336; /* Rojo para el mensaje de error */
     font-family: 'Montserrat', sans-serif;
     font-size: .85rem;
