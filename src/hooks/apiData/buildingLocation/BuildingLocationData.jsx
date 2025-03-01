@@ -9,7 +9,7 @@ const useBuildingLocationData = () => {
     });
 
     return {
-        buildingLocation: wrapperResponse || [],
+        buildingLocations: wrapperResponse || [],
         isLoading,
         isError,
         refetch
