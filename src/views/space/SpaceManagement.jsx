@@ -21,10 +21,11 @@ const SpaceManagement = () => {
     const columns = useMemo(
         () => [
             { accessorKey: "id", header: "ID", size: 80 },
-            { accessorKey: "maxPeople", header: "Capacidad Máxima" },
             { accessorKey: "name", header: "Nombre" },
-            { accessorKey: "openTime", header: "Hora de Apertura" },
             { accessorKey: "spaceCode", header: "Código de Espacio" },
+            { accessorKey: "openTime", header: "Hora de Apertura" },
+            { accessorKey: "closeTime", header: "Hora de Cierre" },
+            { accessorKey: "maxPeople", header: "Capacidad Máxima" },
             { accessorKey: "spaceStatus.name", header: "Estado" },
             { accessorKey: "buildingLocationResponse.building.name", header: "Edificio" },
         ],
@@ -40,6 +41,8 @@ const SpaceManagement = () => {
             columnVisibility: {
                 id: false,
                 'buildingLocationResponse.building.name': false,
+                spaceCode: false,
+                maxPeople: false
             },
             density: "comfortable",
             pagination: {
@@ -83,6 +86,7 @@ const SpaceManagement = () => {
                     { label: 'Capacidad Máxima', value: row.original.maxPeople },
                     { label: 'Nombre', value: row.original.name },
                     { label: 'Hora de Apertura', value: row.original.openTime },
+                    { label: 'Hora de Cierre', value: row.original.closeTime },
                     { label: 'Código de Espacio', value: row.original.spaceCode },
                     { label: 'Estado', value: row.original.spaceStatus.name },
                     { label: 'Descripción de Estado', value: row.original.spaceStatus.description },
