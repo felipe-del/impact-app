@@ -19,7 +19,7 @@ import DeleteIcon from "@mui/icons-material/Delete.js";
 
 const BuildingLocationManagement = () => {
 
-    const {buildingLocation,isError,refetch,isLoading} = useBuildingLocationData();
+    const {buildingLocations,isError,refetch,isLoading} = useBuildingLocationData();
     const {building} = useBuildingData();
     const [buildingLocationData, setbuildingLocationData] = useState([]);
     const [buildingData, setBuildingData] = useState([]);
@@ -34,14 +34,14 @@ const BuildingLocationManagement = () => {
     const handleHideConfirmationModal = () => setShowConfirmationModal(false);
 
     useEffect(() => {
-        if (buildingLocation?.data && Array.isArray(buildingLocation.data)) {
-            setbuildingLocationData(buildingLocation.data);
+        if (buildingLocations?.data && Array.isArray(buildingLocations.data)) {
+            setbuildingLocationData(buildingLocations.data);
         }
         if (building?.data && Array.isArray(building.data)) {
             setBuildingData(building.data);
         }
-        console.log(buildingLocation.data)
-    }, [buildingLocation, building]);
+        console.log(buildingLocations.data)
+    }, [buildingLocations, building]);
 
     const columns = useMemo(() => [
         { accessorKey: "id", header: "ID", enableEditing: false, size: 80 },
