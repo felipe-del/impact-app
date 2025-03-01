@@ -1,48 +1,49 @@
-import { useState } from "react";
-import RequestHistoryBanner from "../../views/requestHistory/RequestHistoryBanner.jsx";
+import { useState } from 'react';
+import { IconButton, Tooltip, Typography } from '@mui/material';
+import PropTypes from 'prop-types';
+import { gradientMapping } from "../../style/codeStyle.js";
 
-const RequestHistory = () => {
-    const [activeButton, setActiveButton] = useState(null);
-    const [activeAdditionalButton, setActiveAdditionalButton] = useState(null); // Manage additional button state
+const BannerToggleButton = ({ onClick, icon, text, color = "primary", style = {}, widthWhenIsHover = '100px' }) => {
 
-    // Function to determine the display text based on active buttons
-    const getDisplayText = () => {
-        let baseText = "Historial de Solicitudes";
-
-        // Check for active button
-        switch (activeButton) {
-            case "assetRequest":
-                baseText += " para Activos";
-                break;
-            case "spaceRequest":
-                baseText += " para Espacios";
-                break;
-            case "productRequest":
-                baseText += " para Productos";
-                break;
-            default:
-                break;
-        }
-
-        // Append status if an additional button is active
-        if (activeAdditionalButton) {
-            baseText += ` - ${activeAdditionalButton.charAt(0).toUpperCase() + activeAdditionalButton.slice(1)}`;
-        }
-
-        return baseText;
+    const handleClick = () => {
+        onClick();
     };
 
     return (
-        <>
-            <RequestHistoryBanner
-                title={getDisplayText()}
-                activeButton={activeButton}
-                setActiveButton={setActiveButton}
-                activeAdditionalButton={activeAdditionalButton}
-                setActiveAdditionalButton={setActiveAdditionalButton}
-            />
-        </>
+        <Tooltip title={text} arrow>
+            <IconButton
+                onClick={handleClick}
+                style={{
+                    width: widthWhenIsHover,
+                    height: '40px',
+                    borderRadius: '8px',
+                    padding: '0 8px',
+                    background: gradientMapping[color],
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    transition: 'width 0.3s ease-in-out, background 0.3s ease-in-out',
+                    overflow: 'hidden',
+                    whiteSpace: 'nowrap',
+                    ...style,
+                }}
+            >
+                {icon && <div style={{ fontSize: '16px', color: 'white', marginRight: '5px' }}>{icon}</div>}
+                <Typography variant="caption" style={{ fontFamily: 'Montserrat, sans-serif', color: 'white' }}>
+                    {text}
+                </Typography>
+            </IconButton>
+        </Tooltip>
     );
 };
 
-export default RequestHistory;
+BannerToggleButton.propTypes = {
+    onClick: PropTypes.func.isRequired,
+    icon: PropTypes.node.isRequired,
+    text: PropTypes.string.isRequired,
+    color: PropTypes.string,
+    style: PropTypes.object,
+    widthWhenIsHover: PropTypes.string,
+};
+
+export default BannerToggleButton;
