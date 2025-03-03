@@ -65,7 +65,7 @@ const AssetLoan = () => {
     return (
         <>
             <AssetBanner
-                title="Préstamo de Activos"
+                title="Solicitud de Activos"
                 visibleButtons={[ "goBack", selectedAsset ? "assetInfo" : null ]}
                 assetInfo={handleShowInfo}
             />
