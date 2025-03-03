@@ -1,59 +1,61 @@
-import { Button } from 'react-bootstrap';
-import { useEffect, useState } from "react";
-import AssetBanner from "./AssetBanner.jsx";
-import useAssetData from "../../hooks/apiData/assetData/AssetData.jsx";
-import { Box, Typography } from '@mui/material';
+import ProductBanner from "./ProductBanner.jsx";
+import useProductData from "../../hooks/apiData/product/productData.jsx";
+import {useEffect, useState} from "react";
+import {saveAssetRequest} from "../../api/assetRequest/assetRequest_API.js";
+import {toast} from "react-hot-toast";
 import SaveButton from "../../components/button/SaveButton.jsx";
 import GenericModal from "../../components/popUp/generic/GenericModal.jsx";
-import { toast } from "react-hot-toast";
-import { useForm } from 'react-hook-form';
-import {saveAssetRequest} from "../../api/assetRequest/assetRequest_API.js";
-import {saveAsset} from "../../api/asset/asset_API.js";
+import {useForm} from "react-hook-form";
+import {saveProductRequest} from "../../api/productRequest/productRequest.js";
+import {Box, Typography} from "@mui/material";
 
-const AssetLoan = () => {
-    const [assetData, setAssetData] = useState([]);
-    const [selectedAsset, setSelectedAsset] = useState("");
-    const [assetInfo, setAssetInfo] = useState(null);
-    const [showAssetInfo, setShowAssetInfo] = useState(false);
-    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
-    const { register,
-        handleSubmit,
-        formState: { errors }, reset, clearErrors } = useForm();
-    const { assets } = useAssetData();
+
+const ProductLoan = () => {
+
+    const {products} = useProductData();
+    const [productData, setProductData] = useState([]);
+    useEffect(() => {
+        if(products) setProductData(products.data)
+        console.log(products.data)
+    }, [products]);
+
+    const [selectedProduct, setSelectedProduct] = useState(null);
+    const [productInfo, setProductInfo] = useState(null);
+    const [showProductInfo, setShowProductInfo] = useState(false);
+
+    const handleShowInfo = () => {
+        setShowProductInfo(!showProductInfo);
+    };
 
     useEffect(() => {
-        if (assets) setAssetData(assets.data);
-    }, [assets]);
-
-    useEffect(() => {
-        if (selectedAsset === "") {
-            setAssetInfo(null);
+        if (selectedProduct === "" || selectedProduct === null) {
+            setProductInfo(null);
             return;
         }
 
-        const foundAsset = assetData.find(asset => asset.id === parseInt(selectedAsset));
-        setAssetInfo(foundAsset || null);
-    }, [selectedAsset, assetData]);
+        const foundProduct = productData.find(product => product.id === parseInt(selectedProduct));
+        console.log(foundProduct)
+        setProductInfo(foundProduct || null);
+    }, [selectedProduct, productData]);
 
-    const handleShowInfo = () => {
-        setShowAssetInfo(!showAssetInfo);
-    };
+    const { register,
+        handleSubmit,
+        formState: { errors }, reset, clearErrors } = useForm();
 
+    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const handleShowConfirmationModal = () => setShowConfirmationModal(true);
     const handleHideConfirmationModal = () => setShowConfirmationModal(false);
 
     const onSubmit = async (data) => {
-        // This function will only show a confirmation modal
         handleShowConfirmationModal();
     };
 
     const handleFinalSubmit = async (data) => {
-        console.log(data);
         try{
-            const response = await saveAssetRequest({
-                assetId: data.selectedAsset,
+            console.log(data)
+            const response = await saveProductRequest({
+                productId: data.selectedProduct,
                 reason: data.reason,
-                expirationDate: data.expirationDate
             });
             toast.success(response.message, { duration: 7000 });
             reset();
@@ -64,12 +66,12 @@ const AssetLoan = () => {
 
     return (
         <>
-            <AssetBanner
-                title="Solicitud de Activos"
-                visibleButtons={[ "goBack", selectedAsset ? "assetInfo" : null ]}
-                assetInfo={handleShowInfo}
-            />
-            {showAssetInfo && assetInfo && (
+        <ProductBanner
+            title="Solicitud de productos"
+            visibleButtons={["goBack", selectedProduct ? "productInfo" : null]}
+            productInfo={handleShowInfo}
+        />
+            {showProductInfo && productInfo && (
                 <Box
                     sx={{
                         display: 'grid',
@@ -89,20 +91,20 @@ const AssetLoan = () => {
                     }}
                 >
                     {[
-                        { label: 'ID', value: assetInfo.id },
-                        { label: 'Placa', value: assetInfo.plateNumber },
-                        { label: 'Fecha de Compra', value: assetInfo.purchaseDate },
-                        { label: 'Valor', value: `${assetInfo.value} ${assetInfo.currency?.symbol}` },
-                        { label: 'Usuario Responsable', value: assetInfo.user?.email },
-                        { label: 'Proveedor', value: assetInfo.supplier?.name },
-                        { label: 'Categoría', value: assetInfo.category?.name },
-                        { label: 'Subcategoría', value: assetInfo.subcategory?.name },
-                        { label: 'Marca', value: assetInfo.brand?.name },
-                        { label: 'Estado', value: assetInfo.status?.name },
-                        { label: 'Modelo', value: assetInfo.model?.modelName },
-                        { label: 'Tipo de Moneda', value: `${assetInfo.currency?.stateName} - ${assetInfo.currency?.code} - ${assetInfo.currency?.symbol}` },
-                        { label: 'Serie', value: assetInfo.assetSeries },
-                        { label: 'Ubicación', value: assetInfo.locationNumber?.locationTypeName }
+                        { label: 'ID', value: productInfo.id },
+                        { label: 'Nombre', value: productInfo.name },
+                        { label: 'Fecha de Compra', value: productInfo.purchaseDate },
+                        { label: 'Fecha de Expiración', value: productInfo.expiryDate },
+                        { label: 'Categoría', value: productInfo.category.name },
+                        { label: 'Cantidad Mínima', value: productInfo.category.minimumQuantity },
+                        { label: 'Tipo de Categoría', value: productInfo.category.categoryType.name },
+                        { label: 'Descripción de Categoría', value: productInfo.category.categoryType.description },
+                        { label: 'Unidad de Medida', value: productInfo.category.unitOfMeasurement.name },
+                        { label: 'Abreviatura de Unidad', value: productInfo.category.unitOfMeasurement.abbreviation },
+                        { label: 'Estado', value: productInfo.status.name },
+                        { label: 'Descripción del Estado', value: productInfo.status.description }
+
+
                     ].map((item, index) => (
                         <Box key={index} sx={{ background: 'rgba(255, 255, 255, 0.1)', padding: '8px', borderRadius: '10px', textAlign: 'left', boxShadow: '0px 2px 5px rgba(255, 255, 255, 0.1)', transition: '0.3s ease-in-out', '&:hover': { transform: 'scale(1.03)', boxShadow: '0px 4px 12px rgba(255, 255, 255, 0.3)' } }}>
                             <Typography sx={{ fontWeight: 'bold', color: '#f8f9fa', fontFamily: '"Montserrat", sans-serif' }}>{item.label}</Typography>
@@ -115,33 +117,32 @@ const AssetLoan = () => {
                 <div className="card p-4 shadow-lg" style={{ maxWidth: "100%", borderRadius: "15px" }}>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="row">
-                            {/* Asset Selection */}
                             <div className="col-md-4 mb-4">
-                                <label htmlFor="assetSelect" className="form-label">
-                                    <i className="fas fa-car"></i> Seleccione el Activo
+                                <label htmlFor="selectedProduct" className="form-label">
+                                    <i className="fas fa-car"></i> Seleccione el Producto
                                 </label>
                                 <select
-                                    id="assetSelect"
+                                    id="selectedProduct"
                                     className="form-select border-primary"
-                                    {...register("selectedAsset", { required: "Seleccione un activo" })}
+                                    {...register("selectedProduct", { required: "Seleccione un activo" })}
                                     onChange={(e) => {
-                                        setSelectedAsset(e.target.value);
-                                        if (e.target.value === "") setAssetInfo(null);
-                                        clearErrors("selectedAsset"); // Clear the error when selecting a new asset
+                                        setSelectedProduct(e.target.value);
+                                        if (e.target.value === "") setProductInfo(null);
+                                        clearErrors("selectedProduct"); // Clear the error when selecting a new asset
                                     }}
                                 >
                                     <option value="">Seleccione un activo</option>
-                                    {assetData && assetData.length > 0 ? (
-                                        assetData.map(asset => (
+                                    {productData && productData.length > 0 ? (
+                                        productData.map(asset => (
                                             <option key={asset.id} value={asset.id}>
-                                                {asset.plateNumber}
+                                                {asset.name}
                                             </option>
                                         ))
                                     ) : (
                                         <option value="">No hay activos disponibles</option>
                                     )}
                                 </select>
-                                {errors.selectedAsset && <div className="input-text-error show">{errors.selectedAsset.message}</div>}
+                                {errors.selectedProduct && <div className="input-text-error show">{errors.selectedProduct.message}</div>}
                             </div>
 
                             {/* Purpose */}
@@ -157,20 +158,6 @@ const AssetLoan = () => {
                                 />
                                 {errors.reason && <div className="input-text-error show">{errors.reason.message}</div>}
                             </div>
-
-                            {/* Expiration Date */}
-                            <div className="col-md-4 mb-4">
-                                <label htmlFor="expirationDate" className="form-label">
-                                    <i className="fas fa-calendar-alt"></i> Fecha de Finalización
-                                </label>
-                                <input
-                                    type="date"
-                                    id="expirationDate"
-                                    className="form-control border-primary"
-                                    {...register("expirationDate", { required: "Ingrese la fecha de finalización" })}
-                                />
-                                {errors.expirationDate && <div className="input-text-error show">{errors.expirationDate.message}</div>}
-                            </div>
                         </div>
 
                         {/* Submit Button */}
@@ -183,7 +170,7 @@ const AssetLoan = () => {
             <GenericModal
                 show={showConfirmationModal}
                 onHide={handleHideConfirmationModal}
-                title="¿Desea realizar la solicitud de préstamo?"
+                title="¿Desea realizar la solicitud de producto?"
                 bodyText="Una vez realizada la solicitud, no podrá ser revertida."
                 onButtonClick={() => {
                     handleHideConfirmationModal();
@@ -191,7 +178,7 @@ const AssetLoan = () => {
                 }}
             />
         </>
-    );
-};
+    )
+}
 
-export default AssetLoan;
+export default ProductLoan
