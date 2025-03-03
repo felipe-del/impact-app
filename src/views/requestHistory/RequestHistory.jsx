@@ -7,6 +7,7 @@ import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import LoadingPointsSpinner from "../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
 import { toast } from "react-hot-toast";
 import RequestHistoryBanner from "./RequestHistoryBanner.jsx";
+import CancelButton from "../../components/button/CancelButton.jsx";
 
 const RequestHistory = () => {
     const user = useUser();
@@ -66,6 +67,10 @@ const RequestHistory = () => {
     if (activeButton) activeFilters.push(activeButton);
     // if (activeAdditionalButton) activeFilters.push(activeAdditionalButton);
 
+    const handleEdit = (row) => {
+        console.log(row);
+    }
+
     const columns = useMemo(() => {
         switch (activeButton) {
             case "spaceRequest":
@@ -76,6 +81,14 @@ const RequestHistory = () => {
                     { accessorKey: 'status', header: 'Estado' },
                     { accessorKey: 'reason', header: 'Razón' },
                     { accessorKey: 'user', header: 'Usuario Responsable' },
+                    {
+                        id: 'actions',
+                        header: 'Acciones',
+                        size: 'small',
+                        Cell: ({ row }) => (
+                            <CancelButton handleCancel={handleEdit} row={row} />
+                        ),
+                    },
                 ];
             case "productRequest":
                 return [
@@ -85,6 +98,14 @@ const RequestHistory = () => {
                     { accessorKey: 'status', header: 'Estado' },
                     { accessorKey: 'reason', header: 'Razón' },
                     { accessorKey: 'user', header: 'Usuario Responsable' },
+                    {
+                        id: 'actions',
+                        header: 'Acciones',
+                        size: 'small',
+                        Cell: ({ row }) => (
+                            <CancelButton handleCancel={handleEdit} row={row} />
+                        ),
+                    },
                 ];
             case "assetRequest":
             default:
@@ -96,6 +117,14 @@ const RequestHistory = () => {
                     { accessorKey: 'reason', header: 'Razón' },
                     { accessorKey: 'asset', header: 'Activo' },
                     { accessorKey: 'user', header: 'Usuario Responsable' },
+                    {
+                        id: 'actions',
+                        header: 'Acciones',
+                        size: 'small',
+                        Cell: ({ row }) => (
+                            <CancelButton handleCancel={handleEdit} row={row} />
+                        ),
+                    },
                     
                 ];
         }
@@ -174,6 +203,13 @@ const RequestHistory = () => {
                 // showAdditionalButtons={showAdditionalButtons}
             />
 
+            {activeFilters.length === 0 && (
+                <p className="fw-bold text-primary text-center mt-3">
+                    📜 Seleccione la opción de <span className="text-danger">historial de solicitudes</span> que desea
+                    visualizar.
+                </p>
+            )}
+            {/*activeFilters.length > 0 && (
             {activeFilters.length > 0 && (
                 <div style={{
                     marginTop: "20px",
@@ -219,6 +255,12 @@ const RequestHistory = () => {
                         ))}
                     </div>
                 </div>
+            )*/}
+
+            {loading && <LoadingPointsSpinner />} {/* Solo muestra el spinner cuando los datos se están cargando */}
+
+            {requests.length > 0 && !loading && (
+                <MaterialReactTable table={table} />
             )}
 
             {loading && <LoadingPointsSpinner />} {/* Solo muestra el spinner cuando los datos se están cargando */}
