@@ -269,7 +269,7 @@ const CreateSpace = () => {
 
                             <div className="col-md-3 col-sm-6 col-12 mb-3">
                                 <label htmlFor="spaceStatusId" className="form-label">
-                                    <i className="fas fa-exclamation-circle"></i> Estado del Activo <span className="text-danger">*</span>
+                                    <i className="fas fa-exclamation-circle"></i> Estado del Espacio <span className="text-danger">*</span>
                                 </label>
                                 <select
                                     name="spaceStatusId"

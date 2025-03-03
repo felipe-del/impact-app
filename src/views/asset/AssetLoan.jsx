@@ -134,7 +134,7 @@ const AssetLoan = () => {
                                     {assetData && assetData.length > 0 ? (
                                         assetData.map(asset => (
                                             <option key={asset.id} value={asset.id}>
-                                                {asset.plateNumber}
+                                                {asset.plateNumber} - {asset.subcategory.description}
                                             </option>
                                         ))
                                     ) : (
