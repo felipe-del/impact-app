@@ -5,7 +5,7 @@ const root = '/api/product-request'
 
 export async function getProductRequestByUser(user) {
   try {
-      const { data } = await api.get(root,user)
+      const { data } = await api.get(`${root}/user/${user}`)
       return data
   } catch (error) {
       handleAxiosError(error)

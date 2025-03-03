@@ -40,7 +40,7 @@ export async function saveAssetRequest(subCategory) {
 }
 export async function getAssetRequestByUser(user) {
     try {
-        const { data } = await api.get(root,user)
+        const { data } = await api.get(`${root}/user/${user}`)
         return data
     } catch (error) {
         handleAxiosError(error)
