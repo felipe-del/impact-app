@@ -144,7 +144,7 @@ const Sidebar = ({ role }) => {
 
                             <Link className="collapse-item" to="/app/productCategoryManagement"><CategoryIcon/> Categoría</Link>
                             <Link className="collapse-item" to="/app/productCategoryTypeManagement"><FitbitIcon/> Tipo de Categoría</Link>
-                            <Link className="collapse-item" to="/app/productLoanRequest"><FontAwesomeIcon icon={faClipboardCheck} /> Solicitud</Link>
+                            <Link className="collapse-item" to="/app/productLoan"><CreditScoreIcon /> Solicitud</Link>
 
                         </div>
                     </div>
