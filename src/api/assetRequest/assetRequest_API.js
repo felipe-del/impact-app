@@ -38,3 +38,11 @@ export async function saveAssetRequest(subCategory) {
         handleAxiosError(error)
     }
 }
+export async function getAssetRequestByUser(user) {
+    try {
+        const { data } = await api.get(root,user)
+        return data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}
