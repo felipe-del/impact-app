@@ -80,8 +80,10 @@ export default function Router() {
                         <Route path="editAsset/:id" element={<UpdateAsset/>} />
                         <Route path="assetLoan" element={<AssetLoan/>} />
 
-                        <Route path="requestHistory" element={<RequestHistory/>} />
 
+                    </Route>
+                    <Route element={<ProtectedRoute allowedRoles={["ADMINISTRATOR", "MANAGER","TEACHER"]} />}>
+                        <Route path="requestHistory" element={<RequestHistory/>} />
                     </Route>
                 </Route>
 
