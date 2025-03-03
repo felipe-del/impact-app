@@ -264,10 +264,6 @@ const RequestHistory = () => {
             )}
 
             {loading && <LoadingPointsSpinner />} {/* Solo muestra el spinner cuando los datos se están cargando */}
-
-            {requests.length > 0 && !loading && (
-                <MaterialReactTable table={table} />
-            )}
         </>
     );
 };
