@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useUser } from "../../hooks/user/useUser.jsx";
 import { getAssetRequestByUser } from "../../api/assetRequest/assetRequest_API.js";
 import { getProductRequestByUser } from "../../api/productRequest/productRequest.js";
@@ -209,8 +209,8 @@ const RequestHistory = () => {
                     visualizar.
                 </p>
             )}
-
             {/*activeFilters.length > 0 && (
+            {activeFilters.length > 0 && (
                 <div style={{
                     marginTop: "20px",
                     padding: "15px",
@@ -256,6 +256,12 @@ const RequestHistory = () => {
                     </div>
                 </div>
             )*/}
+
+            {loading && <LoadingPointsSpinner />} {/* Solo muestra el spinner cuando los datos se están cargando */}
+
+            {requests.length > 0 && !loading && (
+                <MaterialReactTable table={table} />
+            )}
 
             {loading && <LoadingPointsSpinner />} {/* Solo muestra el spinner cuando los datos se están cargando */}
 
