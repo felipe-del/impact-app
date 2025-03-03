@@ -11,3 +11,30 @@ export async function getProductRequestByUser(user) {
       handleAxiosError(error)
   }
 }
+
+export async function updateProductRequest(id, productRequest) {
+    try {
+        const { data } = await api.put(`${root}/${id}`, productRequest)
+        return data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}
+
+export async function deleteProductRequest(id) {
+    try {
+        const response = await api.delete(`${root}/${id}`)
+        return response.data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}
+
+export async function saveProductRequest(productRequest) {
+    try {
+        const { data } = await api.post(root, productRequest)
+        return data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}
