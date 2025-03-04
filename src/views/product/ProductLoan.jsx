@@ -1,7 +1,6 @@
 import ProductBanner from "./ProductBanner.jsx";
 import useProductData from "../../hooks/apiData/product/productData.jsx";
 import {useEffect, useState} from "react";
-import {saveAssetRequest} from "../../api/assetRequest/assetRequest_API.js";
 import {toast} from "react-hot-toast";
 import SaveButton from "../../components/button/SaveButton.jsx";
 import GenericModal from "../../components/popUp/generic/GenericModal.jsx";
@@ -54,6 +53,7 @@ const ProductLoan = () => {
         try{
             console.log(data)
             const response = await saveProductRequest({
+                quantity: data.quantity,
                 productId: data.selectedProduct,
                 reason: data.reason,
             });
@@ -118,6 +118,20 @@ const ProductLoan = () => {
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="row">
                             <div className="col-md-4 mb-4">
+                                <label htmlFor="quantity" className="form-label">
+                                    <i className="fa-solid fa-arrow-up-1-9"/> Cantidad de Productos por solicitar<span className="text-danger">*</span>
+                                </label>
+                                <input
+                                    type="number"
+                                    id="quantity"
+                                    className="form-control border-primary"
+                                    {...register("quantity", { required: "La cantidad es requerida", min: { value: 1, message: "La cantidad debe ser mayor a 0" } })}
+                                    placeholder="Ej: 10"
+                                    style={{ fontSize: ".9rem" }}
+                                />
+                                {errors.quantity && <div className="input-text-error show">{errors.quantity.message}</div>}
+                            </div>
+                            <div className="col-md-4 mb-4">
                                 <label htmlFor="selectedProduct" className="form-label">
                                     <i className="fas fa-car"></i> Seleccione el Producto
                                 </label>
@@ -133,11 +147,13 @@ const ProductLoan = () => {
                                 >
                                     <option value="">Seleccione un activo</option>
                                     {productData && productData.length > 0 ? (
-                                        productData.map(asset => (
-                                            <option key={asset.id} value={asset.id}>
-                                                {asset.name}
-                                            </option>
-                                        ))
+                                        productData
+                                            .filter(product => product.status.name.toLowerCase() !== "earring") // Filtra productos con status "earning"
+                                            .map(product => (
+                                                <option key={product.id} value={product.id}>
+                                                    {product.category.name} - {product.category.categoryType.name}
+                                                </option>
+                                            ))
                                     ) : (
                                         <option value="">No hay activos disponibles</option>
                                     )}
