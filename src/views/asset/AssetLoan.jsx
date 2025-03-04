@@ -19,7 +19,7 @@ const AssetLoan = () => {
     const { register,
         handleSubmit,
         formState: { errors }, reset, clearErrors } = useForm();
-    const { assets } = useAssetData();
+    const { assets, refetch } = useAssetData();
 
     useEffect(() => {
         if (assets) setAssetData(assets.data);
@@ -57,6 +57,7 @@ const AssetLoan = () => {
             });
             toast.success(response.message, { duration: 7000 });
             reset();
+            refetch();
         } catch (e) {
             toast.error(e.message)
         }
@@ -132,7 +133,9 @@ const AssetLoan = () => {
                                 >
                                     <option value="">Seleccione un activo</option>
                                     {assetData && assetData.length > 0 ? (
-                                        assetData.map(asset => (
+                                        assetData
+                                            .filter(asset => asset.status.name.toLowerCase() !== "earring")
+                                            .map(asset => (
                                             <option key={asset.id} value={asset.id}>
                                                 {asset.plateNumber} - {asset.subcategory.description}
                                             </option>
