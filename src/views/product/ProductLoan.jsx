@@ -11,7 +11,7 @@ import {Box, Typography} from "@mui/material";
 
 const ProductLoan = () => {
 
-    const {products} = useProductData();
+    const {products, refetch} = useProductData();
     const [productData, setProductData] = useState([]);
     useEffect(() => {
         if(products) setProductData(products.data)
@@ -33,7 +33,6 @@ const ProductLoan = () => {
         }
 
         const foundProduct = productData.find(product => product.id === parseInt(selectedProduct));
-        console.log(foundProduct)
         setProductInfo(foundProduct || null);
     }, [selectedProduct, productData]);
 
@@ -59,6 +58,7 @@ const ProductLoan = () => {
             });
             toast.success(response.message, { duration: 7000 });
             reset();
+            refetch();
         } catch (e) {
             toast.error(e.message)
         }
