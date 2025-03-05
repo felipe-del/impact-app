@@ -16,6 +16,7 @@ const ProductManagement = () => {
 
     useEffect(() => {
         if (products?.data && Array.isArray(products.data)) setProductData(products.data);
+        console.log(products.data)
     }, [products]);
 
     const handleEdit = (row) => {
@@ -25,7 +26,6 @@ const ProductManagement = () => {
     const columns = useMemo(
         () => [
             { accessorKey: "id", header: "ID", size: 80 },
-            { accessorKey: "name", header: "Nombre" },
             { accessorKey: "purchaseDate", header: "Fecha de Compra" },
             { accessorKey: "status.name", header: "Estado" },
             { accessorKey: "category.unitOfMeasurement.name", header: "Unidad de Medida" },
@@ -90,13 +90,16 @@ const ProductManagement = () => {
             >
                 {[
                     { label: 'ID', value: row.original.id },
-                    { label: 'Nombre', value: row.original.name },
                     { label: 'Fecha de Compra', value: row.original.purchaseDate },
+                    { label: 'Fecha de Expiración', value: row.original.expiryDate },
                     { label: 'Estado', value: row.original.status.name },
                     { label: 'Descripción de Estado', value: row.original.status.description },
                     { label: 'Unidad de Medida', value: row.original.category.unitOfMeasurement.name },
-                    { label: 'Categoría', value: row.original.category.categoryType.name },
-                    { label: 'Descripción de Categoría', value: row.original.category.categoryType.description },
+                    { label: 'Abreviatura Unidad', value: row.original.category.unitOfMeasurement.abbreviation },
+                    { label: 'Categoría', value: row.original.category.name },
+                    { label: 'Cantidad Mínima', value: row.original.category.minimumQuantity },
+                    { label: 'Tipo de Categoría', value: row.original.category.categoryType.name },
+                    { label: 'Descripción de Categoría', value: row.original.category.categoryType.description }
                 ].map((item, index) => (
                     <Box
                         key={index}

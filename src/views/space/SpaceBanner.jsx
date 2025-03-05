@@ -5,8 +5,9 @@ import BannerActionButton from "../../components/button/BannerActionButton.jsx";
 import {bannerStyle} from "../../style/codeStyle.js";
 import DomainAddIcon from '@mui/icons-material/DomainAdd';
 import ManageHistoryIcon from "@mui/icons-material/ManageHistory.js";
+import InfoIcon from "@mui/icons-material/Info";
 
-const SpaceBanner = ({ title = "", visibleButtons = [""], handleOpen} ) => {
+const SpaceBanner = ({ title = "", visibleButtons = [""], handleOpen, spaceInfo} ) => {
     const navigate = useNavigate();
 
     const styles = bannerStyle;
@@ -43,6 +44,16 @@ const SpaceBanner = ({ title = "", visibleButtons = [""], handleOpen} ) => {
                         style={styles.button}
                         widthWhenIsHover={"170px"}
                     />
+                )}
+                {visibleButtons.includes("spaceInfo") && (
+                    <BannerActionButton
+                        onClick={spaceInfo}
+                        text={"Información del Espacio"}
+                        icon={<InfoIcon />}
+                        color={"warning"}
+                        style={styles.button}
+                        widthWhenIsHover={"200px"}
+                    />
 
                 )}
 
@@ -56,6 +67,7 @@ SpaceBanner.propTypes = {
     visibleButtons: PropTypes.arrayOf(PropTypes.string),
     createSpace: PropTypes.func,
     handleOpen: PropTypes.func,
+    spaceInfo: PropTypes.func,
 };
 
 

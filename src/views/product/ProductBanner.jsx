@@ -4,8 +4,9 @@ import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import BannerActionButton from "../../components/button/BannerActionButton.jsx";
 import {bannerStyle} from "../../style/codeStyle.js";
+import InfoIcon from "@mui/icons-material/Info.js";
 
-const ProductBanner = ({ title = "", visibleButtons = [""]}) => {
+const ProductBanner = ({ title = "", visibleButtons = [""], productInfo}) => {
     const navigate = useNavigate();
 
     const styles = bannerStyle;
@@ -33,6 +34,17 @@ const ProductBanner = ({ title = "", visibleButtons = [""]}) => {
                         widthWhenIsHover={"170px"}
                     />
                 )}
+                {visibleButtons.includes("productInfo") && (
+                    <BannerActionButton
+                        onClick={productInfo}
+                        text={"Información del Producto"}
+                        icon={<InfoIcon />}
+                        color={"warning"}
+                        style={styles.button}
+                        widthWhenIsHover={"200px"}
+                    />
+
+                )}
 
             </div>
         </div>
@@ -42,6 +54,7 @@ const ProductBanner = ({ title = "", visibleButtons = [""]}) => {
 ProductBanner.propTypes = {
     title: PropTypes.string,
     visibleButtons: PropTypes.arrayOf(PropTypes.string),
+    productInfo: PropTypes.func
 };
 
 

@@ -4,12 +4,12 @@ import {getAllSpace} from "../../../api/space/space_API.js";
 
 const useSpaceData = () => {
     const { data: wrapperResponse, isLoading, isError, refetch} = useQuery({
-        queryKey: ['space'],
+        queryKey: ['spaces'],
         queryFn: getAllSpace,
     });
 
     return {
-        space: wrapperResponse || [],
+        spaces: wrapperResponse || [],
         isLoading,
         isError,
         refetch

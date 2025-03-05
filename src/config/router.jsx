@@ -34,6 +34,8 @@ import BuildingLocationManagement from "../views/buildingLocation/BuildingLocati
 import UpdateSpace from "../views/space/UpdateSpace.jsx";
 import CreateProduct from "../views/product/CreateProduct.jsx";
 import UpdateProduct from "../views/product/UpdateProduct.jsx";
+import ProductLoan from "../views/product/ProductLoan.jsx";
+import SpaceLoan from "../views/space/SpaceLoan.jsx";
 
 export default function Router() {
     return (
@@ -61,6 +63,8 @@ export default function Router() {
                         <Route path="createProduct" element={<CreateProduct/>} />
                         <Route path="productCategoryTypeManagement" element={<ProductCategoryTypeManagement/>} />
                         <Route path="updateProduct/:id" element={<UpdateProduct/>} />
+                        <Route path="productLoan" element={<ProductLoan/>} />
+                        <Route path="spaceLoan" element={<SpaceLoan/>} />
 
                         <Route path="spaceManagement" element={<SpaceManagement/>} />
                         <Route path="editSpace/:id" element={<UpdateSpace/>} />
@@ -80,8 +84,10 @@ export default function Router() {
                         <Route path="editAsset/:id" element={<UpdateAsset/>} />
                         <Route path="assetLoan" element={<AssetLoan/>} />
 
-                        <Route path="requestHistory" element={<RequestHistory/>} />
 
+                    </Route>
+                    <Route element={<ProtectedRoute allowedRoles={["ADMINISTRATOR", "MANAGER","TEACHER"]} />}>
+                        <Route path="requestHistory" element={<RequestHistory/>} />
                     </Route>
                 </Route>
 

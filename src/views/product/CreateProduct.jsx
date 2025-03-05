@@ -3,14 +3,13 @@ import useProductCategoryData from "../../hooks/apiData/productCategory/productC
 import {useEffect, useRef, useState} from "react";
 import SaveButton from "../../components/button/SaveButton.jsx";
 import GenericModal from "../../components/popUp/generic/GenericModal.jsx";
-import {saveSpace} from "../../api/space/space_API.js";
 import {toast} from "react-hot-toast";
 import {useNavigate} from "react-router-dom";
 import useProductStatusData from "../../hooks/apiData/productStatus/ProductStatusData.jsx";
 import {saveProduct} from "../../api/product/product_API.js";
 
 const initialData = {
-    name: "",
+    quantity: 0,
     purchaseDate: "",
     expiryDate: "",
     categoryId: "",
@@ -43,7 +42,7 @@ const CreateProduct = () => {
         const errors = {};
         setFormErrors(errors);
 
-        if (!formData.name) errors.name = "El nombre del producto es obligatorio.";
+        if (!formData.quantity) errors.quantity = "La cantidad es obligatoria.";
         if (!formData.purchaseDate) errors.purchaseDate = "La fecha de compra es obligatoria.";
         else {
             // Check if purchaseDate is today or in the past
@@ -95,7 +94,7 @@ const CreateProduct = () => {
     const handleSubmit = async () => {
 
         const requestData = {
-            name: formData.name,
+            quantity: formData.quantity,
             purchaseDate: formData.purchaseDate,
             expiryDate: formData.expiryDate,
             categoryId: formData.productCateogory,
@@ -125,21 +124,23 @@ const CreateProduct = () => {
                     <form ref={formRef}>
                         <div className="row mb-4">
                             <div className="col-md-3 col-sm-6 col-12 mb-3">
-                                <label htmlFor="name" className="form-label">
-                                    <i className="fa-solid fa-signature"/> Nombre de Producto <span className="text-danger">*</span>
+                                <label htmlFor="quantity" className="form-label">
+                                    <i className="fa-solid fa-arrow-up-1-9"/> Cantidad de Productos por agregar<span className="text-danger">*</span>
                                 </label>
                                 <input
-                                    type="text"
-                                    name="name"
-                                    id="name"
+                                    type="number"
+                                    name="quantity"
+                                    id="quantity"
                                     className="form-control border-primary"
-                                    value={formData.name}
+                                    value={formData.quantity}
                                     onChange={handleChange}
-                                    placeholder="Ej: Pizarra"
+                                    placeholder="Ej: 10"
                                     style={{ fontSize: ".9rem" }}
                                     required
+                                    // minimum="0"
+
                                 />
-                                {formErrors.name && <div className="input-text-error show">{formErrors.name}</div>}
+                                {formErrors.quantity && <div className="input-text-error show">{formErrors.quantity}</div>}
                             </div>
                             <div className="col-md-3 col-sm-6 col-12 mb-3">
                                 <label htmlFor="purchaseDate" className="form-label">

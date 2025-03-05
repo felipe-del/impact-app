@@ -8,7 +8,8 @@ const GenericModal = ({
                           title,
                           bodyText,
                           buttonText = 'Aceptar',
-                          onButtonClick
+                          onButtonClick,
+                          customContent,
                       }) => {
 
     const handleButtonClick = async () => {
@@ -68,7 +69,9 @@ const GenericModal = ({
                     sx={{ color: 'white', mt: 2, fontSize: '16px', lineHeight: 1.5, fontFamily: 'Montserrat' }}
                     dangerouslySetInnerHTML={{ __html: bodyText }}
                 />
-
+                     <Box sx={{ mt: 2 }}>
+                        {customContent}
+                     </Box>
 
                 {/* Action Buttons styled to match futuristic theme */}
                 <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
@@ -91,6 +94,7 @@ GenericModal.propTypes = {
     bodyText: PropTypes.string.isRequired,
     buttonText: PropTypes.string,
     onButtonClick: PropTypes.func.isRequired,
+    customContent: PropTypes.node,
 };
 
 export default GenericModal;
