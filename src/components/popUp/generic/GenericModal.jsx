@@ -94,6 +94,7 @@ GenericModal.propTypes = {
     bodyText: PropTypes.string.isRequired,
     buttonText: PropTypes.string,
     onButtonClick: PropTypes.func.isRequired,
+    customContent: PropTypes.node,
 };
 
 export default GenericModal;
