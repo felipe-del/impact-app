@@ -145,7 +145,7 @@ const SupplierManagement = () => {
         data: suppliersData || [],
         updateData: setSuppliersData,
         keyField: "id",
-        createDisplayMode: "row",
+        createDisplayMode: "modal",
         enableEditing: true,
         editingMode: "row",
         enableExpandAll: false,
