@@ -31,3 +31,8 @@
 .input-text-error.show {
     display: block; /* Muestra el error cuando se añade la clase 'show' */
 }
+
+.text-danger {
+    color: #e74a3b !important;
+    font-size: medium;
+}
