@@ -4,6 +4,7 @@ import { getAssetRequestByUser } from "../../api/assetRequest/assetRequest_API.j
 import { cancelledAssetRequest } from "../../api/assetRequest/assetRequest_API.js";
 import { getSpaceRandRByUser } from "../../api/SpaceRndR/spaceRndR_API.js";
 import { cancelledProductRequest } from "../../api/productRequest/productRequest.js";
+import { cancelResAndReq } from "../../api/SpaceRndR/spaceRndR_API.js";
 import { productAvailable } from "../../api/product/product_API.js";
 import { getProductRequestByUser } from "../../api/productRequest/productRequest.js";
 import { assetAvailable } from "../../api/asset/asset_API.js";
@@ -52,6 +53,7 @@ const RequestHistory = () => {
             try {
                 const response = await getSpaceRandRByUser(user.id);
                 setRequests(response.data)
+                console.log(response.data)
                 toast.success(response.message, { duration: 7000 });
             } catch (error) {
                 console.log({ error });
@@ -59,6 +61,7 @@ const RequestHistory = () => {
             } finally {
                 setLoading(false); // Finaliza la carga
             }
+            
         }
 
         if (buttonKey === "productRequest" && user?.id) {
@@ -106,27 +109,42 @@ const RequestHistory = () => {
             } finally {
                 setLoading(false); // Finaliza la carga
             }
+            const response = await getAssetRequestByUser(user.id);
+            setRequests(response.data);
             }
             if(selectedRequest.original.productName){
                 setLoading(true); // Inicia el estado de carga
             try {
                 const response = await cancelledProductRequest(selectedRequest.original.id);
                 toast.success(response.message , { duration: 7000 });
-                const responseA = await assetAvailable(selectedRequest.original.productId);
-                toast.success(responseA.message, { duration: 7000 });
             } catch (error) {
                 console.log({ error });
                 toast.error(error.message, { duration: 7000 });
             } finally {
                 setLoading(false); // Finaliza la carga
             }
+            const response = await getProductRequestByUser(user.id);
+            setRequests(response.data);
+            }
+            if(selectedRequest.original.spaceName){
+                setLoading(true); // Inicia el estado de carga
+            try {
+                const response = await cancelResAndReq(selectedRequest.original.id);
+                toast.success(response.message , { duration: 7000 });
+            } catch (error) {
+                console.log({ error });
+                toast.error(error.message, { duration: 7000 });
+            } finally {
+                setLoading(false); // Finaliza la carga
+            }
+            const response = await getSpaceRandRByUser(user.id);
+            setRequests(response.data);
+            console.log(response.data)
             }
             toast.success(`Solicitud cancelada: ${cancelReason}`, { duration: 7000 });
             setShowCancelModal(false);  // Close the modal after cancellation
             setCancelReason("");  // Clear the reason field
             
-            const response = await getAssetRequestByUser(user.id);
-            setRequests(response.data);
         } else {
             toast.error("Por favor ingrese una razón de cancelación.", { duration: 7000 });
         }
@@ -136,7 +154,9 @@ const RequestHistory = () => {
         switch (activeButton) {
             case "spaceRequest":
                 return [
-                    { accessorKey: 'name', header: 'Espacio' },
+                    { accessorKey: 'id', header: 'Id'},
+                    { accessorKey: 'spaceName', header: 'Espacio' },
+                    { accessorKey: 'status', header: 'Estado' },
                     { accessorKey: 'building', header: 'Ubicación' },
                     { accessorKey: 'maxPeople', header: 'Número de personas' },
                     { accessorKey: 'eventDesc', header: 'Descripción del evento' },
@@ -199,13 +219,15 @@ const RequestHistory = () => {
             switch (activeButton) {
                 case "spaceRequest":
                     return {
-                        name: request.space?.name,
+                        id: request.reqAndResId,
+                        spaceName: request.space?.name,
+                        status: request.status.description,
                         building: request.space?.buildingLocationResponse?.building.name + "- Piso "+ request.space?.buildingLocationResponse?.floor,
                         maxPeople: request.numPeople,
                         eventDesc: request.eventDesc,
                         eventObs: request.eventObs,
-                        startTime: request.startTime,
-                        endTime: request.endTime,
+                        startTime: request.startTime || "Cancelado",
+                        endTime: request.endTime || "Cancelado",
                     };
                 case "productRequest":
                     return {

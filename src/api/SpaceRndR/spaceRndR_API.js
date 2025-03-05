@@ -11,3 +11,12 @@ export async function getSpaceRandRByUser(user) {
       handleAxiosError(error)
   }
 }
+
+export async function cancelResAndReq(reqId) {
+  try {
+      const { data } = await api.delete(`${root}/${reqId}`)
+      return data
+  } catch (error) {
+      handleAxiosError(error)
+  }
+}
