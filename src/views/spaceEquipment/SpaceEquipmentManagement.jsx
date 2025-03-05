@@ -50,7 +50,7 @@ DetailItem.propTypes = {
 const SpaceEquipmentManagement = () => {
 
     const { spaceEquipment, isError, isLoading, refetch } = useSpaceEquipmentData();
-    const { space } = useSpaceData();
+    const { spaces } = useSpaceData();
     const { brands } = useBrandData();
 
     const [spaceEquipmentData, setSpaceEquipmentData] = useState([]);
@@ -67,9 +67,9 @@ const SpaceEquipmentManagement = () => {
 
     useEffect(() => {
         if (spaceEquipment) setSpaceEquipmentData(spaceEquipment.data);
-        if (space) setSpaceData(space.data);
+        if (spaces) setSpaceData(spaces.data);
         if (brands) setBrandsData(brands.data);
-    }, [spaceEquipment, space, brands]);
+    }, [spaceEquipment, spaces, brands]);
 
     const validateAssetEquipment = (values) => {
         if (!values.name) {

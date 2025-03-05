@@ -21,14 +21,14 @@ const initialData = {
 
 const SpaceManagement = () => {
 
-    const {space, isError, isLoading, refetch} = useSpaceData();
+    const {spaces, isError, isLoading, refetch} = useSpaceData();
     const [spaceData, setSpaceData] = useState([]);
 
     useEffect(() => {
-        if (space?.data && Array.isArray(space.data)) {
-            setSpaceData(space.data);
+        if (spaces?.data && Array.isArray(spaces.data)) {
+            setSpaceData(spaces.data);
         }
-    }, [space]);
+    }, [spaces]);
 
     const navigate = useNavigate()
 
