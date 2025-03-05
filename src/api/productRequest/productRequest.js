@@ -41,7 +41,7 @@ export async function saveProductRequest(productRequest) {
 
 export async function cancelledProductRequest(productRId) {
     try {
-        const { data } = await api.put(`${root}/4/${productRId}`)
+        const { data } = await api.put(`${root}/cancel/${productRId}`)
         return data
     } catch (error) {
         handleAxiosError(error)
