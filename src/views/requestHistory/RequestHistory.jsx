@@ -85,7 +85,7 @@ const RequestHistory = () => {
     if (activeButton) activeFilters.push(activeButton);
     // if (activeAdditionalButton) activeFilters.push(activeAdditionalButton);
 
-    const handleEdit = (row) => {
+    const handlePreCancel = (row) => {
         console.log(row);
         setSelectedRequest(row);
         setShowCancelModal(true);
@@ -148,7 +148,7 @@ const RequestHistory = () => {
                         header: 'Acciones',
                         size: 'small',
                         Cell: ({ row }) => (
-                            <CancelButton handleCancel={handleEdit} row={row} />
+                            <CancelButton handleCancel={handlePreCancel} row={row} />
                         ),
                     },
                 ];
@@ -166,7 +166,7 @@ const RequestHistory = () => {
                         header: 'Acciones',
                         size: 'small',
                         Cell: ({ row }) => (
-                            <CancelButton handleCancel={handleEdit} row={row} />
+                            <CancelButton handleCancel={handlePreCancel} row={row} />
                         ),
                     },
                 ];
@@ -185,7 +185,7 @@ const RequestHistory = () => {
                         header: 'Acciones',
                         size: 'small',
                         Cell: ({ row }) => (
-                            <CancelButton handleCancel={handleEdit} row={row} />
+                            <CancelButton handleCancel={handlePreCancel} row={row} />
                         ),
                     },
                     
@@ -337,6 +337,21 @@ const RequestHistory = () => {
                     onChange={(e) => setCancelReason(e.target.value)} // Controla el estado
                     placeholder="Escribe tu razón de cancelación aquí"
                     rows="3"
+                    style={{
+                        width: '100%',
+                        padding: '10px',
+                        fontSize: '1rem',
+                        borderRadius: '8px',
+                        border: '1px solid #ddd',
+                        resize: 'none',
+                        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+                        backgroundColor: '#fff',
+                        color: '#333',
+                        outline: 'none',
+                        fontFamily: 'Montserrat, sans-serif',
+                        transition: 'all 0.3s ease-in-out',
+
+                    }}
                 />
             </div>
         }
