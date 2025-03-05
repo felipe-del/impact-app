@@ -83,3 +83,12 @@ export async function changeUserRole(userId, roleId) {
         handleAxiosError(error)
     }
 }
+
+export async function saveUser(user){
+    try{
+        const { data } = await api.post(`${root}/save-user`,user)
+        return data
+    }catch(error){
+        handleAxiosError(error)
+    }
+}
