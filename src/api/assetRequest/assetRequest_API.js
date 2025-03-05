@@ -46,3 +46,12 @@ export async function getAssetRequestByUser(user) {
         handleAxiosError(error)
     }
 }
+
+export async function cancelledAssetRequest(assetRId) {
+    try {
+        const { data } = await api.put(`${root}/4/${assetRId}`)
+        return data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}
