@@ -70,12 +70,13 @@ const SpaceLoan = () => {
             const startTime = format(parsedStartTime, "yyyy-MM-dd'T'HH:mm:ss'Z'");
             const endTime = format(parsedEndTime, "yyyy-MM-dd'T'HH:mm:ss'Z'");
 
-            console.log("Converted Start Time (UTC):", startTime);
-            console.log("Converted End Time (UTC):", endTime);
+            const obs = data.eventObs ? data.eventObs : "Ninguna";
+
             const response = await saveSpaceRequest({
                 spaceId: parseInt(data.selectedSpace),
                 numPeople: parseInt(data.numPeople),
                 eventDesc: data.eventDesc,
+                eventObs: obs,
                 useEquipment: data.useEquipment,
                 startTime: startTime,
                 endTime: endTime,
@@ -222,10 +223,9 @@ const SpaceLoan = () => {
                                 <textarea
                                     id="eventObs"
                                     className="form-control border-primary"
-                                    {...register("eventObs", { required: "Ingrese las observaciónes" })}
+                                    {...register("eventObs")}
                                     rows={1}
                                 />
-                                {errors.eventObs && <div className="input-text-error show">{errors.eventObs.message}</div>}
                             </div>
                         </div>
                         <div className="row">
