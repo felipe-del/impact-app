@@ -107,7 +107,7 @@ const Sidebar = ({ role }) => {
                             <Link className="collapse-item" to="/app/buildingManagement"><AccountBalanceIcon /> Edificio</Link>
                             <Link className="collapse-item" to="/app/buildingLocationManagement"><LocalConvenienceStoreIcon /> Pisos de Edificio </Link>
 
-                            <Link className="collapse-item" to="/app/spaceRequest"><FontAwesomeIcon icon={faClipboardCheck} /> Solicitud de Espacios</Link>
+                            <Link className="collapse-item" to="/app/spaceLoan"><CreditScoreIcon/> Solicitud de Espacios</Link>
                          </div>
                     </div>
                 </li>
