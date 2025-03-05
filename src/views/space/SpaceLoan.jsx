@@ -4,7 +4,7 @@ import LoadingPointsSpinner from "../../components/spinner/loadingSpinner/Loadin
 import {useEffect, useState} from "react";
 import SaveButton from "../../components/button/SaveButton.jsx";
 import {useForm} from "react-hook-form";
-import { DateTime } from 'luxon';
+import { parse, format } from 'date-fns';
 import {toast} from "react-hot-toast";
 import GenericModal from "../../components/popUp/generic/GenericModal.jsx";
 import {Box, Typography} from "@mui/material";
@@ -29,6 +29,7 @@ const SpaceLoan = () => {
     useEffect(() => {
         if (spaces) setSpaceData(spaces.data);
         if (spaceStatus) setSpaceData(spaces.data);
+        console.log(spaces.data)
     }, [spaces, spaceStatus]);
 
     const { register,
@@ -60,9 +61,17 @@ const SpaceLoan = () => {
     const handleFinalSubmit = async (data) => {
         try{
             console.log(data)
-            const startTime = DateTime.fromISO(data.startTime, { zone: 'America/Guatemala' }).toISO();
-            const endTime = DateTime.fromISO(data.endTime, { zone: 'America/Guatemala' }).toISO();
-            console.log(endTime)
+
+            // Parsea la fecha correctamente con el formato adecuado
+            const parsedStartTime = parse(data.startTime, "yyyy-MM-dd'T'HH:mm", new Date());
+            const parsedEndTime = parse(data.endTime, "yyyy-MM-dd'T'HH:mm", new Date());
+
+            // Convertir a formato ISO 8601 con UTC
+            const startTime = format(parsedStartTime, "yyyy-MM-dd'T'HH:mm:ss'Z'");
+            const endTime = format(parsedEndTime, "yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+            console.log("Converted Start Time (UTC):", startTime);
+            console.log("Converted End Time (UTC):", endTime);
             const response = await saveSpaceRequest({
                 spaceId: parseInt(data.selectedSpace),
                 numPeople: parseInt(data.numPeople),

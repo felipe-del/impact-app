@@ -24,6 +24,7 @@
     "axios": "^1.7.9",
     "chart.js": "^4.4.7",
     "chartjs-plugin-datalabels": "^2.2.0",
+    "date-fns": "^4.1.0",
     "formik": "^2.4.6",
     "framer-motion": "^12.4.2",
     "jspdf": "^2.5.2",
