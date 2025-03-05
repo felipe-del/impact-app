@@ -38,3 +38,11 @@ export async function saveProduct(product) {
         handleAxiosError(error)
     }
 }
+export async function productAvailable(productId) {
+    try {
+        const { data } = await api.put(`${root}/1/${productId}`)
+        return data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}
