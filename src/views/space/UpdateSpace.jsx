@@ -23,7 +23,7 @@ const initialData = {
 
 const UpdateSpace = () => {
     const { id } = useParams();
-    const {space} = useSpaceData()
+    const {spaces} = useSpaceData()
     const [spaceStatusData, setSpaceStatusData] = useState([]);
     const {spaceStatus} = useSpaceStatusData()
     const navigate = useNavigate()
@@ -47,8 +47,8 @@ const UpdateSpace = () => {
     const formRef = useRef(null);
 
     useEffect(() => {
-        if (space?.data && Array.isArray(space.data)) {
-            const spaceToUpdate = space.data.find((space) => space.id === parseInt(id));
+        if (spaces?.data && Array.isArray(spaces.data)) {
+            const spaceToUpdate = spaces.data.find((space) => space.id === parseInt(id));
             console.log(spaceToUpdate);
             setFormData(
                 {
@@ -68,7 +68,7 @@ const UpdateSpace = () => {
         if (buildingLocations?.data && Array.isArray(buildingLocations.data)) {
             setBuildingLocationData(buildingLocations.data);
         }
-    }, [space, spaceStatus, buildingLocationData]);
+    }, [spaces, spaceStatus, buildingLocationData]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
