@@ -7,12 +7,13 @@ import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import LoadingPointsSpinner from "../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
 import { toast } from "react-hot-toast";
 import RequestHistoryBanner from "./RequestHistoryBanner.jsx";
+import RenewalButton from "../../components/button/RenewalButton.jsx";
+import dayjs from 'dayjs'; // Importar dayjs para manejar fechas
 
 const RequestHistory = () => {
     const user = useUser();
 
     const [activeButton, setActiveButton] = useState(null);
-    // const [activeAdditionalButton, setActiveAdditionalButton] = useState(null);
     const [showAdditionalButtons, setShowAdditionalButtons] = useState(false);
     const [requests, setRequests] = useState([]); // Estado para guardar los datos de la API
     const [loading, setLoading] = useState(false); // Estado para manejar la carga de solicitudes
@@ -57,14 +58,8 @@ const RequestHistory = () => {
         }
     };
 
-    // const handleAdditionalButtonClick = (buttonKey) => {
-    //     setActiveAdditionalButton(buttonKey);
-    // };
-
-    // Recolectar filtros activos
     const activeFilters = [];
     if (activeButton) activeFilters.push(activeButton);
-    // if (activeAdditionalButton) activeFilters.push(activeAdditionalButton);
 
     const columns = useMemo(() => {
         switch (activeButton) {
@@ -96,46 +91,29 @@ const RequestHistory = () => {
                     { accessorKey: 'reason', header: 'Razón' },
                     { accessorKey: 'asset', header: 'Activo' },
                     { accessorKey: 'user', header: 'Usuario Responsable' },
-                    
+                    { accessorKey: "actions", header: "Acciones"},
                 ];
         }
     }, [activeButton]);
 
-    // Definir los datos según el tipo de solicitud
     const flatRequests = useMemo(() => {
         return requests.map(request => {
-            switch (activeButton) {
-                case "spaceRequest":
-                    return {
-                        id: request.id,
-                        spaceName: request.space?.name || "No disponible",
-                        createdAt: request.createdAt,
-                        status: request.status?.description || "No disponible",
-                        reason: request.reason || "No disponible",
-                        user: request.user?.name || "No disponible",
-                    };
-                case "productRequest":
-                    return {
-                        id: request.id,
-                        productName: request.product?.name,
-                        createdAt: request.createdAt,
-                        status: request.status?.description,
-                        reason: request.reason ,
-                        user: request.user?.name,
-                        
-                    };
-                case "assetRequest":
-                default:
-                    return {
-                        id: request.id,
-                        plateNumber: request.asset?.plateNumber || "No disponible",
-                        createdAt: request.createdAt,
-                        status: request.status?.description || "No disponible",
-                        reason: request.reason || "No disponible",
-                        asset: request.asset?.subcategory?.description || "No disponible",
-                        user: request.user?.name || "No disponible",
-                    };
-            }
+            const expirationDate = dayjs(request.expirationDate);
+            const today = dayjs();
+            const daysUntilExpiration = expirationDate.diff(today, 'day');
+            console.log(request.status?.name);
+
+            return {
+                id: request.id,
+                plateNumber: request.asset?.plateNumber || "No disponible",
+                createdAt: request.createdAt,
+                status: request.status?.description || "No disponible",
+                reason: request.reason || "No disponible",
+                asset: request.asset?.subcategory?.description || "No disponible",
+                user: request.user?.name || "No disponible",
+                actions: request.status?.name === "ACCEPTED" && daysUntilExpiration >= 2 && request.user?.id === user.id ? <RenewalButton renewAction={() => console.log("Renovar")} labelRenew="Renovar" /> : null,
+            };
+            
         });
     }, [requests, activeButton]);
 
@@ -162,16 +140,14 @@ const RequestHistory = () => {
             },
         },
     });
+
     return (
         <>
             <RequestHistoryBanner
                 title={"Historial de Solicitudes"}
                 activeFilters={activeFilters}
                 handleButtonClick={handleButtonClick}
-                // handleAdditionalButtonClick={handleAdditionalButtonClick}
                 activeButton={activeButton}
-                // activeAdditionalButton={activeAdditionalButton}
-                // showAdditionalButtons={showAdditionalButtons}
             />
 
             {activeFilters.length > 0 && (
