@@ -38,3 +38,11 @@ export async function saveAsset(asset) {
         handleAxiosError(error)
     }
 }
+export async function assetAvailable(assetId) {
+    try {
+        const { data } = await api.put(`${root}/1/${assetId}`)
+        return data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}

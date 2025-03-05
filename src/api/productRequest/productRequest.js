@@ -38,3 +38,12 @@ export async function saveProductRequest(productRequest) {
         handleAxiosError(error)
     }
 }
+
+export async function cancelledProductRequest(productRId) {
+    try {
+        const { data } = await api.put(`${root}/4/${productRId}`)
+        return data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}
