@@ -28,6 +28,7 @@
     "framer-motion": "^12.4.2",
     "jspdf": "^2.5.2",
     "jspdf-autotable": "^3.8.4",
+    "luxon": "^3.5.0",
     "material-react-table": "^3.1.0",
     "mui-datatables": "^4.3.0",
     "papaparse": "^5.5.2",
