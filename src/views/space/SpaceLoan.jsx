@@ -265,7 +265,7 @@ const SpaceLoan = () => {
                                 />
                                 {spaceInfo && (
                                     <span
-                                        className="mt-1 text-black-50 font-italic"
+                                        className="mb-5 text-black-50 font-italic"
                                         style={{fontSize: ".85rem"}}
                                     >
                                         Hora de cierre: {spaceInfo.openTime}
