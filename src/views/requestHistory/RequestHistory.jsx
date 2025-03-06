@@ -281,48 +281,23 @@ const RequestHistory = () => {
     return (
         <>
             <RequestHistoryBanner
-                title={`Historial de Solicitudes ${
-                    activeButton === "assetRequest"
-                        ? "de Activos"
-                        : activeButton === "productRequest"
-                            ? "de Productos"
-                            : activeButton === "spaceRequest"
-                                ? "de Espacios"
-                                : ""
-                }`}
+                title={
+                    activeButton
+                        ? `Historial de Solicitudes ${
+                            activeButton === "assetRequest"
+                                ? "de Activos"
+                                : activeButton === "productRequest"
+                                    ? "de Productos"
+                                    : activeButton === "spaceRequest"
+                                        ? "de Espacios"
+                                        : ""
+                        }`
+                        : "Seleccione un tipo de solicitud"
+                }
                 activeFilters={[activeButton].filter(Boolean)}
                 handleButtonClick={handleButtonClick}
                 activeButton={activeButton}
             />
-            {!activeButton && (
-                <div
-                    className="d-flex justify-content-center align-items-center mt-4"
-                    style={{
-                        background: "#f8f9fa",
-                        padding: "12px 20px",
-                        borderRadius: "10px",
-                        boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
-                        maxWidth: "600px",
-                        margin: "0 auto",
-                    }}
-                >
-                    <span style={{ fontSize: "1.5rem", marginRight: "8px", color: "#0d6efd" }}>
-                        📜
-                    </span>
-                    <p className="fw-bold text-primary mb-0 text-center"
-                       style={{
-                           fontFamily: "Montserrat, sans-serif",
-                           fontSize: "1.1rem",
-                           letterSpacing: "0.5px",
-                           lineHeight: "1.5",
-                       }}
-                    >
-                        Seleccione la opción de
-                        <span className="text-danger fw-semibold"> historial de solicitudes </span>
-                        que desea visualizar.
-                    </p>
-                </div>
-            )}
 
             {loading && <LoadingPointsSpinner />}
 
