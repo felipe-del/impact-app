@@ -30,6 +30,15 @@ export async function getAllAssets() {
     }
 }
 
+export async function getAssetById(id) {
+    try {
+        const { data } = await api.get(`${root}/${id}`)
+        return data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}
+
 export async function saveAsset(asset) {
     try {
         const { data } = await api.post(root, asset)

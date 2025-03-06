@@ -30,6 +30,24 @@ export async function getAllAssetRequest() {
     }
 }
 
+export async function getAssetRequestById(id) {
+    try {
+        const { data } = await api.get(`${root}/${id}`)
+        return data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}
+
+export async function saveAssetRequestRenewal(subCategory){
+    try {
+        const { data } = await api.post(root, subCategory)
+        return data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}
+
 export async function saveAssetRequest(subCategory) {
     try {
         const { data } = await api.post(root, subCategory)
