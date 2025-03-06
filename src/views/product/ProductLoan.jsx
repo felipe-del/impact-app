@@ -118,22 +118,8 @@ const ProductLoan = () => {
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="row">
                             <div className="col-md-4 mb-4">
-                                <label htmlFor="quantity" className="form-label">
-                                    <i className="fa-solid fa-arrow-up-1-9"/> Cantidad de Productos por solicitar<span className="text-danger">*</span>
-                                </label>
-                                <input
-                                    type="number"
-                                    id="quantity"
-                                    className="form-control border-primary"
-                                    {...register("quantity", { required: "La cantidad es requerida", min: { value: 1, message: "La cantidad debe ser mayor a 0" } })}
-                                    placeholder="Ej: 10"
-                                    style={{ fontSize: ".9rem" }}
-                                />
-                                {errors.quantity && <div className="input-text-error show">{errors.quantity.message}</div>}
-                            </div>
-                            <div className="col-md-4 mb-4">
                                 <label htmlFor="selectedProduct" className="form-label">
-                                    <i className="fas fa-car"></i> Seleccione el Producto
+                                    <i className="fas fa-car"></i> Seleccione el Producto<span className="text-danger">*</span>
                                 </label>
                                 <select
                                     id="selectedProduct"
@@ -147,13 +133,28 @@ const ProductLoan = () => {
                                 >
                                     <option value="">Seleccione un activo</option>
                                     {productData && productData.length > 0 ? (
-                                        productData
-                                            .filter(product => product.status.name.toLowerCase() !== "earring") // Filtra productos con status "earning"
-                                            .map(product => (
-                                                <option key={product.id} value={product.id}>
-                                                    {product.category.name} - {product.category.categoryType.name}
-                                                </option>
-                                            ))
+                                        Array.from(
+                                            productData
+                                                .filter(product => product.status.name.toLowerCase() !== "earring") // Exclude products with status "EARRING"
+                                                .reduce((acc, product) => {
+                                                    // If category doesn't exist in the accumulator, add it with the product
+                                                    if (!acc.has(product.category.id)) {
+                                                        acc.set(product.category.id, {
+                                                            categoryName: product.category.name,
+                                                            categoryType: product.category.categoryType.name,
+                                                            availableQuantity: productData.filter(
+                                                                p => p.category.id === product.category.id && p.status.name.toLowerCase() !== "earring"
+                                                            ).length,
+                                                            productId: product.id
+                                                        });
+                                                    }
+                                                    return acc;
+                                                }, new Map())
+                                        ).map(([_, categoryData]) => (
+                                            <option key={categoryData.productId} value={categoryData.productId}>
+                                                Categoría: {categoryData.categoryName} - Tipo: {categoryData.categoryType} (Cantidad disponible: {categoryData.availableQuantity})
+                                            </option>
+                                        ))
                                     ) : (
                                         <option value="">No hay activos disponibles</option>
                                     )}
@@ -161,10 +162,25 @@ const ProductLoan = () => {
                                 {errors.selectedProduct && <div className="input-text-error show">{errors.selectedProduct.message}</div>}
                             </div>
 
+                            <div className="col-md-4 mb-4">
+                                <label htmlFor="quantity" className="form-label">
+                                    <i className="fa-solid fa-arrow-up-1-9"/> Cantidad de Productos por solicitar<span className="text-danger">*</span>
+                                </label>
+                                <input
+                                    type="number"
+                                    id="quantity"
+                                    className="form-control border-primary"
+                                    {...register("quantity", { required: "La cantidad es requerida", min: { value: 1, message: "La cantidad debe ser mayor a 0" } })}
+                                    placeholder="Ej: 10"
+                                    style={{ fontSize: ".9rem" }}
+                                />
+                                {errors.quantity && <div className="input-text-error show">{errors.quantity.message}</div>}
+                            </div>
+
                             {/* Purpose */}
                             <div className="col-md-4 mb-4">
                                 <label htmlFor="reason" className="form-label">
-                                    <i className="fas fa-file-alt"></i> Propósito de la Solicitud
+                                    <i className="fas fa-file-alt"></i> Propósito de la Solicitud<span className="text-danger">*</span>
                                 </label>
                                 <textarea
                                     id="reason"
