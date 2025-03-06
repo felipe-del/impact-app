@@ -30,3 +30,13 @@
 .MuiTableRow-root:nth-child(even) {
     background-color: #f8f9fa !important;
 }
+
+/***********************************************************/
+
+/* Estilo profesional para el input de búsqueda en los headers de la tabla */
+.MuiTableHead-root .MuiInputBase-root {
+    color: #f8f9fa !important;
+    font-style: italic !important;
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 14px !important;
+}

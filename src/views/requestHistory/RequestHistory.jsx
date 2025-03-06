@@ -99,10 +99,10 @@ const RequestHistory = () => {
     // Columnas y datos para cada tipo de solicitud
     const spaceRequestColumns = [
         { accessorKey: 'id', header: 'Id' },
+        { accessorKey: 'maxPeople', header: 'Número de personas'},
         { accessorKey: 'spaceName', header: 'Espacio' },
         { accessorKey: 'building', header: 'Ubicación' },
-        { accessorKey: 'maxPeople', header: 'Número de personas' },
-        { accessorKey: 'eventDesc', header: 'Descripción del evento' },
+        { accessorKey: 'eventDesc', header: 'Descripción del evento'},
         { accessorKey: 'eventObs', header: 'Observaciones del evento' },
         { accessorKey: 'startTime', header: 'Hora de inicio' },
         { accessorKey: 'endTime', header: 'Hora de finalización' },
@@ -129,9 +129,9 @@ const RequestHistory = () => {
         { accessorKey: 'id', header: 'ID' },
         { accessorKey: 'productName', header: 'Nombre de Producto' },
         { accessorKey: 'productId', header: 'Id del producto' },
-        { accessorKey: 'createdAt', header: 'Fecha de Solicitud' },
-        { accessorKey: 'reason', header: 'Razón' },
         { accessorKey: 'user', header: 'Usuario Responsable' },
+        { accessorKey: 'reason', header: 'Razón' },
+        { accessorKey: 'createdAt', header: 'Fecha de Solicitud' },
         { accessorKey: 'status', header: 'Estado' },
         {
             id: 'actions',
@@ -153,11 +153,11 @@ const RequestHistory = () => {
 
     const assetRequestColumns = [
         { accessorKey: 'id', header: 'ID' },
-        { accessorKey: 'plateNumber', header: 'Placa' },
-        { accessorKey: 'createdAt', header: 'Fecha de Solicitud' },
-        { accessorKey: 'reason', header: 'Razón' },
         { accessorKey: 'asset', header: 'Activo' },
+        { accessorKey: 'plateNumber', header: 'Placa' },
         { accessorKey: 'user', header: 'Usuario Responsable' },
+        { accessorKey: 'reason', header: 'Razón' },
+        { accessorKey: 'createdAt', header: 'Fecha de Solicitud' },
         { accessorKey: 'status', header: 'Estado' },
         {
             id: 'actions',
@@ -228,6 +228,7 @@ const RequestHistory = () => {
             columnVisibility: {
                 id: false,
                 eventObs: false,
+                eventDesc: false
             },
             density: 'comfortable',
             pagination: { pageSize: 5 },
@@ -280,12 +281,19 @@ const RequestHistory = () => {
     return (
         <>
             <RequestHistoryBanner
-                title={"Historial de Solicitudes"}
+                title={`Historial de Solicitudes ${
+                    activeButton === "assetRequest"
+                        ? "de Activos"
+                        : activeButton === "productRequest"
+                            ? "de Productos"
+                            : activeButton === "spaceRequest"
+                                ? "de Espacios"
+                                : ""
+                }`}
                 activeFilters={[activeButton].filter(Boolean)}
                 handleButtonClick={handleButtonClick}
                 activeButton={activeButton}
             />
-
             {!activeButton && (
                 <div
                     className="d-flex justify-content-center align-items-center mt-4"
