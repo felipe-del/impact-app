@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { useUser } from "../../hooks/user/useUser.jsx";
-import { getAssetRequestByUser } from "../../api/assetRequest/assetRequest_API.js";
+import { getAssetRequestByUser, updateAssetRequest } from "../../api/assetRequest/assetRequest_API.js";
 import { cancelledAssetRequest } from "../../api/assetRequest/assetRequest_API.js";
 import { getSpaceRandRByUser } from "../../api/SpaceRndR/spaceRndR_API.js";
 import { cancelledProductRequest } from "../../api/productRequest/productRequest.js";
@@ -19,10 +19,10 @@ import RenewalButton from "../../components/button/RenewalButton.jsx";
 import dayjs from "dayjs";
 import {saveAssetRequestRenewal} from "../../api/assetRequest/assetRequest_API.js";
 import { getAssetRequestById } from "../../api/assetRequest/assetRequest_API.js";
+import { updateAssetRequestRenewal } from "../../api/assetRequest/assetRequest_API.js";
 
 const RequestHistory = () => {
     const user = useUser();
-    let visible = true;
 
     const [activeButton, setActiveButton] = useState(null);
     const [showAdditionalButtons, setShowAdditionalButtons] = useState(false);
@@ -33,7 +33,6 @@ const RequestHistory = () => {
     const [selectedRequest, setSelectedRequest] = useState(null);  // To hold the selected request for cancellation
     const [cancelReason, setCancelReason] = useState("");
     const [newExpirationDate, setNewExpirationDate] = useState(null); // Estado para la nueva fecha de expiración
-    const [assetId, setAssetId] = useState(0);
 
     const handleButtonClick = async (buttonKey) => {
         setActiveButton(buttonKey);
@@ -160,26 +159,48 @@ const RequestHistory = () => {
 
     const renewAction = async () => {
         console.log(selectedRequest);
+        let localAssetId;
+        let localRequestId;
+        const currentExpirationDate = dayjs(selectedRequest.original.expirationDate);
+        const newExpiration = dayjs(newExpirationDate);
+    
+        // Validar que la nueva fecha de expiración sea posterior a la fecha de expiración actual
+        if (newExpiration.isBefore(currentExpirationDate)) {
+            toast.error("La nueva fecha de expiración debe ser posterior a la fecha de expiración actual.", { duration: 7000 });
+            return; // Detener la ejecución si la validación falla
+        }
+    
         try {
             const response = await getAssetRequestById(selectedRequest.original.id);
-            const assetId = response.data.asset.id; // Almacena el ID del activo en una variable local
-            console.log(assetId);
-            setAssetId(assetId); // Actualiza el estado con el ID del activo
-            console.log(assetId);
+            localRequestId = response.data.id; // Almacena el ID de la solicitud en una variable local
+            localAssetId = response.data.asset.id; // Almacena el ID del activo en una variable local
+            console.log(localAssetId);
         } catch (e) {
             toast.error(e.message);
             return; // Detener la ejecución si hay un error
         }
         try {
             const response = await saveAssetRequestRenewal({
-                assetId: assetId, // Usa la variable local en lugar del estado
+                assetId: localAssetId, // Usa la variable local en lugar del estado
                 reason: selectedRequest.original.reason,
                 expirationDate: newExpirationDate, // Usar la nueva fecha de expiración seleccionada
                 createdAt: selectedRequest.original.expirationDate,
             });
             toast.success(response.message, { duration: 7000 });
-            reset();
-            refetch();
+            setShowRenewModal(false); 
+            setNewExpirationDate(null); 
+
+            const update = await updateAssetRequestRenewal(localRequestId, { 
+                assetId: localAssetId,
+                status: "Pendiente de renovacion." ,
+                reason: selectedRequest.original.reason,
+                expirationDate: selectedRequest.original.expirationDate,
+            });
+            toast.success(update.message, { duration: 7000 });
+    
+            // Actualizar la tabla después de la renovación
+            const updatedRequests = await getAssetRequestByUser(user.id);
+            setRequests(updatedRequests.data);
         } catch (e) {
             toast.error(e.message);
         }
@@ -263,8 +284,6 @@ const RequestHistory = () => {
             const expirationDate = dayjs(request.expirationDate);
             const today = dayjs();
             const daysUntilExpiration = expirationDate.diff(today, 'day');
-            request.status?.name === "ACCEPTED" && daysUntilExpiration >= 2 && request.user?.id === user.id ? visible = true : visible = false;
-            console.log(request.status?.name, daysUntilExpiration, visible);
             switch (activeButton) {
                 case "spaceRequest":
                     return {

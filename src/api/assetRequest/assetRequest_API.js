@@ -12,6 +12,15 @@ export async function updateAssetRequest(id, assetRequest) {
     }
 }
 
+export async function updateAssetRequestRenewal(id, assetRequest) {
+    try {
+        const { data } = await api.put(`${root}/renew/${id}`, assetRequest)
+        return data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}
+
 export async function deleteAssetRequest(id) {
     try {
         const response = await api.delete(`${root}/${id}`)
