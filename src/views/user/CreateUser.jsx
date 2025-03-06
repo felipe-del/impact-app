@@ -116,7 +116,7 @@ export default function CreateUser() {
                                     placeholder="Ej: Jane Doe"
                                     required
                                 />
-                                {formErrors.name && <div className="text-danger">{formErrors.name}</div>}
+                                {formErrors.name && <div className="input-text-error show">{formErrors.name}</div>}
                             </div>
 
                             <div className="col-md-3 col-sm-6 col-12 mb-3">
@@ -133,7 +133,7 @@ export default function CreateUser() {
                                     placeholder="Ej: jane.doe@example.com"
                                     required
                                 />
-                                {formErrors.email && <div className="text-danger">{formErrors.email}</div>}
+                                {formErrors.email && <div className="input-text-error show">{formErrors.email}</div>}
                             </div>
 
                             <div className="col-md-3 col-sm-6 col-12 mb-3">
@@ -155,7 +155,7 @@ export default function CreateUser() {
                                         </option>
                                     ))}
                                 </select>
-                                {formErrors.state && <div className="text-danger">{formErrors.state}</div>}
+                                {formErrors.state && <div className="input-text-error show">{formErrors.state}</div>}
                             </div>
 
                             <div className="col-md-3 col-sm-6 col-12 mb-3">
@@ -177,7 +177,7 @@ export default function CreateUser() {
                                         </option>
                                     ))}
                                 </select>
-                                {formErrors.role && <div className="text-danger">{formErrors.role}</div>}
+                                {formErrors.role && <div className="input-text-error show">{formErrors.role}</div>}
                             </div>
                         </div>
 
