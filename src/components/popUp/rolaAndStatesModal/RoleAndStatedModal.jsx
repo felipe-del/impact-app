@@ -1,6 +1,7 @@
 import { Modal, Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import {StatusTranslator} from "../../../util/Translator.js";
 
 const RoleAndStateModal = ({ open, onClose, roles, states }) => {
     return (
@@ -27,7 +28,7 @@ const RoleAndStateModal = ({ open, onClose, roles, states }) => {
                                 {roles.map((role) => (
                                     <TableRow key={role.id}>
                                         <TableCell>{role.id}</TableCell>
-                                        <TableCell>{role.roleName}</TableCell>
+                                        <TableCell>{StatusTranslator.translate(role.roleName)}</TableCell>
                                         <TableCell>{role.description}</TableCell>
                                     </TableRow>
                                 ))}
@@ -52,7 +53,7 @@ const RoleAndStateModal = ({ open, onClose, roles, states }) => {
                                 {states.map((state) => (
                                     <TableRow key={state.id}>
                                         <TableCell>{state.id}</TableCell>
-                                        <TableCell>{state.stateName}</TableCell>
+                                        <TableCell>{StatusTranslator.translate(state.stateName)}</TableCell>
                                         <TableCell>{state.description}</TableCell>
                                     </TableRow>
                                 ))}
