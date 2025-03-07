@@ -28,6 +28,7 @@ import EditButton from "../../components/button/EditButton.jsx";
 import TableActionButtons from "../../components/button/TableActionButtons.jsx";
 import GenericModal from "../../components/popUp/generic/GenericModal.jsx";
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
+import {StatusTranslator} from "../../util/Translator.js";
 
 const UserTable = () => {
     const [openRoleAndStateModal, setOpenRoleAndStateModal] = useState(false);
@@ -309,7 +310,7 @@ const UserTable = () => {
                                 fontFamily: 'Montserrat, sans-serif',
                             }}
                         >
-                            {row.original.userStateResponse.stateName}
+                            {StatusTranslator.translate(row.original.userStateResponse.stateName)}
                         </Typography>
                     )
                 )
