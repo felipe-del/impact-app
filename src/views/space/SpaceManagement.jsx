@@ -7,6 +7,9 @@ import LoadingPointsSpinner from "../../components/spinner/loadingSpinner/Loadin
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import EditButton from "../../components/button/EditButton.jsx";
 import {useNavigate} from "react-router-dom";
+import {StatusTranslator} from "../../util/Translator.js";
+import {getStateColor} from "../../util/SelectColorByStatus.js";
+import {getStateIcon} from "../../util/SelectIconByStatus.jsx";
 
 const initialData = {
     name: '',
@@ -44,7 +47,21 @@ const SpaceManagement = () => {
             { accessorKey: "openTime", header: "Hora de Apertura" },
             { accessorKey: "closeTime", header: "Hora de Cierre" },
             { accessorKey: "maxPeople", header: "Capacidad Máxima" },
-            { accessorKey: "spaceStatus.name", header: "Estado" },
+            { accessorKey: 'spaceStatus.name', header: 'Estado',
+                Cell: ({ row }) => {
+                    const status = row.original.spaceStatus;
+                    const translatedStatus = StatusTranslator.translate(status.name);
+                    return(
+                        <Typography
+                            sx={{
+                                color: getStateColor(translatedStatus),
+                                fontFamily: 'Montserrat, sans-serif',
+                            }}
+                        >
+                            {getStateIcon(translatedStatus)} {translatedStatus}
+                        </Typography>
+                    )
+                }},
             { accessorKey: "buildingLocationResponse.building.name", header: "Edificio" },
             {
                 id: 'actions',
@@ -114,7 +131,7 @@ const SpaceManagement = () => {
                     { label: 'Hora de Apertura', value: row.original.openTime },
                     { label: 'Hora de Cierre', value: row.original.closeTime },
                     { label: 'Código de Espacio', value: row.original.spaceCode },
-                    { label: 'Estado', value: row.original.spaceStatus.name },
+                    { label: 'Estado', value: StatusTranslator.translate(row.original.spaceStatus.name) },
                     { label: 'Descripción de Estado', value: row.original.spaceStatus.description },
                     { label: 'Edificio', value: row.original.buildingLocationResponse.building.name },
                     { label: 'Número de piso', value: row.original.buildingLocationResponse.floor },
