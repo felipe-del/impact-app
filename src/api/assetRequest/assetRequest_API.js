@@ -12,6 +12,15 @@ export async function updateAssetRequest(id, assetRequest) {
     }
 }
 
+export async function updateAssetRequestRenewal(id, assetRequest) {
+    try {
+        const { data } = await api.put(`${root}/renew/${id}`, assetRequest)
+        return data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}
+
 export async function deleteAssetRequest(id) {
     try {
         const response = await api.delete(`${root}/${id}`)
@@ -24,6 +33,24 @@ export async function deleteAssetRequest(id) {
 export async function getAllAssetRequest() {
     try {
         const { data } = await api.get(root)
+        return data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}
+
+export async function getAssetRequestById(id) {
+    try {
+        const { data } = await api.get(`${root}/${id}`)
+        return data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}
+
+export async function saveAssetRequestRenewal(subCategory){
+    try {
+        const { data } = await api.post(root, subCategory)
         return data
     } catch (error) {
         handleAxiosError(error)

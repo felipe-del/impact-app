@@ -1,5 +1,13 @@
 import { useState, useMemo } from "react";
 import { useUser } from "../../hooks/user/useUser.jsx";
+import { getAssetRequestByUser, updateAssetRequest } from "../../api/assetRequest/assetRequest_API.js";
+import { cancelledAssetRequest } from "../../api/assetRequest/assetRequest_API.js";
+import { getSpaceRandRByUser } from "../../api/SpaceRndR/spaceRndR_API.js";
+import { cancelledProductRequest } from "../../api/productRequest/productRequest.js";
+import { cancelResAndReq } from "../../api/SpaceRndR/spaceRndR_API.js";
+import { productAvailable } from "../../api/product/product_API.js";
+import { getProductRequestByUser } from "../../api/productRequest/productRequest.js";
+import { assetAvailable, getAssetById } from "../../api/asset/asset_API.js";
 import { getAssetRequestByUser, cancelledAssetRequest } from "../../api/assetRequest/assetRequest_API.js";
 import { getSpaceRandRByUser, cancelResAndReq } from "../../api/SpaceRndR/spaceRndR_API.js";
 import { getProductRequestByUser, cancelledProductRequest } from "../../api/productRequest/productRequest.js";
@@ -11,6 +19,11 @@ import { toast } from "react-hot-toast";
 import GenericModal from "../../components/popUp/generic/GenericModal.jsx";
 import RequestHistoryBanner from "./RequestHistoryBanner.jsx";
 import CancelButton from "../../components/button/CancelButton.jsx";
+import RenewalButton from "../../components/button/RenewalButton.jsx";
+import dayjs from "dayjs";
+import {saveAssetRequestRenewal} from "../../api/assetRequest/assetRequest_API.js";
+import { getAssetRequestById } from "../../api/assetRequest/assetRequest_API.js";
+import { updateAssetRequestRenewal } from "../../api/assetRequest/assetRequest_API.js";
 import { Typography } from "@mui/material";
 import { gradientMapping } from "../../style/codeStyle.js";
 
@@ -18,11 +31,15 @@ const RequestHistory = () => {
     const user = useUser();
     const [activeButton, setActiveButton] = useState(null);
     const [showAdditionalButtons, setShowAdditionalButtons] = useState(false);
+    const [requests, setRequests] = useState([]); // Estado para guardar los datos de la API
+    const [loading, setLoading] = useState(false); // Estado para manejar la carga de solicitudes
+    const [showRenewModal, setShowRenewModal] = useState(false);
     const [requests, setRequests] = useState([]);
     const [loading, setLoading] = useState(false);
     const [showCancelModal, setShowCancelModal] = useState(false);
     const [selectedRequest, setSelectedRequest] = useState(null);
     const [cancelReason, setCancelReason] = useState("");
+    const [newExpirationDate, setNewExpirationDate] = useState(null); // Estado para la nueva fecha de expiración
 
     const fetchRequests = async (apiCall) => {
         if (!user?.id) return;
@@ -39,6 +56,9 @@ const RequestHistory = () => {
         }
     };
 
+    const activeFilters = [];
+    if (activeButton) activeFilters.push(activeButton);
+    // if (activeAdditionalButton) activeFilters.push(activeButton);
     const handleButtonClick = (buttonKey) => {
         setActiveButton(buttonKey);
         setShowAdditionalButtons(["spaceRequest", "productRequest", "assetRequest"].includes(buttonKey));
@@ -95,6 +115,134 @@ const RequestHistory = () => {
             setCancelReason("");
         }
     };
+  
+    const handlePreRenew = (row) => {
+        console.log(row);
+        setSelectedRequest(row);
+        setShowRenewModal(true);
+    }
+
+    const renewAction = async () => {
+        console.log(selectedRequest);
+        let localAssetId;
+        let localRequestId;
+        const currentExpirationDate = dayjs(selectedRequest.original.expirationDate);
+        const newExpiration = dayjs(newExpirationDate);
+    
+        // Validar que la nueva fecha de expiración sea posterior a la fecha de expiración actual
+        if (newExpiration.isBefore(currentExpirationDate)) {
+            toast.error("La nueva fecha de expiración debe ser posterior a la fecha de expiración actual.", { duration: 7000 });
+            return; // Detener la ejecución si la validación falla
+        }
+    
+        try {
+            const response = await getAssetRequestById(selectedRequest.original.id);
+            localRequestId = response.data.id; // Almacena el ID de la solicitud en una variable local
+            localAssetId = response.data.asset.id; // Almacena el ID del activo en una variable local
+            console.log(localAssetId);
+        } catch (e) {
+            toast.error(e.message);
+            return; // Detener la ejecución si hay un error
+        }
+        try {
+            const response = await saveAssetRequestRenewal({
+                assetId: localAssetId, // Usa la variable local en lugar del estado
+                reason: selectedRequest.original.reason,
+                expirationDate: newExpirationDate, // Usar la nueva fecha de expiración seleccionada
+                createdAt: selectedRequest.original.expirationDate,
+            });
+            toast.success(response.message, { duration: 7000 });
+            setShowRenewModal(false); 
+            setNewExpirationDate(null); 
+
+            const update = await updateAssetRequestRenewal(localRequestId, { 
+                assetId: localAssetId,
+                status: "Pendiente de renovacion." ,
+                reason: selectedRequest.original.reason,
+                expirationDate: selectedRequest.original.expirationDate,
+            });
+            toast.success(update.message, { duration: 7000 });
+    
+            // Actualizar la tabla después de la renovación
+            const updatedRequests = await getAssetRequestByUser(user.id);
+            setRequests(updatedRequests.data);
+        } catch (e) {
+            toast.error(e.message);
+        }
+    };
+
+    const columns = useMemo(() => {
+        switch (activeButton) {
+            case "spaceRequest":
+                return [
+                    { accessorKey: 'id', header: 'Id'},
+                    { accessorKey: 'spaceName', header: 'Espacio' },
+                    { accessorKey: 'status', header: 'Estado' },
+                    { accessorKey: 'building', header: 'Ubicación' },
+                    { accessorKey: 'maxPeople', header: 'Número de personas' },
+                    { accessorKey: 'eventDesc', header: 'Descripción del evento' },
+                    { accessorKey: 'eventObs', header: 'Observaciones del evento' },
+                    { accessorKey: 'startTime', header: 'Hora de inicio' },
+                    { accessorKey: 'endTime', header: 'Hora de finalización' },
+                    {
+                        id: 'actions',
+                        header: 'Acciones',
+                        size: 'small',
+                        Cell: ({ row }) => (
+                            <CancelButton handleCancel={handlePreCancel} row={row} />
+                        ),
+                    },
+                ];
+            case "productRequest":
+                return [
+                    { accessorKey: 'id', header: 'ID' },
+                    { accessorKey: 'productName', header: 'Nombre de Producto' },
+                    { accessorKey: 'productId', header: 'Id del producto'},
+                    { accessorKey: 'createdAt', header: 'Fecha de Solicitud' },
+                    { accessorKey: 'status', header: 'Estado' },
+                    { accessorKey: 'reason', header: 'Razón' },
+                    { accessorKey: 'user', header: 'Usuario Responsable' },
+                    {
+                        id: 'actions',
+                        header: 'Acciones',
+                        size: 'small',
+                        Cell: ({ row }) => (
+                            <CancelButton handleCancel={handlePreCancel} row={row} />
+                        ),
+                    },
+                ];
+            case "assetRequest":
+            default:
+                return [
+                    { accessorKey: 'id', header: 'ID' },
+                    { accessorKey: 'plateNumber', header: 'Placa' },
+                    { accessorKey: 'createdAt', header: 'Fecha de Solicitud' },
+                    { accessorKey: 'status', header: 'Estado' },
+                    { accessorKey: 'reason', header: 'Razón' },
+                    { accessorKey: 'asset', header: 'Activo' },
+                    { accessorKey: 'user', header: 'Usuario Responsable' },
+                    { accessorKey: 'expirationDate', header: 'Fecha de Expiración' },
+                    {
+                        id: 'actions',
+                        header: 'Acciones',
+                        size: 'small',
+                        Cell: ({ row }) => {
+                            const expirationDate = dayjs(row.original.expirationDate);
+                            const today = dayjs();
+                            const daysUntilExpiration = expirationDate.diff(today, 'day');
+                            return (
+                                <div style={{ display: "flex", justifyContent: "space-evenly", marginRight: "50px" }}>
+                                    <CancelButton handleCancel={handlePreCancel} row={row} />
+                                    {daysUntilExpiration >= 2 && row.original.status === "Ha sido aceptado." && (
+                                        <RenewalButton renewAction={() => handlePreRenew(row)} row={row} />
+                                    )}
+                                </div>
+                            );
+                        },
+                    },
+                ];
+        }
+    }, [activeButton]);
 
     // Columnas y datos para cada tipo de solicitud
     const spaceRequestColumns = [
@@ -180,6 +328,9 @@ const RequestHistory = () => {
     // Transformar los datos según el tipo de solicitud
     const flatRequests = useMemo(() => {
         return requests.map(request => {
+            const expirationDate = dayjs(request.expirationDate);
+            const today = dayjs();
+            const daysUntilExpiration = expirationDate.diff(today, 'day');
             switch (activeButton) {
                 case "spaceRequest":
                     return {
@@ -213,6 +364,7 @@ const RequestHistory = () => {
                         reason: request.reason || "No disponible",
                         asset: request.asset?.subcategory?.description || "No disponible",
                         user: request.user?.name || "No disponible",
+                        expirationDate: request.expirationDate || "No disponible",
                     };
             }
         });
@@ -334,6 +486,28 @@ const RequestHistory = () => {
                     onButtonClick={handleCancel}
                 />
             )}
+
+<GenericModal
+        show={showRenewModal}
+        onHide={() => setShowRenewModal(false)}
+        title="Renovar Solicitud"
+        bodyText={`<p>¿Estás seguro de renovar esta solicitud?</p>`}
+        customContent={
+            <div>
+             <label htmlFor="expirationDate" className="form-label">
+            <i className="fas fa-calendar-alt"></i> Fecha de finalización del nuevo préstamo
+            </label>
+                <input
+                    type="date"
+                    id="expirationDate"
+                    className="form-control border-primary"
+                    onChange={(e) => setNewExpirationDate(e.target.value)}
+                />
+            </div>
+        }
+        buttonText="Confirmar Renovación"
+        onButtonClick={renewAction}
+    />
 
             {activeButton === "spaceRequest" && requests.length > 0 && !loading && (
                 <MaterialReactTable table={spaceRequestTable} />
