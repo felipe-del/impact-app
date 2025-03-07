@@ -10,6 +10,7 @@ import { saveUser } from "../../api/auth/auth_API.js";
 import {toast} from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import '../../style/createPage.css'
+import {StatusTranslator} from "../../util/Translator.js";
 
 export default function CreateUser() {
 
@@ -151,7 +152,7 @@ export default function CreateUser() {
                                     <option value="">Seleccionar estado</option>
                                     {states.map((state) => (
                                         <option key={state.id} value={state.id}>
-                                            {state.stateName} - {state.description}
+                                            {StatusTranslator.translate(state.stateName)} - {state.description}
                                         </option>
                                     ))}
                                 </select>
@@ -173,7 +174,7 @@ export default function CreateUser() {
                                     <option value="">Seleccionar rol</option>
                                     {roles.map((role) => (
                                         <option key={role.id} value={role.id}>
-                                            {role.roleName} - {role.description}
+                                            {StatusTranslator.translate(role.roleName)} - {role.description}
                                         </option>
                                     ))}
                                 </select>
