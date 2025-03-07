@@ -18,6 +18,7 @@ import {getAllLocationNumber} from "../../api/locationNumber_API/locationNumber_
 import {getAllAssets, saveAsset, updateAsset} from "../../api/asset/asset_API.js";
 import {toast} from "react-hot-toast";
 import {useNavigate, useParams} from "react-router-dom";
+import {StatusTranslator} from "../../util/Translator.js";
 
 const initialData = {
     purchaseDate: '',
@@ -436,7 +437,7 @@ const UpdateAsset = () => {
                                                 disabled={isDisabled}
                                                 style={isDisabled ? { color: "#999", backgroundColor: "#f0f0f0", cursor: "not-allowed" } : {}}
                                             >
-                                                {status.name} - {status.description}
+                                                {StatusTranslator.translate(status.name)} - {status.description}
                                             </option>
                                         );
                                     })}

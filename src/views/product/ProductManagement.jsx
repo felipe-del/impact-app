@@ -7,6 +7,9 @@ import LoadingPointsSpinner from "../../components/spinner/loadingSpinner/Loadin
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import EditButton from "../../components/button/EditButton.jsx";
 import {useNavigate} from "react-router-dom";
+import {StatusTranslator} from "../../util/Translator.js";
+import {getStateColor} from "../../util/SelectColorByStatus.js";
+import {getStateIcon} from "../../util/SelectIconByStatus.jsx";
 
 const ProductManagement = () => {
 
@@ -27,7 +30,21 @@ const ProductManagement = () => {
         () => [
             { accessorKey: "id", header: "ID", size: 80 },
             { accessorKey: "purchaseDate", header: "Fecha de Compra" },
-            { accessorKey: "status.name", header: "Estado" },
+            { accessorKey: 'status.name', header: 'Estado',
+                Cell: ({ row }) => {
+                    const status = row.original.status;
+                    const translatedStatus = StatusTranslator.translate(status.name);
+                    return(
+                        <Typography
+                            sx={{
+                                color: getStateColor(translatedStatus),
+                                fontFamily: 'Montserrat, sans-serif',
+                            }}
+                        >
+                            {getStateIcon(translatedStatus)} {translatedStatus}
+                        </Typography>
+                    )
+                }},
             { accessorKey: "category.unitOfMeasurement.name", header: "Unidad de Medida" },
             { accessorKey: "category.categoryType.name", header: "Categoría" },
             {
@@ -92,7 +109,7 @@ const ProductManagement = () => {
                     { label: 'ID', value: row.original.id },
                     { label: 'Fecha de Compra', value: row.original.purchaseDate },
                     { label: 'Fecha de Expiración', value: row.original.expiryDate },
-                    { label: 'Estado', value: row.original.status.name },
+                    { label: 'Estado', value: StatusTranslator.translate(row.original.status.name) },
                     { label: 'Descripción de Estado', value: row.original.status.description },
                     { label: 'Unidad de Medida', value: row.original.category.unitOfMeasurement.name },
                     { label: 'Abreviatura Unidad', value: row.original.category.unitOfMeasurement.abbreviation },

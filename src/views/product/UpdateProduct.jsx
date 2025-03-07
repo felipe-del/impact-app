@@ -8,6 +8,7 @@ import {toast} from "react-hot-toast";
 import SaveButton from "../../components/button/SaveButton.jsx";
 import GenericModal from "../../components/popUp/generic/GenericModal.jsx";
 import useProductData from "../../hooks/apiData/product/productData.jsx";
+import {StatusTranslator} from "../../util/Translator.js";
 
 const UpdateProduct = () => {
     const { id } = useParams();
@@ -212,7 +213,7 @@ const UpdateProduct = () => {
                                                 disabled={isDisabled}
                                                 style={isDisabled ? { color: "#999", backgroundColor: "#f0f0f0", cursor: "not-allowed" } : {}}
                                             >
-                                                {status.name} - {status.description}
+                                                {StatusTranslator.translate(status.name)} - {status.description}
                                             </option>
                                         );
                                     })}

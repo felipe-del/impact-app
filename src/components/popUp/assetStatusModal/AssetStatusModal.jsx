@@ -1,6 +1,7 @@
 import { Modal, Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import {StatusTranslator} from "../../../util/Translator.js";
 
 const AssetStatusModal = ({ open, onClose, assetStatuses }) => {
     return (
@@ -23,7 +24,7 @@ const AssetStatusModal = ({ open, onClose, assetStatuses }) => {
                             {assetStatuses.map((status) => (
                                 <TableRow key={status.id}>
                                     <TableCell>{status.id}</TableCell>
-                                    <TableCell>{status.name}</TableCell>
+                                    <TableCell>{StatusTranslator.translate(status.name)}</TableCell>
                                     <TableCell>{status.description}</TableCell>
                                 </TableRow>
                             ))}

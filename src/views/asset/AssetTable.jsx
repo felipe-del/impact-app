@@ -84,6 +84,9 @@ const initialArray = [
 ];
 import EditButton from "../../components/button/EditButton.jsx";
 import {useNavigate} from "react-router-dom";
+import {StatusTranslator} from "../../util/Translator.js";
+import {getStateColor} from "../../util/SelectColorByStatus.js";
+import {getStateIcon} from "../../util/SelectIconByStatus.jsx";
 
 const AssetTable = () => {
 
@@ -145,7 +148,21 @@ const AssetTable = () => {
             { accessorKey: 'category.name', header: 'Categoria'},
             { accessorKey: 'subcategory.name', header: 'Subcategoria'},
             { accessorKey: 'brand.name', header: 'Marca'},
-            { accessorKey: 'status.name', header: 'Estado'},
+            { accessorKey: 'status.name', header: 'Estado',
+                Cell: ({ row }) => {
+                const status = row.original.status;
+                const translatedStatus = StatusTranslator.translate(status.name);
+                return(
+                    <Typography
+                        sx={{
+                            color: getStateColor(translatedStatus),
+                            fontFamily: 'Montserrat, sans-serif',
+                        }}
+                    >
+                        {getStateIcon(translatedStatus)} {translatedStatus}
+                    </Typography>
+                )
+                }},
             { accessorKey: 'model.modelName', header: 'Modelo'},
             { accessorKey: 'currency.stateName', header: 'Tipo de Moneda'},
             { accessorKey: 'assetSeries', header: 'Serie'},
@@ -248,7 +265,7 @@ const AssetTable = () => {
                     { label: 'Categoría', value: row.original.category?.name },
                     { label: 'Subcategoría', value: row.original.subcategory?.name },
                     { label: 'Marca', value: row.original.brand?.name },
-                    { label: 'Estado', value: row.original.status?.name },
+                    { label: 'Estado', value: StatusTranslator.translate(row.original.status?.name) },
                     { label: 'Modelo', value: row.original.model?.modelName },
                     { label: 'Tipo de Moneda', value: `${row.original.currency?.stateName} - ${row.original.currency?.code} - ${row.original.currency?.symbol}` },
                     { label: 'Serie', value: row.original.assetSeries },

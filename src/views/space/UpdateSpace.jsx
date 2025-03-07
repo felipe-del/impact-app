@@ -10,6 +10,7 @@ import {saveSpace, updateSpace} from "../../api/space/space_API.js";
 import {toast} from "react-hot-toast";
 import useBuildingLocationData from "../../hooks/apiData/buildingLocation/BuildingLocationData.jsx";
 import useSpaceStatusData from "../../hooks/apiData/spaceStatus/SpaceStatusData.jsx";
+import {StatusTranslator} from "../../util/Translator.js";
 
 const initialData = {
     name: '',
@@ -309,7 +310,7 @@ const UpdateSpace = () => {
                                                 disabled={isDisabled}
                                                 style={isDisabled ? { color: "#999", backgroundColor: "#f0f0f0", cursor: "not-allowed" } : {}}
                                             >
-                                                {status.name} - {status.description}
+                                                {StatusTranslator.translate(status.name)} - {status.description}
                                             </option>
                                         );
                                     })}
