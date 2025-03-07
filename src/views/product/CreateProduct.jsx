@@ -7,6 +7,7 @@ import {toast} from "react-hot-toast";
 import {useNavigate} from "react-router-dom";
 import useProductStatusData from "../../hooks/apiData/productStatus/ProductStatusData.jsx";
 import {saveProduct} from "../../api/product/product_API.js";
+import {StatusTranslator} from "../../util/Translator.js";
 
 const initialData = {
     quantity: 0,
@@ -196,7 +197,7 @@ const CreateProduct = () => {
                                                 disabled={isDisabled}
                                                 style={isDisabled ? { color: "#999", backgroundColor: "#f0f0f0", cursor: "not-allowed" } : {}}
                                             >
-                                                {status.name} - {status.description}
+                                                {StatusTranslator.translate(status.name)} - {status.description}
                                             </option>
                                         );
                                     })}
