@@ -11,6 +11,7 @@ import SpaceStatusModal from "../../components/popUp/spaceStatus/SpaceStatusModa
 import useBuildingLocationData from "../../hooks/apiData/buildingLocation/BuildingLocationData.jsx";
 import {saveSpace} from "../../api/space/space_API.js";
 import {useNavigate} from "react-router-dom";
+import {StatusTranslator} from "../../util/Translator.js";
 
 const initialData = {
     name: '',
@@ -289,7 +290,7 @@ const CreateSpace = () => {
                                                 disabled={isDisabled}
                                                 style={isDisabled ? { color: "#999", backgroundColor: "#f0f0f0", cursor: "not-allowed" } : {}}
                                             >
-                                                {status.name} - {status.description}
+                                                {StatusTranslator.translate(status.name)} - {status.description}
                                             </option>
                                         );
                                     })}
