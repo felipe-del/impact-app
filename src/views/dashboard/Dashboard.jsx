@@ -230,99 +230,68 @@ const Dashboard = () => {
                                             </div>
                                             <div className="row mt-3">
                                                 <div className="d-flex justify-content-center align-items-center">
-                                                    <h4 className="text-center">Información del valor del inventario</h4>
+                                                    <h4 className="text-center">Información del valor del
+                                                        inventario</h4>
                                                 </div>
-                                                {inventoryValue?.data?.length ? (<>
-                                                        <div className="col">
-                                                            <Box
-                                                                sx={{
-                                                                    background: 'linear-gradient(135deg, #003c74 0%, #005DA4 100%)',
-                                                                    padding: '8px',
-                                                                    borderRadius: '10px',
-                                                                    textAlign: 'left',
-                                                                    boxShadow: '0px 2px 5px rgba(255, 255, 255, 0.1)',
-                                                                    transition: '0.3s ease-in-out',
-                                                                    '&:hover': {
-                                                                        transform: 'scale(1.03)',
-                                                                        boxShadow: '0px 4px 12px rgba(255, 255, 255, 0.3)',
-                                                                    },
-                                                                }}
-                                                            >
-                                                                <div>
-                                                                    <Typography sx={{
-                                                                        fontWeight: 'bold',
-                                                                        color: '#f8f9fa',
-                                                                        fontFamily: '"Montserrat", sans-serif'
-                                                                    }}> Valor total del inventario en
-                                                                        cólones </Typography>
-                                                                    <Typography sx={{
-                                                                        fontFamily: '"Montserrat", sans-serif',
-                                                                        color: '#f8f9fa'
-                                                                    }}>
-                                                                        {inventoryValue?.data[1]?.currency?.symbol}{inventoryValue?.data[1]?.amount}
-                                                                    </Typography>
-                                                                </div>
-                                                                <div className="mt-5">
-                                                                    <Typography sx={{
-                                                                        fontWeight: 'bold',
-                                                                        color: '#f8f9fa',
-                                                                        fontFamily: '"Montserrat", sans-serif'
-                                                                    }}> Cantidad de activos con su valor en
-                                                                        cólones </Typography>
-                                                                    <Typography sx={{
-                                                                        fontFamily: '"Montserrat", sans-serif',
-                                                                        color: '#f8f9fa'
-                                                                    }}>
-                                                                        {inventoryValue?.data[1]?.quantity}
-                                                                    </Typography>
-                                                                </div>
-                                                            </Box>
-                                                        </div>
-                                                        <div className="col">
-                                                            <Box
-                                                                sx={{
-                                                                    background: 'linear-gradient(135deg, #003c74 0%, #005DA4 100%)',
-                                                                    padding: '8px',
-                                                                    borderRadius: '10px',
-                                                                    textAlign: 'left',
-                                                                    boxShadow: '0px 2px 5px rgba(255, 255, 255, 0.1)',
-                                                                    transition: '0.3s ease-in-out',
-                                                                    '&:hover': {
-                                                                        transform: 'scale(1.03)',
-                                                                        boxShadow: '0px 4px 12px rgba(255, 255, 255, 0.3)',
-                                                                    },
-                                                                }}
-                                                            >
-                                                                <div>
-                                                                    <Typography sx={{
-                                                                        fontWeight: 'bold',
-                                                                        color: '#f8f9fa',
-                                                                        fontFamily: '"Montserrat", sans-serif'
-                                                                    }}> Valor del inventario en dólares </Typography>
-                                                                    <Typography sx={{
-                                                                        fontFamily: '"Montserrat", sans-serif',
-                                                                        color: '#f8f9fa'
-                                                                    }}>
-                                                                        {inventoryValue?.data[0]?.currency?.symbol}{inventoryValue?.data[0]?.amount}
-                                                                    </Typography>
-                                                                </div>
-                                                                <div className="mt-5">
-                                                                    <Typography sx={{
-                                                                        fontWeight: 'bold',
-                                                                        color: '#f8f9fa',
-                                                                        fontFamily: '"Montserrat", sans-serif'
-                                                                    }}> Cantidad de activos con su valor en
-                                                                        dólares </Typography>
-                                                                    <Typography sx={{
-                                                                        fontFamily: '"Montserrat", sans-serif',
-                                                                        color: '#f8f9fa'
-                                                                    }}>
-                                                                        {inventoryValue?.data[0]?.quantity}
-                                                                    </Typography>
-                                                                </div>
-                                                            </Box>
-                                                        </div>
-                                                    </>
+
+                                                {inventoryValue?.data?.length ? (
+                                                    inventoryValue.data.map((item, index) => {
+                                                        // Replace currency name
+                                                        const currencyName = item.currency?.stateName === "DOLLAR" ? "dólares" :
+                                                                                       item.currency?.stateName === "COLON" ? "colónes" :
+                                                                                       item.currency?.stateName;
+
+                                                        return (
+                                                            <div key={index} className="col">
+                                                                <Box
+                                                                    sx={{
+                                                                        background: 'linear-gradient(135deg, #003c74 0%, #005DA4 100%)',
+                                                                        padding: '8px',
+                                                                        borderRadius: '10px',
+                                                                        textAlign: 'left',
+                                                                        boxShadow: '0px 2px 5px rgba(255, 255, 255, 0.1)',
+                                                                        transition: '0.3s ease-in-out',
+                                                                        '&:hover': {
+                                                                            transform: 'scale(1.03)',
+                                                                            boxShadow: '0px 4px 12px rgba(255, 255, 255, 0.3)',
+                                                                        },
+                                                                    }}
+                                                                >
+                                                                    <div>
+                                                                        <Typography sx={{
+                                                                            fontWeight: 'bold',
+                                                                            color: '#f8f9fa',
+                                                                            fontFamily: '"Montserrat", sans-serif'
+                                                                        }}>
+                                                                            Valor del inventario en {currencyName}
+                                                                        </Typography>
+                                                                        <Typography sx={{
+                                                                            fontFamily: '"Montserrat", sans-serif',
+                                                                            color: '#f8f9fa'
+                                                                        }}>
+                                                                            {item.currency?.symbol}{item.amount}
+                                                                        </Typography>
+                                                                    </div>
+                                                                    <div className="mt-5">
+                                                                        <Typography sx={{
+                                                                            fontWeight: 'bold',
+                                                                            color: '#f8f9fa',
+                                                                            fontFamily: '"Montserrat", sans-serif'
+                                                                        }}>
+                                                                            Cantidad de activos con su valor
+                                                                            en {currencyName}
+                                                                        </Typography>
+                                                                        <Typography sx={{
+                                                                            fontFamily: '"Montserrat", sans-serif',
+                                                                            color: '#f8f9fa'
+                                                                        }}>
+                                                                            {item.quantity}
+                                                                        </Typography>
+                                                                    </div>
+                                                                </Box>
+                                                            </div>
+                                                        );
+                                                    })
                                                 ) : (
                                                     <div className="d-flex justify-content-center align-items-center">
                                                         <Box
@@ -338,16 +307,17 @@ const Dashboard = () => {
                                                                 },
                                                             }}
                                                         >
-                                                                <Typography sx={{
-                                                                    fontWeight: 'bold',
-                                                                    color: '#f8f9fa',
-                                                                    fontFamily: '"Montserrat", sans-serif',
-                                                                    fontSize: '2.5rem',
-                                                                    textAlign: 'center'
-                                                                }}> Seleccione una fecha </Typography>
+                                                            <Typography sx={{
+                                                                fontWeight: 'bold',
+                                                                color: '#f8f9fa',
+                                                                fontFamily: '"Montserrat", sans-serif',
+                                                                fontSize: '2.5rem',
+                                                                textAlign: 'center'
+                                                            }}>
+                                                                Seleccione una fecha
+                                                            </Typography>
                                                         </Box>
                                                     </div>
-
                                                 )}
                                             </div>
                                         </div>
