@@ -1,13 +1,5 @@
 import { useState, useMemo } from "react";
 import { useUser } from "../../hooks/user/useUser.jsx";
-import { getAssetRequestByUser, updateAssetRequest } from "../../api/assetRequest/assetRequest_API.js";
-import { cancelledAssetRequest } from "../../api/assetRequest/assetRequest_API.js";
-import { getSpaceRandRByUser } from "../../api/SpaceRndR/spaceRndR_API.js";
-import { cancelledProductRequest } from "../../api/productRequest/productRequest.js";
-import { cancelResAndReq } from "../../api/SpaceRndR/spaceRndR_API.js";
-import { productAvailable } from "../../api/product/product_API.js";
-import { getProductRequestByUser } from "../../api/productRequest/productRequest.js";
-import { assetAvailable, getAssetById } from "../../api/asset/asset_API.js";
 import { getAssetRequestByUser, cancelledAssetRequest } from "../../api/assetRequest/assetRequest_API.js";
 import { getSpaceRandRByUser, cancelResAndReq } from "../../api/SpaceRndR/spaceRndR_API.js";
 import { getProductRequestByUser, cancelledProductRequest } from "../../api/productRequest/productRequest.js";
@@ -34,8 +26,6 @@ const RequestHistory = () => {
     const [requests, setRequests] = useState([]); // Estado para guardar los datos de la API
     const [loading, setLoading] = useState(false); // Estado para manejar la carga de solicitudes
     const [showRenewModal, setShowRenewModal] = useState(false);
-    const [requests, setRequests] = useState([]);
-    const [loading, setLoading] = useState(false);
     const [showCancelModal, setShowCancelModal] = useState(false);
     const [selectedRequest, setSelectedRequest] = useState(null);
     const [cancelReason, setCancelReason] = useState("");
@@ -171,79 +161,6 @@ const RequestHistory = () => {
         }
     };
 
-    const columns = useMemo(() => {
-        switch (activeButton) {
-            case "spaceRequest":
-                return [
-                    { accessorKey: 'id', header: 'Id'},
-                    { accessorKey: 'spaceName', header: 'Espacio' },
-                    { accessorKey: 'status', header: 'Estado' },
-                    { accessorKey: 'building', header: 'Ubicación' },
-                    { accessorKey: 'maxPeople', header: 'Número de personas' },
-                    { accessorKey: 'eventDesc', header: 'Descripción del evento' },
-                    { accessorKey: 'eventObs', header: 'Observaciones del evento' },
-                    { accessorKey: 'startTime', header: 'Hora de inicio' },
-                    { accessorKey: 'endTime', header: 'Hora de finalización' },
-                    {
-                        id: 'actions',
-                        header: 'Acciones',
-                        size: 'small',
-                        Cell: ({ row }) => (
-                            <CancelButton handleCancel={handlePreCancel} row={row} />
-                        ),
-                    },
-                ];
-            case "productRequest":
-                return [
-                    { accessorKey: 'id', header: 'ID' },
-                    { accessorKey: 'productName', header: 'Nombre de Producto' },
-                    { accessorKey: 'productId', header: 'Id del producto'},
-                    { accessorKey: 'createdAt', header: 'Fecha de Solicitud' },
-                    { accessorKey: 'status', header: 'Estado' },
-                    { accessorKey: 'reason', header: 'Razón' },
-                    { accessorKey: 'user', header: 'Usuario Responsable' },
-                    {
-                        id: 'actions',
-                        header: 'Acciones',
-                        size: 'small',
-                        Cell: ({ row }) => (
-                            <CancelButton handleCancel={handlePreCancel} row={row} />
-                        ),
-                    },
-                ];
-            case "assetRequest":
-            default:
-                return [
-                    { accessorKey: 'id', header: 'ID' },
-                    { accessorKey: 'plateNumber', header: 'Placa' },
-                    { accessorKey: 'createdAt', header: 'Fecha de Solicitud' },
-                    { accessorKey: 'status', header: 'Estado' },
-                    { accessorKey: 'reason', header: 'Razón' },
-                    { accessorKey: 'asset', header: 'Activo' },
-                    { accessorKey: 'user', header: 'Usuario Responsable' },
-                    { accessorKey: 'expirationDate', header: 'Fecha de Expiración' },
-                    {
-                        id: 'actions',
-                        header: 'Acciones',
-                        size: 'small',
-                        Cell: ({ row }) => {
-                            const expirationDate = dayjs(row.original.expirationDate);
-                            const today = dayjs();
-                            const daysUntilExpiration = expirationDate.diff(today, 'day');
-                            return (
-                                <div style={{ display: "flex", justifyContent: "space-evenly", marginRight: "50px" }}>
-                                    <CancelButton handleCancel={handlePreCancel} row={row} />
-                                    {daysUntilExpiration >= 2 && row.original.status === "Ha sido aceptado." && (
-                                        <RenewalButton renewAction={() => handlePreRenew(row)} row={row} />
-                                    )}
-                                </div>
-                            );
-                        },
-                    },
-                ];
-        }
-    }, [activeButton]);
-
     // Columnas y datos para cada tipo de solicitud
     const spaceRequestColumns = [
         { accessorKey: 'id', header: 'Id' },
@@ -311,26 +228,37 @@ const RequestHistory = () => {
             id: 'actions',
             header: 'Acciones',
             size: 'small',
-            Cell: ({ row }) => (
-                row.original.status !== "Ha sido cancelada." ? (
-                    <CancelButton handleCancel={handlePreCancel} row={row} />
-                ) : (
-                    <div style={canceledButtonStyle}>
-                        <Typography variant="caption" style={{ color: 'white', fontFamily: 'Montserrat' }}>
-                            Cancelado
-                        </Typography>
-                    </div>
-                )
-            ),
+            Cell: ({ row }) => {
+                if (row.original.status === "Ha sido cancelada.") {
+                    return (
+                        <div style={canceledButtonStyle}>
+                            <Typography variant="caption" style={{ color: 'white', fontFamily: 'Montserrat' }}>
+                                Cancelado
+                            </Typography>
+                        </div>
+                    );
+                }
+
+                const expirationDate = dayjs(row.original.expirationDate);
+                const today = dayjs();
+                const daysUntilExpiration = expirationDate.diff(today, 'day');
+
+                return (
+                    <>
+                        <CancelButton handleCancel={handlePreCancel} row={row} />
+                        {console.log(daysUntilExpiration)}
+                        {daysUntilExpiration >= 2 && row.original.status === "Ha sido aceptado." && (
+                            <RenewalButton renewAction={() => handlePreRenew(row)} row={row} />
+                        )}
+                    </>
+                );
+            }
         },
     ];
 
     // Transformar los datos según el tipo de solicitud
     const flatRequests = useMemo(() => {
         return requests.map(request => {
-            const expirationDate = dayjs(request.expirationDate);
-            const today = dayjs();
-            const daysUntilExpiration = expirationDate.diff(today, 'day');
             switch (activeButton) {
                 case "spaceRequest":
                     return {
