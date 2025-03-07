@@ -246,7 +246,6 @@ const RequestHistory = () => {
                 return (
                     <>
                         <CancelButton handleCancel={handlePreCancel} row={row} />
-                        {console.log(daysUntilExpiration)}
                         {daysUntilExpiration >= 2 && row.original.status === "Ha sido aceptado." && (
                             <RenewalButton renewAction={() => handlePreRenew(row)} row={row} />
                         )}
@@ -422,9 +421,11 @@ const RequestHistory = () => {
         bodyText={`<p>¿Estás seguro de renovar esta solicitud?</p>`}
         customContent={
             <div>
-             <label htmlFor="expirationDate" className="form-label">
-            <i className="fas fa-calendar-alt"></i> Fecha de finalización del nuevo préstamo
-            </label>
+                <label htmlFor="expirationDate" className="form-label" style={{ color: "#ffffff" }}>
+                    <i className="fas fa-calendar-alt"></i> Fecha de finalización del nuevo préstamo
+                    <span className="text-danger">*</span>
+                </label>
+
                 <input
                     type="date"
                     id="expirationDate"
