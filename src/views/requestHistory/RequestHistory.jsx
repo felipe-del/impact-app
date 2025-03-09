@@ -83,7 +83,7 @@ const RequestHistory = () => {
         try {
             if (selectedRequest.original.asset) {
                 await cancelledAssetRequest(selectedRequest.original.id);
-                await assetAvailable(selectedRequest.original.plateNumber);
+                await assetAvailable(selectedRequest.original.id);
                 const response = await getAssetRequestByUser(user.id);
                 setRequests(response.data);
             } else if (selectedRequest.original.productName) {
