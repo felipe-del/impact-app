@@ -74,10 +74,10 @@ export async function getAssetRequestByUser(user) {
     }
 }
 
-export async function cancelledAssetRequest(assetRequestId) {
+export async function cancelledAssetRequest(assetRequestId, cancelReason) {
     try {
         const statusId = 4
-        const { data } = await api.put(`${root}/${statusId}/${assetRequestId}`)
+        const { data } = await api.put(`${root}/${statusId}/${assetRequestId}`, cancelReason)
         return data
     } catch (error) {
         handleAxiosError(error)

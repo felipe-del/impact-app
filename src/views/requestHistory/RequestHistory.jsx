@@ -82,16 +82,16 @@ const RequestHistory = () => {
         setLoading(true);
         try {
             if (selectedRequest.original.asset) {
-                await cancelledAssetRequest(selectedRequest.original.id);
+                await cancelledAssetRequest(selectedRequest.original.id, {cancelReason});
                 await assetAvailable(selectedRequest.original.id);
                 const response = await getAssetRequestByUser(user.id);
                 setRequests(response.data);
             } else if (selectedRequest.original.productName) {
-                await cancelledProductRequest(selectedRequest.original.id);
+                await cancelledProductRequest(selectedRequest.original.id, {cancelReason});
                 const response = await getProductRequestByUser(user.id);
                 setRequests(response.data);
             } else if (selectedRequest.original.spaceName) {
-                await cancelResAndReq(selectedRequest.original.id);
+                await cancelResAndReq(selectedRequest.original.id, {cancelReason});
                 const response = await getSpaceRandRByUser(user.id);
                 setRequests(response.data);
             }
