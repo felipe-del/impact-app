@@ -39,9 +39,9 @@ export async function saveProductRequest(productRequest) {
     }
 }
 
-export async function cancelledProductRequest(productRId) {
+export async function cancelledProductRequest(productRId, cancelReason) {
     try {
-        const { data } = await api.put(`${root}/cancel/${productRId}`)
+        const { data } = await api.put(`${root}/cancel/${productRId}`, cancelReason)
         return data
     } catch (error) {
         handleAxiosError(error)
