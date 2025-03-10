@@ -37,6 +37,10 @@ const RequestHistory = () => {
         try {
             const response = await apiCall(user.id);
             setRequests(response.data);
+            if (response?.data.length === 0) {
+                toast.success("No hay solicitudes pendientes.", { icon: "🔔" });
+                return
+            }
             toast.success(response.message);
         } catch (error) {
             console.error(error);
