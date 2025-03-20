@@ -13,6 +13,9 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import AssetStatusModal from "../../components/popUp/assetStatusModal/AssetStatusModal.jsx";
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
+import { assetInventoryValue } from '../../api/asset/asset_API.js';
+import { getAllAssetRequest } from '../../api/assetRequest/assetRequest_API.js';
+import { toast } from "react-hot-toast";
 
 const initialArray = [
     {
@@ -93,6 +96,8 @@ const AssetTable = () => {
     const [assets, setAssets] = useState(initialArray);
     const [assetStatus, setAssetStatus] = useState([]);
     const [openModal, setOpenModal] = useState(false);
+    const [assetRequests, setAssetRequests] = useState([]);
+    const [inventoryValue, setinventoryValue] = useState(0);
 
     const handleOpen = () => setOpenModal(true);
     const handleClose = () => setOpenModal(false);
@@ -110,6 +115,7 @@ const AssetTable = () => {
     useEffect(() => {
         if (assetsData) setAssets(assetsData.data)
         if (assetStatusData) setAssetStatus(assetStatusData.data)
+            preparePDF()
     }, [assetsData, assetStatusData]);
 
     const navigate = useNavigate();
@@ -300,10 +306,75 @@ const AssetTable = () => {
         }
     });
 
+    const preparePDF = async () =>{
+        // isLoading(true);
+        try {
+            const response = await getAllAssetRequest();
+            setAssetRequests(response.data);
+            if (response?.data.length === 0) {
+                toast.success("No hay solicitudes pendientes.", { icon: "🔔" });
+                return
+            }
+            console.log(assetRequests)
+            toast.success(response.message);
+        } catch (error) {
+            console.error(error);
+            toast.error(error.message);
+        } finally {
+            // isLoading(false);
+        }
+        // isLoading(true);
+        try {
+            const today = new Date();
+        const todayDate = {
+            day: today.getDate(),
+            month: today.getMonth() + 1,
+            year: today.getFullYear(),
+        }
+            const pad = (num) => num.toString().padStart(2, '0');
+            const formattedEndDate = `${todayDate.year}-${pad(todayDate.month)}-${pad(todayDate.day)}`;
+            const response = await assetInventoryValue('1997-01-01', formattedEndDate);
+            setinventoryValue(response.data);
+            if (response?.data.length === 0) {
+                toast.success("No hay activos en el sistema.", { icon: "🔔" });
+                return
+            }
+            console.log(inventoryValue[0]?.amount)
+            toast.success(response.message);
+        } catch (error) {
+            console.error(error);
+            toast.error(error.message);
+        } finally {
+            // isLoading(false);
+        }
+    }
 
-
-    const exportToPDF = () => {
+    const exportToPDF = async () => {
         const doc = new jsPDF();
+
+        const currentDate = new Date();
+        const formattedDate = currentDate.toLocaleDateString();
+        doc.setFontSize(8);
+        doc.text(`Fecha de elaboración: ${formattedDate}`, 80, 10);
+        console.log("Preparing pdf")
+        await preparePDF();
+        const impactLogo ="/IMPACT_BLACK_LOGO.png";
+
+        doc.addImage(impactLogo,'PNG', 10, 10, 30, 30)
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(35);
+        doc.text("Informe de activos", 45, 30);
+
+        const CIMPA = "/CIMPA.png";
+        doc.addImage(CIMPA,'PNG', 160, 10, 30, 30)
+
+        // Agregar una línea negra
+        doc.setLineWidth(0.5); // Establece el grosor de la línea
+        doc.setDrawColor(0, 0, 0); // Establece el color de la línea (negra)
+        doc.line(10, 45, 200, 45); // Dibuja la línea desde las coordenadas (10, 30) hasta (200, 30)
+
+        doc.setFontSize(14);
+        doc.text("Existencias actuales", 14, 60);
 
         const tableDate = assets.map(asset => [
             asset.id,
@@ -313,11 +384,10 @@ const AssetTable = () => {
             asset.user?.email || 'N/A',
             asset.supplier?.name || 'N/A',
             asset.category?.name || 'N/A',
-            asset.subcategory?.name || 'N/A',
+            asset.subcategory?.description || 'N/A',
             asset.brand?.name || 'N/A',
             asset.status?.name || 'N/A',
             asset.model?.modelName || 'N/A',
-            asset.currency?.stateName || 'N/A',
             asset.assetSeries || 'N/A',
             asset.locationNumber?.locationTypeName || 'N/A',
         ]);
@@ -326,14 +396,15 @@ const AssetTable = () => {
             head: [[
                 'ID', 'Placa', 'Fecha de Compra', 'Valor', 'Usuario Responsable',
                 'Proveedor', 'Categoría', 'Subcategoría', 'Marca', 'Estado',
-                'Modelo', 'Tipo de Moneda', 'Serie', 'Ubicación'
+                'Modelo', 'Serie', 'Ubicación'
             ]],
             body: tableDate,
-            startY: 20,
+            startY: 65,
             margin: { top: 20, left: 10, right: 10 },
-            styles: {
-                fontSize: 8,
-                cellPadding: 2,
+            
+            columnStyles: {
+                10: {cellWidth: 15 },
+                11: {cellWidth: 15}
             },
             headStyles: {
                 fillColor: [0, 60, 116],
@@ -349,7 +420,37 @@ const AssetTable = () => {
             },
         });
 
-        doc.save('assets.pdf');
+        // Valor total del inventario
+    const afterInventoryTableY = doc.lastAutoTable.finalY + 10;
+    doc.setFontSize(14)
+    doc.text('Valor total de activos: '+ `${inventoryValue[0]?.amount} colones`, 14, afterInventoryTableY);
+
+    // Tabla de Requests de Activos
+    const afterValueTextY = afterInventoryTableY + 10;
+    doc.setFontSize(14);
+    doc.text("Salidas de activos (Préstamos)",14, afterValueTextY);
+    autoTable(doc, {
+        startY: afterValueTextY + 5,
+        head: [["Fecha de solicitud", "Activo", "Placa", "Usuario", "Razón", "Estado"]],
+        body: assetRequests.map(req => [
+            req.createdAt, req.asset.subcategory.description, req.asset.plateNumber, req.user.name, req.reason, req.status.name
+        ]),
+        headStyles: {
+            fillColor: [0, 60, 116],
+            textColor: 255,
+            fontSize: 9,
+            fontStyle: 'bold',
+        },
+        bodyStyles: {
+            textColor: 50,
+        },
+        alternateRowStyles: {
+            fillColor: [240, 240, 240]
+        },
+    });
+
+    // Guardar PDF
+    doc.save("Informe_de_Activos.pdf");
     };
 
 
@@ -360,8 +461,11 @@ const AssetTable = () => {
             <AssetBanner
                 title="Gestión de Activos"
                 exportToPDF={exportToPDF}
+                preparePDF={preparePDF}
                 handleOpen={handleOpen}
-                flatAssets={flatAssets}
+                flatAssets={assets}
+                flatRequests={assetRequests}
+                inventoryValue={inventoryValue}
             />
             <MaterialReactTable table={table} />
             <AssetStatusModal  open={openModal} onClose={handleClose} assetStatuses={assetStatus} />
