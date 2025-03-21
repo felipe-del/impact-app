@@ -84,7 +84,7 @@ const Sidebar = ({ role }) => {
                     </a>
                     <div id="collapseActivos" className="collapse" aria-labelledby="headingActivos" data-parent="#accordionSidebar">
                         <div className="bg-white py-2 collapse-inner rounded">
-                            <Link className="collapse-item" to="/app/assetLoanRequest"><FontAwesomeIcon icon={faClipboardCheck} /> Solicitud</Link>
+                            <Link className="collapse-item" to="/app/assetLoan"><FontAwesomeIcon icon={faClipboardCheck} /> Solicitud</Link>
                         </div>
                     </div>
                 </li>
@@ -123,7 +123,7 @@ const Sidebar = ({ role }) => {
                     </a>
                     <div id="collapseEspacios" className="collapse" aria-labelledby="headingEspacios" data-parent="#accordionSidebar">
                         <div className="bg-white py-2 collapse-inner rounded">
-                            <Link className="collapse-item" to="/app/spaceRequest"><FontAwesomeIcon icon={faClipboardCheck} /> Solicitud de Espacios</Link>
+                            <Link className="collapse-item" to="/app/spaceLoan"><FontAwesomeIcon icon={faClipboardCheck} /> Solicitud de Espacios</Link>
                         </div>
                     </div>
                 </li>
@@ -161,7 +161,7 @@ const Sidebar = ({ role }) => {
                     </a>
                     <div id="collapseProductos" className="collapse" aria-labelledby="headingProductos" data-parent="#accordionSidebar">
                         <div className="bg-white py-2 collapse-inner rounded">
-                            <Link className="collapse-item" to="/app/productLoanRequest"><FontAwesomeIcon icon={faClipboardCheck} /> Solicitud</Link>
+                            <Link className="collapse-item" to="/app/productLoan"><FontAwesomeIcon icon={faClipboardCheck} /> Solicitud</Link>
                          </div>
                     </div>
                 </li>
@@ -174,7 +174,7 @@ const Sidebar = ({ role }) => {
             </div>
 
             {/* Historial Section */}
-            {(role === 'MANAGER' || role === 'ADMINISTRATOR') && (
+            {(role === 'MANAGER' || role === 'ADMINISTRATOR' || role === 'TEACHER') && (
                 <li className="nav-item" id="misSolicitudes-item">
                     <a
                         className="nav-link collapsed"
@@ -196,11 +196,7 @@ const Sidebar = ({ role }) => {
                 </li>
             )}
 
-            <hr className="sidebar-divider" />
 
-            <div className="sidebar-heading" id="complementos-heading">
-                Administrativo
-            </div>
 
             {/*<li className="nav-item" id="charts-item">
                 <Link className="nav-link" to="/charts">
@@ -210,13 +206,18 @@ const Sidebar = ({ role }) => {
             </li>*/}
 
             {(role === 'MANAGER' || role === 'ADMINISTRATOR') && (
-            <li className="nav-item" id="user-item">
-                <Link className="nav-link" to="/app/userTable">
-                    <i className="fas fa-fw fa-users"></i>
-                    <span>Gestión de usuarios</span>
-                </Link>
-            </li>
-
+                <div>
+                    <hr className="sidebar-divider" />
+                    <div className="sidebar-heading" id="complementos-heading">
+                        Administrativo
+                    </div>
+                    <li className="nav-item" id="user-item">
+                        <Link className="nav-link" to="/app/userTable">
+                            <i className="fas fa-fw fa-users"></i>
+                            <span>Gestión de usuarios</span>
+                        </Link>
+                    </li>
+                </div>
             )}
             <hr className="sidebar-divider" />
 
