@@ -48,6 +48,17 @@
     margin-top: 15px;
 }
 
+.impact-img {
+    width: 90px;
+    margin-bottom: 15px;
+}
+
+.workTeam-img {
+    width: 150px;
+    margin-bottom: 15px;
+    border-radius: 20px;
+}
+
 .escudo-img {
     width: 80px;
     margin-bottom: 15px;

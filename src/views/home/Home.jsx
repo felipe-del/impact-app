@@ -3,19 +3,37 @@ import './Home.css';
 const Home = () => {
     return (
         <div className="home-container">
-            <div className="welcome-container">
-                <h2 className="title">
-                    <b>Sistema IMPACT del CIMPA</b>
-                </h2>
-                <p className="paragraph">
-                    El sistema <i>IMPACT</i> es una plataforma web diseñada para gestionar los activos y el inventario
-                    del <i>Centro de Investigación de Matemática Pura y Aplicada</i> de manera eficiente. Permite llevar
-                    un control detallado de los bienes del centro, incluyendo equipos, productos de limpieza y material
-                    de oficina, así como la administración de espacios comunes para eventos. Además, le permite a los
-                    usuarios solicitar un préstamo de un material o un espacio que requieran para su trabajo.
-                </p>
-            </div>
+            <div className="row">
+                <div className="row">
+                    <div className="col-md-6 mb-4 d-flex">
+                        <div className="entity-card flex-fill">
+                            <img src="/logo_3_lightblue.png" alt="Escudo IMPACT" className="impact-img" />
+                            <h5 className="entity-title"><b>IMPACT</b></h5>
+                            <p className="paragraph">
+                                El sistema <i>IMPACT</i> es una plataforma web diseñada para gestionar el inventario
+                                del <i>Centro de Investigación de Matemática Pura y Aplicada</i> de manera eficiente. Permite controlar
+                                detalladamente los bienes del centro, incluyendo activos, productos y espacios comunes para eventos.
+                                Además, le permite a los usuarios solicitar un préstamo de un material o un espacio que requieran para su trabajo.
+                            </p>
+                        </div>
+                    </div>
 
+                    <div className="col-md-6 mb-4 d-flex">
+                        <div className="entity-card flex-fill">
+                            <img src="/workTeam.jpg" alt="Equipo de Trabajo" className="workTeam-img" />
+                            <h5 className="entity-title"><b>Equipo de Trabajo</b></h5>
+                            <p className="paragraph" style={{textAlign: 'center'}}>
+                                Raquel Alfaro Barrantes <i>(Scrum Master)</i><br/>
+                                Nazareth Maria Gonzalez Benavides <br/>
+                                Isaac Felipe Brenes Calderón<br/>
+                                Marco Leandro Chacón<br/>
+                                Dilan Hernández Ulate<br/>
+                                Joel Ramírez Vargas<br/>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div className="row">
                 <div className="row">
                     <div className="col-md-6 mb-4 d-flex">
@@ -48,7 +66,6 @@ const Home = () => {
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
 

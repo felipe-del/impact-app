@@ -45,13 +45,10 @@ export default function Router() {
                 <Route path="/auth" element={<AuthToggle />} />
                 <Route path="/forgot-password" element={<ResetPasswordToggle />} />
 
-
                 <Route element={<AppLayout />} path="/app">
                     <Route index element={<Home/>} />
                     <Route path="profile" element={<Profile/>} />
                     <Route element={<ProtectedRoute allowedRoles={["ADMINISTRATOR", "MANAGER"]} />}>
-                        <Route path="dashboard" element={<Dashboard />} />
-
                         <Route path="brandManagement" element={<BrandManagement/>} />
                         <Route path="assetCategoryManagement" element={<AssetCategoryManagement/>} />
                         <Route path="assetModelManagement" element={<AssetModelManagement/>} />
@@ -63,30 +60,24 @@ export default function Router() {
                         <Route path="createProduct" element={<CreateProduct/>} />
                         <Route path="productCategoryTypeManagement" element={<ProductCategoryTypeManagement/>} />
                         <Route path="updateProduct/:id" element={<UpdateProduct/>} />
-                        <Route path="productLoan" element={<ProductLoan/>} />
-                        <Route path="spaceLoan" element={<SpaceLoan/>} />
-
                         <Route path="spaceManagement" element={<SpaceManagement/>} />
                         <Route path="editSpace/:id" element={<UpdateSpace/>} />
-
                         <Route path="productManagement" element={<ProductManagement/>} />
                         <Route path="createSpace" element={<CreateSpace />} />
                         <Route path="buildingManagement" element={<BuildingManagement />} />
                         <Route path="buildingLocationManagement" element={<BuildingLocationManagement />} />
-
                         <Route path="supplierManagement" element={<SupplierManagement/>} />
-
                         <Route path="userTable" element={<UserTable />} />
                         <Route path="createUser" element={<CreateUser />} />
-
                         <Route path="assetTable" element={<AssetTable />} />
                         <Route path="createAsset" element={<CreateAsset/>} />
                         <Route path="editAsset/:id" element={<UpdateAsset/>} />
-                        <Route path="assetLoan" element={<AssetLoan/>} />
-
-
                     </Route>
                     <Route element={<ProtectedRoute allowedRoles={["ADMINISTRATOR", "MANAGER","TEACHER"]} />}>
+                        <Route path="dashboard" element={<Dashboard />} />
+                        <Route path="productLoan" element={<ProductLoan/>} />
+                        <Route path="spaceLoan" element={<SpaceLoan/>} />
+                        <Route path="assetLoan" element={<AssetLoan/>} />
                         <Route path="requestHistory" element={<RequestHistory/>} />
                     </Route>
                 </Route>
