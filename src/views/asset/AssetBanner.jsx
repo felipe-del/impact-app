@@ -14,6 +14,9 @@ const AssetBanner = ({ title = "",
                          visibleButtons = ["csv", "pdf", "statusModal", "export", "createAsset"],
                          exportToPDF,
                          flatAssets,
+                         flatRequests,
+                         preparePDF,
+                         inventoryValue,
                          handleOpen,
                      assetInfo}) => {
     const navigate = useNavigate(); // Hook para la navegación
@@ -88,12 +91,41 @@ const AssetBanner = ({ title = "",
                 )}
                 <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
                     {visibleButtons.includes("csv") && (
+                        
                         <CSVLink
-                            data={flatAssets}
-                            filename="activos.csv"
+                        data={[
+                            // Agregar encabezado para activos
+                            ['ID', 'Placa', 'Valor', 'Usuario Responsable', 'Proveedor', 'Categoría', 'Subcategoría','Marca', 'Estado','Modelo','Serie','Ubicación'],
+                            ...flatAssets.map(asset => [
+                                asset.id,
+                                asset.plateNumber,
+                                asset.value,
+                                asset.user?.email,  
+                                asset.supplier?.name || 'N/A',
+                                asset.category?.name || 'N/A',
+                                asset.subcategory?.description || 'N/A',
+                                asset.brand?.name || 'N/A',
+                                asset.status?.name || 'N/A',
+                                asset.model?.modelName || 'N/A',
+                                asset.assetSeries || 'N/A',
+                                asset.locationNumber?.locationTypeName || 'N/A',
+                            ]),
+                            // Agregar una línea separadora o título para solicitudes
+                            [''],  // Dejar una fila vacía para separar las secciones
+                            ['Valor actual del inventario: '+ `${inventoryValue[0]?.amount} colones`],
+                            [''],
+                            ["Fecha de solicitud", "Activo", "Placa", "Usuario", "Razón", "Estado"], // Encabezado para solicitudes
+                            ...flatRequests.map(req => [
+                                req.createdAt, req.asset.subcategory.description, req.asset.plateNumber, req.user.name, req.reason, req.status.name
+                            ]),
+                        ]}
+                            filename="Informe_de_Activos.csv"
                             style={{ textDecoration: "none", color: "black" }}
                         >
-                            <MenuItem onClick={handleClose}>Exportar a CSV</MenuItem>
+                            <MenuItem onClick={() => {
+                                        preparePDF();  
+                                        handleClose(); 
+                            }}>Exportar a CSV</MenuItem>
                         </CSVLink>
                     )}
                     {visibleButtons.includes("pdf") && (
