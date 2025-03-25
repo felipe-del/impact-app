@@ -3,6 +3,15 @@ import handleAxiosError from "../handleAxiosError.js";
 
 const root = '/api/product-request'
 
+export async function getAllProductRequests() {
+    try {
+        const { data } = await api.get(root)
+        return data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}
+
 export async function getProductRequestByUser(user) {
   try {
       const { data } = await api.get(`${root}/user/${user}`)
