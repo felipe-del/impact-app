@@ -29,6 +29,7 @@ const ProductManagement = () => {
     const columns = useMemo(
         () => [
             { accessorKey: "id", header: "ID", size: 80 },
+            { accessorKey: "category.name", header: "Nombre" },
             { accessorKey: "purchaseDate", header: "Fecha de Compra" },
             { accessorKey: 'status.name', header: 'Estado',
                 Cell: ({ row }) => {
