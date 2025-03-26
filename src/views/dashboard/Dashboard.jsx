@@ -15,16 +15,21 @@ import useSpaceData from '../../hooks/apiData/space/SpaceData.jsx'
 import {toast} from "react-hot-toast";
 import GenericModal from "../../components/popUp/generic/GenericModal.jsx";
 
+const today = new Date();
+const pad = (num) => num.toString().padStart(2, '0');
+const formattedToday = `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`;
+
+
 const initialData = {
-    startDate: '',
-    endDate: '',
+    startDate: '2024-03-03',
+    endDate: formattedToday,
     inventoryValueUSD: '',
     assetQuantityUSD: '',
     inventoryValueCRC: '',
     assetQuantityCRC: ''
 };
 
-const today = new Date();
+
 const todayDate = {
     day: today.getDate(),
     month: today.getMonth() + 1,
@@ -55,11 +60,11 @@ const Dashboard = () => {
         endDate: formData.endDate,
     });
 
-    /*useEffect(() => {
-        if (error) {
-            toast.error(error.message, { duration: 7000 });
-        }
-    }, [error]);*/
+    useEffect(() => {
+        console.log("📊 Actualizando gráfico con nuevas fechas:", formData.startDate, formData.endDate);
+    }, [formData.startDate, formData.endDate]);
+    
+    
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -101,33 +106,65 @@ const Dashboard = () => {
         }
     };
 
-    const handleSubmit = async () => {
-        try {
-            const response = await saveDashboardFilter(formData);
-            toast.success(response.message, { duration: 7000 });
-        } catch (error) {
-            console.error(error);
-            toast.error(error.message, { duration: 7000 });
-        } finally {
-            setShowConfirmationModal(false);
-        }
-    };
-
+   
     /*if (isLoading) {
         return <div>Cargando datos del dashboard...</div>;
     }*/
 
 
-    /*const handleSubmit = (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
         setFetchData(true); // Set flag to true to trigger data fetching
-    };*/
+    };
 
     // Sample data for demonstration purposes
     const productsCount = 4;
     const assetsCount = 75;
     const spacesCount = 30;
     const pendingRequestsCount = 18;
+    const getAssetsByPurchaseDate = (assets, startDate, endDate) => {
+ 
+    
+        if (!startDate || !endDate) {
+            return {
+                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                values: Array(12).fill(0)
+            };
+        }
+    
+        const start = new Date(startDate + "T00:00:00Z");
+        const end = new Date(endDate + "T23:59:59Z");
+    
+    
+        const monthlyCounts = Array(12).fill(0);
+    
+        assets.forEach((asset, index) => {
+            console.log(`🔍 Procesando asset ${index}:`, asset);
+    
+            if (!asset.purchaseDate) {
+                return;
+            }
+    
+            const purchaseDate = new Date(asset.purchaseDate);
+    
+            if (isNaN(purchaseDate)) {
+                return;
+            }
+    
+            if (purchaseDate >= start && purchaseDate <= end) {
+                const month = purchaseDate.getMonth();
+                monthlyCounts[month]++;
+            } else {
+                console.log(`🚫 Asset ${index} está fuera del rango de fechas.`);
+            }
+        });
+    
+    
+        return {
+            labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+            values: monthlyCounts
+        };
+    };
 
 
     return (
@@ -445,10 +482,12 @@ const Dashboard = () => {
                             <Card.Body>
                                 <div className="chart-area">
                                     {/* Espacio para gráfico de barras de ingresos */}
-                                    <BarChart data={{ 
-                                        labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun','Jul','Ago','Sep','Oct','Nov','Dic'], 
-                                        values: [12, 19, 3, 5, 2, 3,20,13,14,20,4,15,2] 
-                                    }}
+                                    <BarChart 
+                                        data={getAssetsByPurchaseDate(
+                                            assets?.data || [], 
+                                            formData.startDate, 
+                                            formData.endDate
+                                        )}
                                     />
                                 </div>
                                 <div className="mt-3">
@@ -459,9 +498,12 @@ const Dashboard = () => {
                                                     <i className="fas fa-calendar-alt"></i> Fecha inicial
                                                 </label>
                                                 <input
-                                                    type="date"
-                                                    id="incomeStartDate"
-                                                    className="form-control border-primary"
+                                                     type="date"
+                                                     id="incomeStartDate"
+                                                     name="startDate"
+                                                     className="form-control border-primary"
+                                                     value={formData.startDate}
+                                                     onChange={handleChange}
                                                 />
                                             </div>
                                             <div className="col-md-6">
@@ -471,12 +513,15 @@ const Dashboard = () => {
                                                 <input
                                                     type="date"
                                                     id="incomeEndDate"
+                                                    name="endDate"
                                                     className="form-control border-primary"
+                                                    value={formData.endDate}
+                                                    onChange={handleChange}
                                                 />
                                             </div>
                                         </div>
                                         <div className="mt-3 text-center">
-                                            <button className="btn btn-primary">Filtrar</button>
+                                            <button onClick={handleSubmit} className="btn btn-primary">Filtrar</button>
                                         </div>
                                     </form>
                                 </div>
