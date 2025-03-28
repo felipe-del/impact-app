@@ -690,7 +690,7 @@ const Dashboard = () => {
 
 
             {/* Sección para estadísticas de ingresos y préstamos de activos */}
-            <div className="row mt-4">
+            <div className="row">
                 {/* Gráfico de ingresos de activos */}
                 <div className="col-xl-6 col-lg-6 col-md-12">
                     <Card className="shadow mb-4 h-100">
@@ -728,7 +728,7 @@ const Dashboard = () => {
                             <div className="mt-3">
                                 <form>
                                     <div className="row">
-                                        <div className="col-md-6">
+                                        <div className="col-md-4">
                                             <label htmlFor="incomeStartDate" className="form-label">
                                                 <i className="fas fa-calendar-alt"></i> Fecha inicial
                                             </label>
@@ -741,7 +741,7 @@ const Dashboard = () => {
                                                 onChange={handleChange}
                                             />
                                         </div>
-                                        <div className="col-md-6">
+                                        <div className="col-md-4">
                                             <label htmlFor="incomeEndDate" className="form-label">
                                                 <i className="fas fa-calendar-alt"></i> Fecha final
                                             </label>
@@ -754,10 +754,11 @@ const Dashboard = () => {
                                                 onChange={handleChange}
                                             />
                                         </div>
+                                        <div className="col-md-4 d-flex align-items-end">
+                                            <button onClick={handleSubmit} className="btn btn-primary w-100">Filtrar</button>
+                                        </div>
                                     </div>
-                                    <div className="mt-3 text-center">
-                                        <button onClick={handleSubmit} className="btn btn-primary">Filtrar</button>
-                                    </div>
+
                                 </form>
                             </div>
                         </Card.Body>
@@ -800,7 +801,7 @@ const Dashboard = () => {
                             <div className="mt-3">
                                 <form>
                                     <div className="row">
-                                        <div className="col-md-6">
+                                        <div className="col-md-4">
                                             <label htmlFor="loanStartDate" className="form-label">
                                                 <i className="fas fa-calendar-alt"></i> Fecha inicial
                                             </label>
@@ -813,7 +814,7 @@ const Dashboard = () => {
                                                 onChange={handleLoanDateChange}
                                             />
                                         </div>
-                                        <div className="col-md-6">
+                                        <div className="col-md-4">
                                             <label htmlFor="loanEndDate" className="form-label">
                                                 <i className="fas fa-calendar-alt"></i> Fecha final
                                             </label>
@@ -826,9 +827,9 @@ const Dashboard = () => {
                                                 onChange={handleLoanDateChange}
                                             />
                                         </div>
-                                    </div>
-                                    <div className="mt-3 text-center">
-                                        <button className="btn btn-primary">Filtrar</button>
+                                        <div className="col-md-4 d-flex align-items-end">
+                                            <button className="btn btn-primary w-100">Filtrar</button>
+                                        </div>
                                     </div>
                                 </form>
                             </div>
@@ -836,7 +837,7 @@ const Dashboard = () => {
                     </Card>
                 </div>
                 {/* Gráfico para solicitudes de productos */}
-                <div className="col-xl-6 col-lg-6 col-md-12">
+                <div className="col-xl-6 col-lg-6 col-md-12 mt-4">
                     <Card className="shadow mb-4 h-100">
                         <Card.Header>
                             <div className="d-flex flex-row align-items-center justify-content-between">
@@ -904,7 +905,7 @@ const Dashboard = () => {
                         </Card.Body>
                     </Card>
                 </div>
-                <div className="col-xl-6 col-lg-6 col-md-12">
+                <div className="col-xl-6 col-lg-6 col-md-12 mt-4">
                     <Card className="shadow mb-4 h-100">
                         <Card.Header>
                             <div className="d-flex flex-row align-items-center justify-content-between">
@@ -940,7 +941,7 @@ const Dashboard = () => {
                             <div className="mt-3">
                                 <form>
                                     <div className="row">
-                                        <div className="col-md-6">
+                                        <div className="col-md-4">
                                             <label htmlFor="loanStartDate" className="form-label">
                                                 <i className="fas fa-calendar-alt"></i> Fecha inicial
                                             </label>
@@ -953,7 +954,7 @@ const Dashboard = () => {
                                                 onChange={handleLoanDateChange}
                                             />
                                         </div>
-                                        <div className="col-md-6">
+                                        <div className="col-md-4">
                                             <label htmlFor="loanEndDate" className="form-label">
                                                 <i className="fas fa-calendar-alt"></i> Fecha final
                                             </label>
@@ -966,9 +967,9 @@ const Dashboard = () => {
                                                 onChange={handleLoanDateChange}
                                             />
                                         </div>
-                                    </div>
-                                    <div className="mt-3 text-center">
-                                        <button className="btn btn-primary">Filtrar</button>
+                                        <div className="col-md-4 d-flex align-items-end">
+                                            <button className="btn btn-primary w-100">Filtrar</button>
+                                        </div>
                                     </div>
                                 </form>
                             </div>
