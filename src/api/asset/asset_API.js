@@ -65,3 +65,13 @@ export async function assetAvailable(assetId) {
         handleAxiosError(error)
     }
 }
+export async function getAssetByPurchaseDate(start_date, end_date) {
+    try {
+        const { data } = await api.get(`${root}/by-purchase-date`, {
+            params: { startDate: start_date, endDate: end_date }
+        });
+        return data;
+    } catch (error) {
+        handleAxiosError(error);
+    }
+}
