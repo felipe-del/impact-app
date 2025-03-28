@@ -3,7 +3,7 @@ import { Bar } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { toast } from "react-hot-toast";
 
-const BarChart = ({ data }) => {
+const BarChart = ({ data, label }) => {
   useEffect(() => {
     if (data?.labels && data.labels.length > 12) {
       toast.error('El gráfico solo puede mostrar un máximo de 12 meses', {
@@ -26,7 +26,7 @@ const BarChart = ({ data }) => {
     labels: limitedLabels,
     datasets: [
       {
-        label: 'Ingresos de activos',
+        label: label,
         data: limitedValues,
         backgroundColor: limitedLabels.map((_, index) => extendedColors[index % extendedColors.length]),
         borderColor: limitedLabels.map((_, index) => extendedColors[index % extendedColors.length]),
