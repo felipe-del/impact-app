@@ -137,7 +137,7 @@ const CreateAsset = () => {
             assetSeries: formData.assetSeries,
             plateNumber: formData.plateNumber,
             assetModelId: parseInt(formData.assetModel),
-            currencyName: parseInt(formData.currency),
+            currencyName: formData.currency,
             locationNumberId: parseInt(formData.locationNumber),
         };
         try {
@@ -365,7 +365,7 @@ const CreateAsset = () => {
                                 >
                                     <option value="">Seleccionar moneda</option>
                                     {currencies.map((currency) => (
-                                        <option key={currency.id} value={currency.id}>
+                                        <option key={currency.id} value={currency.stateName}>
                                             {currency.stateName} - {currency.code} - {currency.symbol}
                                         </option>
                                     ))}
