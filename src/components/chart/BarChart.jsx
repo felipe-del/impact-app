@@ -4,7 +4,6 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { toast } from "react-hot-toast";
 
 const BarChart = ({ data }) => {
-  // Verificar si hay más de 12 meses al montar el componente
   useEffect(() => {
     if (data?.labels && data.labels.length > 12) {
       toast.error('El gráfico solo puede mostrar un máximo de 12 meses', {
@@ -13,10 +12,9 @@ const BarChart = ({ data }) => {
     }
   }, [data?.labels]);
 
-  // Limitar a 12 meses si hay más
-  const limitedLabels = data?.labels ? data.labels.slice(0, 12) : ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago'];
-  const limitedValues = data?.values ? data.values.slice(0, 12) : [12, 19, 3, 5, 2, 3];
-
+  // Mantener el orden descendente de los datos recibidos
+  const limitedLabels = data?.labels?.slice(0, 12) || [];
+  const limitedValues = data?.values?.slice(0, 12) || [];
 
   const extendedColors = [
     '#e74a3b', '#f6c23e', '#36b9cc', '#1abc9c', '#8e44ad', '#e84393',

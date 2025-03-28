@@ -118,13 +118,9 @@ const Dashboard = () => {
     };
 
     // Sample data for demonstration purposes
-    const productsCount = 4;
-    const assetsCount = 75;
-    const spacesCount = 30;
+
     const pendingRequestsCount = 18;
     const getAssetsByPurchaseDate = (assets, startDate, endDate) => {
- 
-    
         if (!startDate || !endDate) {
             return {
                 labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
@@ -135,34 +131,56 @@ const Dashboard = () => {
         const start = new Date(startDate + "T00:00:00Z");
         const end = new Date(endDate + "T23:59:59Z");
     
-    
-        const monthlyCounts = Array(12).fill(0);
-    
-        assets.forEach((asset, index) => {
-            console.log(`🔍 Procesando asset ${index}:`, asset);
-    
-            if (!asset.purchaseDate) {
-                return;
+        // Crear un objeto para contar los activos por mes y año
+        const monthlyCounts = {};
+        
+        // Inicializar todos los meses posibles dentro del rango
+        const currentDate = new Date(start);
+        while (currentDate <= end) {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            const key = `${year}-${month}`;
+            if (!monthlyCounts[key]) {
+                monthlyCounts[key] = 0;
             }
+            currentDate.setMonth(currentDate.getMonth() + 1);
+        }
+    
+        // Contar los activos
+        assets.forEach((asset) => {
+            if (!asset.purchaseDate) return;
     
             const purchaseDate = new Date(asset.purchaseDate);
-    
-            if (isNaN(purchaseDate)) {
-                return;
-            }
+            if (isNaN(purchaseDate)) return;
     
             if (purchaseDate >= start && purchaseDate <= end) {
+                const year = purchaseDate.getFullYear();
                 const month = purchaseDate.getMonth();
-                monthlyCounts[month]++;
-            } else {
-                console.log(`🚫 Asset ${index} está fuera del rango de fechas.`);
+                const key = `${year}-${month}`;
+                monthlyCounts[key] = (monthlyCounts[key] || 0) + 1;
             }
         });
     
+        // Convertir el objeto a un array y ordenarlo por fecha descendente
+        const sortedEntries = Object.entries(monthlyCounts)
+            .sort(([keyA], [keyB]) => {
+                const [yearA, monthA] = keyA.split('-').map(Number);
+                const [yearB, monthB] = keyB.split('-').map(Number);
+                return yearB === yearA ? monthB - monthA : yearB - yearA;
+            })
+            .slice(0, 12); // Limitar a 12 meses
+    
+        // Preparar los datos para el gráfico
+        const monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+        const labels = sortedEntries.map(([key]) => {
+            const [year, month] = key.split('-').map(Number);
+            return `${monthNames[month]} ${year}`;
+        });
+        const values = sortedEntries.map(([, count]) => count);
     
         return {
-            labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-            values: monthlyCounts
+            labels: labels.reverse(),
+            values: values.reverse()
         };
     };
 
@@ -554,7 +572,7 @@ const Dashboard = () => {
                                     {/* Espacio para gráfico de columnas de préstamos */}
                                     <ColumnChart data={{ 
                                         labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'], 
-                                        values: [5, 10, 8, 12, 6, 9] 
+                                        values: [5, 10, 8, 23, 6, 9] 
                                     }} />
                                 </div>
                                 <div className="mt-3">
