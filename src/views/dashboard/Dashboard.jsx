@@ -54,13 +54,13 @@ const Dashboard = () => {
     const handleHideConfirmationModal = () => setShowConfirmationModal(false);
 
     const [loanDates, setLoanDates] = useState({
-        startDate: initialData.startDate,
-        endDate: initialData.endDate
+        startDate: '2024-03-11',
+        endDate: '2025-06-28'
     });
     
     const [comparisonDates, setComparisonDates] = useState({
-        startDate: initialData.startDate,
-        endDate: initialData.endDate
+        startDate: '2024-03-11',
+        endDate: '2025-06-28'
     });
 
     const handleLoanDateChange = (e) => {
@@ -89,7 +89,7 @@ const Dashboard = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prevState => ({ ...prevState, [name]: value }));
-
+        
         setFormErrors(prevErrors => {
             const newErrors = { ...prevErrors };
             if (newErrors[name]) {
@@ -204,45 +204,73 @@ const Dashboard = () => {
     };
 
     const getLoansByDate = (assets, startDate, endDate) => {
-        const mockLoanData = {
+        const fullYearData = {
             labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
             values: [5, 10, 8, 12, 6, 9, 15, 7, 11, 13, 8, 10]
         };
         
         if (!startDate || !endDate) {
-            return mockLoanData;
+            return fullYearData;
         }
         
+        // Convertir fechas a objetos Date
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        
+        // Obtener meses de las fechas (0-11)
+        const startMonth = start.getMonth();
+        const endMonth = end.getMonth();
+        
+        // Asegurarse de que startMonth <= endMonth
+        const lowerMonth = Math.min(startMonth, endMonth);
+        const upperMonth = Math.max(startMonth, endMonth);
+        
+        // Recortar los datos al rango de meses
         return {
-            labels: mockLoanData.labels,
-            values: mockLoanData.values.map(value => Math.floor(value * (1 + Math.random() * 0.3)))
+            labels: fullYearData.labels.slice(lowerMonth, upperMonth + 1),
+            values: fullYearData.values.slice(lowerMonth, upperMonth + 1)
         };
     };
-
-
+    
     const getComparisonData = (startDate, endDate) => {
-        const incomeData = {
+        const fullYearIncomeData = {
             labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
             values: [12, 19, 26, 15, 22, 23, 25, 27, 21, 23, 18, 20]
         };
         
-        const loanData = {
+        const fullYearLoanData = {
             labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
             values: [5, 10, 8, 12, 6, 9, 15, 7, 11, 13, 8, 10]
         };
         
         if (!startDate || !endDate) {
-            return { incomeData, loanData };
+            return { 
+                incomeData: fullYearIncomeData, 
+                loanData: fullYearLoanData 
+            };
         }
         
+        // Convertir fechas a objetos Date
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        
+        // Obtener meses de las fechas (0-11)
+        const startMonth = start.getMonth();
+        const endMonth = end.getMonth();
+        
+        // Asegurarse de que startMonth <= endMonth
+        const lowerMonth = Math.min(startMonth, endMonth);
+        const upperMonth = Math.max(startMonth, endMonth);
+        
+        // Recortar los datos al rango de meses
         return {
             incomeData: {
-                labels: incomeData.labels,
-                values: incomeData.values.map(value => Math.floor(value * (1 + Math.random() * 0.2)))
+                labels: fullYearIncomeData.labels.slice(lowerMonth, upperMonth + 1),
+                values: fullYearIncomeData.values.slice(lowerMonth, upperMonth + 1)
             },
             loanData: {
-                labels: loanData.labels,
-                values: loanData.values.map(value => Math.floor(value * (1 + Math.random() * 0.3)))
+                labels: fullYearLoanData.labels.slice(lowerMonth, upperMonth + 1),
+                values: fullYearLoanData.values.slice(lowerMonth, upperMonth + 1)
             }
         };
     };
@@ -636,8 +664,8 @@ const Dashboard = () => {
                                     <ColumnChart 
                                         data={getLoansByDate(
                                             assets?.data || [], 
-                                            formData.startDate, 
-                                            formData.endDate
+                                            loanDates.startDate, 
+                                            loanDates.endDate
                                         )} 
                                     />
                                 </div>
@@ -707,8 +735,8 @@ const Dashboard = () => {
                                 {/* Espacio para gráfico combinado */}
                                 <ComboChart 
                                     {...getComparisonData(
-                                        formData.startDate, 
-                                        formData.endDate
+                                        comparisonDates.startDate, 
+                                        comparisonDates.endDate
                                     )}
                                 />
                             </div>
