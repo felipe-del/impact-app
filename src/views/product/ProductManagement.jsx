@@ -23,6 +23,7 @@ const ProductManagement = () => {
 
     useEffect(() => {
         if (products?.data && Array.isArray(products.data)) setProductData(products.data);
+        preparePDF()
     }, [products]);
 
     const handleEdit = (row) => {
@@ -51,21 +52,19 @@ const ProductManagement = () => {
         const formattedDate = currentDate.toLocaleDateString();
         doc.setFontSize(8);
         doc.text(`Fecha de elaboración: ${formattedDate}`, 80, 10);
-        await preparePDF();
-        const impactLogo = "/IMPACT_BLACK_LOGO.png";
-        doc.addImage(impactLogo, "PNG", 10, 10, 30, 30);
+
+        const CIMPA = "/UCR_CIMPA_BANNER_LOGO.png";
+        doc.addImage(CIMPA,'PNG', 10, 15, 80, 22)
+        
+
+        const impactLogo ="/NEW_IMPACT_WHITE_LOGO.png"
+        doc.addImage(impactLogo,'PNG', 140, 10, 60, 34)
+
+        
         doc.setFont("helvetica", "bold");
-        doc.setFontSize(30);
-        doc.text("Informe de Productos", 45, 30);
-    
-        const CIMPA = "/CIMPA.png";
-        doc.addImage(CIMPA, "PNG", 160, 10, 30, 30);
-    
-        // Agregar una línea negra
-        doc.setLineWidth(0.5);
-        doc.setDrawColor(0, 0, 0);
-        doc.line(10, 45, 200, 45);
-    
+        doc.setFontSize(16);
+        doc.text("Informe de productos", 80, 50);
+
         doc.setFontSize(14);
         doc.text("Existencias actuales", 14, 60);
     

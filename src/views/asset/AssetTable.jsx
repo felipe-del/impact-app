@@ -307,7 +307,6 @@ const AssetTable = () => {
     });
 
     const preparePDF = async () =>{
-        // isLoading(true);
         try {
             const response = await getAllAssetRequest();
             setAssetRequests(response.data);
@@ -316,14 +315,10 @@ const AssetTable = () => {
                 return
             }
             console.log(assetRequests)
-            toast.success(response.message);
         } catch (error) {
             console.error(error);
             toast.error(error.message);
-        } finally {
-            // isLoading(false);
-        }
-        // isLoading(true);
+        } 
         try {
             const today = new Date();
         const todayDate = {
@@ -340,13 +335,10 @@ const AssetTable = () => {
                 return
             }
             console.log(inventoryValue[0]?.amount)
-            toast.success(response.message);
         } catch (error) {
             console.error(error);
             toast.error(error.message);
-        } finally {
-            // isLoading(false);
-        }
+        } 
     }
 
     const exportToPDF = async () => {
@@ -356,22 +348,18 @@ const AssetTable = () => {
         const formattedDate = currentDate.toLocaleDateString();
         doc.setFontSize(8);
         doc.text(`Fecha de elaboración: ${formattedDate}`, 80, 10);
-        console.log("Preparing pdf")
-        await preparePDF();
-        const impactLogo ="/IMPACT_BLACK_LOGO.png";
 
-        doc.addImage(impactLogo,'PNG', 10, 10, 30, 30)
+        const CIMPA = "/UCR_CIMPA_BANNER_LOGO.png";
+        doc.addImage(CIMPA,'PNG', 10, 15, 80, 22)
+        
+
+        const impactLogo ="/NEW_IMPACT_WHITE_LOGO.png"
+        doc.addImage(impactLogo,'PNG', 140, 10, 60, 34)
+
+        
         doc.setFont("helvetica", "bold");
-        doc.setFontSize(35);
-        doc.text("Informe de activos", 45, 30);
-
-        const CIMPA = "/CIMPA.png";
-        doc.addImage(CIMPA,'PNG', 160, 10, 30, 30)
-
-        // Agregar una línea negra
-        doc.setLineWidth(0.5); // Establece el grosor de la línea
-        doc.setDrawColor(0, 0, 0); // Establece el color de la línea (negra)
-        doc.line(10, 45, 200, 45); // Dibuja la línea desde las coordenadas (10, 30) hasta (200, 30)
+        doc.setFontSize(16);
+        doc.text("Informe de activos", 80, 50);
 
         doc.setFontSize(14);
         doc.text("Existencias actuales", 14, 60);
