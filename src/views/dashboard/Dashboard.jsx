@@ -52,6 +52,26 @@ const Dashboard = () => {
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const handleShowConfirmationModal = () => setShowConfirmationModal(true);
     const handleHideConfirmationModal = () => setShowConfirmationModal(false);
+
+    const [loanDates, setLoanDates] = useState({
+        startDate: initialData.startDate,
+        endDate: initialData.endDate
+    });
+    
+    const [comparisonDates, setComparisonDates] = useState({
+        startDate: initialData.startDate,
+        endDate: initialData.endDate
+    });
+
+    const handleLoanDateChange = (e) => {
+        const { name, value } = e.target;
+        setLoanDates(prev => ({ ...prev, [name]: value }));
+    };
+    
+    const handleComparisonDateChange = (e) => {
+        const { name, value } = e.target;
+        setComparisonDates(prev => ({ ...prev, [name]: value }));
+    };
    
     
 
@@ -630,11 +650,11 @@ const Dashboard = () => {
                                                 </label>
                                                 <input
                                                     type="date"
-                                                    id="incomeStartDate"
+                                                    id="loanStartDate"
                                                     name="startDate"
                                                     className="form-control border-primary"
-                                                    value={formData.startDate}
-                                                    onChange={handleChange}
+                                                    value={loanDates.startDate}
+                                                    onChange={handleLoanDateChange}
                                                 />
                                             </div>
                                             <div className="col-md-6">
@@ -643,11 +663,11 @@ const Dashboard = () => {
                                                 </label>
                                                 <input
                                                     type="date"
-                                                    id="incomeEndDate"
+                                                    id="loanEndDate"
                                                     name="endDate"
                                                     className="form-control border-primary"
-                                                    value={formData.endDate}
-                                                    onChange={handleChange}
+                                                    value={loanDates.endDate}
+                                                    onChange={handleLoanDateChange}
                                                 />
                                             </div>
                                         </div>
@@ -700,26 +720,26 @@ const Dashboard = () => {
                                                 <i className="fas fa-calendar-alt"></i> Fecha inicial
                                             </label>
                                             <input
-                                                    type="date"
-                                                    id="incomeStartDate"
-                                                    name="startDate"
-                                                    className="form-control border-primary"
-                                                    value={formData.startDate}
-                                                    onChange={handleChange}
-                                                />
+                                                type="date"
+                                                id="comparisonStartDate"
+                                                name="startDate"
+                                                className="form-control border-primary"
+                                                value={comparisonDates.startDate}
+                                                onChange={handleComparisonDateChange}
+                                            />
                                         </div>
                                         <div className="col-md-4">
                                             <label htmlFor="comparisonEndDate" className="form-label">
                                                 <i className="fas fa-calendar-alt"></i> Fecha final
                                             </label>
                                             <input
-                                                    type="date"
-                                                    id="incomeEndDate"
-                                                    name="endDate"
-                                                    className="form-control border-primary"
-                                                    value={formData.endDate}
-                                                    onChange={handleChange}
-                                                />
+                                                type="date"
+                                                id="comparisonEndDate"
+                                                name="endDate"
+                                                className="form-control border-primary"
+                                                value={comparisonDates.endDate}
+                                                onChange={handleComparisonDateChange}
+                                            />
                                         </div>
                                         <div className="col-md-4 d-flex align-items-end">
                                             <button className="btn btn-primary w-100">Generar Reporte</button>
