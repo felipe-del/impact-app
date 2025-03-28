@@ -2,21 +2,34 @@ import { Card, ProgressBar } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBox, faBuilding, faClipboardList, faComments, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import AreaChart from '../../components/chart/AreaChart';
+import BarChart from '../../components/chart/BarChart';
+import ColumnChart from '../../components/chart/ColumnChart';
+import ComboChart from '../../components/chart/ComboChart';
 import './dashboard.css'
-import {useRef, useState} from "react";
+import {useEffect,useRef, useState} from "react";
 import useInventoryValueData from "../../hooks/apiData/inventoryValue/inventoryValueData.jsx";
 import {Box, Typography} from "@mui/material";
+import useAssetData from '../../hooks/apiData/assetData/AssetData.jsx';
+import useProductData from '../../hooks/apiData/product/productData.jsx';
+import useSpaceData from '../../hooks/apiData/space/SpaceData.jsx'
+import useProductEntryData from "../../hooks/apiData/productEntries/productEntries.jsx";
+import useProductRequestStatsData from "../../hooks/apiData/productRequestStats/productRequestStats.jsx";
+
+const today = new Date();
+const pad = (num) => num.toString().padStart(2, '0');
+const formattedToday = `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`;
+
 
 const initialData = {
-    startDate: '',
-    endDate: '',
+    startDate: '2024-03-03',
+    endDate: formattedToday,
     inventoryValueUSD: '',
     assetQuantityUSD: '',
     inventoryValueCRC: '',
     assetQuantityCRC: ''
 };
 
-const today = new Date();
+
 const todayDate = {
     day: today.getDate(),
     month: today.getMonth() + 1,
@@ -26,17 +39,62 @@ const todayDate = {
 const Dashboard = () => {
 
     const [formData, setFormData] = useState(initialData);
+    const [formErrors,setFormErrors] = useState({});
     const [fetchData, setFetchData] = useState(false);
     const formRef = useRef(null);
+    const { assets } = useAssetData();
+    const { products } = useProductData();
+    const { spaces } = useSpaceData();
+    const { productEntries } = useProductEntryData();
+    const { productRequestStats } = useProductRequestStatsData();
+    const totalAssets = assets?.data?.length || 0;
+    const totalProducts = products?.data?.length || 0;
+    const totalSpaces = spaces?.data?.length || 0;
+
+    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+    const handleShowConfirmationModal = () => setShowConfirmationModal(true);
+    const handleHideConfirmationModal = () => setShowConfirmationModal(false);
+
+    const [loanDates, setLoanDates] = useState({
+        startDate: '2024-03-11',
+        endDate: '2025-06-28'
+    });
+    
+    const [comparisonDates, setComparisonDates] = useState({
+        startDate: '2024-03-11',
+        endDate: '2025-06-28'
+    });
+
+    const handleLoanDateChange = (e) => {
+        const { name, value } = e.target;
+        setLoanDates(prev => ({ ...prev, [name]: value }));
+    };
+    
+    const handleComparisonDateChange = (e) => {
+        const { name, value } = e.target;
+        setComparisonDates(prev => ({ ...prev, [name]: value }));
+    };
 
     const {inventoryValue} = useInventoryValueData({
         startDate: formData.startDate,
         endDate: formData.endDate,
     });
 
+    useEffect(() => {
+        console.log("📊 Actualizando gráfico con nuevas fechas:", formData.startDate, formData.endDate);
+    }, [formData.startDate, formData.endDate]);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prevState => ({ ...prevState, [name]: value }));
+        
+        setFormErrors(prevErrors => {
+            const newErrors = { ...prevErrors };
+            if (newErrors[name]) {
+                delete newErrors[name];
+            }
+            return newErrors;
+        });
     };
 
     const inventoryValueAllTime = () => {
@@ -50,17 +108,289 @@ const Dashboard = () => {
         }))
     };
 
+    const checkErrors = () => {
+        const errors = {};
+        
+        if (!formData.startDate) errors.startDate = "La fecha inicial es obligatoria.";
+        if (!formData.endDate) errors.endDate = "La fecha final es obligatoria.";
+        else if (new Date(formData.endDate) < new Date(formData.startDate)) {
+            errors.endDate = "La fecha final debe ser posterior a la fecha inicial.";
+        }
+
+        setFormErrors(errors);
+
+        if (Object.keys(errors).length === 0) {
+            handleShowConfirmationModal();
+        }
+    };
+
+
     const handleSubmit = (e) => {
         e.preventDefault();
         setFetchData(true); // Set flag to true to trigger data fetching
     };
 
     // Sample data for demonstration purposes
-    const productsCount = 120;
+    const productsCount = 4;
     const assetsCount = 75;
     const spacesCount = 30;
     const pendingRequestsCount = 18;
+    const getAssetsByPurchaseDate = (assets, startDate, endDate) => {
+        if (!startDate || !endDate) {
+            return {
+                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                values: Array(12).fill(0)
+            };
+        }
+    
+        const start = new Date(startDate + "T00:00:00Z");
+        const end = new Date(endDate + "T23:59:59Z");
+    
+        const monthlyCounts = {};
+        
+        const currentDate = new Date(start);
+        while (currentDate <= end) {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            const key = `${year}-${month}`;
+            if (!monthlyCounts[key]) {
+                monthlyCounts[key] = 0;
+            }
+            currentDate.setMonth(currentDate.getMonth() + 1);
+        }
+    
+        assets.forEach((asset) => {
+            if (!asset.purchaseDate) return;
+    
+            const purchaseDate = new Date(asset.purchaseDate);
+            if (isNaN(purchaseDate)) return;
+    
+            if (purchaseDate >= start && purchaseDate <= end) {
+                const year = purchaseDate.getFullYear();
+                const month = purchaseDate.getMonth();
+                const key = `${year}-${month}`;
+                monthlyCounts[key] = (monthlyCounts[key] || 0) + 1;
+            }
+        });
+    
+        const sortedEntries = Object.entries(monthlyCounts)
+            .sort(([keyA], [keyB]) => {
+                const [yearA, monthA] = keyA.split('-').map(Number);
+                const [yearB, monthB] = keyB.split('-').map(Number);
+                return yearB === yearA ? monthB - monthA : yearB - yearA;
+            })
+            .slice(0, 12);
+    
+        const monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+        const labels = sortedEntries.map(([key]) => {
+            const [year, month] = key.split('-').map(Number);
+            return `${monthNames[month]} ${year}`;
+        });
+    
+        const values = sortedEntries.map(([, count]) => count);
+    
+        // 🔹 Invertir el orden para que se muestren de más antiguo a más reciente
+        return {
+            labels: labels.reverse(),
+            values: values.reverse()
+        };
+    };
 
+    const getRequestsByDate = (productRequestStats, startDate, endDate) => {
+        if (!startDate || !endDate) {
+            return {
+                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                values: Array(12).fill(0)
+            };
+        }
+
+        const start = new Date(startDate + "T00:00:00Z");
+        const end = new Date(endDate + "T23:59:59Z");
+
+        const monthlyCounts = {};
+
+        const currentDate = new Date(start);
+        while (currentDate <= end) {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            const key = `${year}-${month}`;
+            if (!monthlyCounts[key]) {
+                monthlyCounts[key] = 0;
+            }
+            currentDate.setMonth(currentDate.getMonth() + 1);
+        }
+
+        productRequestStats.forEach((productRequest) => {
+            if (!productRequest.requestDate) return;
+
+            const requestDate = new Date(productRequest.requestDate);
+            if (isNaN(requestDate)) return;
+
+            if (requestDate >= start && requestDate <= end) {
+                const year = requestDate.getFullYear();
+                const month = requestDate.getMonth();
+                const key = `${year}-${month}`;
+                monthlyCounts[key] = (monthlyCounts[key] || 0) + 1;
+            }
+        });
+
+        const sortedRequests = Object.entries(monthlyCounts)
+            .sort(([keyA], [keyB]) => {
+                const [yearA, monthA] = keyA.split('-').map(Number);
+                const [yearB, monthB] = keyB.split('-').map(Number);
+                return yearB === yearA ? monthB - monthA : yearB - yearA;
+            })
+            .slice(0, 12);
+
+        const monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+        const labels = sortedRequests.map(([key]) => {
+            const [year, month] = key.split('-').map(Number);
+            return `${monthNames[month]} ${year}`;
+        });
+
+        const values = sortedRequests.map(([, count]) => count);
+
+        // 🔹 Invertir el orden para que se muestren de más antiguo a más reciente
+        return {
+            labels: labels.reverse(),
+            values: values.reverse()
+        };
+    };
+
+    const getProductEntriesByDate = (productEntries, startDate, endDate) => {
+        if (!startDate || !endDate) {
+            return {
+                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                values: Array(12).fill(0)
+            };
+        }
+
+        const start = new Date(startDate + "T00:00:00Z");
+        const end = new Date(endDate + "T23:59:59Z");
+
+        const monthlyCounts = {};
+
+        const currentDate = new Date(start);
+        while (currentDate <= end) {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            const key = `${year}-${month}`;
+            if (!monthlyCounts[key]) {
+                monthlyCounts[key] = 0;
+            }
+            currentDate.setMonth(currentDate.getMonth() + 1);
+        }
+
+        productEntries.forEach((productEntry) => {
+            if (!productEntry.purchaseDate || !productEntry.totalEntries) return;
+
+            const entryDate = new Date(productEntry.purchaseDate);
+            if (isNaN(entryDate)) return;
+
+            if (entryDate >= start && entryDate <= end) {
+                const year = entryDate.getFullYear();
+                const month = entryDate.getMonth();
+                const key = `${year}-${month}`;
+                monthlyCounts[key] = (monthlyCounts[key] || 0) + productEntry.totalEntries; // Add totalEntries instead of 1
+            }
+        });
+
+        const sortedEntries = Object.entries(monthlyCounts)
+            .sort(([keyA], [keyB]) => {
+                const [yearA, monthA] = keyA.split('-').map(Number);
+                const [yearB, monthB] = keyB.split('-').map(Number);
+                return yearB === yearA ? monthB - monthA : yearB - yearA;
+            })
+            .slice(0, 12);
+
+        const monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+        const labels = sortedEntries.map(([key]) => {
+            const [year, month] = key.split('-').map(Number);
+            return `${monthNames[month]} ${year}`;
+        });
+
+        const values = sortedEntries.map(([, count]) => count);
+
+        // 🔹 Invertir el orden para que se muestren de más antiguo a más reciente
+        return {
+            labels: labels.reverse(),
+            values: values.reverse()
+        };
+    };
+
+
+    const getLoansByDate = (assets, startDate, endDate) => {
+        const fullYearData = {
+            labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+            values: [5, 10, 8, 12, 6, 9, 15, 7, 11, 13, 8, 10]
+        };
+        
+        if (!startDate || !endDate) {
+            return fullYearData;
+        }
+        
+        // Convertir fechas a objetos Date
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        
+        // Obtener meses de las fechas (0-11)
+        const startMonth = start.getMonth();
+        const endMonth = end.getMonth();
+        
+        // Asegurarse de que startMonth <= endMonth
+        const lowerMonth = Math.min(startMonth, endMonth);
+        const upperMonth = Math.max(startMonth, endMonth);
+        
+        // Recortar los datos al rango de meses
+        return {
+            labels: fullYearData.labels.slice(lowerMonth, upperMonth + 1),
+            values: fullYearData.values.slice(lowerMonth, upperMonth + 1)
+        };
+    };
+    
+    const getComparisonData = (startDate, endDate) => {
+        const fullYearIncomeData = {
+            labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+            values: [12, 19, 26, 15, 22, 23, 25, 27, 21, 23, 18, 20]
+        };
+        
+        const fullYearLoanData = {
+            labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+            values: [5, 10, 8, 12, 6, 9, 15, 7, 11, 13, 8, 10]
+        };
+        
+        if (!startDate || !endDate) {
+            return { 
+                incomeData: fullYearIncomeData, 
+                loanData: fullYearLoanData 
+            };
+        }
+        
+        // Convertir fechas a objetos Date
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        
+        // Obtener meses de las fechas (0-11)
+        const startMonth = start.getMonth();
+        const endMonth = end.getMonth();
+        
+        // Asegurarse de que startMonth <= endMonth
+        const lowerMonth = Math.min(startMonth, endMonth);
+        const upperMonth = Math.max(startMonth, endMonth);
+        
+        // Recortar los datos al rango de meses
+        return {
+            incomeData: {
+                labels: fullYearIncomeData.labels.slice(lowerMonth, upperMonth + 1),
+                values: fullYearIncomeData.values.slice(lowerMonth, upperMonth + 1)
+            },
+            loanData: {
+                labels: fullYearLoanData.labels.slice(lowerMonth, upperMonth + 1),
+                values: fullYearLoanData.values.slice(lowerMonth, upperMonth + 1)
+            }
+        };
+    };
+    
 
     return (
         <div>
@@ -83,10 +413,12 @@ const Dashboard = () => {
                                     <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                         Total de Productos
                                     </div>
-                                    <div className="h5 mb-0 font-weight-bold text-gray-800">{productsCount}</div>
+                                    <div className="h5 mb-0 font-weight-bold text-gray-800">
+                                        {totalProducts}
+                                    </div>
                                 </div>
                                 <div className="col-auto">
-                                    <FontAwesomeIcon icon={faBox} className="fa-2x text-gray-300" />
+                                    <FontAwesomeIcon icon={faBox} className="fa-2x text-gray-300"/>
                                 </div>
                             </div>
                         </Card.Body>
@@ -101,10 +433,10 @@ const Dashboard = () => {
                                     <div className="text-xs font-weight-bold text-success text-uppercase mb-1">
                                         Total de Activos
                                     </div>
-                                    <div className="h5 mb-0 font-weight-bold text-gray-800">{assetsCount}</div>
+                                    <div className="h5 mb-0 font-weight-bold text-gray-800">{totalAssets}</div>
                                 </div>
                                 <div className="col-auto">
-                                    <FontAwesomeIcon icon={faBuilding} className="fa-2x text-gray-300" />
+                                    <FontAwesomeIcon icon={faBuilding} className="fa-2x text-gray-300"/>
                                 </div>
                             </div>
                         </Card.Body>
@@ -116,11 +448,13 @@ const Dashboard = () => {
                         <Card.Body>
                             <div className="row no-gutters align-items-center">
                                 <div className="col mr-2">
-                                    <div className="text-xs font-weight-bold text-info text-uppercase mb-1">Total de Espacios</div>
-                                    <div className="h5 mb-0 font-weight-bold text-gray-800">{spacesCount}</div>
+                                    <div className="text-xs font-weight-bold text-info text-uppercase mb-1">Total de
+                                        Espacios
+                                    </div>
+                                    <div className="h5 mb-0 font-weight-bold text-gray-800">{totalSpaces}</div>
                                 </div>
                                 <div className="col-auto">
-                                    <FontAwesomeIcon icon={faClipboardList} className="fa-2x text-gray-300" />
+                                    <FontAwesomeIcon icon={faClipboardList} className="fa-2x text-gray-300"/>
                                 </div>
                             </div>
                         </Card.Body>
@@ -138,7 +472,7 @@ const Dashboard = () => {
                                     <div className="h5 mb-0 font-weight-bold text-gray-800">{pendingRequestsCount}</div>
                                 </div>
                                 <div className="col-auto">
-                                    <FontAwesomeIcon icon={faComments} className="fa-2x text-gray-300" />
+                                    <FontAwesomeIcon icon={faComments} className="fa-2x text-gray-300"/>
                                 </div>
                             </div>
                         </Card.Body>
@@ -146,6 +480,7 @@ const Dashboard = () => {
                 </div>
             </div>
 
+            {/* Sección para el resumen de activos y valor de inventario */}
             <div className="row d-flex align-items-stretch">
                 <div className="col-xl-8 col-lg-8 col-md-12">
                     <Card className="shadow mb-4 h-100">
@@ -153,10 +488,12 @@ const Dashboard = () => {
                             <div className="d-flex flex-row align-items-center justify-content-between">
                                 <h6 className="m-0 font-weight-bold text-primary">Resumen de Activos</h6>
                                 <div className="dropdown no-arrow">
-                                    <a className="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <FontAwesomeIcon icon={faEllipsisV} className="fa-sm fa-fw text-gray-400" />
+                                    <a className="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <FontAwesomeIcon icon={faEllipsisV} className="fa-sm fa-fw text-gray-400"/>
                                     </a>
-                                    <div className="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                                    <div className="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                         aria-labelledby="dropdownMenuLink">
                                         <div className="dropdown-header">Encabezado del Menú:</div>
                                         <a className="dropdown-item" href="#">Acción</a>
                                         <a className="dropdown-item" href="#">Otra acción</a>
@@ -168,7 +505,7 @@ const Dashboard = () => {
                         </Card.Header>
                         <Card.Body>
                             <div className="chart-area mb-4">
-                                <AreaChart />
+                                <AreaChart/>
                             </div>
                         </Card.Body>
                     </Card>
@@ -180,12 +517,15 @@ const Dashboard = () => {
                             <div className="d-flex flex-row align-items-center justify-content-between">
                                 <h6 className="m-0 font-weight-bold text-primary">Valor del inventario</h6>
                                 <div className="dropdown no-arrow">
-                                    <a className="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <FontAwesomeIcon icon={faEllipsisV} className="fa-sm fa-fw text-gray-400" />
+                                    <a className="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <FontAwesomeIcon icon={faEllipsisV} className="fa-sm fa-fw text-gray-400"/>
                                     </a>
-                                    <div className="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                                    <div className="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                         aria-labelledby="dropdownMenuLink">
                                         <div className="dropdown-header">Encabezado del Menú:</div>
-                                        <a className="dropdown-item" href="#" onClick={inventoryValueAllTime}>Valor total del inventario</a>
+                                        <a className="dropdown-item" href="#" onClick={inventoryValueAllTime}>Valor
+                                            total del inventario</a>
                                         <a className="dropdown-item" href="#">Otra acción</a>
                                         <div className="dropdown-divider"></div>
                                         <a className="dropdown-item" href="#">Algo más aquí</a>
@@ -238,8 +578,8 @@ const Dashboard = () => {
                                                     inventoryValue.data.map((item, index) => {
                                                         // Replace currency name
                                                         const currencyName = item.currency?.stateName === "DOLLAR" ? "dólares" :
-                                                                                       item.currency?.stateName === "COLON" ? "colónes" :
-                                                                                       item.currency?.stateName;
+                                                            item.currency?.stateName === "COLON" ? "colónes" :
+                                                                item.currency?.stateName;
 
                                                         return (
                                                             <div key={index} className="col">
@@ -348,38 +688,372 @@ const Dashboard = () => {
                 </div>
             </div>
 
-            {/* Content Row */}
-            <div className="row">
-                {/*<div className="col-lg-6 mb-4">
-                    <Card className="shadow mb-4">
+
+            {/* Sección para estadísticas de ingresos y préstamos de activos */}
+            <div className="row mt-4">
+                {/* Gráfico de ingresos de activos */}
+                <div className="col-xl-6 col-lg-6 col-md-12">
+                    <Card className="shadow mb-4 h-100">
                         <Card.Header>
-                            <h6 className="m-0 font-weight-bold text-primary">Resumen de Tareas</h6>
+                            <div className="d-flex flex-row align-items-center justify-content-between">
+                                <h6 className="m-0 font-weight-bold text-primary">Ingresos de Activos</h6>
+                                <div className="dropdown no-arrow">
+                                    <a className="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <FontAwesomeIcon icon={faEllipsisV} className="fa-sm fa-fw text-gray-400"/>
+                                    </a>
+                                    <div className="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                         aria-labelledby="dropdownMenuLink">
+                                        <div className="dropdown-header">Opciones:</div>
+                                        <a className="dropdown-item" href="#">Ver por año</a>
+                                        <a className="dropdown-item" href="#">Ver por semestre</a>
+                                        <div className="dropdown-divider"></div>
+                                        <a className="dropdown-item" href="#">Exportar datos</a>
+                                    </div>
+                                </div>
+                            </div>
                         </Card.Header>
                         <Card.Body>
-                            <div className="todo-list">
-                                <div className="d-flex align-items-center">
-                                    <input type="checkbox" className="mr-2" />
-                                    <span>Tarea 1</span>
-                                </div>
-                                <div className="d-flex align-items-center">
-                                    <input type="checkbox" className="mr-2" />
-                                    <span>Tarea 2</span>
-                                </div>
-                                <div className="d-flex align-items-center">
-                                    <input type="checkbox" className="mr-2" />
-                                    <span>Tarea 3</span>
-                                </div>
-                                <div className="d-flex align-items-center">
-                                    <input type="checkbox" className="mr-2" />
-                                    <span>Tarea 4</span>
-                                </div>
+                            <div className="chart-area">
+                                {/* Espacio para gráfico de barras de ingresos */}
+                                <BarChart
+                                    data={getAssetsByPurchaseDate(
+                                        assets?.data || [],
+                                        formData.startDate,
+                                        formData.endDate
+                                    )}
+                                    label='Ingresos de activos'
+                                />
+                            </div>
+                            <div className="mt-3">
+                                <form>
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <label htmlFor="incomeStartDate" className="form-label">
+                                                <i className="fas fa-calendar-alt"></i> Fecha inicial
+                                            </label>
+                                            <input
+                                                type="date"
+                                                id="incomeStartDate"
+                                                name="startDate"
+                                                className="form-control border-primary"
+                                                value={formData.startDate}
+                                                onChange={handleChange}
+                                            />
+                                        </div>
+                                        <div className="col-md-6">
+                                            <label htmlFor="incomeEndDate" className="form-label">
+                                                <i className="fas fa-calendar-alt"></i> Fecha final
+                                            </label>
+                                            <input
+                                                type="date"
+                                                id="incomeEndDate"
+                                                name="endDate"
+                                                className="form-control border-primary"
+                                                value={formData.endDate}
+                                                onChange={handleChange}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="mt-3 text-center">
+                                        <button onClick={handleSubmit} className="btn btn-primary">Filtrar</button>
+                                    </div>
+                                </form>
                             </div>
                         </Card.Body>
                     </Card>
-                </div>*/}
+                </div>
+                {/* Gráfico de préstamos/retiros de activos */}
+                <div className="col-xl-6 col-lg-6 col-md-12">
+                    <Card className="shadow mb-4 h-100">
+                        <Card.Header>
+                            <div className="d-flex flex-row align-items-center justify-content-between">
+                                <h6 className="m-0 font-weight-bold text-primary">Préstamos/Retiros de Activos</h6>
+                                <div className="dropdown no-arrow">
+                                    <a className="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <FontAwesomeIcon icon={faEllipsisV} className="fa-sm fa-fw text-gray-400"/>
+                                    </a>
+                                    <div className="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                         aria-labelledby="dropdownMenuLink">
+                                        <div className="dropdown-header">Opciones:</div>
+                                        <a className="dropdown-item" href="#">Ver por año</a>
+                                        <a className="dropdown-item" href="#">Ver por semestre</a>
+                                        <div className="dropdown-divider"></div>
+                                        <a className="dropdown-item" href="#">Exportar datos</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </Card.Header>
+                        <Card.Body>
+                            <div className="chart-area">
+                                {/* Espacio para gráfico de columnas de préstamos */}
+                                <ColumnChart
+                                    data={getLoansByDate(
+                                        assets?.data || [],
+                                        loanDates.startDate,
+                                        loanDates.endDate
+                                    )}
+                                    label='Préstamos de activos'
+                                />
+                            </div>
+                            <div className="mt-3">
+                                <form>
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <label htmlFor="loanStartDate" className="form-label">
+                                                <i className="fas fa-calendar-alt"></i> Fecha inicial
+                                            </label>
+                                            <input
+                                                type="date"
+                                                id="loanStartDate"
+                                                name="startDate"
+                                                className="form-control border-primary"
+                                                value={loanDates.startDate}
+                                                onChange={handleLoanDateChange}
+                                            />
+                                        </div>
+                                        <div className="col-md-6">
+                                            <label htmlFor="loanEndDate" className="form-label">
+                                                <i className="fas fa-calendar-alt"></i> Fecha final
+                                            </label>
+                                            <input
+                                                type="date"
+                                                id="loanEndDate"
+                                                name="endDate"
+                                                className="form-control border-primary"
+                                                value={loanDates.endDate}
+                                                onChange={handleLoanDateChange}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="mt-3 text-center">
+                                        <button className="btn btn-primary">Filtrar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </Card.Body>
+                    </Card>
+                </div>
+                {/* Gráfico para solicitudes de productos */}
+                <div className="col-xl-6 col-lg-6 col-md-12">
+                    <Card className="shadow mb-4 h-100">
+                        <Card.Header>
+                            <div className="d-flex flex-row align-items-center justify-content-between">
+                                <h6 className="m-0 font-weight-bold text-primary">Solicitudes de Productos por Mes</h6>
+                                <div className="dropdown no-arrow">
+                                    <a className="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <FontAwesomeIcon icon={faEllipsisV} className="fa-sm fa-fw text-gray-400"/>
+                                    </a>
+                                    <div className="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                         aria-labelledby="dropdownMenuLink">
+                                        <div className="dropdown-header">Opciones:</div>
+                                        <a className="dropdown-item" href="#">Ver por año</a>
+                                        <a className="dropdown-item" href="#">Ver por semestre</a>
+                                        <div className="dropdown-divider"></div>
+                                        <a className="dropdown-item" href="#">Exportar datos</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </Card.Header>
+                        <Card.Body>
+                            <div className="chart-area">
+                                {/* Espacio para gráfico de barras de solicitudes por mes */}
+                                <BarChart
+                                    data={getRequestsByDate(
+                                        productRequestStats?.data || [],
+                                        formData.startDate,
+                                        formData.endDate
+                                    )}
+                                    label="Solicitudes de productos por mes"
+                                />
+                            </div>
+                            <div className="mt-3">
+                                <form>
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <label htmlFor="incomeStartDate" className="form-label">
+                                                <i className="fas fa-calendar-alt"></i> Fecha inicial
+                                            </label>
+                                            <input
+                                                type="date"
+                                                id="incomeStartDate"
+                                                name="startDate"
+                                                className="form-control border-primary"
+                                                value={formData.startDate}
+                                                onChange={handleChange}
+                                            />
+                                        </div>
+                                        <div className="col-md-6">
+                                            <label htmlFor="incomeEndDate" className="form-label">
+                                                <i className="fas fa-calendar-alt"></i> Fecha final
+                                            </label>
+                                            <input
+                                                type="date"
+                                                id="incomeEndDate"
+                                                name="endDate"
+                                                className="form-control border-primary"
+                                                value={formData.endDate}
+                                                onChange={handleChange}
+                                            />
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </Card.Body>
+                    </Card>
+                </div>
+                <div className="col-xl-6 col-lg-6 col-md-12">
+                    <Card className="shadow mb-4 h-100">
+                        <Card.Header>
+                            <div className="d-flex flex-row align-items-center justify-content-between">
+                                <h6 className="m-0 font-weight-bold text-primary">Ingresos de productos por mes</h6>
+                                <div className="dropdown no-arrow">
+                                    <a className="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <FontAwesomeIcon icon={faEllipsisV} className="fa-sm fa-fw text-gray-400"/>
+                                    </a>
+                                    <div className="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                         aria-labelledby="dropdownMenuLink">
+                                        <div className="dropdown-header">Opciones:</div>
+                                        <a className="dropdown-item" href="#">Ver por año</a>
+                                        <a className="dropdown-item" href="#">Ver por semestre</a>
+                                        <div className="dropdown-divider"></div>
+                                        <a className="dropdown-item" href="#">Exportar datos</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </Card.Header>
+                        <Card.Body>
+                            <div className="chart-area">
+                                {/* Espacio para gráfico de ingresos de productos */}
+                                <ColumnChart
+                                    data={getProductEntriesByDate(
+                                        productEntries?.data || [],
+                                        loanDates.startDate,
+                                        loanDates.endDate
+                                    )}
+                                    label='Ingresos de productos por mes'
+                                />
+                            </div>
+                            <div className="mt-3">
+                                <form>
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <label htmlFor="loanStartDate" className="form-label">
+                                                <i className="fas fa-calendar-alt"></i> Fecha inicial
+                                            </label>
+                                            <input
+                                                type="date"
+                                                id="loanStartDate"
+                                                name="startDate"
+                                                className="form-control border-primary"
+                                                value={loanDates.startDate}
+                                                onChange={handleLoanDateChange}
+                                            />
+                                        </div>
+                                        <div className="col-md-6">
+                                            <label htmlFor="loanEndDate" className="form-label">
+                                                <i className="fas fa-calendar-alt"></i> Fecha final
+                                            </label>
+                                            <input
+                                                type="date"
+                                                id="loanEndDate"
+                                                name="endDate"
+                                                className="form-control border-primary"
+                                                value={loanDates.endDate}
+                                                onChange={handleLoanDateChange}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="mt-3 text-center">
+                                        <button className="btn btn-primary">Filtrar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </Card.Body>
+                    </Card>
+                </div>
+            </div>
+
+
+            {/* Gráfico comparativo entre ingresos y préstamos */
+            }
+            <div className="row mt-4">
+                <div className="col-lg-12">
+                    <Card className="shadow mb-4 h-100">
+                        <Card.Header>
+                            <div className="d-flex flex-row align-items-center justify-content-between">
+                                <h6 className="m-0 font-weight-bold text-primary">Comparativo Ingresos vs Préstamos</h6>
+                                <div className="dropdown no-arrow">
+                                    <a className="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <FontAwesomeIcon icon={faEllipsisV} className="fa-sm fa-fw text-gray-400"/>
+                                    </a>
+                                    <div className="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                         aria-labelledby="dropdownMenuLink">
+                                        <div className="dropdown-header">Opciones:</div>
+                                        <a className="dropdown-item" href="#">Ver por año</a>
+                                        <a className="dropdown-item" href="#">Ver por semestre</a>
+                                        <div className="dropdown-divider"></div>
+                                        <a className="dropdown-item" href="#">Exportar datos</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </Card.Header>
+                        <Card.Body>
+                            <div className="chart-area">
+                                {/* Espacio para gráfico combinado */}
+                                <ComboChart
+                                    {...getComparisonData(
+                                        comparisonDates.startDate,
+                                        comparisonDates.endDate
+                                    )}
+                                />
+                            </div>
+                            <div className="mt-3">
+                                <form>
+                                    <div className="row">
+                                        <div className="col-md-4">
+                                            <label htmlFor="comparisonStartDate" className="form-label">
+                                                <i className="fas fa-calendar-alt"></i> Fecha inicial
+                                            </label>
+                                            <input
+                                                type="date"
+                                                id="comparisonStartDate"
+                                                name="startDate"
+                                                className="form-control border-primary"
+                                                value={comparisonDates.startDate}
+                                                onChange={handleComparisonDateChange}
+                                            />
+                                        </div>
+                                        <div className="col-md-4">
+                                            <label htmlFor="comparisonEndDate" className="form-label">
+                                                <i className="fas fa-calendar-alt"></i> Fecha final
+                                            </label>
+                                            <input
+                                                type="date"
+                                                id="comparisonEndDate"
+                                                name="endDate"
+                                                className="form-control border-primary"
+                                                value={comparisonDates.endDate}
+                                                onChange={handleComparisonDateChange}
+                                            />
+                                        </div>
+                                        <div className="col-md-4 d-flex align-items-end">
+                                            <button className="btn btn-primary w-100">Generar Reporte</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </Card.Body>
+                    </Card>
+                </div>
             </div>
         </div>
-    );
+    )
+        ;
 };
 
 export default Dashboard;
