@@ -55,8 +55,9 @@ const CreateProduct = () => {
             }
         }
 
-        if (!formData.expiryDate) errors.expiryDate = "La fecha de expiración es obligatoria.";
-        else {
+        if (!formData.expiryDate && !noExpiry) {
+            errors.expiryDate = "La fecha de expiración es obligatoria.";
+        } else if (formData.expiryDate) {
             // Check if expiryDate is in the future
             const expiryDate = new Date(formData.expiryDate);
             const today = new Date();
@@ -65,6 +66,7 @@ const CreateProduct = () => {
                 errors.expiryDate = "La fecha de expiración debe ser en el futuro.";
             }
         }
+
         if (!formData.productStatus) errors.productStatus = "El estado del producto es obligatorio.";
         if (!formData.productCateogory) errors.productCateogory = "La categoría del producto es obligatoria.";
 
@@ -114,6 +116,13 @@ const CreateProduct = () => {
         }
     };
 
+    const [noExpiry, setNoExpiry] = useState(true);
+
+    const toggleExpiry = () => {
+        setNoExpiry(!noExpiry);
+        setFormData({ ...formData, expiryDate: noExpiry ? "" : null });
+    };
+
     return (
         <>
             <ProductBanner
@@ -160,22 +169,6 @@ const CreateProduct = () => {
                             </div>
 
                             <div className="col-md-3 col-sm-6 col-12 mb-3">
-                                <label htmlFor="expiryDate" className="form-label">
-                                    <i className="fas fa-calendar-xmark"></i> Fecha de Expiración <span className="text-danger">*</span>
-                                </label>
-                                <input
-                                    type="date"
-                                    name="expiryDate"
-                                    id="expiryDate"
-                                    className="form-control border-primary"
-                                    value={formData.expiryDate}
-                                    onChange={handleChange}
-                                    required
-                                />
-                                {formErrors.expiryDate && <div className="input-text-error show">{formErrors.expiryDate}</div>}
-                            </div>
-
-                            <div className="col-md-3 col-sm-6 col-12 mb-3">
                                 <label htmlFor="productStatus" className="form-label">
                                     <i className="fas fa-exclamation-circle"></i> Estado del Producto <span className="text-danger">*</span>
                                 </label>
@@ -203,6 +196,31 @@ const CreateProduct = () => {
                                     })}
                                 </select>
                                 {formErrors.productStatus && <div className="input-text-error show">{formErrors.productStatus}</div>}
+                            </div>
+
+                            <div className="col-md-3 col-sm-6 col-12 mb-3">
+                                <label htmlFor="expiryDate" className="form-label">
+                                    <i className="fas fa-calendar-xmark"></i> Fecha de Expiración
+                                </label>
+                                <input
+                                    type="date"
+                                    name="expiryDate"
+                                    id="expiryDate"
+                                    className="form-control border-primary"
+                                    value={formData.expiryDate || ""}
+                                    onChange={handleChange}
+                                    required={!noExpiry}
+                                    disabled={noExpiry}
+                                />
+                                {formErrors.expiryDate && <div className="input-text-error show">{formErrors.expiryDate}</div>}
+
+                                <span
+                                    className="mt-1 text-black-50 font-italic"
+                                    style={{ fontSize: ".85rem", cursor: "pointer" }}
+                                    onClick={toggleExpiry}
+                                >
+                                    {noExpiry ? "Activar fecha de expiración" : "Desactivar fecha de expiración"}
+                                </span>
                             </div>
                         </div>
                         <div className="row mb-4">

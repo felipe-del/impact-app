@@ -38,14 +38,17 @@ const UpdateProduct = () => {
         if(products?.data && Array.isArray(products.data)) {
             const product = products.data.find((product) => product.id === parseInt(id));
             if (product) {
-                console.log(product)
-                setFormData({
-                    name: product.name,
-                    purchaseDate: product.purchaseDate,
-                    expiryDate: product.expiryDate,
-                    productCategory: product.category.id,
-                    productStatus: product.status.id
-                });
+                if (product) {
+                    setNoExpiry(!product.expiryDate);
+
+                    setFormData({
+                        purchaseDate: product.purchaseDate,
+                        expiryDate: product.expiryDate,
+                        productCategory: product.category.id,
+                        productStatus: product.status.id
+                    });
+                }
+
             }
         }
 
@@ -55,7 +58,6 @@ const UpdateProduct = () => {
         const errors = {};
         setFormErrors(errors);
 
-        if (!formData.name) errors.name = "El nombre del producto es obligatorio.";
         if (!formData.purchaseDate) errors.purchaseDate = "La fecha de compra es obligatoria.";
         else {
             // Check if purchaseDate is today or in the past
@@ -67,8 +69,9 @@ const UpdateProduct = () => {
             }
         }
 
-        if (!formData.expiryDate) errors.expiryDate = "La fecha de expiración es obligatoria.";
-        else {
+        if (!formData.expiryDate && !noExpiry) {
+            errors.expiryDate = "La fecha de expiración es obligatoria.";
+        } else if (formData.expiryDate) {
             // Check if expiryDate is in the future
             const expiryDate = new Date(formData.expiryDate);
             const today = new Date();
@@ -107,7 +110,7 @@ const UpdateProduct = () => {
     const handleSubmit = async () => {
 
         const requestData = {
-            name: formData.name,
+            quantity: 1,
             purchaseDate: formData.purchaseDate,
             expiryDate: formData.expiryDate,
             categoryId: formData.productCategory,
@@ -117,7 +120,6 @@ const UpdateProduct = () => {
             const response = await updateProduct(id, requestData);
             toast.success(response.message, { duration: 7000 });
             setFormData({
-                name: "",
                 purchaseDate: "",
                 expiryDate: "",
                 productCategory: "",
@@ -132,6 +134,13 @@ const UpdateProduct = () => {
         }
     };
 
+    const [noExpiry, setNoExpiry] = useState(true);
+
+    const toggleExpiry = () => {
+        setNoExpiry(!noExpiry);
+        setFormData({ ...formData, expiryDate: noExpiry ? "" : null });
+    };
+
     return (
         <>
             <ProductBanner
@@ -142,23 +151,7 @@ const UpdateProduct = () => {
                 <div className="card p-4 shadow-lg" style={{ maxWidth: "100%", borderRadius: "15px" }}>
                     <form ref={formRef}>
                         <div className="row mb-4">
-                            <div className="col-md-3 col-sm-6 col-12 mb-3">
-                                <label htmlFor="name" className="form-label">
-                                    <i className="fa-solid fa-signature"/> Nombre de Producto <span className="text-danger">*</span>
-                                </label>
-                                <input
-                                    type="text"
-                                    name="name"
-                                    id="name"
-                                    className="form-control border-primary"
-                                    value={formData.name}
-                                    onChange={handleChange}
-                                    placeholder="Ej: Pizarra"
-                                    style={{ fontSize: ".9rem" }}
-                                    required
-                                />
-                                {formErrors.name && <div className="input-text-error show">{formErrors.name}</div>}
-                            </div>
+
                             <div className="col-md-3 col-sm-6 col-12 mb-3">
                                 <label htmlFor="purchaseDate" className="form-label">
                                     <i className="fas fa-calendar-alt"></i> Fecha de Compra <span className="text-danger">*</span>
@@ -173,22 +166,6 @@ const UpdateProduct = () => {
                                     required
                                 />
                                 {formErrors.purchaseDate && <div className="input-text-error show">{formErrors.purchaseDate}</div>}
-                            </div>
-
-                            <div className="col-md-3 col-sm-6 col-12 mb-3">
-                                <label htmlFor="expiryDate" className="form-label">
-                                    <i className="fas fa-calendar-xmark"></i> Fecha de Expiración <span className="text-danger">*</span>
-                                </label>
-                                <input
-                                    type="date"
-                                    name="expiryDate"
-                                    id="expiryDate"
-                                    className="form-control border-primary"
-                                    value={formData.expiryDate}
-                                    onChange={handleChange}
-                                    required
-                                />
-                                {formErrors.expiryDate && <div className="input-text-error show">{formErrors.expiryDate}</div>}
                             </div>
 
                             <div className="col-md-3 col-sm-6 col-12 mb-3">
@@ -220,9 +197,8 @@ const UpdateProduct = () => {
                                 </select>
                                 {formErrors.productStatus && <div className="input-text-error show">{formErrors.productStatus}</div>}
                             </div>
-                        </div>
-                        <div className="row mb-4">
-                            <div className="col-md-6 col-sm-12 col-24 mb-3">
+
+                            <div className="col-md-3 col-sm-6 col-12 mb-3">
                                 <label htmlFor="productCategory" className="form-label">
                                     <i className="fa-solid fa-cubes-stacked"></i> Categoría de Producto <span
                                     className="text-danger">*</span>
@@ -248,6 +224,31 @@ const UpdateProduct = () => {
                                     })}
                                 </select>
                                 {formErrors.productCategory && <div className="input-text-error show">{formErrors.productCategory}</div>}
+                            </div>
+
+                            <div className="col-md-3 col-sm-6 col-12 mb-3">
+                                <label htmlFor="expiryDate" className="form-label">
+                                    <i className="fas fa-calendar-xmark"></i> Fecha de Expiración
+                                </label>
+                                <input
+                                    type="date"
+                                    name="expiryDate"
+                                    id="expiryDate"
+                                    className="form-control border-primary"
+                                    value={formData.expiryDate || ""}
+                                    onChange={handleChange}
+                                    required={!noExpiry}
+                                    disabled={noExpiry}
+                                />
+                                {formErrors.expiryDate && <div className="input-text-error show">{formErrors.expiryDate}</div>}
+
+                                <span
+                                    className="mt-1 text-black-50 font-italic"
+                                    style={{ fontSize: ".85rem", cursor: "pointer" }}
+                                    onClick={toggleExpiry}
+                                >
+                                    {noExpiry ? "Activar fecha de expiración" : "Desactivar fecha de expiración"}
+                                </span>
                             </div>
                         </div>
 
