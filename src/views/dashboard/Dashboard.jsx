@@ -12,6 +12,7 @@ import {Box, Typography} from "@mui/material";
 import useAssetData from '../../hooks/apiData/assetData/AssetData.jsx';
 import useProductData from '../../hooks/apiData/product/productData.jsx';
 import useSpaceData from '../../hooks/apiData/space/SpaceData.jsx'
+import useAssetLoanData from '../../hooks/apiData/assetLoans/assetLoans.jsx';
 import useProductEntryData from "../../hooks/apiData/productEntries/productEntries.jsx";
 import useProductRequestStatsData from "../../hooks/apiData/productRequestStats/productRequestStats.jsx";
 
@@ -29,6 +30,35 @@ const initialData = {
     assetQuantityCRC: ''
 };
 
+// Estado inicial para activos por fecha de compra
+const initialAssetsByPurchaseDate = {
+    startDate: '2024-03-03',
+    endDate: formattedToday
+};
+
+// Estado inicial para préstamos de activos
+const initialLoanDates = {
+    startDate: '2024-03-11',
+    endDate: formattedToday
+};
+
+// Estado inicial para solicitudes de productos
+const initialProductRequestsDates = {
+    startDate: '2024-03-11',
+    endDate: formattedToday
+};
+
+// Estado inicial para ingresos de productos
+const initialProductEntriesDates = {
+    startDate: '2024-03-11',
+    endDate: formattedToday
+};
+
+// Estado inicial para comparación
+const initialComparisonDates = {
+    startDate: '2024-03-11',
+    endDate: formattedToday
+};
 
 const todayDate = {
     day: today.getDate(),
@@ -39,21 +69,29 @@ const todayDate = {
 const Dashboard = () => {
 
     const [formData, setFormData] = useState(initialData);
+    const [assetsByPurchaseDate, setAssetsByPurchaseDate] = useState(initialAssetsByPurchaseDate);
+    const [loanDates, setLoanDates] = useState(initialLoanDates);
+    const [productRequestsDates, setProductRequestsDates] = useState(initialProductRequestsDates);
+    const [productEntriesDates, setProductEntriesDates] = useState(initialProductEntriesDates);
+    const [comparisonDates, setComparisonDates] = useState(initialComparisonDates);
     const [formErrors, setFormErrors] = useState({});
     const [fetchData, setFetchData] = useState(false);
     const formRef = useRef(null);
     const {assets} = useAssetData();
     const {products} = useProductData();
     const {spaces} = useSpaceData();
+    const {assetLoans} = useAssetLoanData();
     const {productEntries} = useProductEntryData();
     const {productRequestStats} = useProductRequestStatsData();
     const totalAssets = assets?.data?.length || 0;
     const totalProducts = products?.data?.length || 0;
     const totalSpaces = spaces?.data?.length || 0;
 
+    //console.log("asset loans:"+ assetLoans);
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const handleShowConfirmationModal = () => setShowConfirmationModal(true);
     const handleHideConfirmationModal = () => setShowConfirmationModal(false);
+
 
     const [loanDates, setLoanDates] = useState({
         startDate: '2024-03-11',
@@ -81,13 +119,16 @@ const Dashboard = () => {
     });
 
     useEffect(() => {
+
+    },[assetLoans],
+     [formData.startDate, formData.endDate]);
+
         console.log("📊 Actualizando gráfico con nuevas fechas:", formData.startDate, formData.endDate);
     }, [formData.startDate, formData.endDate]);
 
     const handleChange = (e) => {
         const {name, value} = e.target;
         setFormData(prevState => ({...prevState, [name]: value}));
-
         setFormErrors(prevErrors => {
             const newErrors = {...prevErrors};
             if (newErrors[name]) {
@@ -95,6 +136,30 @@ const Dashboard = () => {
             }
             return newErrors;
         });
+    };
+    const handleAssetsPurchaseDateChange = (e) => {
+        const {name, value} = e.target;
+        setAssetsByPurchaseDate(prev => ({...prev, [name]: value}));
+    };
+
+    const handleLoanDateChange = (e) => {
+        const {name, value} = e.target;
+        setLoanDates(prev => ({...prev, [name]: value}));
+    };
+
+    const handleProductRequestsDateChange = (e) => {
+        const {name, value} = e.target;
+        setProductRequestsDates(prev => ({...prev, [name]: value}));
+    };
+
+    const handleProductEntriesDateChange = (e) => {
+        const {name, value} = e.target;
+        setProductEntriesDates(prev => ({...prev, [name]: value}));
+    };
+
+    const handleComparisonDateChange = (e) => {
+        const {name, value} = e.target;
+        setComparisonDates(prev => ({...prev, [name]: value}));
     };
 
     const inventoryValueAllTime = () => {
@@ -124,16 +189,12 @@ const Dashboard = () => {
         }
     };
 
-
     const handleSubmit = (e) => {
         e.preventDefault();
         setFetchData(true); // Set flag to true to trigger data fetching
     };
 
     // Sample data for demonstration purposes
-    const productsCount = 4;
-    const assetsCount = 75;
-    const spacesCount = 30;
     const pendingRequestsCount = 18;
     const getAssetsByPurchaseDate = (assets, startDate, endDate) => {
         if (!startDate || !endDate) {
@@ -172,6 +233,7 @@ const Dashboard = () => {
                 monthlyCounts[key] = (monthlyCounts[key] || 0) + 1;
             }
         });
+
 
         const sortedEntries = Object.entries(monthlyCounts)
             .sort(([keyA], [keyB]) => {
@@ -319,6 +381,9 @@ const Dashboard = () => {
     };
 
 
+    const getRequestsByDate = (productRequestStats, startDate, endDate) => {
+
+
     const getLoansByDate = (assets, startDate, endDate) => {
         const fullYearData = {
             labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
@@ -326,8 +391,57 @@ const Dashboard = () => {
         };
 
         if (!startDate || !endDate) {
-            return fullYearData;
+            return {
+                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                values: Array(12).fill(0)
+            };
         }
+
+        const start = new Date(startDate + "T00:00:00Z");
+        const end = new Date(endDate + "T23:59:59Z");
+
+        const monthlyCounts = {};
+
+        const currentDate = new Date(start);
+        while (currentDate <= end) {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            const key = `${year}-${month}`;
+            if (!monthlyCounts[key]) {
+                monthlyCounts[key] = 0;
+            }
+            currentDate.setMonth(currentDate.getMonth() + 1);
+        }
+
+        productRequestStats.forEach((productRequest) => {
+            if (!productRequest.requestDate) return;
+
+            const requestDate = new Date(productRequest.requestDate);
+            if (isNaN(requestDate)) return;
+
+            if (requestDate >= start && requestDate <= end) {
+                const year = requestDate.getFullYear();
+                const month = requestDate.getMonth();
+                const key = `${year}-${month}`;
+                monthlyCounts[key] = (monthlyCounts[key] || 0) + 1;
+            }
+        });
+
+        const sortedRequests = Object.entries(monthlyCounts)
+            .sort(([keyA], [keyB]) => {
+                const [yearA, monthA] = keyA.split('-').map(Number);
+                const [yearB, monthB] = keyB.split('-').map(Number);
+                return yearB === yearA ? monthB - monthA : yearB - yearA;
+            })
+            .slice(0, 12);
+
+        const monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+        const labels = sortedRequests.map(([key]) => {
+            const [year, month] = key.split('-').map(Number);
+            return `${monthNames[month]} ${year}`;
+        });
+
+        const values = sortedRequests.map(([, count]) => count);
 
         // Convertir fechas a objetos Date
         const start = new Date(startDate);
@@ -341,13 +455,152 @@ const Dashboard = () => {
         const lowerMonth = Math.min(startMonth, endMonth);
         const upperMonth = Math.max(startMonth, endMonth);
 
-        // Recortar los datos al rango de meses
         return {
-            labels: fullYearData.labels.slice(lowerMonth, upperMonth + 1),
-            values: fullYearData.values.slice(lowerMonth, upperMonth + 1)
+            labels: labels.reverse(),
+            values: values.reverse()
         };
     };
 
+    const getProductEntriesByDate = (productEntries, startDate, endDate) => {
+        if (!startDate || !endDate) {
+            return {
+                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                values: Array(12).fill(0)
+            };
+        }
+
+        const start = new Date(startDate + "T00:00:00Z");
+        const end = new Date(endDate + "T23:59:59Z");
+
+        const monthlyCounts = {};
+
+        const currentDate = new Date(start);
+        while (currentDate <= end) {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            const key = `${year}-${month}`;
+            if (!monthlyCounts[key]) {
+                monthlyCounts[key] = 0;
+            }
+            currentDate.setMonth(currentDate.getMonth() + 1);
+        }
+
+        productEntries.forEach((productEntry) => {
+            if (!productEntry.purchaseDate || !productEntry.totalEntries) return;
+
+            const entryDate = new Date(productEntry.purchaseDate);
+            if (isNaN(entryDate)) return;
+
+            if (entryDate >= start && entryDate <= end) {
+                const year = entryDate.getFullYear();
+                const month = entryDate.getMonth();
+                const key = `${year}-${month}`;
+                monthlyCounts[key] = (monthlyCounts[key] || 0) + productEntry.totalEntries; // Add totalEntries instead of 1
+            }
+        });
+
+        const sortedEntries = Object.entries(monthlyCounts)
+            .sort(([keyA], [keyB]) => {
+                const [yearA, monthA] = keyA.split('-').map(Number);
+                const [yearB, monthB] = keyB.split('-').map(Number);
+                return yearB === yearA ? monthB - monthA : yearB - yearA;
+            })
+            .slice(0, 12);
+
+        const monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+        const labels = sortedEntries.map(([key]) => {
+            const [year, month] = key.split('-').map(Number);
+            return `${monthNames[month]} ${year}`;
+        });
+
+        const values = sortedEntries.map(([, count]) => count);
+
+        // 🔹 Invertir el orden para que se muestren de más antiguo a más reciente
+        return {
+            labels: labels.reverse(),
+            values: values.reverse()
+        };
+    };
+
+    const getAssetsLoansByDate = (assetLoans, startDate, endDate) => {
+       // console.log(assetLoans)
+        if (!startDate || !endDate) {
+            return {
+                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                values: Array(12).fill(0)
+            };
+        }
+        const start = new Date(startDate + "T00:00:00Z");
+        const end = new Date(endDate + "T23:59:59Z");
+
+        const monthlyCounts = {};
+
+        const currentDate = new Date(start);
+        while (currentDate <= end) {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            const key = `${year}-${month}`;
+            if (!monthlyCounts[key]) {
+                monthlyCounts[key] = 0;
+            }
+            currentDate.setMonth(currentDate.getMonth() + 1);
+        }
+
+        assetLoans.forEach((assetRequest)=>{
+            if(!assetRequest.requestDate) return;
+
+            const requestDate = new Date(assetRequest.requestDate);
+            if(isNaN(requestDate))return;
+
+            if (requestDate >= start && requestDate <= end) {
+                const year = requestDate.getFullYear();
+                const month = requestDate.getMonth();
+                const key = `${year}-${month}`;
+                monthlyCounts[key] = (monthlyCounts[key] || 0) + 1;
+            }
+        });
+        const sortedRequests = Object.entries(monthlyCounts)
+            .sort(([keyA], [keyB]) => {
+                const [yearA, monthA] = keyA.split('-').map(Number);
+                const [yearB, monthB] = keyB.split('-').map(Number);
+                return yearB === yearA ? monthB - monthA : yearB - yearA;
+            })
+            .slice(0, 12);
+
+        const monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+        const labels = sortedRequests.map(([key]) => {
+            const [year, month] = key.split('-').map(Number);
+            return `${monthNames[month]} ${year}`;
+        });
+
+        const values = sortedRequests.map(([, count]) => count);
+
+        // 🔹 Invertir el orden para que se muestren de más antiguo a más reciente
+        return {
+            labels: labels.reverse(),
+            values: values.reverse()
+        };
+    };
+
+    const getComparisonData = (assets, assetLoans, startDate, endDate) => {
+        const incomeData = getAssetsByPurchaseDate(assets, startDate, endDate);
+        const loanData = getAssetsLoansByDate(assetLoans, startDate, endDate);
+    
+        // Unificar etiquetas asegurando que ambas series tienen la misma escala de tiempo
+        const labelsSet = new Set([...incomeData.labels, ...loanData.labels]);
+        const labels = Array.from(labelsSet).sort((a, b) => {
+            const [monthA, yearA] = a.split(' ');
+            const [monthB, yearB] = b.split(' ');
+            const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+            return yearA - yearB || months.indexOf(monthA) - months.indexOf(monthB);
+        });
+    
+        // Mapear valores asegurando alineación con etiquetas
+        const getValuesAligned = (data) => labels.map(label => {
+            const index = data.labels.indexOf(label);
+            return index !== -1 ? data.values[index] : 0;
+        });
+    
     const getComparisonData = (startDate, endDate) => {
         const fullYearIncomeData = {
             labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
@@ -379,17 +632,19 @@ const Dashboard = () => {
         const upperMonth = Math.max(startMonth, endMonth);
 
         // Recortar los datos al rango de meses
+
         return {
             incomeData: {
-                labels: fullYearIncomeData.labels.slice(lowerMonth, upperMonth + 1),
-                values: fullYearIncomeData.values.slice(lowerMonth, upperMonth + 1)
+                labels,
+                values: getValuesAligned(incomeData)
             },
             loanData: {
-                labels: fullYearLoanData.labels.slice(lowerMonth, upperMonth + 1),
-                values: fullYearLoanData.values.slice(lowerMonth, upperMonth + 1)
+                labels,
+                values: getValuesAligned(loanData)
             }
         };
-    };
+    };      
+
 
 
     return (
@@ -540,7 +795,6 @@ const Dashboard = () => {
                                         <div className="row mt-3">
                                             {inventoryValue?.data?.length ? (
                                                 inventoryValue.data.map((item, index) => {
-                                                    console.log(inventoryValue.data)
                                                     // Replace currency name
                                                     const currencyName = item.currency?.stateName === "DOLLAR" ? "dólares" :
                                                         item.currency?.stateName === "COLON" ? "colónes" :
@@ -726,6 +980,8 @@ const Dashboard = () => {
                                 <BarChart
                                     data={getAssetsByPurchaseDate(
                                         assets?.data || [],
+                                        assetsByPurchaseDate.startDate,
+                                        assetsByPurchaseDate.endDate
                                         formData.startDate,
                                         formData.endDate
                                     )}
@@ -735,12 +991,26 @@ const Dashboard = () => {
                             <div className="mt-3">
                                 <form>
                                     <div className="row">
+                                        <div className="col-md-6">
+                                            <label htmlFor="assetsByPurchaseDate" className="form-label">
                                         <div className="col-md-4">
                                             <label htmlFor="incomeStartDate" className="form-label">
+
                                                 <i className="fas fa-calendar-alt"></i> Fecha inicial
                                             </label>
                                             <input
                                                 type="date"
+
+                                                id="assetsByPurchaseDate"
+                                                name="startDate"
+                                                className="form-control border-primary"
+                                                value={assetsByPurchaseDate.startDate}
+                                                onChange={handleAssetsPurchaseDateChange}
+                                            />
+                                        </div>
+                                        <div className="col-md-6">
+                                            <label htmlFor="assetsByPurchaseDate" className="form-label">
+
                                                 id="incomeStartDate"
                                                 name="startDate"
                                                 className="form-control border-primary"
@@ -750,10 +1020,89 @@ const Dashboard = () => {
                                         </div>
                                         <div className="col-md-4">
                                             <label htmlFor="incomeEndDate" className="form-label">
+
                                                 <i className="fas fa-calendar-alt"></i> Fecha final
                                             </label>
                                             <input
                                                 type="date"
+
+                                                id="assetsByPurchaseDate"
+                                                name="endDate"
+                                                className="form-control border-primary"
+                                                value={assetsByPurchaseDate.endDate}
+                                                onChange={handleAssetsPurchaseDateChange}
+                                            />
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </Card.Body>
+                    </Card>
+                </div>
+                {/* Gráfico de solicitudes de activos */}
+                <div className="col-xl-6 col-lg-6 col-md-12">
+                    <Card className="shadow mb-4 h-100">
+                        <Card.Header>
+                            <div className="d-flex flex-row align-items-center justify-content-between">
+                                <h6 className="m-0 font-weight-bold text-primary">Solicitudes de activos por mes</h6>
+                                <div className="dropdown no-arrow">
+                                    <a className="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <FontAwesomeIcon icon={faEllipsisV} className="fa-sm fa-fw text-gray-400"/>
+                                    </a>
+                                    <div className="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                         aria-labelledby="dropdownMenuLink">
+                                        <div className="dropdown-header">Opciones:</div>
+                                        <a className="dropdown-item" href="#">Ver por año</a>
+                                        <a className="dropdown-item" href="#">Ver por semestre</a>
+                                        <div className="dropdown-divider"></div>
+                                        <a className="dropdown-item" href="#">Exportar datos</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </Card.Header>
+                        <Card.Body>
+                            <div className="chart-area">
+                                {/* Espacio para gráfico de columnas de préstamos */}
+                                <ColumnChart
+                                    data={getAssetsLoansByDate(
+                                        assetLoans?.data || [],
+                                        loanDates.startDate,
+                                        loanDates.endDate
+                                    )}
+                                    label='Solicitudes de activos por mes'
+                                />
+                            </div>
+                            <div className="mt-3">
+                                <form>
+                                    <div className='row'>
+                                        <div className="col-md-6">
+                                            <label htmlFor="loanStartDate" className="form-label">
+                                                <i className="fas fa-calendar-alt"></i> Fecha inicial
+                                            </label>
+                                            <input
+                                                type="date"
+                                                id="loanStartDate"
+                                                name="startDate"
+                                                className="form-control border-primary"
+                                                value={loanDates.startDate}
+                                                onChange={handleLoanDateChange}
+                                            />
+                                        </div>
+                                        <div className="col-md-6">
+                                            <label htmlFor="loanEndDate" className="form-label">
+                                                <i className="fas fa-calendar-alt"></i> Fecha final
+                                            </label>
+                                            <input
+                                                type="date"
+                                                id="loanEndDate"
+                                                name="endDate"
+                                                className="form-control border-primary"
+                                                value={loanDates.endDate}
+                                                onChange={handleLoanDateChange}
+                                            />
+                                        </div>
+                                    </div>
                                                 id="incomeEndDate"
                                                 name="endDate"
                                                 className="form-control border-primary"
@@ -772,6 +1121,12 @@ const Dashboard = () => {
                         </Card.Body>
                     </Card>
                 </div>
+                {/* Gráfico para solicitudes de productos */}
+                <div className="col-xl-6 col-lg-6 col-md-12 mt-4">
+                    <Card className="shadow mb-4 h-100">
+                        <Card.Header>
+                            <div className="d-flex flex-row align-items-center justify-content-between">
+                                <h6 className="m-0 font-weight-bold text-primary">Solicitudes de Productos por Mes</h6>
                 {/* Gráfico de préstamos/retiros de activos */}
                 <div className="col-xl-6 col-lg-6 col-md-12">
                     <Card className="shadow mb-4 h-100">
@@ -868,12 +1223,16 @@ const Dashboard = () => {
                         </Card.Header>
                         <Card.Body>
                             <div className="chart-area">
+
                                 {/* Espacio para gráfico de barras de solicitudes por mes */}
                                 <BarChart
                                     data={getRequestsByDate(
                                         productRequestStats?.data || [],
+                                        productRequestsDates.startDate,
+                                        productRequestsDates.endDate
                                         formData.startDate,
                                         formData.endDate
+
                                     )}
                                     label="Solicitudes de productos por mes"
                                 />
@@ -882,11 +1241,26 @@ const Dashboard = () => {
                                 <form>
                                     <div className="row">
                                         <div className="col-md-6">
+
+                                            <label htmlFor="productRequestsStartDate" className="form-label">
+
                                             <label htmlFor="incomeStartDate" className="form-label">
+
                                                 <i className="fas fa-calendar-alt"></i> Fecha inicial
                                             </label>
                                             <input
                                                 type="date"
+
+                                                id="productRequestsStartDate"
+                                                name="startDate"
+                                                className="form-control border-primary"
+                                                value={productRequestsDates.startDate}
+                                                onChange={handleProductRequestsDateChange}
+                                            />
+                                        </div>
+                                        <div className="col-md-6">
+                                            <label htmlFor="productRequestsEndDate" className="form-label">
+
                                                 id="incomeStartDate"
                                                 name="startDate"
                                                 className="form-control border-primary"
@@ -896,15 +1270,24 @@ const Dashboard = () => {
                                         </div>
                                         <div className="col-md-6">
                                             <label htmlFor="incomeEndDate" className="form-label">
+
                                                 <i className="fas fa-calendar-alt"></i> Fecha final
                                             </label>
                                             <input
                                                 type="date"
+
+                                                id="productRequestsEndDate"
+                                                name="endDate"
+                                                className="form-control border-primary"
+                                                value={productRequestsDates.endDate}
+                                                onChange={handleProductRequestsDateChange}
+
                                                 id="incomeEndDate"
                                                 name="endDate"
                                                 className="form-control border-primary"
                                                 value={formData.endDate}
                                                 onChange={handleChange}
+
                                             />
                                         </div>
                                     </div>
@@ -913,6 +1296,7 @@ const Dashboard = () => {
                         </Card.Body>
                     </Card>
                 </div>
+
                 <div className="col-xl-6 col-lg-6 col-md-12 mt-4">
                     <Card className="shadow mb-4 h-100">
                         <Card.Header>
@@ -940,8 +1324,13 @@ const Dashboard = () => {
                                 <ColumnChart
                                     data={getProductEntriesByDate(
                                         productEntries?.data || [],
+
+                                        productEntriesDates.startDate,
+                                        productEntriesDates.endDate
+
                                         loanDates.startDate,
                                         loanDates.endDate
+
                                     )}
                                     label='Ingresos de productos por mes'
                                 />
@@ -949,12 +1338,26 @@ const Dashboard = () => {
                             <div className="mt-3">
                                 <form>
                                     <div className="row">
+
+                                        <div className="col-md-6">
+                                            <label htmlFor="productEntriesStartDate" className="form-label">
+
                                         <div className="col-md-4">
                                             <label htmlFor="loanStartDate" className="form-label">
+
                                                 <i className="fas fa-calendar-alt"></i> Fecha inicial
                                             </label>
                                             <input
                                                 type="date"
+
+                                                id="productEntriesStartDate"
+                                                name="startDate"
+                                                className="form-control border-primary"
+                                                value={productEntriesDates.startDate}
+                                                onChange={handleProductEntriesDateChange}
+                                            />
+                                        </div>
+                                        <div className="col-md-6">
                                                 id="loanStartDate"
                                                 name="startDate"
                                                 className="form-control border-primary"
@@ -971,6 +1374,11 @@ const Dashboard = () => {
                                                 id="loanEndDate"
                                                 name="endDate"
                                                 className="form-control border-primary"
+
+                                                value={productEntriesDates.endDate}
+                                                onChange={handleProductEntriesDateChange}
+                                            />
+                                        </div>
                                                 value={loanDates.endDate}
                                                 onChange={handleLoanDateChange}
                                             />
@@ -987,14 +1395,13 @@ const Dashboard = () => {
             </div>
 
 
-            {/* Gráfico comparativo entre ingresos y préstamos */
-            }
+
             <div className="row mt-4">
                 <div className="col-lg-12">
                     <Card className="shadow mb-4 h-100">
                         <Card.Header>
                             <div className="d-flex flex-row align-items-center justify-content-between">
-                                <h6 className="m-0 font-weight-bold text-primary">Comparativo Ingresos vs Préstamos</h6>
+                                <h6 className="m-0 font-weight-bold text-primary">Comparativo Ingresos vs Solicitudes de Préstamos</h6>
                                 <div className="dropdown no-arrow">
                                     <a className="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -1016,6 +1423,8 @@ const Dashboard = () => {
                                 {/* Espacio para gráfico combinado */}
                                 <ComboChart
                                     {...getComparisonData(
+                                        assets?.data || [],
+                                        assetLoans?.data || [],
                                         comparisonDates.startDate,
                                         comparisonDates.endDate
                                     )}
@@ -1024,7 +1433,7 @@ const Dashboard = () => {
                             <div className="mt-3">
                                 <form>
                                     <div className="row">
-                                        <div className="col-md-4">
+                                        <div className="col-md-6">
                                             <label htmlFor="comparisonStartDate" className="form-label">
                                                 <i className="fas fa-calendar-alt"></i> Fecha inicial
                                             </label>
@@ -1037,7 +1446,7 @@ const Dashboard = () => {
                                                 onChange={handleComparisonDateChange}
                                             />
                                         </div>
-                                        <div className="col-md-4">
+                                        <div className="col-md-6">
                                             <label htmlFor="comparisonEndDate" className="form-label">
                                                 <i className="fas fa-calendar-alt"></i> Fecha final
                                             </label>
@@ -1049,9 +1458,6 @@ const Dashboard = () => {
                                                 value={comparisonDates.endDate}
                                                 onChange={handleComparisonDateChange}
                                             />
-                                        </div>
-                                        <div className="col-md-4 d-flex align-items-end">
-                                            <button className="btn btn-primary w-100">Generar Reporte</button>
                                         </div>
                                     </div>
                                 </form>
