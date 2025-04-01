@@ -752,6 +752,12 @@ const Dashboard = () => {
                 </div>
             </div>
 
+            <div className="row mb-4 mt-3">
+                <div className="col-12 text-center">
+                    <hr className="mb-3 border-primary" />
+                    <h4 className="font-weight-bold text-primary">📊 Estadísticas de Activos</h4>
+                </div>
+            </div>
 
             {/* Sección para estadísticas de ingresos y préstamos de activos */}
             <div className="row">
@@ -892,6 +898,12 @@ const Dashboard = () => {
                             </div>
                         </Card.Body>
                     </Card>
+                </div>
+                <div className="row mb-2 mt-5">
+                    <div className="col-12 text-center">
+                        <hr className="mb-3 border-primary" />
+                        <h4 className="font-weight-bold text-primary">📊 Estadísticas de Productos </h4>
+                    </div>
                 </div>
                 {/* Gráfico para solicitudes de productos */}
                 <div className="col-xl-6 col-lg-6 col-md-12 mt-4">
