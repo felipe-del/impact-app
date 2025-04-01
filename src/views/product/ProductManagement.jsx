@@ -22,7 +22,18 @@ const ProductManagement = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (products?.data && Array.isArray(products.data)) setProductData(products.data);
+        if (products?.data && Array.isArray(products.data)) {
+            const translatedData = products.data.map(product => ({
+                ...product,
+                status: {
+                    ...product.status,
+                    name: StatusTranslator.translate(product.status.name) // Traducir el status antes de setearlo
+                }
+            }));
+
+            // Setear los datos con el status traducido
+            setProductData(translatedData);
+        }
         preparePDF()
     }, [products]);
 
@@ -38,7 +49,6 @@ const ProductManagement = () => {
                     toast.success("No hay solicitudes pendientes.", { icon: "🔔" });
                     return
                 }
-                toast.success(response.message);
             } catch (error) {
                 console.error(error);
                 toast.error(error.message);
@@ -153,11 +163,84 @@ const ProductManagement = () => {
         localization: MRT_Localization_ES,
         columns,
         data: productData,
+        enableExpandAll: false,
         initialState: {
             columnVisibility: { id: false },
             density: "comfortable",
             pagination: { pageSize: 5 },
         },
+        muiDetailPanelProps: () => ({
+            sx: (theme) => ({
+                backgroundColor:
+                    theme.palette.mode === 'dark' ? 'rgba(255,210,244,0.1)' : 'rgba(0,0,0,0.1)'
+            })
+        }),
+        muiExpandButtonProps: ({ row, table }) => ({
+            onClick: () => table.setExpanded({ [row.id]: !row.getIsExpanded() }),
+            sx: {
+                transform: row.getIsExpanded() ? 'rotate(180deg)' : 'rotate(-90deg)',
+                transition: 'transform 0.2s'
+            }
+        }),
+
+        renderDetailPanel: ({ row }) => (
+            <Box
+                sx={{
+                    display: 'grid',
+                    margin: 'auto',
+                    gridTemplateColumns: 'repeat(5, 1fr)',
+                    width: '100%',
+                    padding: '20px',
+                    background: 'linear-gradient(135deg, #003c74 0%, #005DA4 100%)',
+                    borderRadius: '15px',
+                    boxShadow: '0px 4px 10px rgba(0, 93, 164, 0.3)',
+                    color: '#f8f9fa',
+                    fontFamily: '"Montserrat", sans-serif',
+                    letterSpacing: '0.5px',
+                    gap: '15px',
+                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                }}
+            >
+                {[
+                    { label: 'ID', value: row.original.id },
+                    { label: 'Fecha de Compra', value: row.original.purchaseDate },
+                    { label: 'Fecha de Expiración', value: row.original.expiryDate ? row.original.expiryDate : 'No tiene vencimiento' },
+                    { label: 'Categoría ID', value: row.original.category.id },
+                    { label: 'Categoría Nombre', value: row.original.category.name },
+                    { label: 'Cantidad Mínima', value: row.original.category.minimumQuantity },
+                    { label: 'Tipo de Categoría ID', value: row.original.category.categoryType.id },
+                    { label: 'Tipo de Categoría Nombre', value: row.original.category.categoryType.name },
+                    { label: 'Tipo de Categoría Descripción', value: row.original.category.categoryType.description },
+                    { label: 'Unidad de Medida ID', value: row.original.category.unitOfMeasurement.id },
+                    { label: 'Unidad de Medida Nombre', value: row.original.category.unitOfMeasurement.name },
+                    { label: 'Unidad de Medida Abreviatura', value: row.original.category.unitOfMeasurement.abbreviation },
+                    { label: 'Estado ID', value: row.original.status.id },
+                    { label: 'Estado Nombre', value: row.original.status.name },
+                    { label: 'Estado Descripción', value: row.original.status.description },
+                ].map((item, index) => (
+                    <Box
+                        key={index}
+                        sx={{
+                            background: 'rgba(255, 255, 255, 0.1)',
+                            padding: '8px',
+                            borderRadius: '10px',
+                            textAlign: 'left',
+                            boxShadow: '0px 2px 5px rgba(255, 255, 255, 0.1)',
+                            transition: '0.3s ease-in-out',
+                            '&:hover': {
+                                transform: 'scale(1.03)',
+                                boxShadow: '0px 4px 12px rgba(255, 255, 255, 0.3)',
+                            },
+                        }}
+                    >
+                        <Typography sx={{ fontWeight: 'bold', color: '#f8f9fa', fontFamily: '"Montserrat", sans-serif' }}>
+                            {item.label}
+                        </Typography>
+                        <Typography sx={{fontFamily: '"Montserrat", sans-serif' }}>{item.value || 'N/A'}</Typography>
+                    </Box>
+                ))}
+            </Box>
+        ),
         state: { isLoading, showAlertBanner: isError },
     });
 
