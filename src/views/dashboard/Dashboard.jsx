@@ -87,31 +87,11 @@ const Dashboard = () => {
     const totalProducts = products?.data?.length || 0;
     const totalSpaces = spaces?.data?.length || 0;
 
-    //console.log("asset loans:"+ assetLoans);
+
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const handleShowConfirmationModal = () => setShowConfirmationModal(true);
     const handleHideConfirmationModal = () => setShowConfirmationModal(false);
 
-
-    const [loanDates, setLoanDates] = useState({
-        startDate: '2024-03-11',
-        endDate: '2025-06-28'
-    });
-
-    const [comparisonDates, setComparisonDates] = useState({
-        startDate: '2024-03-11',
-        endDate: '2025-06-28'
-    });
-
-    const handleLoanDateChange = (e) => {
-        const {name, value} = e.target;
-        setLoanDates(prev => ({...prev, [name]: value}));
-    };
-
-    const handleComparisonDateChange = (e) => {
-        const {name, value} = e.target;
-        setComparisonDates(prev => ({...prev, [name]: value}));
-    };
 
     const {inventoryValue} = useInventoryValueData({
         startDate: formData.startDate,
@@ -119,12 +99,9 @@ const Dashboard = () => {
     });
 
     useEffect(() => {
-
-    },[assetLoans],
-     [formData.startDate, formData.endDate]);
-
-        console.log("📊 Actualizando gráfico con nuevas fechas:", formData.startDate, formData.endDate);
-    }, [formData.startDate, formData.endDate]);
+        console.log(assetLoans)
+        },[assetLoans],
+        [formData.startDate, formData.endDate]);
 
     const handleChange = (e) => {
         const {name, value} = e.target;
@@ -234,7 +211,6 @@ const Dashboard = () => {
             }
         });
 
-
         const sortedEntries = Object.entries(monthlyCounts)
             .sort(([keyA], [keyB]) => {
                 const [yearA, monthA] = keyA.split('-').map(Number);
@@ -313,148 +289,6 @@ const Dashboard = () => {
         const values = sortedRequests.map(([, count]) => count);
 
         // 🔹 Invertir el orden para que se muestren de más antiguo a más reciente
-        return {
-            labels: labels.reverse(),
-            values: values.reverse()
-        };
-    };
-
-    const getProductEntriesByDate = (productEntries, startDate, endDate) => {
-        if (!startDate || !endDate) {
-            return {
-                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                values: Array(12).fill(0)
-            };
-        }
-
-        const start = new Date(startDate + "T00:00:00Z");
-        const end = new Date(endDate + "T23:59:59Z");
-
-        const monthlyCounts = {};
-
-        const currentDate = new Date(start);
-        while (currentDate <= end) {
-            const year = currentDate.getFullYear();
-            const month = currentDate.getMonth();
-            const key = `${year}-${month}`;
-            if (!monthlyCounts[key]) {
-                monthlyCounts[key] = 0;
-            }
-            currentDate.setMonth(currentDate.getMonth() + 1);
-        }
-
-        productEntries.forEach((productEntry) => {
-            if (!productEntry.purchaseDate || !productEntry.totalEntries) return;
-
-            const entryDate = new Date(productEntry.purchaseDate);
-            if (isNaN(entryDate)) return;
-
-            if (entryDate >= start && entryDate <= end) {
-                const year = entryDate.getFullYear();
-                const month = entryDate.getMonth();
-                const key = `${year}-${month}`;
-                monthlyCounts[key] = (monthlyCounts[key] || 0) + productEntry.totalEntries; // Add totalEntries instead of 1
-            }
-        });
-
-        const sortedEntries = Object.entries(monthlyCounts)
-            .sort(([keyA], [keyB]) => {
-                const [yearA, monthA] = keyA.split('-').map(Number);
-                const [yearB, monthB] = keyB.split('-').map(Number);
-                return yearB === yearA ? monthB - monthA : yearB - yearA;
-            })
-            .slice(0, 12);
-
-        const monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-        const labels = sortedEntries.map(([key]) => {
-            const [year, month] = key.split('-').map(Number);
-            return `${monthNames[month]} ${year}`;
-        });
-
-        const values = sortedEntries.map(([, count]) => count);
-
-        // 🔹 Invertir el orden para que se muestren de más antiguo a más reciente
-        return {
-            labels: labels.reverse(),
-            values: values.reverse()
-        };
-    };
-
-
-    const getRequestsByDate = (productRequestStats, startDate, endDate) => {
-
-
-    const getLoansByDate = (assets, startDate, endDate) => {
-        const fullYearData = {
-            labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-            values: [5, 10, 8, 12, 6, 9, 15, 7, 11, 13, 8, 10]
-        };
-
-        if (!startDate || !endDate) {
-            return {
-                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                values: Array(12).fill(0)
-            };
-        }
-
-        const start = new Date(startDate + "T00:00:00Z");
-        const end = new Date(endDate + "T23:59:59Z");
-
-        const monthlyCounts = {};
-
-        const currentDate = new Date(start);
-        while (currentDate <= end) {
-            const year = currentDate.getFullYear();
-            const month = currentDate.getMonth();
-            const key = `${year}-${month}`;
-            if (!monthlyCounts[key]) {
-                monthlyCounts[key] = 0;
-            }
-            currentDate.setMonth(currentDate.getMonth() + 1);
-        }
-
-        productRequestStats.forEach((productRequest) => {
-            if (!productRequest.requestDate) return;
-
-            const requestDate = new Date(productRequest.requestDate);
-            if (isNaN(requestDate)) return;
-
-            if (requestDate >= start && requestDate <= end) {
-                const year = requestDate.getFullYear();
-                const month = requestDate.getMonth();
-                const key = `${year}-${month}`;
-                monthlyCounts[key] = (monthlyCounts[key] || 0) + 1;
-            }
-        });
-
-        const sortedRequests = Object.entries(monthlyCounts)
-            .sort(([keyA], [keyB]) => {
-                const [yearA, monthA] = keyA.split('-').map(Number);
-                const [yearB, monthB] = keyB.split('-').map(Number);
-                return yearB === yearA ? monthB - monthA : yearB - yearA;
-            })
-            .slice(0, 12);
-
-        const monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-        const labels = sortedRequests.map(([key]) => {
-            const [year, month] = key.split('-').map(Number);
-            return `${monthNames[month]} ${year}`;
-        });
-
-        const values = sortedRequests.map(([, count]) => count);
-
-        // Convertir fechas a objetos Date
-        const start = new Date(startDate);
-        const end = new Date(endDate);
-
-        // Obtener meses de las fechas (0-11)
-        const startMonth = start.getMonth();
-        const endMonth = end.getMonth();
-
-        // Asegurarse de que startMonth <= endMonth
-        const lowerMonth = Math.min(startMonth, endMonth);
-        const upperMonth = Math.max(startMonth, endMonth);
-
         return {
             labels: labels.reverse(),
             values: values.reverse()
@@ -523,7 +357,7 @@ const Dashboard = () => {
     };
 
     const getAssetsLoansByDate = (assetLoans, startDate, endDate) => {
-       // console.log(assetLoans)
+        // console.log(assetLoans)
         if (!startDate || !endDate) {
             return {
                 labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
@@ -585,7 +419,7 @@ const Dashboard = () => {
     const getComparisonData = (assets, assetLoans, startDate, endDate) => {
         const incomeData = getAssetsByPurchaseDate(assets, startDate, endDate);
         const loanData = getAssetsLoansByDate(assetLoans, startDate, endDate);
-    
+
         // Unificar etiquetas asegurando que ambas series tienen la misma escala de tiempo
         const labelsSet = new Set([...incomeData.labels, ...loanData.labels]);
         const labels = Array.from(labelsSet).sort((a, b) => {
@@ -594,44 +428,12 @@ const Dashboard = () => {
             const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
             return yearA - yearB || months.indexOf(monthA) - months.indexOf(monthB);
         });
-    
+
         // Mapear valores asegurando alineación con etiquetas
         const getValuesAligned = (data) => labels.map(label => {
             const index = data.labels.indexOf(label);
             return index !== -1 ? data.values[index] : 0;
         });
-    
-    const getComparisonData = (startDate, endDate) => {
-        const fullYearIncomeData = {
-            labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-            values: [12, 19, 26, 15, 22, 23, 25, 27, 21, 23, 18, 20]
-        };
-
-        const fullYearLoanData = {
-            labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-            values: [5, 10, 8, 12, 6, 9, 15, 7, 11, 13, 8, 10]
-        };
-
-        if (!startDate || !endDate) {
-            return {
-                incomeData: fullYearIncomeData,
-                loanData: fullYearLoanData
-            };
-        }
-
-        // Convertir fechas a objetos Date
-        const start = new Date(startDate);
-        const end = new Date(endDate);
-
-        // Obtener meses de las fechas (0-11)
-        const startMonth = start.getMonth();
-        const endMonth = end.getMonth();
-
-        // Asegurarse de que startMonth <= endMonth
-        const lowerMonth = Math.min(startMonth, endMonth);
-        const upperMonth = Math.max(startMonth, endMonth);
-
-        // Recortar los datos al rango de meses
 
         return {
             incomeData: {
@@ -643,7 +445,7 @@ const Dashboard = () => {
                 values: getValuesAligned(loanData)
             }
         };
-    };      
+    };
 
 
 
@@ -795,6 +597,7 @@ const Dashboard = () => {
                                         <div className="row mt-3">
                                             {inventoryValue?.data?.length ? (
                                                 inventoryValue.data.map((item, index) => {
+                                                    // console.log(inventoryValue.data)
                                                     // Replace currency name
                                                     const currencyName = item.currency?.stateName === "DOLLAR" ? "dólares" :
                                                         item.currency?.stateName === "COLON" ? "colónes" :
@@ -982,8 +785,6 @@ const Dashboard = () => {
                                         assets?.data || [],
                                         assetsByPurchaseDate.startDate,
                                         assetsByPurchaseDate.endDate
-                                        formData.startDate,
-                                        formData.endDate
                                     )}
                                     label='Ingresos de activos'
                                 />
@@ -993,14 +794,10 @@ const Dashboard = () => {
                                     <div className="row">
                                         <div className="col-md-6">
                                             <label htmlFor="assetsByPurchaseDate" className="form-label">
-                                        <div className="col-md-4">
-                                            <label htmlFor="incomeStartDate" className="form-label">
-
                                                 <i className="fas fa-calendar-alt"></i> Fecha inicial
                                             </label>
                                             <input
                                                 type="date"
-
                                                 id="assetsByPurchaseDate"
                                                 name="startDate"
                                                 className="form-control border-primary"
@@ -1010,22 +807,10 @@ const Dashboard = () => {
                                         </div>
                                         <div className="col-md-6">
                                             <label htmlFor="assetsByPurchaseDate" className="form-label">
-
-                                                id="incomeStartDate"
-                                                name="startDate"
-                                                className="form-control border-primary"
-                                                value={formData.startDate}
-                                                onChange={handleChange}
-                                            />
-                                        </div>
-                                        <div className="col-md-4">
-                                            <label htmlFor="incomeEndDate" className="form-label">
-
                                                 <i className="fas fa-calendar-alt"></i> Fecha final
                                             </label>
                                             <input
                                                 type="date"
-
                                                 id="assetsByPurchaseDate"
                                                 name="endDate"
                                                 className="form-control border-primary"
@@ -1103,97 +888,6 @@ const Dashboard = () => {
                                             />
                                         </div>
                                     </div>
-                                                id="incomeEndDate"
-                                                name="endDate"
-                                                className="form-control border-primary"
-                                                value={formData.endDate}
-                                                onChange={handleChange}
-                                            />
-                                        </div>
-                                        <div className="col-md-4 d-flex align-items-end">
-                                            <button onClick={handleSubmit} className="btn btn-primary w-100">Filtrar
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                </form>
-                            </div>
-                        </Card.Body>
-                    </Card>
-                </div>
-                {/* Gráfico para solicitudes de productos */}
-                <div className="col-xl-6 col-lg-6 col-md-12 mt-4">
-                    <Card className="shadow mb-4 h-100">
-                        <Card.Header>
-                            <div className="d-flex flex-row align-items-center justify-content-between">
-                                <h6 className="m-0 font-weight-bold text-primary">Solicitudes de Productos por Mes</h6>
-                {/* Gráfico de préstamos/retiros de activos */}
-                <div className="col-xl-6 col-lg-6 col-md-12">
-                    <Card className="shadow mb-4 h-100">
-                        <Card.Header>
-                            <div className="d-flex flex-row align-items-center justify-content-between">
-                                <h6 className="m-0 font-weight-bold text-primary">Préstamos/Retiros de Activos</h6>
-                                <div className="dropdown no-arrow">
-                                    <a className="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <FontAwesomeIcon icon={faEllipsisV} className="fa-sm fa-fw text-gray-400"/>
-                                    </a>
-                                    <div className="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                         aria-labelledby="dropdownMenuLink">
-                                        <div className="dropdown-header">Opciones:</div>
-                                        <a className="dropdown-item" href="#">Ver por año</a>
-                                        <a className="dropdown-item" href="#">Ver por semestre</a>
-                                        <div className="dropdown-divider"></div>
-                                        <a className="dropdown-item" href="#">Exportar datos</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </Card.Header>
-                        <Card.Body>
-                            <div className="chart-area">
-                                {/* Espacio para gráfico de columnas de préstamos */}
-                                <ColumnChart
-                                    data={getLoansByDate(
-                                        assets?.data || [],
-                                        loanDates.startDate,
-                                        loanDates.endDate
-                                    )}
-                                    label='Préstamos de activos'
-                                />
-                            </div>
-                            <div className="mt-3">
-                                <form>
-                                    <div className="row">
-                                        <div className="col-md-4">
-                                            <label htmlFor="loanStartDate" className="form-label">
-                                                <i className="fas fa-calendar-alt"></i> Fecha inicial
-                                            </label>
-                                            <input
-                                                type="date"
-                                                id="loanStartDate"
-                                                name="startDate"
-                                                className="form-control border-primary"
-                                                value={loanDates.startDate}
-                                                onChange={handleLoanDateChange}
-                                            />
-                                        </div>
-                                        <div className="col-md-4">
-                                            <label htmlFor="loanEndDate" className="form-label">
-                                                <i className="fas fa-calendar-alt"></i> Fecha final
-                                            </label>
-                                            <input
-                                                type="date"
-                                                id="loanEndDate"
-                                                name="endDate"
-                                                className="form-control border-primary"
-                                                value={loanDates.endDate}
-                                                onChange={handleLoanDateChange}
-                                            />
-                                        </div>
-                                        <div className="col-md-4 d-flex align-items-end">
-                                            <button className="btn btn-primary w-100">Filtrar</button>
-                                        </div>
-                                    </div>
                                 </form>
                             </div>
                         </Card.Body>
@@ -1223,16 +917,12 @@ const Dashboard = () => {
                         </Card.Header>
                         <Card.Body>
                             <div className="chart-area">
-
                                 {/* Espacio para gráfico de barras de solicitudes por mes */}
                                 <BarChart
                                     data={getRequestsByDate(
                                         productRequestStats?.data || [],
                                         productRequestsDates.startDate,
                                         productRequestsDates.endDate
-                                        formData.startDate,
-                                        formData.endDate
-
                                     )}
                                     label="Solicitudes de productos por mes"
                                 />
@@ -1241,16 +931,11 @@ const Dashboard = () => {
                                 <form>
                                     <div className="row">
                                         <div className="col-md-6">
-
                                             <label htmlFor="productRequestsStartDate" className="form-label">
-
-                                            <label htmlFor="incomeStartDate" className="form-label">
-
                                                 <i className="fas fa-calendar-alt"></i> Fecha inicial
                                             </label>
                                             <input
                                                 type="date"
-
                                                 id="productRequestsStartDate"
                                                 name="startDate"
                                                 className="form-control border-primary"
@@ -1260,34 +945,15 @@ const Dashboard = () => {
                                         </div>
                                         <div className="col-md-6">
                                             <label htmlFor="productRequestsEndDate" className="form-label">
-
-                                                id="incomeStartDate"
-                                                name="startDate"
-                                                className="form-control border-primary"
-                                                value={formData.startDate}
-                                                onChange={handleChange}
-                                            />
-                                        </div>
-                                        <div className="col-md-6">
-                                            <label htmlFor="incomeEndDate" className="form-label">
-
                                                 <i className="fas fa-calendar-alt"></i> Fecha final
                                             </label>
                                             <input
                                                 type="date"
-
                                                 id="productRequestsEndDate"
                                                 name="endDate"
                                                 className="form-control border-primary"
                                                 value={productRequestsDates.endDate}
                                                 onChange={handleProductRequestsDateChange}
-
-                                                id="incomeEndDate"
-                                                name="endDate"
-                                                className="form-control border-primary"
-                                                value={formData.endDate}
-                                                onChange={handleChange}
-
                                             />
                                         </div>
                                     </div>
@@ -1296,7 +962,7 @@ const Dashboard = () => {
                         </Card.Body>
                     </Card>
                 </div>
-
+                {/* Gráfico para los ingresos de productos */}
                 <div className="col-xl-6 col-lg-6 col-md-12 mt-4">
                     <Card className="shadow mb-4 h-100">
                         <Card.Header>
@@ -1324,13 +990,8 @@ const Dashboard = () => {
                                 <ColumnChart
                                     data={getProductEntriesByDate(
                                         productEntries?.data || [],
-
                                         productEntriesDates.startDate,
                                         productEntriesDates.endDate
-
-                                        loanDates.startDate,
-                                        loanDates.endDate
-
                                     )}
                                     label='Ingresos de productos por mes'
                                 />
@@ -1338,18 +999,12 @@ const Dashboard = () => {
                             <div className="mt-3">
                                 <form>
                                     <div className="row">
-
                                         <div className="col-md-6">
                                             <label htmlFor="productEntriesStartDate" className="form-label">
-
-                                        <div className="col-md-4">
-                                            <label htmlFor="loanStartDate" className="form-label">
-
                                                 <i className="fas fa-calendar-alt"></i> Fecha inicial
                                             </label>
                                             <input
                                                 type="date"
-
                                                 id="productEntriesStartDate"
                                                 name="startDate"
                                                 className="form-control border-primary"
@@ -1358,14 +1013,6 @@ const Dashboard = () => {
                                             />
                                         </div>
                                         <div className="col-md-6">
-                                                id="loanStartDate"
-                                                name="startDate"
-                                                className="form-control border-primary"
-                                                value={loanDates.startDate}
-                                                onChange={handleLoanDateChange}
-                                            />
-                                        </div>
-                                        <div className="col-md-4">
                                             <label htmlFor="loanEndDate" className="form-label">
                                                 <i className="fas fa-calendar-alt"></i> Fecha final
                                             </label>
@@ -1374,17 +1021,9 @@ const Dashboard = () => {
                                                 id="loanEndDate"
                                                 name="endDate"
                                                 className="form-control border-primary"
-
                                                 value={productEntriesDates.endDate}
                                                 onChange={handleProductEntriesDateChange}
                                             />
-                                        </div>
-                                                value={loanDates.endDate}
-                                                onChange={handleLoanDateChange}
-                                            />
-                                        </div>
-                                        <div className="col-md-4 d-flex align-items-end">
-                                            <button className="btn btn-primary w-100">Filtrar</button>
                                         </div>
                                     </div>
                                 </form>
@@ -1395,7 +1034,7 @@ const Dashboard = () => {
             </div>
 
 
-
+            {/* Gráfico comparativo entre ingresos y préstamos */}
             <div className="row mt-4">
                 <div className="col-lg-12">
                     <Card className="shadow mb-4 h-100">
