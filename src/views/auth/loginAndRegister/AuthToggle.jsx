@@ -34,7 +34,7 @@ const AuthToggle = () => {
                     <div className="toggle-container">
                         <div className={`toggle ${isSignIn ? '' : 'active'}`}>
                             <div className="toggle-panel toggle-left">
-                                <img src="/IMPACT_BLACK_LOGO.png" alt="IMPACT LOGO"/>
+                                <img src="/NEW_IMPACT_BLUE_LOGO.png" alt="IMPACT LOGO" style={{width: "250px", }} />
                                 <h1>{isSignIn ? '¡Bienvenido!' : ''}</h1>
                                 <a href="/IMPACT.pdf" target="_blank" id="pdf_link">
                                     <MenuBookIcon
