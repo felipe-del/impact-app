@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
-import { bannerStyle } from "../../style/codeStyle.js";
-import BannerToggleButton from "../../components/button/BannerToggleButton.jsx";
+import { bannerStyle } from "../../../style/codeStyle.js";
+import BannerToggleButton from "../../../components/button/BannerToggleButton.jsx";
 
-const RequestHistoryBanner = ({
+const MyRequestsBanner = ({
                                   title = "",
                                   activeFilters = [],
                                   handleButtonClick,
@@ -89,7 +89,7 @@ const RequestHistoryBanner = ({
     );
 };
 
-RequestHistoryBanner.propTypes = {
+MyRequestsBanner.propTypes = {
     title: PropTypes.string,
     activeFilters: PropTypes.array,
     handleButtonClick: PropTypes.func,
@@ -99,4 +99,4 @@ RequestHistoryBanner.propTypes = {
     showAdditionalButtons: PropTypes.bool,
 };
 
-export default RequestHistoryBanner;
+export default MyRequestsBanner;
