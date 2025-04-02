@@ -20,7 +20,7 @@ const Home = () => {
 
                     <div className="col-md-6 mb-4 d-flex">
                         <div className="entity-card flex-fill">
-                            <img src="/workTeam.jpg" alt="Equipo de Trabajo" className="workTeam-img" />
+                            <img src="/workTeam.png" alt="Equipo de Trabajo" className="workTeam-img" />
                             <h5 className="entity-title"><b>Equipo de Trabajo</b></h5>
                             <p className="paragraph" style={{textAlign: 'center'}}>
                                 Raquel Alfaro Barrantes <i>(Scrum Master)</i><br/>
