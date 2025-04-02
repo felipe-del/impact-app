@@ -342,7 +342,11 @@ const AssetTable = () => {
     }
 
     const exportToPDF = async () => {
-        const doc = new jsPDF();
+        const doc = new jsPDF({
+            orientation: 'landscape',  // Hace que la página sea horizontal
+            unit: 'mm',
+            format: [297, 210]  // Personalizado (ancho 297mm, alto 210mm)
+        });
 
         const currentDate = new Date();
         const formattedDate = currentDate.toLocaleDateString();

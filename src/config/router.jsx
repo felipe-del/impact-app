@@ -26,7 +26,7 @@ import LocationNumberManagement from "../views/locationNumber/LocationNumberMana
 import ProductCategoryManagement from "../views/productCategory/ProductCategoryManagement.jsx";
 import ProductCategoryTypeManagement from "../views/productCategoryType/ProductCategoryTypeManagement.jsx";
 import AssetLoan from "../views/asset/AssetLoan.jsx";
-import RequestHistory from "../views/requestHistory/RequestHistory.jsx";
+import MyRequest from "../views/requestHistory/myRequest/MyRequest.jsx";
 import Home from "../views/home/Home.jsx";
 import CreateSpace from "../views/space/CreateSpace.jsx";
 import BuildingManagement from "../views/building/BuildingManagement.jsx";
@@ -36,6 +36,8 @@ import CreateProduct from "../views/product/CreateProduct.jsx";
 import UpdateProduct from "../views/product/UpdateProduct.jsx";
 import ProductLoan from "../views/product/ProductLoan.jsx";
 import SpaceLoan from "../views/space/SpaceLoan.jsx";
+import AllRequest from "../views/requestHistory/allRequest/AllRequest.jsx";
+import RequestManagement from "../views/requestHistory/requestManagement/RequestManagement.jsx";
 
 export default function Router() {
     return (
@@ -72,13 +74,15 @@ export default function Router() {
                         <Route path="assetTable" element={<AssetTable />} />
                         <Route path="createAsset" element={<CreateAsset/>} />
                         <Route path="editAsset/:id" element={<UpdateAsset/>} />
+                        <Route path="allRequest" element={<AllRequest/>}/>
+                        <Route path="requestManagement" element={<RequestManagement/>}/>
                     </Route>
                     <Route element={<ProtectedRoute allowedRoles={["ADMINISTRATOR", "MANAGER","TEACHER"]} />}>
                         <Route path="dashboard" element={<Dashboard />} />
                         <Route path="productLoan" element={<ProductLoan/>} />
                         <Route path="spaceLoan" element={<SpaceLoan/>} />
                         <Route path="assetLoan" element={<AssetLoan/>} />
-                        <Route path="requestHistory" element={<RequestHistory/>} />
+                        <Route path="myRequest" element={<MyRequest/>} />
                     </Route>
                 </Route>
 

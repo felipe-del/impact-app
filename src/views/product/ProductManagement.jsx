@@ -146,7 +146,20 @@ const ProductManagement = () => {
             { accessorKey: "id", header: "ID", size: 80 },
             { accessorKey: "category.name", header: "Nombre" },
             { accessorKey: "purchaseDate", header: "Fecha de Compra" },
-            { accessorKey: "status.name", header: "Estado" },
+            { accessorKey: 'status.name', header: 'Estado',
+                Cell: ({ row }) => {
+                    const status = row.original?.status;
+                    return(
+                        <Typography
+                            sx={{
+                                color: getStateColor(status.name),
+                                fontFamily: 'Montserrat, sans-serif',
+                            }}
+                        >
+                            {getStateIcon(status.name)} {status.name}
+                        </Typography>
+                    )
+                }},
             { accessorKey: "category.unitOfMeasurement.name", header: "Unidad de Medida" },
             { accessorKey: "category.categoryType.name", header: "Categoría" },
             {

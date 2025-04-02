@@ -185,12 +185,22 @@ const Sidebar = ({ role }) => {
                         aria-controls="collapseMisSolicitudes"
                     >
                         <i className="fas fa-fw fa-clipboard-list"></i>
-                        <span>Mis Solicitudes</span>
+                        <span>Solicitudes</span>
                     </a>
                     <div id="collapseMisSolicitudes" className="collapse" aria-labelledby="headingMisSolicitudes" data-parent="#accordionSidebar">
                         <div className="bg-white py-2 collapse-inner rounded">
-                            <Link className="collapse-item" to="/app/requestHistory">
-                                <i className="fas fa-fw fa-list-ol"></i> Registros </Link>
+                            <Link className="collapse-item" to="/app/myRequest">
+                                <i className="fas fa-fw fa-list-ol"></i> Mis Solicitudes </Link>
+                            {(role === 'MANAGER' || role === 'ADMINISTRATOR') && (
+                                <>
+                                    <Link className="collapse-item" to="/app/allRequest">
+                                        <i className="fas fa-fw fa-bars"></i> Todas las solicitudes
+                                    </Link>
+                                    <Link className="collapse-item" to="/app/requestManagement">
+                                        <i className="fas fa-fw fa-list-check"></i> Gestión de Solicitudes
+                                    </Link>
+                                </>
+                            )}
                         </div>
                     </div>
                 </li>

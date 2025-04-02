@@ -1,25 +1,25 @@
 import { useState, useMemo } from "react";
-import { useUser } from "../../hooks/user/useUser.jsx";
-import { getAssetRequestByUser, cancelledAssetRequest } from "../../api/assetRequest/assetRequest_API.js";
-import { getSpaceRandRByUser, cancelResAndReq } from "../../api/SpaceRndR/spaceRndR_API.js";
-import { getProductRequestByUser, cancelledProductRequest } from "../../api/productRequest/productRequest.js";
-import { assetAvailable } from "../../api/asset/asset_API.js";
+import { useUser } from "../../../hooks/user/useUser.jsx";
+import { getAssetRequestByUser, cancelledAssetRequest } from "../../../api/assetRequest/assetRequest_API.js";
+import { getSpaceRandRByUser, cancelResAndReq } from "../../../api/SpaceRndR/spaceRndR_API.js";
+import { getProductRequestByUser, cancelledProductRequest } from "../../../api/productRequest/productRequest.js";
+import { assetAvailable } from "../../../api/asset/asset_API.js";
 import { MaterialReactTable, useMaterialReactTable } from 'material-react-table';
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
-import LoadingPointsSpinner from "../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
+import LoadingPointsSpinner from "../../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
 import { toast } from "react-hot-toast";
-import GenericModal from "../../components/popUp/generic/GenericModal.jsx";
-import RequestHistoryBanner from "./RequestHistoryBanner.jsx";
-import CancelButton from "../../components/button/CancelButton.jsx";
-import RenewalButton from "../../components/button/RenewalButton.jsx";
+import GenericModal from "../../../components/popUp/generic/GenericModal.jsx";
+import MyRequestsBanner from "./MyRequestsBanner.jsx";
+import CancelButton from "../../../components/button/CancelButton.jsx";
+import RenewalButton from "../../../components/button/RenewalButton.jsx";
 import dayjs from "dayjs";
-import {saveAssetRequestRenewal} from "../../api/assetRequest/assetRequest_API.js";
-import { getAssetRequestById } from "../../api/assetRequest/assetRequest_API.js";
-import { updateAssetRequestRenewal } from "../../api/assetRequest/assetRequest_API.js";
+import {saveAssetRequestRenewal} from "../../../api/assetRequest/assetRequest_API.js";
+import { getAssetRequestById } from "../../../api/assetRequest/assetRequest_API.js";
+import { updateAssetRequestRenewal } from "../../../api/assetRequest/assetRequest_API.js";
 import { Typography } from "@mui/material";
-import { gradientMapping } from "../../style/codeStyle.js";
+import { gradientMapping } from "../../../style/codeStyle.js";
 
-const RequestHistory = () => {
+const MyRequest = () => {
     const user = useUser();
     const [activeButton, setActiveButton] = useState(null);
     const [showAdditionalButtons, setShowAdditionalButtons] = useState(false);
@@ -363,7 +363,7 @@ const RequestHistory = () => {
 
     return (
         <>
-            <RequestHistoryBanner
+            <MyRequestsBanner
                 title={
                     activeButton
                         ? `Historial de Solicitudes ${
@@ -457,4 +457,4 @@ const RequestHistory = () => {
     );
 };
 
-export default RequestHistory;
+export default MyRequest;
