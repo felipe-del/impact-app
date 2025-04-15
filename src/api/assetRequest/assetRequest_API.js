@@ -83,3 +83,12 @@ export async function cancelledAssetRequest(assetRequestId, cancelReason) {
         handleAxiosError(error)
     }
 }
+
+export async function getAssetRequestRenewal(){
+    try {
+        const { data } = await api.get(`${root}/request-renewal`)
+        return data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}

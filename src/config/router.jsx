@@ -38,6 +38,7 @@ import ProductLoan from "../views/product/ProductLoan.jsx";
 import SpaceLoan from "../views/space/SpaceLoan.jsx";
 import AllRequest from "../views/requestHistory/allRequest/AllRequest.jsx";
 import RequestManagement from "../views/requestHistory/requestManagement/RequestManagement.jsx";
+import AssetRenewalTable from "../views/asset/AssetRenewalTable.jsx";
 
 export default function Router() {
     return (
@@ -76,6 +77,7 @@ export default function Router() {
                         <Route path="editAsset/:id" element={<UpdateAsset/>} />
                         <Route path="allRequest" element={<AllRequest/>}/>
                         <Route path="requestManagement" element={<RequestManagement/>}/>
+                        <Route path="assetRenewalTable" element={<AssetRenewalTable/>}/>
                     </Route>
                     <Route element={<ProtectedRoute allowedRoles={["ADMINISTRATOR", "MANAGER","TEACHER"]} />}>
                         <Route path="dashboard" element={<Dashboard />} />

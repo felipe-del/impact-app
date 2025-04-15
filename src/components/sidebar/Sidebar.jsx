@@ -199,6 +199,9 @@ const Sidebar = ({ role }) => {
                                     <Link className="collapse-item" to="/app/requestManagement">
                                         <i className="fas fa-fw fa-list-check"></i> Gestión de Solicitudes
                                     </Link>
+                                    <Link className="collapse-item" to="/app/assetRenewalTable">
+                                        <i className="fas fa-fw fa-clock-rotate-left"></i> Solicitudes de Renovación
+                                    </Link>
                                 </>
                             )}
                         </div>
