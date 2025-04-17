@@ -65,3 +65,21 @@ export async function getProductRequestsExcludingEarringAndRenewal(){
         handleAxiosError(error)
     }
 }
+
+export async function getProductRequestsWithEarring(){
+    try {
+        const { data } = await api.get(`${root}/filter/earring`)
+        return data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}
+
+export async function acceptProductRequest(productRequestId){
+    try {
+        const { data } = await api.put(`${root}/accept/${productRequestId}`)
+        return data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}

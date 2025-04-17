@@ -101,3 +101,21 @@ export async function getAssetRequestsExcludingEarringAndRenewal(){
         handleAxiosError(error)
     }
 }
+
+export async function getAssetRequestsWithEarring(){
+    try {
+        const { data } = await api.get(`${root}/filter/earring`)
+        return data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}
+
+export async function acceptAssetRequest(assetRequestId) {
+    try {
+        const { data } = await api.put(`${root}/accept/${assetRequestId}`)
+        return data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}
