@@ -418,29 +418,29 @@ const MyRequest = () => {
                 />
             )}
 
-<GenericModal
-        show={showRenewModal}
-        onHide={() => setShowRenewModal(false)}
-        title="Renovar Solicitud"
-        bodyText={`<p>¿Estás seguro de renovar esta solicitud?</p>`}
-        customContent={
-            <div>
-                <label htmlFor="expirationDate" className="form-label" style={{ color: "#ffffff" }}>
-                    <i className="fas fa-calendar-alt"></i> Fecha de finalización del nuevo préstamo
-                    <span className="text-danger">*</span>
-                </label>
+            <GenericModal
+                show={showRenewModal}
+                onHide={() => setShowRenewModal(false)}
+                title="Renovar Solicitud"
+                bodyText={`<p>¿Estás seguro de renovar esta solicitud?</p>`}
+                customContent={
+                    <div>
+                        <label htmlFor="expirationDate" className="form-label" style={{ color: "#ffffff" }}>
+                            <i className="fas fa-calendar-alt"></i> Fecha de finalización del nuevo préstamo
+                            <span className="text-danger">*</span>
+                        </label>
 
-                <input
-                    type="date"
-                    id="expirationDate"
-                    className="form-control border-primary"
-                    onChange={(e) => setNewExpirationDate(e.target.value)}
-                />
-            </div>
-        }
-        buttonText="Confirmar Renovación"
-        onButtonClick={renewAction}
-    />
+                        <input
+                            type="date"
+                            id="expirationDate"
+                            className="form-control border-primary"
+                            onChange={(e) => setNewExpirationDate(e.target.value)}
+                        />
+                    </div>
+                }
+                buttonText="Confirmar Renovación"
+                onButtonClick={renewAction}
+            />
 
             {activeButton === "spaceRequest" && requests.length > 0 && !loading && (
                 <MaterialReactTable table={spaceRequestTable} />

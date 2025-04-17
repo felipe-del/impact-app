@@ -50,7 +50,7 @@ export async function getAssetRequestById(id) {
 
 export async function saveAssetRequestRenewal(subCategory){
     try {
-        const { data } = await api.post(root, subCategory)
+        const { data } = await api.post(`${root}/renew`, subCategory)
         return data
     } catch (error) {
         handleAxiosError(error)
@@ -74,6 +74,26 @@ export async function getAssetRequestByUser(user) {
     }
 }
 
+export async function acceptAssetRenewalRequest(assetRequestId) {
+    try {
+        const { data } = await api.put(`${root}/accept-renewal/${assetRequestId}`)
+        return data
+    }
+    catch (error) {
+        handleAxiosError(error)
+    }
+}
+
+export async function rejectAssetRenewalRequest(assetRequestId) {
+    try {
+        const { data } = await api.put(`${root}/reject-renewal/${assetRequestId}`)
+        return data
+    }
+    catch (error) {
+        handleAxiosError(error)
+    }
+}
+
 export async function cancelledAssetRequest(assetRequestId, cancelReason) {
     try {
         const statusId = 4
@@ -86,7 +106,7 @@ export async function cancelledAssetRequest(assetRequestId, cancelReason) {
 
 export async function getAssetRequestRenewal(){
     try {
-        const { data } = await api.get(`${root}/request-renewal`)
+        const { data } = await api.get(`${root}/renewal-request`)
         return data
     } catch (error) {
         handleAxiosError(error)
