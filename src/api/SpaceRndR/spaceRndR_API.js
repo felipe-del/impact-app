@@ -20,3 +20,12 @@ export async function cancelResAndReq(reqId, cancelReason) {
       handleAxiosError(error)
   }
 }
+
+export async function getSpaceRequestsExcludingEarringAndRenewal(){
+    try {
+        const { data } = await api.get(`${root}/filter/excluding-earring-renewal`)
+        return data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}

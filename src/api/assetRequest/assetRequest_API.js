@@ -92,3 +92,12 @@ export async function getAssetRequestRenewal(){
         handleAxiosError(error)
     }
 }
+
+export async function getAssetRequestsExcludingEarringAndRenewal(){
+    try {
+        const { data } = await api.get(`${root}/filter/excluding-earring-renewal`)
+        return data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}

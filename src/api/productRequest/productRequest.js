@@ -56,3 +56,12 @@ export async function cancelledProductRequest(productRId, cancelReason) {
         handleAxiosError(error)
     }
 }
+
+export async function getProductRequestsExcludingEarringAndRenewal(){
+    try {
+        const { data } = await api.get(`${root}/filter/excluding-earring-renewal`)
+        return data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}
