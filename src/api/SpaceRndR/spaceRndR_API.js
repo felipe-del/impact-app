@@ -29,3 +29,21 @@ export async function getSpaceRequestsExcludingEarringAndRenewal(){
         handleAxiosError(error)
     }
 }
+
+export async function getSpaceRequestsWithEarring(){
+    try {
+        const { data } = await api.get(`${root}/filter/earring`)
+        return data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}
+
+export async function acceptSpaceRequest(spaceRequestId){
+    try {
+        const { data } = await api.put(`${root}/accept/${spaceRequestId}`)
+        return data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}
