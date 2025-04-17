@@ -1,18 +1,28 @@
 import { useEffect, useState, useMemo } from "react";
 import { useUser } from "../../hooks/user/useUser.jsx";
-import { getAssetRequestRenewal } from "../../api/assetRequest/assetRequest_API.js"; // Asegúrate que esté bien importada
+import {
+    acceptAssetRenewalRequest,
+    getAssetRequestRenewal,
+    rejectAssetRenewalRequest
+} from "../../api/assetRequest/assetRequest_API.js"; // Asegúrate que esté bien importada
 import { useMaterialReactTable } from "material-react-table";
 import { MRT_Localization_ES } from "material-react-table/locales/es";
 import { MaterialReactTable } from "material-react-table";
-import { Typography } from "@mui/material";
 import { toast } from "react-hot-toast";
 import dayjs from "dayjs";
+import CancelButton from "../../components/button/CancelButton.jsx";
+import AcceptButton from "../../components/button/AcceptButton.jsx";
+import handleAxiosError from "../../api/handleAxiosError.js";
+import GenericModal from "../../components/popUp/generic/GenericModal.jsx";
 
 const AssetRenewalTable = () => {
     const user = useUser();
     const [requests, setRequests] = useState([]);
     const [loading, setLoading] = useState(false);
-  
+    const [requestToHandle, setRequestToHandle] = useState(null);
+    const [showAcceptRequestModal, setShowAcceptRequestModal] = useState(false);
+    const [showRejectRequestModal, setShowRejectRequestModal] = useState(false);
+
     const fetchRenewRequests = async () => {
       if (!user?.id) return;
       setLoading(true);
@@ -29,7 +39,59 @@ const AssetRenewalTable = () => {
         setLoading(false);
       }
     };
-  
+
+    const handlePreCancel = (row) => {
+        setRequestToHandle(row);
+        setShowRejectRequestModal(true);
+    };
+
+    const handleCancel = async () => {
+        setRequestToHandle(true);
+        try {
+            const response = await rejectAssetRenewalRequest(requestToHandle.original.id);
+
+            if(!response){
+                throw new Error("La solicitud no se pudo cancelar. Intente de nuevo.");
+            }
+
+            toast.success("Renovación de solicitud cancelada", { duration: 7000 });
+            await fetchRenewRequests();
+        }
+        catch(error) {
+            handleAxiosError(error);
+        }
+        finally {
+            setLoading(false);
+            setShowRejectRequestModal(false);
+        }
+    }
+
+    const handlePreAccept = (row) => {
+        setRequestToHandle(row);
+        console.log(requestToHandle.original.asset);
+        setShowAcceptRequestModal(true);
+    }
+
+    const handleAccept = async () => {
+        setLoading(true);
+        try {
+            const response = await acceptAssetRenewalRequest(requestToHandle.original.id);
+
+            if (!response) {
+                throw new Error("La solicitud no se pudo aceptar. Intente de nuevo.");
+            }
+
+            toast.success("Renovación de solicitud aceptada", { duration: 7000 });
+            await fetchRenewRequests();
+        } catch (error){
+            handleAxiosError(error);
+        }
+        finally {
+            setLoading(false);
+            setShowAcceptRequestModal(false);
+        }
+    }
+
     useEffect(() => {
       fetchRenewRequests();
     }, [user?.id]);
@@ -43,6 +105,18 @@ const AssetRenewalTable = () => {
       { accessorKey: "createdAt", header: "Fecha de Solicitud" },
       { accessorKey: "expirationDate", header: "Fecha de Expiración" },
       { accessorKey: "status", header: "Estado" },
+      {   id: 'actions',
+          header: 'Acciones',
+          size: 'small',
+          Cell: ({ row }) => {
+              return (
+                  <div>
+                      <AcceptButton handleAccept={handlePreAccept} row={row} />
+                      <CancelButton handleCancel={handlePreCancel} row={row} />
+                  </div>
+              );
+          }
+      }
     ];
   
     const data = useMemo(() => {
@@ -73,14 +147,30 @@ const AssetRenewalTable = () => {
     return (
       <>
         <h2 style={{ marginBottom: "1rem" }}>Solicitudes de Activo Pendientes de Renovación</h2>
-        {loading ? (
+        { loading ? (
           <p>Cargando solicitudes...</p>
         ) : (
           <MaterialReactTable table={table} />
         )}
+
+          <GenericModal
+              show={showAcceptRequestModal}
+              onHide={() => setShowAcceptRequestModal(false)}
+              title="Aceptar renovación de solicitud de activo"
+              bodyText={`<p>¿Estás seguro de aceptar esta solicitud?</p>`}
+              onButtonClick={handleAccept}
+          />
+          <GenericModal
+              show={showRejectRequestModal}
+              onHide={() => setShowRejectRequestModal(false)}
+              title="Rechazar renovación de solicitud de activo"
+              bodyText={`<p>¿Estás seguro de rechazar esta solicitud?</p>`}
+              onButtonClick={handleCancel}
+          />
       </>
     );
   };
   
 
 export default AssetRenewalTable;
+
