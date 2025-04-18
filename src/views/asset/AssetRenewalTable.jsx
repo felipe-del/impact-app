@@ -10,6 +10,8 @@ import { MRT_Localization_ES } from "material-react-table/locales/es";
 import { MaterialReactTable } from "material-react-table";
 import { toast } from "react-hot-toast";
 import dayjs from "dayjs";
+import AssetRenewalBanner from "./AssetRenewalBanner.jsx";
+import LoadingPointsSpinner from "../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
 import CancelButton from "../../components/button/CancelButton.jsx";
 import AcceptButton from "../../components/button/AcceptButton.jsx";
 import handleAxiosError from "../../api/handleAxiosError.js";
@@ -146,12 +148,12 @@ const AssetRenewalTable = () => {
   
     return (
       <>
-        <h2 style={{ marginBottom: "1rem" }}>Solicitudes de Activo Pendientes de Renovación</h2>
-        { loading ? (
-          <p>Cargando solicitudes...</p>
-        ) : (
+
+          {loading && <LoadingPointsSpinner />}
+
+          <AssetRenewalBanner title="Solicitudes de Activos por Renovar" visibleButtons={["goBack", "info"]}/>
+
           <MaterialReactTable table={table} />
-        )}
 
           <GenericModal
               show={showAcceptRequestModal}
@@ -167,6 +169,7 @@ const AssetRenewalTable = () => {
               bodyText={`<p>¿Estás seguro de rechazar esta solicitud?</p>`}
               onButtonClick={handleCancel}
           />
+
       </>
     );
   };

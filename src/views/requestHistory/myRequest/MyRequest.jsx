@@ -1,23 +1,23 @@
-import { useState, useMemo } from "react";
-import { useUser } from "../../../hooks/user/useUser.jsx";
-import { getAssetRequestByUser, cancelledAssetRequest } from "../../../api/assetRequest/assetRequest_API.js";
-import { getSpaceRandRByUser, cancelResAndReq } from "../../../api/SpaceRndR/spaceRndR_API.js";
-import { getProductRequestByUser, cancelledProductRequest } from "../../../api/productRequest/productRequest.js";
-import { assetAvailable } from "../../../api/asset/asset_API.js";
-import { MaterialReactTable, useMaterialReactTable } from 'material-react-table';
-import { MRT_Localization_ES } from 'material-react-table/locales/es';
+import {useState, useMemo} from "react";
+import {useUser} from "../../../hooks/user/useUser.jsx";
+import {getAssetRequestByUser, cancelledAssetRequest} from "../../../api/assetRequest/assetRequest_API.js";
+import {getSpaceRandRByUser, cancelResAndReq} from "../../../api/SpaceRndR/spaceRndR_API.js";
+import {getProductRequestByUser, cancelledProductRequest} from "../../../api/productRequest/productRequest.js";
+import {assetAvailable} from "../../../api/asset/asset_API.js";
+import {MaterialReactTable, useMaterialReactTable} from 'material-react-table';
+import {MRT_Localization_ES} from 'material-react-table/locales/es';
 import LoadingPointsSpinner from "../../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
-import { toast } from "react-hot-toast";
+import {toast} from "react-hot-toast";
 import GenericModal from "../../../components/popUp/generic/GenericModal.jsx";
 import MyRequestsBanner from "./MyRequestsBanner.jsx";
 import CancelButton from "../../../components/button/CancelButton.jsx";
 import RenewalButton from "../../../components/button/RenewalButton.jsx";
 import dayjs from "dayjs";
 import {saveAssetRequestRenewal} from "../../../api/assetRequest/assetRequest_API.js";
-import { getAssetRequestById } from "../../../api/assetRequest/assetRequest_API.js";
-import { updateAssetRequestRenewal } from "../../../api/assetRequest/assetRequest_API.js";
-import { Typography } from "@mui/material";
-import { gradientMapping } from "../../../style/codeStyle.js";
+import {getAssetRequestById} from "../../../api/assetRequest/assetRequest_API.js";
+import {updateAssetRequestRenewal} from "../../../api/assetRequest/assetRequest_API.js";
+import {Typography} from "@mui/material";
+import {gradientMapping} from "../../../style/codeStyle.js";
 
 const MyRequest = () => {
     const user = useUser();
@@ -38,7 +38,7 @@ const MyRequest = () => {
             const response = await apiCall(user.id);
             setRequests(response.data);
             if (response?.data.length === 0) {
-                toast.success("No hay solicitudes pendientes.", { icon: "🔔" });
+                toast.success("No hay solicitudes pendientes.", {icon: "🔔"});
                 return
             }
             toast.success(response.message);
@@ -79,7 +79,7 @@ const MyRequest = () => {
 
     const handleCancel = async () => {
         if (!cancelReason.trim()) {
-            toast.error("Por favor ingrese una razón de cancelación.", { duration: 7000 });
+            toast.error("Por favor ingrese una razón de cancelación.", {duration: 7000});
             return;
         }
 
@@ -99,17 +99,17 @@ const MyRequest = () => {
                 const response = await getSpaceRandRByUser(user.id);
                 setRequests(response.data);
             }
-            toast.success(`Solicitud cancelada: ${cancelReason}`, { duration: 7000 });
+            toast.success(`Solicitud cancelada: ${cancelReason}`, {duration: 7000});
         } catch (error) {
             console.error(error);
-            toast.error(error.message, { duration: 7000 });
+            toast.error(error.message, {duration: 7000});
         } finally {
             setLoading(false);
             setShowCancelModal(false);
             setCancelReason("");
         }
     };
-  
+
     const handlePreRenew = (row) => {
         console.log(row);
         setSelectedRequest(row);
@@ -122,13 +122,13 @@ const MyRequest = () => {
         let localRequestId;
         const currentExpirationDate = dayjs(selectedRequest.original.expirationDate);
         const newExpiration = dayjs(newExpirationDate);
-    
+
         // Validar que la nueva fecha de expiración sea posterior a la fecha de expiración actual
         if (newExpiration.isBefore(currentExpirationDate)) {
-            toast.error("La nueva fecha de expiración debe ser posterior a la fecha de expiración actual.", { duration: 7000 });
+            toast.error("La nueva fecha de expiración debe ser posterior a la fecha de expiración actual.", {duration: 7000});
             return; // Detener la ejecución si la validación falla
         }
-    
+
         try {
             const response = await getAssetRequestById(selectedRequest.original.id);
             localRequestId = response.data.id; // Almacena el ID de la solicitud en una variable local
@@ -145,18 +145,18 @@ const MyRequest = () => {
                 expirationDate: newExpirationDate, // Usar la nueva fecha de expiración seleccionada
                 createdAt: selectedRequest.original.expirationDate,
             });
-            toast.success(response.message, { duration: 7000 });
-            setShowRenewModal(false); 
-            setNewExpirationDate(null); 
+            toast.success(response.message, {duration: 7000});
+            setShowRenewModal(false);
+            setNewExpirationDate(null);
 
-            const update = await updateAssetRequestRenewal(localRequestId, { 
+            const update = await updateAssetRequestRenewal(localRequestId, {
                 assetId: localAssetId,
-                status: "Pendiente de renovacion." ,
+                status: "Pendiente de renovacion.",
                 reason: selectedRequest.original.reason,
                 expirationDate: selectedRequest.original.expirationDate,
             });
-            toast.success(update.message, { duration: 7000 });
-    
+            toast.success(update.message, {duration: 7000});
+
             // Actualizar la tabla después de la renovación
             const updatedRequests = await getAssetRequestByUser(user.id);
             setRequests(updatedRequests.data);
@@ -167,25 +167,25 @@ const MyRequest = () => {
 
     // Columnas y datos para cada tipo de solicitud
     const spaceRequestColumns = [
-        { accessorKey: 'id', header: 'Id' },
-        { accessorKey: 'maxPeople', header: 'Número de personas'},
-        { accessorKey: 'spaceName', header: 'Espacio' },
-        { accessorKey: 'building', header: 'Ubicación' },
-        { accessorKey: 'eventDesc', header: 'Descripción del evento'},
-        { accessorKey: 'eventObs', header: 'Observaciones del evento' },
-        { accessorKey: 'startTime', header: 'Hora de inicio' },
-        { accessorKey: 'endTime', header: 'Hora de finalización' },
-        { accessorKey: 'status', header: 'Estado' },
+        {accessorKey: 'id', header: 'Id'},
+        {accessorKey: 'maxPeople', header: 'Número de personas'},
+        {accessorKey: 'spaceName', header: 'Espacio'},
+        {accessorKey: 'building', header: 'Ubicación'},
+        {accessorKey: 'eventDesc', header: 'Descripción del evento'},
+        {accessorKey: 'eventObs', header: 'Observaciones del evento'},
+        {accessorKey: 'startTime', header: 'Hora de inicio'},
+        {accessorKey: 'endTime', header: 'Hora de finalización'},
+        {accessorKey: 'status', header: 'Estado'},
         {
             id: 'actions',
             header: 'Acciones',
             size: 'small',
-            Cell: ({ row }) => (
+            Cell: ({row}) => (
                 row.original.status !== "Ha sido cancelada." ? (
-                    <CancelButton handleCancel={handlePreCancel} row={row} />
+                    <CancelButton handleCancel={handlePreCancel} row={row}/>
                 ) : (
                     <div style={canceledButtonStyle}>
-                        <Typography variant="caption" style={{ color: 'white', fontFamily: 'Montserrat' }}>
+                        <Typography variant="caption" style={{color: 'white', fontFamily: 'Montserrat'}}>
                             Cancelado
                         </Typography>
                     </div>
@@ -195,23 +195,23 @@ const MyRequest = () => {
     ];
 
     const productRequestColumns = [
-        { accessorKey: 'id', header: 'ID' },
-        { accessorKey: 'productName', header: 'Nombre de Producto' },
-        { accessorKey: 'productId', header: 'Id del producto' },
-        { accessorKey: 'user', header: 'Usuario Responsable' },
-        { accessorKey: 'reason', header: 'Razón' },
-        { accessorKey: 'createdAt', header: 'Fecha de Solicitud' },
-        { accessorKey: 'status', header: 'Estado' },
+        {accessorKey: 'id', header: 'ID'},
+        {accessorKey: 'productName', header: 'Nombre de Producto'},
+        {accessorKey: 'productId', header: 'Id del producto'},
+        {accessorKey: 'user', header: 'Usuario Responsable'},
+        {accessorKey: 'reason', header: 'Razón'},
+        {accessorKey: 'createdAt', header: 'Fecha de Solicitud'},
+        {accessorKey: 'status', header: 'Estado'},
         {
             id: 'actions',
             header: 'Acciones',
             size: 'small',
-            Cell: ({ row }) => (
+            Cell: ({row}) => (
                 row.original.status !== "Ha sido cancelada." ? (
-                    <CancelButton handleCancel={handlePreCancel} row={row} />
+                    <CancelButton handleCancel={handlePreCancel} row={row}/>
                 ) : (
                     <div style={canceledButtonStyle}>
-                        <Typography variant="caption" style={{ color: 'white', fontFamily: 'Montserrat' }}>
+                        <Typography variant="caption" style={{color: 'white', fontFamily: 'Montserrat'}}>
                             Cancelado
                         </Typography>
                     </div>
@@ -221,22 +221,22 @@ const MyRequest = () => {
     ];
 
     const assetRequestColumns = [
-        { accessorKey: 'id', header: 'ID' },
-        { accessorKey: 'asset', header: 'Activo' },
-        { accessorKey: 'plateNumber', header: 'Placa' },
-        { accessorKey: 'user', header: 'Usuario Responsable' },
-        { accessorKey: 'reason', header: 'Razón' },
-        { accessorKey: 'createdAt', header: 'Fecha de Solicitud' },
-        { accessorKey: 'status', header: 'Estado' },
+        {accessorKey: 'id', header: 'ID'},
+        {accessorKey: 'asset', header: 'Activo'},
+        {accessorKey: 'plateNumber', header: 'Placa'},
+        {accessorKey: 'user', header: 'Usuario Responsable'},
+        {accessorKey: 'reason', header: 'Razón'},
+        {accessorKey: 'createdAt', header: 'Fecha de Solicitud'},
+        {accessorKey: 'status', header: 'Estado'},
         {
             id: 'actions',
             header: 'Acciones',
             size: 'small',
-            Cell: ({ row }) => {
+            Cell: ({row}) => {
                 if (row.original.status === "Ha sido cancelada.") {
                     return (
                         <div style={canceledButtonStyle}>
-                            <Typography variant="caption" style={{ color: 'white', fontFamily: 'Montserrat' }}>
+                            <Typography variant="caption" style={{color: 'white', fontFamily: 'Montserrat'}}>
                                 Cancelado
                             </Typography>
                         </div>
@@ -249,9 +249,9 @@ const MyRequest = () => {
 
                 return (
                     <>
-                        <CancelButton handleCancel={handlePreCancel} row={row} />
+                        <CancelButton handleCancel={handlePreCancel} row={row}/>
                         {daysUntilExpiration >= 2 && row.original.status === "Ha sido aceptado." && (
-                            <RenewalButton renewAction={() => handlePreRenew(row)} row={row} />
+                            <RenewalButton renewAction={() => handlePreRenew(row)} row={row}/>
                         )}
                     </>
                 );
@@ -314,7 +314,7 @@ const MyRequest = () => {
                 eventDesc: false
             },
             density: 'comfortable',
-            pagination: { pageSize: 5 },
+            pagination: {pageSize: 5},
         },
     });
 
@@ -329,7 +329,7 @@ const MyRequest = () => {
                 productId: false,
             },
             density: 'comfortable',
-            pagination: { pageSize: 5 },
+            pagination: {pageSize: 5},
         },
     });
 
@@ -343,7 +343,7 @@ const MyRequest = () => {
                 id: false,
             },
             density: 'comfortable',
-            pagination: { pageSize: 5 },
+            pagination: {pageSize: 5},
         },
     });
 
@@ -363,6 +363,8 @@ const MyRequest = () => {
 
     return (
         <>
+            {loading && <LoadingPointsSpinner />}
+
             <MyRequestsBanner
                 title={
                     activeButton
@@ -382,7 +384,7 @@ const MyRequest = () => {
                 activeButton={activeButton}
             />
 
-            {loading && <LoadingPointsSpinner />}
+            {loading && <LoadingPointsSpinner/>}
 
             {showCancelModal && (
                 <GenericModal
@@ -425,7 +427,8 @@ const MyRequest = () => {
                 bodyText={`<p>¿Estás seguro de renovar esta solicitud?</p>`}
                 customContent={
                     <div>
-                        <label htmlFor="expirationDate" className="form-label" style={{ color: "#ffffff" }}>
+                        <label htmlFor="expirationDate" className="form-label" style={{color: "#ffffff"}}>
+
                             <i className="fas fa-calendar-alt"></i> Fecha de finalización del nuevo préstamo
                             <span className="text-danger">*</span>
                         </label>
@@ -443,15 +446,15 @@ const MyRequest = () => {
             />
 
             {activeButton === "spaceRequest" && requests.length > 0 && !loading && (
-                <MaterialReactTable table={spaceRequestTable} />
+                <MaterialReactTable table={spaceRequestTable}/>
             )}
 
             {activeButton === "productRequest" && requests.length > 0 && !loading && (
-                <MaterialReactTable table={productRequestTable} />
+                <MaterialReactTable table={productRequestTable}/>
             )}
 
             {activeButton === "assetRequest" && requests.length > 0 && !loading && (
-                <MaterialReactTable table={assetRequestTable} />
+                <MaterialReactTable table={assetRequestTable}/>
             )}
         </>
     );

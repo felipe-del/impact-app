@@ -1,12 +1,14 @@
 import PropTypes from "prop-types";
-import { bannerStyle } from "../../../style/codeStyle.js";
-import BannerActionButton from "../../../components/button/BannerActionButton.jsx";
+
 import { ArrowBack, InfoOutlined } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import GenericInformationModal from "../../../components/popUp/GenericInformationModal/GenericInformationModal.jsx";
+import BannerActionButton from "../../components/button/BannerActionButton.jsx";
+import GenericInformationModal from "../../components/popUp/GenericInformationModal/GenericInformationModal.jsx";
+import {bannerStyle} from "../../style/codeStyle.js";
 
-const RequestManagementBanner = ({
+
+const AssetRenewalBanner = ({
                                      title = "",
                                      visibleButtons = ["goBack", "info"],
                                  }) => {
@@ -48,15 +50,15 @@ const RequestManagementBanner = ({
                 open={isModalOpen}
                 onClose={handleCloseModal}
                 title="Información general"
-                description="Permite a los administradores o gestores visualizar y gestionar las solicitudes de recursos del sistema. Desde esta sección se puede acceder a los detalles de cada solicitud y realizar acciones como aprobar, denegar o dar seguimiento según el tipo y estado de la misma."
+                description="Este apartado muestra las solicitudes de renovación de activos, que son aquellos recursos previamente asignados y que los usuarios desean mantener o extender su uso. Los gestores o administradores tienen la capacidad de revisar estas solicitudes y decidir si aprueban o deniegan la renovación según las políticas y necesidades del sistema."
             />
         </div>
     );
 };
 
-RequestManagementBanner.propTypes = {
+AssetRenewalBanner.propTypes = {
     title: PropTypes.string,
     visibleButtons: PropTypes.arrayOf(PropTypes.string),
 };
 
-export default RequestManagementBanner;
+export default AssetRenewalBanner;
