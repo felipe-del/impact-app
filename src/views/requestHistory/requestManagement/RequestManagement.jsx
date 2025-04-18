@@ -9,6 +9,11 @@ import {acceptAssetRequest, getAssetRequestsWithEarring} from "../../../api/asse
 import {acceptProductRequest, getProductRequestsWithEarring} from "../../../api/productRequest/productRequest.js";
 import {acceptSpaceRequest, getSpaceRequestsWithEarring} from "../../../api/SpaceRndR/spaceRndR_API.js";
 import RequestButton from "../../../components/button/RequestButton.jsx";
+import {Box, Typography} from "@mui/material";
+import {StatusTranslator} from "../../../util/Translator.js";
+import {getStateIcon} from "../../../util/SelectIconByStatus.jsx";
+import {getStateColor} from "../../../util/SelectColorByStatus.js";
+import LoadingPointsSpinner from "../../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
 
 const RequestManagement = () => {
     const [requests, setRequests] = useState([]);
@@ -80,9 +85,25 @@ const RequestManagement = () => {
 
     const columns = useMemo(() => [
         {
-            accessorKey: "tipo",
-            header: "Tipo de Solicitud",
+            accessorKey: 'tipo',
+            header: 'Tipo de Solicitud',
             size: 120,
+            Cell: ({row}) => {
+                const tipo = row.original.tipo;
+                return (
+                    <Typography
+                        sx={{
+                            color:
+                                tipo === 'Activo' ? 'primary.main' :
+                                    tipo === 'Producto' ? 'success.main' :
+                                        tipo === 'Espacio' ? 'warning.main' : 'text.primary',
+                            fontFamily: 'Montserrat, sans-serif',
+                        }}
+                    >
+                        {getStateIcon(tipo)} {tipo}
+                    </Typography>
+                )
+            }
         },
         {
             accessorKey: "id",
@@ -93,11 +114,6 @@ const RequestManagement = () => {
             accessorKey: "user.name",
             header: "Usuario",
             size: 150,
-        },
-        {
-            accessorKey: "status.name",
-            header: "Estado",
-            size: 120,
         },
         {
             accessorFn: (row) =>
@@ -121,6 +137,24 @@ const RequestManagement = () => {
             id: "fecha",
             header: "Fecha de Solicitud",
             size: 120,
+        },
+        {
+            accessorKey: 'status.name',
+            header: 'Estado',
+            Cell: ({row}) => {
+                const status = row.original.status;
+                const translatedStatus = StatusTranslator.translate(status.name);
+                return (
+                    <Typography
+                        sx={{
+                            color: getStateColor(translatedStatus),
+                            fontFamily: 'Montserrat, sans-serif',
+                        }}
+                    >
+                        {getStateIcon(translatedStatus)} {translatedStatus}
+                    </Typography>
+                )
+            }
         },
         {
             accessorKey: 'actions',
@@ -150,6 +184,179 @@ const RequestManagement = () => {
         },
     ], [editRowId]);
 
+    const renderDetailPanel = ({row}) => {
+        const data = row.original;
+        const tipo = data.tipo;
+
+        // Función para renderizar detalles comunes
+        const renderCommonDetails = (items) => {
+            return items.map((item, index) => (
+                <Box
+                    key={index}
+                    sx={{
+                        background: "rgba(255, 255, 255, 0.1)",
+                        padding: "8px",
+                        borderRadius: "10px",
+                        textAlign: "left",
+                        boxShadow: "0px 2px 5px rgba(255, 255, 255, 0.1)",
+                        transition: "0.3s ease-in-out",
+                        "&:hover": {
+                            transform: "scale(1.03)",
+                            boxShadow: "0px 4px 12px rgba(255, 255, 255, 0.3)",
+                        },
+                    }}
+                >
+                    <Typography
+                        sx={{
+                            fontWeight: "bold",
+                            color: "#f8f9fa",
+                            fontFamily: '"Montserrat", sans-serif',
+                        }}
+                    >
+                        {item.label}
+                    </Typography>
+                    <Typography sx={{fontFamily: '"Montserrat", sans-serif'}}>
+                        {item.value ?? "N/A"}
+                    </Typography>
+                </Box>
+            ));
+        };
+
+        // Detalles específicos de tipo "Activo"
+        if (tipo === "Activo") {
+            return (
+                <Box
+                    sx={{
+                        display: "grid",
+                        margin: "auto",
+                        gridTemplateColumns: "repeat(5, 1fr)",
+                        width: "100%",
+                        padding: "20px",
+                        background: "linear-gradient(135deg, #003c74 0%, #005DA4 100%)",
+                        borderRadius: "15px",
+                        boxShadow: "0px 4px 10px rgba(0, 93, 164, 0.3)",
+                        color: "#f8f9fa",
+                        fontFamily: '"Montserrat", sans-serif',
+                        letterSpacing: "0.5px",
+                        gap: "15px",
+                        border: "1px solid rgba(255, 255, 255, 0.2)",
+                    }}
+                >
+                    {renderCommonDetails([
+                        { label: 'ID de Solicitud', value: data.id },
+                        { label: 'Tipo de Solicitud', value: data.tipo },
+                        { label: 'Fecha de Creación', value: data.createdAt },
+                        { label: 'Estado de la Solicitud', value: StatusTranslator.translate(data.status?.name) },
+                        { label: 'Razón', value: data.reason },
+                        { label: 'Fecha de Expiración', value: data.expirationDate },
+                        { label: 'Placa', value: data.asset?.plateNumber },
+                        { label: 'Fecha de Compra', value: data.asset?.purchaseDate },
+                        { label: 'Valor', value: `${data.asset?.value} ${data.asset?.currency?.symbol}` },
+                        { label: 'Usuario Responsable', value: data.asset?.user?.email },
+                        { label: 'Proveedor', value: data.asset?.supplier?.name },
+                        { label: 'Categoría', value: data.asset?.category?.name },
+                        { label: 'Subcategoría', value: data.asset?.subcategory?.name },
+                        { label: 'Marca', value: data.asset?.brand?.name },
+                        { label: 'Estado del Activo', value: StatusTranslator.translate(data.asset?.status?.name) },
+                        { label: 'Modelo', value: data.asset?.model?.modelName },
+                        { label: 'Tipo de Moneda', value: `${data.asset?.currency?.stateName} - ${data.asset?.currency?.code} - ${data.asset?.currency?.symbol}` },
+                        { label: 'Serie', value: data.asset?.assetSeries },
+                        { label: 'Ubicación', value: data.asset?.locationNumber?.locationTypeName },
+                    ])}
+
+
+                </Box>
+            );
+        }
+
+        // Detalles específicos de tipo "Producto"
+        if (tipo === "Producto") {
+            return (
+                <Box
+                    sx={{
+                        display: "grid",
+                        margin: "auto",
+                        gridTemplateColumns: "repeat(5, 1fr)",
+                        width: "100%",
+                        padding: "20px",
+                        background: "linear-gradient(135deg, #003c74 0%, #005DA4 100%)",
+                        borderRadius: "15px",
+                        boxShadow: "0px 4px 10px rgba(0, 93, 164, 0.3)",
+                        color: "#f8f9fa",
+                        fontFamily: '"Montserrat", sans-serif',
+                        letterSpacing: "0.5px",
+                        gap: "15px",
+                        border: "1px solid rgba(255, 255, 255, 0.2)",
+                    }}
+                >
+                    {renderCommonDetails([
+                        { label: "ID de Producto", value: data.product?.id },
+                        { label: "Fecha de Compra", value: data.product?.purchaseDate },
+                        { label: "Fecha de Expiración", value: data.product?.expiryDate ?? "N/A" },
+                        { label: "Categoría", value: data.product?.category?.name },
+                        { label: "Tipo de Categoría", value: data.product?.category?.categoryType?.name },
+                        { label: "Unidad de Medida", value: `${data.product?.category?.unitOfMeasurement?.name} (${data.product?.category?.unitOfMeasurement?.abbreviation})` },
+                        { label: "Estado del Producto", value: StatusTranslator.translate(data.product?.status?.name) },
+                        { label: "Estado de la Solicitud", value: StatusTranslator.translate(data.status?.name) },
+                        { label: "Razón", value: data.reason },
+                        { label: "Usuario", value: data.user?.name },
+                        { label: "Correo del Usuario", value: data.user?.email },
+                        { label: "Tipo de Usuario", value: data.user?.userRoleResponse?.roleName },
+                        { label: "Fecha de Creación", value: data.createdAt },
+                    ])}
+
+                </Box>
+            );
+        }
+
+        // Detalles específicos de tipo "Espacio"
+        if (tipo === "Espacio") {
+            return (
+                <Box
+                    sx={{
+                        display: "grid",
+                        margin: "auto",
+                        gridTemplateColumns: "repeat(5, 1fr)",
+                        width: "100%",
+                        padding: "20px",
+                        background: "linear-gradient(135deg, #003c74 0%, #005DA4 100%)",
+                        borderRadius: "15px",
+                        boxShadow: "0px 4px 10px rgba(0, 93, 164, 0.3)",
+                        color: "#f8f9fa",
+                        fontFamily: '"Montserrat", sans-serif',
+                        letterSpacing: "0.5px",
+                        gap: "15px",
+                        border: "1px solid rgba(255, 255, 255, 0.2)",
+                    }}
+                >
+                    {renderCommonDetails([
+                        { label: "ID de Solicitud", value: data.id },
+                        { label: "Espacio", value: data.space?.name },
+                        { label: "Código del Espacio", value: data.space?.spaceCode },
+                        { label: "Ubicación del Edificio", value: data.space?.buildingLocationResponse?.building?.name },
+                        { label: "Piso", value: data.space?.buildingLocationResponse?.floor },
+                        { label: "Capacidad Máxima", value: data.space?.maxPeople },
+                        { label: "Horario de Apertura", value: data.space?.openTime },
+                        { label: "Horario de Cierre", value: data.space?.closeTime },
+                        { label: "Estado del Espacio", value: StatusTranslator.translate(data.space?.spaceStatus?.name) },
+                        { label: "Cantidad de Personas", value: data.numPeople },
+                        { label: "Descripción del Evento", value: data.eventDesc },
+                        { label: "Observaciones", value: data.eventObs },
+                        { label: "Solicita Equipos", value: data.useEquipment ? "Sí" : "No" },
+                        { label: "Usuario Solicitante", value: data.user?.name },
+                        { label: "Correo del Usuario", value: data.user?.email },
+                        { label: "Rol del Usuario", value: data.user?.userRoleResponse?.roleName },
+                        { label: "Estado de la Solicitud", value: StatusTranslator.translate(data.status?.name) },
+                        { label: "Fecha de Creación", value: data.createdAt },
+                    ])}
+
+                </Box>
+            );
+        }
+
+        return null;
+    };
+
     const table = useMaterialReactTable({
         localization: MRT_Localization_ES,
         columns,
@@ -160,11 +367,29 @@ const RequestManagement = () => {
             density: "comfortable",
             pagination: { pageSize: 5 },
         },
+        muiDetailPanelProps: () => ({
+            sx: (theme) => ({
+                backgroundColor:
+                    theme.palette.mode === "dark"
+                        ? "rgba(255,210,244,0.1)"
+                        : "rgba(0,0,0,0.1)",
+            }),
+        }),
+        muiExpandButtonProps: ({row, table}) => ({
+            onClick: () => table.setExpanded({[row.id]: !row.getIsExpanded()}),
+            sx: {
+                transform: row.getIsExpanded() ? "rotate(180deg)" : "rotate(-90deg)",
+                transition: "transform 0.2s",
+            },
+        }),
+        renderDetailPanel,
     });
 
     return (
         <>
-            <RequestManagementBanner title={"Solicitudes pendientes por gestionar"} visibleButtons={["goBack"]} />
+            {loading && <LoadingPointsSpinner />}
+
+            <RequestManagementBanner title={"Solicitudes pendientes por gestionar"} visibleButtons={["goBack", "info"]} />
 
             <MaterialReactTable table={table} />
 
