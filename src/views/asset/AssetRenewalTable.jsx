@@ -7,6 +7,8 @@ import { MaterialReactTable } from "material-react-table";
 import { Typography } from "@mui/material";
 import { toast } from "react-hot-toast";
 import dayjs from "dayjs";
+import AssetRenewalBanner from "./AssetRenewalBanner.jsx";
+import LoadingPointsSpinner from "../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
 
 const AssetRenewalTable = () => {
     const user = useUser();
@@ -72,12 +74,12 @@ const AssetRenewalTable = () => {
   
     return (
       <>
-        <h2 style={{ marginBottom: "1rem" }}>Solicitudes de Activo Pendientes de Renovación</h2>
-        {loading ? (
-          <p>Cargando solicitudes...</p>
-        ) : (
+
+          {loading && <LoadingPointsSpinner />}
+
+          <AssetRenewalBanner title="Solicitudes de Activos por Renovar" visibleButtons={["goBack", "info"]}/>
+
           <MaterialReactTable table={table} />
-        )}
       </>
     );
   };
