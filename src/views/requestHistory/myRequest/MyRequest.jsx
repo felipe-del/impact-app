@@ -428,6 +428,7 @@ const MyRequest = () => {
                 customContent={
                     <div>
                         <label htmlFor="expirationDate" className="form-label" style={{color: "#ffffff"}}>
+
                             <i className="fas fa-calendar-alt"></i> Fecha de finalización del nuevo préstamo
                             <span className="text-danger">*</span>
                         </label>
