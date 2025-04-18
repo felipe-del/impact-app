@@ -1,11 +1,15 @@
 import {useEffect, useMemo, useState} from "react"
 import AllRequestBanner from "./AllRequestBanner.jsx"
-import { getAssetRequestsExcludingEarringAndRenewal } from "../../../api/assetRequest/assetRequest_API.js"
+import {getAssetRequestsExcludingEarringAndRenewal} from "../../../api/assetRequest/assetRequest_API.js"
 import {getProductRequestsExcludingEarringAndRenewal} from "../../../api/productRequest/productRequest.js";
 import {getSpaceRequestsExcludingEarringAndRenewal} from "../../../api/SpaceRndR/spaceRndR_API.js";
 import {MaterialReactTable, useMaterialReactTable} from "material-react-table";
 import {MRT_Localization_ES} from "material-react-table/locales/es/index.js";
 import {Box, Typography} from "@mui/material";
+import {StatusTranslator} from "../../../util/Translator.js";
+import {getStateColor} from "../../../util/SelectColorByStatus.js";
+import {getStateIcon} from "../../../util/SelectIconByStatus.jsx";
+import LoadingPointsSpinner from "../../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
 
 const AllRequest = () => {
     const [requests, setRequests] = useState([])
@@ -20,9 +24,9 @@ const AllRequest = () => {
                     getSpaceRequestsExcludingEarringAndRenewal()
                 ])
 
-                const assetRequests = assetRes?.data?.map(req => ({ ...req, tipo: "Activo" })) || []
-                const productRequests = productRes?.data?.map(req => ({ ...req, tipo: "Producto" })) || []
-                const spaceRequests = spaceRes?.data?.map(req => ({ ...req, tipo: "Espacio" })) || []
+                const assetRequests = assetRes?.data?.map(req => ({...req, tipo: "Activo"})) || []
+                const productRequests = productRes?.data?.map(req => ({...req, tipo: "Producto"})) || []
+                const spaceRequests = spaceRes?.data?.map(req => ({...req, tipo: "Espacio"})) || []
 
                 const all = [...assetRequests, ...productRequests, ...spaceRequests]
                 setRequests(all)
@@ -38,9 +42,25 @@ const AllRequest = () => {
 
     const columns = useMemo(() => [
         {
-            accessorKey: "tipo",
-            header: "Tipo de Solicitud",
+            accessorKey: 'tipo',
+            header: 'Tipo de Solicitud',
             size: 120,
+            Cell: ({row}) => {
+                const tipo = row.original.tipo;
+                return (
+                    <Typography
+                        sx={{
+                            color:
+                                tipo === 'Activo' ? 'primary.main' :
+                                tipo === 'Producto' ? 'success.main' :
+                                    tipo === 'Espacio' ? 'warning.main' : 'text.primary',
+                            fontFamily: 'Montserrat, sans-serif',
+                        }}
+                    >
+                        {getStateIcon(tipo)} {tipo}
+                    </Typography>
+                )
+            }
         },
         {
             accessorKey: "id",
@@ -51,11 +71,6 @@ const AllRequest = () => {
             accessorKey: "user.name",
             header: "Usuario",
             size: 150,
-        },
-        {
-            accessorKey: "status.name",
-            header: "Estado",
-            size: 120,
         },
         {
             accessorFn: (row) =>
@@ -77,10 +92,28 @@ const AllRequest = () => {
             header: "Fecha de Solicitud",
             size: 120,
         },
+        {
+            accessorKey: 'status.name',
+            header: 'Estado',
+            Cell: ({row}) => {
+                const status = row.original.status;
+                const translatedStatus = StatusTranslator.translate(status.name);
+                return (
+                    <Typography
+                        sx={{
+                            color: getStateColor(translatedStatus),
+                            fontFamily: 'Montserrat, sans-serif',
+                        }}
+                    >
+                        {getStateIcon(translatedStatus)} {translatedStatus}
+                    </Typography>
+                )
+            }
+        },
     ], []);
 
 
-    const renderDetailPanel = ({ row }) => {
+    const renderDetailPanel = ({row}) => {
         const data = row.original;
         const tipo = data.tipo;
 
@@ -111,7 +144,7 @@ const AllRequest = () => {
                     >
                         {item.label}
                     </Typography>
-                    <Typography sx={{ fontFamily: '"Montserrat", sans-serif' }}>
+                    <Typography sx={{fontFamily: '"Montserrat", sans-serif'}}>
                         {item.value ?? "N/A"}
                     </Typography>
                 </Box>
@@ -139,11 +172,28 @@ const AllRequest = () => {
                     }}
                 >
                     {renderCommonDetails([
-                        { label: "ID", value: data.id },
-                        { label: "Fecha de Compra", value: data.purchaseDate },
-                        { label: "Estado", value: data.status.name },
-                        { label: "Serie del Activo", value: data.assetSeries },
+                        { label: 'ID de Solicitud', value: data.id },
+                        { label: 'Tipo de Solicitud', value: data.tipo },
+                        { label: 'Fecha de Creación', value: data.createdAt },
+                        { label: 'Estado de la Solicitud', value: StatusTranslator.translate(data.status?.name) },
+                        { label: 'Razón', value: data.reason },
+                        { label: 'Fecha de Expiración', value: data.expirationDate },
+                        { label: 'Placa', value: data.asset?.plateNumber },
+                        { label: 'Fecha de Compra', value: data.asset?.purchaseDate },
+                        { label: 'Valor', value: `${data.asset?.value} ${data.asset?.currency?.symbol}` },
+                        { label: 'Usuario Responsable', value: data.asset?.user?.email },
+                        { label: 'Proveedor', value: data.asset?.supplier?.name },
+                        { label: 'Categoría', value: data.asset?.category?.name },
+                        { label: 'Subcategoría', value: data.asset?.subcategory?.name },
+                        { label: 'Marca', value: data.asset?.brand?.name },
+                        { label: 'Estado del Activo', value: StatusTranslator.translate(data.asset?.status?.name) },
+                        { label: 'Modelo', value: data.asset?.model?.modelName },
+                        { label: 'Tipo de Moneda', value: `${data.asset?.currency?.stateName} - ${data.asset?.currency?.code} - ${data.asset?.currency?.symbol}` },
+                        { label: 'Serie', value: data.asset?.assetSeries },
+                        { label: 'Ubicación', value: data.asset?.locationNumber?.locationTypeName },
                     ])}
+
+
                 </Box>
             );
         }
@@ -169,15 +219,21 @@ const AllRequest = () => {
                     }}
                 >
                     {renderCommonDetails([
-                        { label: "ID", value: data.product?.id },
+                        { label: "ID de Producto", value: data.product?.id },
                         { label: "Fecha de Compra", value: data.product?.purchaseDate },
                         { label: "Fecha de Expiración", value: data.product?.expiryDate ?? "N/A" },
-                        { label: "Categoría", value: data.product?.category.name },
-                        { label: "Estado", value: data.product?.status.name },
+                        { label: "Categoría", value: data.product?.category?.name },
+                        { label: "Tipo de Categoría", value: data.product?.category?.categoryType?.name },
+                        { label: "Unidad de Medida", value: `${data.product?.category?.unitOfMeasurement?.name} (${data.product?.category?.unitOfMeasurement?.abbreviation})` },
+                        { label: "Estado del Producto", value: StatusTranslator.translate(data.product?.status?.name) },
+                        { label: "Estado de la Solicitud", value: StatusTranslator.translate(data.status?.name) },
                         { label: "Razón", value: data.reason },
-                        { label: "Usuario", value: data.user.name },
-                        { label: "Tipo de Usuario", value: data.user.userRoleResponse.roleName },
+                        { label: "Usuario", value: data.user?.name },
+                        { label: "Correo del Usuario", value: data.user?.email },
+                        { label: "Tipo de Usuario", value: data.user?.userRoleResponse?.roleName },
+                        { label: "Fecha de Creación", value: data.createdAt },
                     ])}
+
                 </Box>
             );
         }
@@ -203,12 +259,26 @@ const AllRequest = () => {
                     }}
                 >
                     {renderCommonDetails([
-                        { label: "ID", value: data.space.id },
-                        { label: "Fecha de Expiración", value: data.space.expiryDate ?? "N/A" },
-                        { label: "Razón", value: data.eventObs },
-                        { label: "Usuario", value: data.user.name },
-                        { label: "Tipo de Usuario", value: data.user.userRoleResponse.roleName },
+                        { label: "ID de Solicitud", value: data.id },
+                        { label: "Espacio", value: data.space?.name },
+                        { label: "Código del Espacio", value: data.space?.spaceCode },
+                        { label: "Ubicación del Edificio", value: data.space?.buildingLocationResponse?.building?.name },
+                        { label: "Piso", value: data.space?.buildingLocationResponse?.floor },
+                        { label: "Capacidad Máxima", value: data.space?.maxPeople },
+                        { label: "Horario de Apertura", value: data.space?.openTime },
+                        { label: "Horario de Cierre", value: data.space?.closeTime },
+                        { label: "Estado del Espacio", value: StatusTranslator.translate(data.space?.spaceStatus?.name) },
+                        { label: "Cantidad de Personas", value: data.numPeople },
+                        { label: "Descripción del Evento", value: data.eventDesc },
+                        { label: "Observaciones", value: data.eventObs },
+                        { label: "Solicita Equipos", value: data.useEquipment ? "Sí" : "No" },
+                        { label: "Usuario Solicitante", value: data.user?.name },
+                        { label: "Correo del Usuario", value: data.user?.email },
+                        { label: "Rol del Usuario", value: data.user?.userRoleResponse?.roleName },
+                        { label: "Estado de la Solicitud", value: StatusTranslator.translate(data.status?.name) },
+                        { label: "Fecha de Creación", value: data.createdAt },
                     ])}
+
                 </Box>
             );
         }
@@ -223,9 +293,9 @@ const AllRequest = () => {
         data: requests,
         enableExpandAll: false,
         initialState: {
-            columnVisibility: { id: false },
+            columnVisibility: {id: false},
             density: "comfortable",
-            pagination: { pageSize: 5 },
+            pagination: {pageSize: 5},
         },
         muiDetailPanelProps: () => ({
             sx: (theme) => ({
@@ -235,8 +305,8 @@ const AllRequest = () => {
                         : "rgba(0,0,0,0.1)",
             }),
         }),
-        muiExpandButtonProps: ({ row, table }) => ({
-            onClick: () => table.setExpanded({ [row.id]: !row.getIsExpanded() }),
+        muiExpandButtonProps: ({row, table}) => ({
+            onClick: () => table.setExpanded({[row.id]: !row.getIsExpanded()}),
             sx: {
                 transform: row.getIsExpanded() ? "rotate(180deg)" : "rotate(-90deg)",
                 transition: "transform 0.2s",
@@ -248,9 +318,11 @@ const AllRequest = () => {
 
     return (
         <>
-            <AllRequestBanner title={"Todas las solicitudes"} visibleButtons={["goBack"]} />
+            {loading && <LoadingPointsSpinner />}
 
-            <MaterialReactTable table={table} />
+            <AllRequestBanner title={"Todas las solicitudes"} visibleButtons={["goBack", "info"]}/>
+
+            <MaterialReactTable table={table}/>
         </>
     )
 }
