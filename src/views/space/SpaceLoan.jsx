@@ -268,7 +268,7 @@ const SpaceLoan = () => {
                                         className="mb-5 text-black-50 font-italic"
                                         style={{fontSize: ".85rem"}}
                                     >
-                                        Hora de cierre: {spaceInfo.openTime}
+                                        Hora de apertura: {spaceInfo.openTime}
                                     </span>
                                 )}
                                 {errors.startTime && <div className="input-text-error show">{errors.startTime.message}</div>}
