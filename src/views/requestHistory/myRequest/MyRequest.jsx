@@ -180,17 +180,34 @@ const MyRequest = () => {
             id: 'actions',
             header: 'Acciones',
             size: 'small',
-            Cell: ({row}) => (
-                row.original.status !== "Ha sido cancelada." ? (
-                    <CancelButton handleCancel={handlePreCancel} row={row}/>
-                ) : (
-                    <div style={canceledButtonStyle}>
-                        <Typography variant="caption" style={{color: 'white', fontFamily: 'Montserrat'}}>
-                            Cancelado
-                        </Typography>
-                    </div>
-                )
-            ),
+            Cell: ({ row }) => {
+                const status = row.original.status;
+
+                if (status === "Ha sido cancelada.") {
+                    return (
+                        <div style={canceledButtonStyle}>
+                            <Typography variant="caption" style={{ color: 'white', fontFamily: 'Montserrat' }}>
+                                Cancelado
+                            </Typography>
+                        </div>
+                    );
+                }
+
+                if (status === "Ha sido aceptado.") {
+                    return (
+                        <div style={acceptButtonStyle}>
+                            <Typography variant="caption" style={{ color: 'white', fontFamily: 'Montserrat' }}>
+                                Aceptado
+                            </Typography>
+                        </div>
+                    );
+                }
+
+                // Para otros estados (pendiente, por renovar, etc.)
+                return (
+                    <CancelButton handleCancel={handlePreCancel} row={row} />
+                );
+            }
         },
     ];
 
@@ -206,17 +223,35 @@ const MyRequest = () => {
             id: 'actions',
             header: 'Acciones',
             size: 'small',
-            Cell: ({row}) => (
-                row.original.status !== "Ha sido cancelada." ? (
-                    <CancelButton handleCancel={handlePreCancel} row={row}/>
-                ) : (
-                    <div style={canceledButtonStyle}>
-                        <Typography variant="caption" style={{color: 'white', fontFamily: 'Montserrat'}}>
-                            Cancelado
-                        </Typography>
-                    </div>
-                )
-            ),
+            Cell: ({ row }) => {
+                const status = row.original.status;
+
+                if (status === "Ha sido cancelada.") {
+                    return (
+                        <div style={canceledButtonStyle}>
+                            <Typography variant="caption" style={{ color: 'white', fontFamily: 'Montserrat' }}>
+                                Cancelado
+                            </Typography>
+                        </div>
+                    );
+                }
+
+                if (status === "Ha sido aceptado.") {
+                    return (
+                        <div style={acceptButtonStyle}>
+                            <Typography variant="caption" style={{ color: 'white', fontFamily: 'Montserrat' }}>
+                                Aceptado
+                            </Typography>
+                        </div>
+                    );
+                }
+
+                // Para otros estados (pendiente, por renovar, etc.)
+                return (
+                    <CancelButton handleCancel={handlePreCancel} row={row} />
+                );
+            }
+
         },
     ];
 
@@ -243,6 +278,16 @@ const MyRequest = () => {
                     );
                 }
 
+                if (row.original.status === "Ha sido aceptado.") {
+                    return (
+                        <div style={acceptButtonStyle}>
+                            <Typography variant="caption" style={{color: 'white', fontFamily: 'Montserrat'}}>
+                                Aceptado
+                            </Typography>
+                        </div>
+                    );
+                }
+
                 const expirationDate = dayjs(row.original.expirationDate);
                 const today = dayjs();
                 const daysUntilExpiration = expirationDate.diff(today, 'day');
@@ -250,7 +295,8 @@ const MyRequest = () => {
                 return (
                     <>
                         <CancelButton handleCancel={handlePreCancel} row={row}/>
-                        {daysUntilExpiration >= 2 && row.original.status === "Ha sido aceptado." && (
+                        {
+                            daysUntilExpiration >= 2 && row.original.status === "Ha sido aceptado." && (
                             <RenewalButton renewAction={() => handlePreRenew(row)} row={row}/>
                         )}
                     </>
@@ -353,6 +399,20 @@ const MyRequest = () => {
         borderRadius: '8px',
         padding: '0 8px',
         background: gradientMapping['warning'],
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        transition: 'width 0.2s ease-in-out',
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+    };
+
+    const acceptButtonStyle = {
+        width: '90px',
+        height: '24px',
+        borderRadius: '8px',
+        padding: '0 8px',
+        background: gradientMapping['success'],
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
