@@ -48,7 +48,7 @@ const RequestManagementBanner = ({
                 open={isModalOpen}
                 onClose={handleCloseModal}
                 title="Información general"
-                description="Permite a los administradores o gestores visualizar y gestionar las solicitudes de recursos del sistema. Desde esta sección se puede acceder a los detalles de cada solicitud y realizar acciones como aprobar, denegar o dar seguimiento según el tipo y estado de la misma."
+                description="Interfaz diseñada para que Administradores y Gestores gestionen eficazmente las solicitudes de Activos, Productos y Espacios que se encuentran en estado pendiente."
             />
         </div>
     );
