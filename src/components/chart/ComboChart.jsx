@@ -50,8 +50,8 @@ const ComboChart = ({ incomeData, loanData }) => {
     datasets: [
       {
         type: 'bar',
-        label: 'Ingresos',
-        data: limitedIncomeValues,
+        label: 'Préstamos',
+        data: limitedLoanValues,
         backgroundColor: limitedLabels.map((_, index) => 
           `rgba(${parseInt(extendedColors[index % extendedColors.length].substring(1, 3), 16)}, 
                 ${parseInt(extendedColors[index % extendedColors.length].substring(3, 5), 16)}, 
@@ -66,8 +66,8 @@ const ComboChart = ({ incomeData, loanData }) => {
       },
       {
         type: 'line',
-        label: 'Préstamos',
-        data: limitedLoanValues,
+        label: 'Ingresos',
+        data: limitedIncomeValues,
         backgroundColor: '#e74a3b',
         borderColor: '#e74a3b',
         borderWidth: 2,

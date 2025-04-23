@@ -11,3 +11,12 @@ export async function saveSpaceRequest(spaceRequest) {
         handleAxiosError(error)
     }
 }
+
+export async function getAllSpaceRequests() {
+    try {
+        const { data } = await api.get(`${root}/all`)
+        return data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}
