@@ -49,8 +49,8 @@ const AllRequestBanner = ({
                 open={isModalOpen}
                 onClose={handleCloseModal}
                 title="Información general"
-                description="Representa una tabla unificada que muestra todas las solicitudes de recursos del sistema, excluyendo las que están pendientes o son renovaciones. Agrupa visualmente diferentes tipos de solicitudes (activos, productos y espacios) y presenta información clave como el tipo de solicitud, el usuario, el motivo, el recurso solicitado, la fecha y el estado actual."
-                />
+                description="Interfaz informativa dirigida a Administradores y Gestores, que presenta el historial completo de solicitudes de Activos, Productos y Espacios, omitiendo aquellas en estado pendiente o por renovar."
+            />
         </div>
     );
 };

@@ -50,7 +50,7 @@ const AssetRenewalBanner = ({
                 open={isModalOpen}
                 onClose={handleCloseModal}
                 title="Información general"
-                description="Este apartado muestra las solicitudes de renovación de activos, que son aquellos recursos previamente asignados y que los usuarios desean mantener o extender su uso. Los gestores o administradores tienen la capacidad de revisar estas solicitudes y decidir si aprueban o deniegan la renovación según las políticas y necesidades del sistema."
+                description="Interfaz diseñada para que Administradores y Gestores gestionen eficazmente las solicitudes de Activos, Productos y Espacios que se encuentran en estado por renovar."
             />
         </div>
     );
