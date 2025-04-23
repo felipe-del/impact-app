@@ -15,6 +15,13 @@ import useSpaceData from '../../hooks/apiData/space/SpaceData.jsx'
 import useAssetLoanData from '../../hooks/apiData/assetLoans/assetLoans.jsx';
 import useProductEntryData from "../../hooks/apiData/productEntries/productEntries.jsx";
 import useProductRequestStatsData from "../../hooks/apiData/productRequestStats/productRequestStats.jsx";
+import { getAllAssetRequest } from '../../api/assetRequest/assetRequest_API.js';
+import { getAllProductRequests } from '../../api/productRequest/productRequest.js';
+import { getAllSpaceRequests } from '../../api/spaceRequest/SpaceRequest.js';
+import { CSVLink } from "react-csv";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+
 
 const today = new Date();
 const pad = (num) => num.toString().padStart(2, '0');
@@ -66,6 +73,7 @@ const todayDate = {
     year: today.getFullYear(),
 }
 
+
 const Dashboard = () => {
 
     const [formData, setFormData] = useState(initialData);
@@ -83,6 +91,8 @@ const Dashboard = () => {
     const {assetLoans} = useAssetLoanData();
     const {productEntries} = useProductEntryData();
     const {productRequestStats} = useProductRequestStatsData();
+    const [requests,setRequests] = useState([]);
+    const [loading, setLoading] = useState(true)
     const totalAssets = assets?.data?.length || 0;
     const totalProducts = products?.data?.length || 0;
     const totalSpaces = spaces?.data?.length || 0;
@@ -98,10 +108,31 @@ const Dashboard = () => {
         endDate: formData.endDate,
     });
 
-    useEffect(() => {
-        console.log(assetLoans)
-        },[assetLoans],
-        [formData.startDate, formData.endDate]);
+    useEffect(()=>{
+        const fetchAllRequests = async () =>{
+            try{
+                const[assetRes,productRes,spaceRes] = await Promise.all([
+                    getAllAssetRequest(),
+                    getAllProductRequests(),
+                    getAllSpaceRequests()
+                ])
+                const assetRequests = assetRes?.data?.map(req => ({...req, tipo: "Activo"})) || []
+                const productRequests = productRes?.data?.map(req => ({...req, tipo: "Producto"})) || []
+                const spaceRequests = spaceRes?.data?.map(req => ({...req, tipo: "Espacio"})) || []
+                console.log(assetRequests)
+                console.log(productRequests)
+                console.log(spaceRequests)
+
+                const all = [...assetRequests,...productRequests,...spaceRequests]
+                setRequests(all)
+            }catch(error){
+                console.error("Error al cargar solicitudes", error)
+            }finally{
+                setLoading(false)
+            }
+        }
+        fetchAllRequests()
+    },[])
 
     const handleChange = (e) => {
         const {name, value} = e.target;
@@ -118,22 +149,18 @@ const Dashboard = () => {
         const {name, value} = e.target;
         setAssetsByPurchaseDate(prev => ({...prev, [name]: value}));
     };
-
     const handleLoanDateChange = (e) => {
         const {name, value} = e.target;
         setLoanDates(prev => ({...prev, [name]: value}));
     };
-
     const handleProductRequestsDateChange = (e) => {
         const {name, value} = e.target;
         setProductRequestsDates(prev => ({...prev, [name]: value}));
     };
-
     const handleProductEntriesDateChange = (e) => {
         const {name, value} = e.target;
         setProductEntriesDates(prev => ({...prev, [name]: value}));
     };
-
     const handleComparisonDateChange = (e) => {
         const {name, value} = e.target;
         setComparisonDates(prev => ({...prev, [name]: value}));
@@ -416,36 +443,134 @@ const Dashboard = () => {
         };
     };
 
-    const getComparisonData = (assets, assetLoans, startDate, endDate) => {
-        const incomeData = getAssetsByPurchaseDate(assets, startDate, endDate);
-        const loanData = getAssetsLoansByDate(assetLoans, startDate, endDate);
+    const getAllRequestByDate = (requests,startDate,endDate) => {
+        if (!startDate || !endDate) {
+            return {
+                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                values: Array(12).fill(0)
+            };
+        }
+        const start = new Date(startDate + "T00:00:00Z");
+        const end = new Date(endDate + "T23:59:59Z");
 
+        const monthlyCounts = {};
+
+        const currentDate = new Date(start);
+        while (currentDate <= end) {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            const key = `${year}-${month}`;
+            if (!monthlyCounts[key]) {
+                monthlyCounts[key] = 0;
+            }
+            currentDate.setMonth(currentDate.getMonth() + 1);
+        }
+        requests.forEach((request)=>{
+            if(!request.createdAt) return;
+
+            const createdAt = new Date(request.createdAt);
+            if(isNaN(createdAt)) return;
+
+            if(createdAt>= start && createdAt <= end){
+                const year = createdAt.getFullYear();
+                const month = createdAt.getMonth();
+                const key = `${year}-${month}`;
+                monthlyCounts[key] = (monthlyCounts[key] || 0) + 1;
+            }
+        })
+        const sortedRequests = Object.entries(monthlyCounts)
+            .sort(([keyA], [keyB]) => {
+                const [yearA, monthA] = keyA.split('-').map(Number);
+                const [yearB, monthB] = keyB.split('-').map(Number);
+                return yearB === yearA ? monthB - monthA : yearB - yearA;
+            })
+            .slice(0, 12);
+
+        const monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+        const labels = sortedRequests.map(([key]) => {
+            const [year, month] = key.split('-').map(Number);
+            return `${monthNames[month]} ${year}`;
+        });
+
+        const values = sortedRequests.map(([, count]) => count);
+
+        return {
+            labels: labels.reverse(),
+            values: values.reverse()
+        };
+    }    
+    
+    const getComparisonData = (requests, assets, startDate, endDate) => {
+        const loanData = getAllRequestByDate(requests, startDate, endDate); // ahora barras
+        const incomeData = getAssetsByPurchaseDate(assets, startDate, endDate); // ahora línea
+    
         // Unificar etiquetas asegurando que ambas series tienen la misma escala de tiempo
-        const labelsSet = new Set([...incomeData.labels, ...loanData.labels]);
+        const labelsSet = new Set([...loanData.labels, ...incomeData.labels]);
         const labels = Array.from(labelsSet).sort((a, b) => {
             const [monthA, yearA] = a.split(' ');
             const [monthB, yearB] = b.split(' ');
             const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
             return yearA - yearB || months.indexOf(monthA) - months.indexOf(monthB);
         });
-
+    
         // Mapear valores asegurando alineación con etiquetas
         const getValuesAligned = (data) => labels.map(label => {
             const index = data.labels.indexOf(label);
             return index !== -1 ? data.values[index] : 0;
         });
-
+    
         return {
-            incomeData: {
-                labels,
-                values: getValuesAligned(incomeData)
-            },
             loanData: {
                 labels,
                 values: getValuesAligned(loanData)
+            },
+            incomeData: {
+                labels,
+                values: getValuesAligned(incomeData)
             }
         };
     };
+    
+    
+    const csvRequestData = [
+        ["Fecha de solicitud", "Tipo", "Estado", "Usuario responsable"],
+        ...requests.map(req => [
+            req.createdAt,
+            req.tipo,
+            req.status?.description || "N/A",
+            req.user?.email || "N/A",
+        ])
+    ];
+    const handleExportToPDF = () => {
+        const doc = new jsPDF();
+    
+        // Título
+        doc.setFontSize(16);
+        doc.text("Bitácora: Préstamos del sistema", 14, 20);
+    
+        // Encabezados de tabla
+        const headers = [["Fecha de solicitud", "Tipo", "Estado", "Usuario responsable"]];
+    
+        // Datos de las solicitudes
+        const data = requests.map(req => [
+            req.createdAt,
+            req.tipo,
+            req.status?.description || "N/A",
+            req.user?.email || "N/A",
+            
+        ]);
+    
+        autoTable(doc, {
+            startY: 30,
+            head: headers,
+            body: data,
+            styles: { fontSize: 10 },
+            headStyles: { fillColor: [22, 160, 133] }, // Verde
+        });
+    
+        doc.save("Comparativo_Solicitudes.pdf");
+    };
+    
 
 
 
@@ -767,20 +892,6 @@ const Dashboard = () => {
                         <Card.Header>
                             <div className="d-flex flex-row align-items-center justify-content-between">
                                 <h6 className="m-0 font-weight-bold text-primary">Ingresos de Activos</h6>
-                                <div className="dropdown no-arrow">
-                                    <a className="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <FontAwesomeIcon icon={faEllipsisV} className="fa-sm fa-fw text-gray-400"/>
-                                    </a>
-                                    <div className="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                         aria-labelledby="dropdownMenuLink">
-                                        <div className="dropdown-header">Opciones:</div>
-                                        <a className="dropdown-item" href="#">Ver por año</a>
-                                        <a className="dropdown-item" href="#">Ver por semestre</a>
-                                        <div className="dropdown-divider"></div>
-                                        <a className="dropdown-item" href="#">Exportar datos</a>
-                                    </div>
-                                </div>
                             </div>
                         </Card.Header>
                         <Card.Body>
@@ -836,20 +947,7 @@ const Dashboard = () => {
                         <Card.Header>
                             <div className="d-flex flex-row align-items-center justify-content-between">
                                 <h6 className="m-0 font-weight-bold text-primary">Solicitudes de activos por mes</h6>
-                                <div className="dropdown no-arrow">
-                                    <a className="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <FontAwesomeIcon icon={faEllipsisV} className="fa-sm fa-fw text-gray-400"/>
-                                    </a>
-                                    <div className="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                         aria-labelledby="dropdownMenuLink">
-                                        <div className="dropdown-header">Opciones:</div>
-                                        <a className="dropdown-item" href="#">Ver por año</a>
-                                        <a className="dropdown-item" href="#">Ver por semestre</a>
-                                        <div className="dropdown-divider"></div>
-                                        <a className="dropdown-item" href="#">Exportar datos</a>
-                                    </div>
-                                </div>
+
                             </div>
                         </Card.Header>
                         <Card.Body>
@@ -911,20 +1009,6 @@ const Dashboard = () => {
                         <Card.Header>
                             <div className="d-flex flex-row align-items-center justify-content-between">
                                 <h6 className="m-0 font-weight-bold text-primary">Solicitudes de Productos por Mes</h6>
-                                <div className="dropdown no-arrow">
-                                    <a className="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <FontAwesomeIcon icon={faEllipsisV} className="fa-sm fa-fw text-gray-400"/>
-                                    </a>
-                                    <div className="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                         aria-labelledby="dropdownMenuLink">
-                                        <div className="dropdown-header">Opciones:</div>
-                                        <a className="dropdown-item" href="#">Ver por año</a>
-                                        <a className="dropdown-item" href="#">Ver por semestre</a>
-                                        <div className="dropdown-divider"></div>
-                                        <a className="dropdown-item" href="#">Exportar datos</a>
-                                    </div>
-                                </div>
                             </div>
                         </Card.Header>
                         <Card.Body>
@@ -980,20 +1064,7 @@ const Dashboard = () => {
                         <Card.Header>
                             <div className="d-flex flex-row align-items-center justify-content-between">
                                 <h6 className="m-0 font-weight-bold text-primary">Ingresos de productos por mes</h6>
-                                <div className="dropdown no-arrow">
-                                    <a className="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <FontAwesomeIcon icon={faEllipsisV} className="fa-sm fa-fw text-gray-400"/>
-                                    </a>
-                                    <div className="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                         aria-labelledby="dropdownMenuLink">
-                                        <div className="dropdown-header">Opciones:</div>
-                                        <a className="dropdown-item" href="#">Ver por año</a>
-                                        <a className="dropdown-item" href="#">Ver por semestre</a>
-                                        <div className="dropdown-divider"></div>
-                                        <a className="dropdown-item" href="#">Exportar datos</a>
-                                    </div>
-                                </div>
+
                             </div>
                         </Card.Header>
                         <Card.Body>
@@ -1061,10 +1132,18 @@ const Dashboard = () => {
                                     <div className="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                                          aria-labelledby="dropdownMenuLink">
                                         <div className="dropdown-header">Opciones:</div>
-                                        <a className="dropdown-item" href="#">Ver por año</a>
-                                        <a className="dropdown-item" href="#">Ver por semestre</a>
-                                        <div className="dropdown-divider"></div>
-                                        <a className="dropdown-item" href="#">Exportar datos</a>
+                                            <div className="dropdown-divider"></div>
+                                            <CSVLink
+                                            data={csvRequestData}
+                                            filename="Comparativo_Solicitudes.csv"
+                                            className="dropdown-item"
+                                            style={{ color: 'black', textDecoration: 'none' }}
+                                            >
+                                            Exportar a CSV
+                                            </CSVLink>
+                                            <a className="dropdown-item" href="#" onClick={handleExportToPDF}>
+                                            Exportar a PDF
+                                            </a>
                                     </div>
                                 </div>
                             </div>
@@ -1074,8 +1153,8 @@ const Dashboard = () => {
                                 {/* Espacio para gráfico combinado */}
                                 <ComboChart
                                     {...getComparisonData(
+                                        requests,
                                         assets?.data || [],
-                                        assetLoans?.data || [],
                                         comparisonDates.startDate,
                                         comparisonDates.endDate
                                     )}
