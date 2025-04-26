@@ -278,16 +278,6 @@ const MyRequest = () => {
                     );
                 }
 
-                if (row.original.status === "Ha sido aceptado.") {
-                    return (
-                        <div style={acceptButtonStyle}>
-                            <Typography variant="caption" style={{color: 'white', fontFamily: 'Montserrat'}}>
-                                Aceptado
-                            </Typography>
-                        </div>
-                    );
-                }
-
                 const expirationDate = dayjs(row.original.expirationDate);
                 const today = dayjs();
                 const daysUntilExpiration = expirationDate.diff(today, 'day');
