@@ -284,7 +284,6 @@ const MyRequest = () => {
 
                 return (
                     <>
-                        <CancelButton handleCancel={handlePreCancel} row={row}/>
                         {
                             daysUntilExpiration >= 2 && row.original.status === "Ha sido aceptado." && (
                             <RenewalButton renewAction={() => handlePreRenew(row)} row={row}/>
