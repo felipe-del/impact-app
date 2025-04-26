@@ -13,7 +13,7 @@ const RenewalButton = ({ renewAction, row }) => {
                 onMouseEnter={() => setHover(true)}
                 onMouseLeave={() => setHover(false)}
                 style={{
-                    width: hover ? '90px' : '24px',
+                    width: hover ? '90px' : '28px',
                     height: '24px',
                     borderRadius: '8px',
                     padding: '0 8px',
