@@ -83,3 +83,12 @@ export async function acceptProductRequest(productRequestId){
         handleAxiosError(error)
     }
 }
+
+export async function rejectProductRequest(productRequestId){
+    try {
+        const { data } = await api.post(`${root}/reject/${productRequestId}`)
+        return data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}
