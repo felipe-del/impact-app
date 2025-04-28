@@ -672,16 +672,7 @@ const Dashboard = () => {
                                 <div className="dropdown no-arrow">
                                     <a className="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <FontAwesomeIcon icon={faEllipsisV} className="fa-sm fa-fw text-gray-400"/>
                                     </a>
-                                    <div className="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                         aria-labelledby="dropdownMenuLink">
-                                        <div className="dropdown-header">Encabezado del Menú:</div>
-                                        <a className="dropdown-item" href="#">Acción</a>
-                                        <a className="dropdown-item" href="#">Otra acción</a>
-                                        <div className="dropdown-divider"></div>
-                                        <a className="dropdown-item" href="#">Algo más aquí</a>
-                                    </div>
                                 </div>
                             </div>
                         </Card.Header>
@@ -701,17 +692,7 @@ const Dashboard = () => {
                                 <div className="dropdown no-arrow">
                                     <a className="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <FontAwesomeIcon icon={faEllipsisV} className="fa-sm fa-fw text-gray-400"/>
                                     </a>
-                                    <div className="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                         aria-labelledby="dropdownMenuLink">
-                                        <div className="dropdown-header">Encabezado del Menú:</div>
-                                        <a className="dropdown-item" href="#" onClick={inventoryValueAllTime}>Valor
-                                            total del inventario</a>
-                                        <a className="dropdown-item" href="#">Otra acción</a>
-                                        <div className="dropdown-divider"></div>
-                                        <a className="dropdown-item" href="#">Algo más aquí</a>
-                                    </div>
                                 </div>
                             </div>
                         </Card.Header>
