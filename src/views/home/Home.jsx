@@ -7,7 +7,7 @@ const Home = () => {
                 <div className="row">
                     <div className="col-md-6 mb-4 d-flex">
                         <div className="entity-card flex-fill">
-                            <img src="/logo_3_lightblue.png" alt="Escudo IMPACT" className="impact-img" />
+                            <img src="/REDUCE_IMPACT_WHITE_LOGO - Copy.png" alt="Escudo IMPACT" className="impact-img" />
                             <h5 className="entity-title"><b>IMPACT</b></h5>
                             <p className="paragraph">
                                 El sistema <i>IMPACT</i> es una plataforma web diseñada para gestionar el inventario
