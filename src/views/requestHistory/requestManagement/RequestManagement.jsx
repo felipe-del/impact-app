@@ -2,28 +2,45 @@ import RequestManagementBanner from "./RequestManagementBanner.jsx";
 import {useEffect, useMemo, useState} from "react";
 import {MaterialReactTable, useMaterialReactTable} from "material-react-table";
 import {MRT_Localization_ES} from "material-react-table/locales/es";
-import TableApproveOrCancelRequestButtons from "../../../components/button/TableApproveOrCancelRequestButtons.jsx";
-import EditButton from "../../../components/button/EditButton.jsx";
 import GenericModal from "../../../components/popUp/generic/GenericModal.jsx";
-import {acceptAssetRequest, getAssetRequestsWithEarring} from "../../../api/assetRequest/assetRequest_API.js";
-import {acceptProductRequest, getProductRequestsWithEarring} from "../../../api/productRequest/productRequest.js";
-import {acceptSpaceRequest, getSpaceRequestsWithEarring} from "../../../api/SpaceRndR/spaceRndR_API.js";
+import {
+    acceptAssetRequest,
+    getAssetRequestsWithEarring,
+    rejectAssetRequest
+} from "../../../api/assetRequest/assetRequest_API.js";
+import {
+    acceptProductRequest,
+    getProductRequestsWithEarring,
+    rejectProductRequest
+} from "../../../api/productRequest/productRequest.js";
+import {
+    acceptSpaceRequest,
+    getSpaceRequestsWithEarring,
+    rejectSpaceRequest
+} from "../../../api/SpaceRndR/spaceRndR_API.js";
 import RequestButton from "../../../components/button/RequestButton.jsx";
-import {Box, Typography} from "@mui/material";
+import {Box, IconButton, Tooltip, Typography} from "@mui/material";
 import {StatusTranslator} from "../../../util/Translator.js";
 import {getStateIcon} from "../../../util/SelectIconByStatus.jsx";
 import {getStateColor} from "../../../util/SelectColorByStatus.js";
 import LoadingPointsSpinner from "../../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
+import CheckIcon from "@mui/icons-material/Check";
+import CloseIcon from "@mui/icons-material/Close";
+import {gradientMapping as toastr} from "../../../style/codeStyle.js";
+import {toast} from "react-hot-toast";
 
 const RequestManagement = () => {
     const [requests, setRequests] = useState([]);
     const [loading, setLoading] = useState(true);
     const [editRowId, setEditRowId] = useState(null);
     const [tempRequest, setTempRequest] = useState({});
-    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+    const [showConfirmationAcceptModal, setShowConfirmationAcceptModal] = useState(false);
+    const [showConfirmationRejectModal, setShowConfirmationRejectModal] = useState(false);
+    const handleShowConfirmationAcceptModal = () => setShowConfirmationAcceptModal(true);
+    const handleHideConfirmationAcceptModal = () => setShowConfirmationAcceptModal(false);
 
-    const handleShowConfirmationModal = () => setShowConfirmationModal(true);
-    const handleHideConfirmationModal = () => setShowConfirmationModal(false);
+    const handleShowConfirmationRejectModal = () => setShowConfirmationRejectModal(true);
+    const handleHideConfirmationRejectModal = () => setShowConfirmationRejectModal(false);
 
     const cancelEditing = () => {
         setEditRowId(null);
@@ -65,23 +82,46 @@ const RequestManagement = () => {
 
     const saveChanges = async (rowId) => {
         const request = tempRequest[rowId];
+        let response
         try {
             if (request.tipo === "Activo") {
-                await acceptAssetRequest(request.id);
+                response = await acceptAssetRequest(request.id);
             } else if (request.tipo === "Producto") {
-                await acceptProductRequest(request.id);
+                response = await acceptProductRequest(request.id);
             } else if (request.tipo === "Espacio") {
-                await acceptSpaceRequest(request.id);
+                response = await acceptSpaceRequest(request.id);
             }
-
+            toast.success(response.message);
             setRequests(prev => prev.filter(r => r.id !== request.id));
             cancelEditing();
         } catch (error) {
             console.error("Error al aprobar solicitud", error);
         } finally {
-            handleHideConfirmationModal();
+            handleHideConfirmationAcceptModal();
         }
     };
+
+    const rejectChanges = async (rowId) => {
+        const request = tempRequest[rowId];
+        let response
+        try {
+            if (request.tipo === "Activo") {
+                response = await rejectAssetRequest(request.id);
+            } else if (request.tipo === "Producto") {
+                response = await rejectProductRequest(request.id);
+            } else if (request.tipo === "Espacio") {
+                response = await rejectSpaceRequest(request.id);
+            }
+            toast.success(response.message);
+            setRequests(prev => prev.filter(r => r.id !== request.id));
+            cancelEditing();
+        } catch (error) {
+            console.error("Error al cancelar solicitud", error);
+        } finally {
+            handleHideConfirmationAcceptModal();
+        }
+    };
+
 
     const columns = useMemo(() => [
         {
@@ -171,12 +211,55 @@ const RequestManagement = () => {
                         gap: '10px',
                         flexWrap: 'wrap'
                     }}>
-                        <TableApproveOrCancelRequestButtons
-                            confirmationModal={handleShowConfirmationModal}
-                            cancelEditing={cancelEditing}
-                            row={row}
-                        />
+                        {/* Botón Aprobar */}
+                        <Tooltip title="Aprobar" arrow>
+                            <IconButton
+                                onClick={handleShowConfirmationAcceptModal}
+                                color="success"
+                                style={{
+                                    width: '90px',
+                                    height: '34px',
+                                    borderRadius: '8px 8px 8px 8px',
+                                    padding: '0',
+                                    backgroundColor: '#4caf50',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    transition: 'width 0.2s ease-in-out',
+                                    overflow: 'hidden',
+                                    whiteSpace: 'nowrap',
+                                }}
+                            >
+                                <CheckIcon style={{ fontSize: '16px', color: 'white', marginRight: '6px' }} />
+                                <Typography variant="caption" style={{ color: 'white', fontSize: '12px', fontFamily: 'Montserrat' }}>Aprobar</Typography>
+                            </IconButton>
+                        </Tooltip>
+
+                        {/* Botón Rechazar */}
+                        <Tooltip title="Rechazar" arrow>
+                            <IconButton
+                                onClick={handleShowConfirmationRejectModal}
+                                color="error"
+                                style={{
+                                    width: '90px',
+                                    height: '34px',
+                                    borderRadius: '8px 8px 8px 8px',
+                                    padding: '0',
+                                    backgroundColor: '#f44336',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    transition: 'width 0.2s ease-in-out',
+                                    overflow: 'hidden',
+                                    whiteSpace: 'nowrap',
+                                }}
+                            >
+                                <CloseIcon style={{ fontSize: '16px', color: 'white', marginRight: '6px' }} />
+                                <Typography variant="caption" style={{ color: 'white', fontSize: '12px', fontFamily: 'Montserrat' }}>Rechazar</Typography>
+                            </IconButton>
+                        </Tooltip>
                     </div>
+
                 ) : (
                     <RequestButton handleEdit={handleEdit} row={row} />
                 )
@@ -394,11 +477,19 @@ const RequestManagement = () => {
             <MaterialReactTable table={table} />
 
             <GenericModal
-                show={showConfirmationModal}
-                onHide={handleHideConfirmationModal}
+                show={showConfirmationAcceptModal}
+                onHide={handleHideConfirmationAcceptModal}
                 title="¿Desea aprobar la solicitud?"
                 bodyText="Esta acción no se puede deshacer."
                 onButtonClick={() => saveChanges(editRowId)}
+            />
+
+            <GenericModal
+                show={showConfirmationRejectModal}
+                onHide={handleHideConfirmationRejectModal}
+                title="¿Desea rechazar la solicitud?"
+                bodyText="Esta acción no se puede deshacer."
+                onButtonClick={() => rejectChanges(editRowId)}
             />
         </>
     );
