@@ -47,3 +47,12 @@ export async function acceptSpaceRequest(spaceRequestId){
         handleAxiosError(error)
     }
 }
+
+export async function rejectSpaceRequest(spaceRequestId){
+    try {
+        const { data } = await api.post(`${root}/reject/${spaceRequestId}`)
+        return data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}
