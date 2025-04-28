@@ -249,14 +249,13 @@ const MyRequest = () => {
                 const daysUntilExpiration = expirationDate.diff(today, 'day');
 
                 return (
-                    <>
-                        <CancelButton handleCancel={handlePreCancel} row={row}/>
-                        {daysUntilExpiration >= 2 && row.original.status === "Ha sido aceptado." && (
-
-                            <RenewalButton renewAction={() => handlePreRenew(row)} row={row}/>
-                        )}
-                    </>
-                );
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      <CancelButton handleCancel={handlePreCancel} row={row} />
+                      {daysUntilExpiration >= 2 && row.original.status === "Ha sido aceptado." && (
+                        <RenewalButton renewAction={() => handlePreRenew(row)} row={row} />
+                      )}
+                    </div>
+                  );
             }
         },
     ];
