@@ -139,3 +139,12 @@ export async function acceptAssetRequest(assetRequestId) {
         handleAxiosError(error)
     }
 }
+
+export async function rejectAssetRequest(assetRequestId) {
+    try {
+        const { data } = await api.post(`${root}/reject/${assetRequestId}`)
+        return data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}
