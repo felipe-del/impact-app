@@ -28,7 +28,14 @@
     filter: brightness(1.2);
 }
 
+.impact-img-side{
+    width: 55px;
+}
 
+.impact-img-side:hover{
+    transform: rotate(-3deg) scale(1.1);
+    filter: brightness(1.2);
+}
 
 
 

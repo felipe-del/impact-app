@@ -30,10 +30,11 @@ const Sidebar = ({ role }) => {
                     <img className="small-logo" src='/logo_3_lightblue.png' alt="IMPACT LOGO"/>
                 </div>*/}
 
-                <div className="sidebar-brand-icon rotate-n-15">
-                    <i className="fas fa-clipboard-list"></i>
+                <div>
+                    <img src="/NEW_IMPACT_REDUCE_BLUE_LOGO.png" alt="Escudo IMPACT" className="impact-img-side" />
                 </div>
-                <div className="sidebar-brand-text mx-3">IMPACT <sup>BETA</sup></div>
+                <div className="sidebar-brand-text mx-3">IMPACT 
+                </div>
             </a>
 
             <hr className="sidebar-divider my-0"/>
