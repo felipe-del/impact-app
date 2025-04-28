@@ -112,7 +112,7 @@ const AssetRenewalTable = () => {
           size: 'small',
           Cell: ({ row }) => {
               return (
-                  <div>
+                  <div style={{ display: 'flex', gap: '8px' }}>
                       <AcceptButton handleAccept={handlePreAccept} row={row} />
                       <CancelButton handleCancel={handlePreCancel} row={row} />
                   </div>
