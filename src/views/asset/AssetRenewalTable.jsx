@@ -70,7 +70,6 @@ const AssetRenewalTable = () => {
 
     const handlePreAccept = (row) => {
         setRequestToHandle(row);
-        console.log(requestToHandle.original.asset);
         setShowAcceptRequestModal(true);
     }
 
@@ -97,7 +96,7 @@ const AssetRenewalTable = () => {
     useEffect(() => {
       fetchRenewRequests();
     }, [user?.id]);
-  
+
     const columns = [
       { accessorKey: "id", header: "ID" },
       { accessorKey: "asset", header: "Activo" },
@@ -120,7 +119,7 @@ const AssetRenewalTable = () => {
           }
       }
     ];
-  
+
     const data = useMemo(() => {
       return requests.map((r) => ({
         id: r.id,
@@ -133,7 +132,7 @@ const AssetRenewalTable = () => {
         status: r.status?.description || "Pendiente de renovación",
       }));
     }, [requests]);
-  
+
     const table = useMaterialReactTable({
       columns,
       data,
@@ -145,7 +144,7 @@ const AssetRenewalTable = () => {
         pagination: { pageSize: 5 },
       },
     });
-  
+
     return (
       <>
 
@@ -173,7 +172,7 @@ const AssetRenewalTable = () => {
       </>
     );
   };
-  
+
 
 export default AssetRenewalTable;
 
