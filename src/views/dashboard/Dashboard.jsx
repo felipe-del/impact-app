@@ -843,7 +843,7 @@ const Dashboard = () => {
                 <div className="col-lg-12 mb-4 mt-4">
                     <Card className="shadow mb-4 h-100">
                         <Card.Header>
-                            <h6 className="m-2 font-weight-bold text-primary">Préstamos del último mes</h6>
+                            <h6 className="m-2 font-weight-bold text-primary">Préstamos del sistema</h6>
                         </Card.Header>
                         <Card.Body>
                             <div className="row">
