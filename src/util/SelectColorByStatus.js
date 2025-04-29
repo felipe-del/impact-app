@@ -9,13 +9,13 @@ export const getStateColor = (state) => {
         case 'FUERA DE SERVICIO':
             return 'red';
         case 'PENDIENTE':
-            return 'blue';
+            return 'violet';
         case 'DEVUELTO':
             return 'orange';
         case 'ACEPTADO':
             return 'green';
         case 'CANCELADO':
-            return 'red';
+            return 'salmon';
         default:
             return 'inherit';
     }

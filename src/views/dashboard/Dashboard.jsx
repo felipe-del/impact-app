@@ -124,6 +124,7 @@ const Dashboard = () => {
                 console.log(spaceRequests)
 
                 const all = [...assetRequests,...productRequests,...spaceRequests]
+                console.log(all)
                 setRequests(all)
             }catch(error){
                 console.error("Error al cargar solicitudes", error)
@@ -570,9 +571,19 @@ const Dashboard = () => {
     
         doc.save("Comparativo_Solicitudes.pdf");
     };
-    
 
 
+    // Contamos la cantidad de cada tipo
+    const activos = requests.filter(req => req.tipo === "Activo").length;
+    const productos = requests.filter(req => req.tipo === "Producto").length;
+    const espacios = requests.filter(req => req.tipo === "Espacio").length;
+
+    const total = activos + productos + espacios;
+
+    // Calculamos porcentajes
+    const activosPercentage = total ? (activos / total) * 100 : 0;
+    const productosPercentage = total ? (productos / total) * 100 : 0;
+    const espaciosPercentage = total ? (espacios / total) * 100 : 0;
 
     return (
         <div>
@@ -832,23 +843,26 @@ const Dashboard = () => {
                 <div className="col-lg-12 mb-4 mt-4">
                     <Card className="shadow mb-4 h-100">
                         <Card.Header>
-                            <h6 className="m-2 font-weight-bold text-primary">Préstamos del último mes</h6>
+                            <h6 className="m-2 font-weight-bold text-primary">Préstamos del sistema</h6>
                         </Card.Header>
                         <Card.Body>
                             <div className="row">
                                 <div className="col-md-4">
-                                    <h4 className="small font-weight-bold mb-1">Activos <span
-                                        className="float-right">20%</span></h4>
+                                    <h4 className="small font-weight-bold mb-1">
+                                        Activos <span className="float-right">{activosPercentage.toFixed(0)}%</span>
+                                    </h4>
                                     <ProgressBar now={34} variant="danger" className="mb-2"/>
                                 </div>
                                 <div className="col-md-4">
-                                    <h4 className="small font-weight-bold mb-1">Productos <span
-                                        className="float-right">40%</span></h4>
+                                    <h4 className="small font-weight-bold mb-1">
+                                        Productos <span className="float-right">{productosPercentage.toFixed(0)}%</span>
+                                    </h4>
                                     <ProgressBar now={47} variant="warning" className="mb-2"/>
                                 </div>
                                 <div className="col-md-4">
-                                    <h4 className="small font-weight-bold mb-1">Espacios <span
-                                        className="float-right">40%</span></h4>
+                                    <h4 className="small font-weight-bold mb-1">
+                                        Espacios <span className="float-right">{espaciosPercentage.toFixed(0)}%</span>
+                                    </h4>
                                     <ProgressBar now={11} variant="info" className="mb-2"/>
                                 </div>
                             </div>
