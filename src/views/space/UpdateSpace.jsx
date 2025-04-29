@@ -59,7 +59,7 @@ const UpdateSpace = () => {
                     maxPeople: spaceToUpdate.maxPeople,
                     openTime: spaceToUpdate.openTime,
                     closeTime: spaceToUpdate.closeTime,
-                    spaceStatusId: spaceToUpdate.spaceStatus.id
+                    spaceStatusId: spaceToUpdate.spaceStatus.name
                 }
             )
         }
@@ -110,7 +110,6 @@ const UpdateSpace = () => {
     }
 
     const handleSubmit = async () => {
-        const spaceStatusName = spaceStatusData.find(status => status.id === parseInt(formData.spaceStatusId))?.name;
         const requestData = {
             name: formData.name,
             spaceCode: formData.spaceCode,
@@ -118,7 +117,7 @@ const UpdateSpace = () => {
             maxPeople: formData.maxPeople,
             openTime: formData.openTime,
             closeTime: formData.closeTime,
-            spaceStatusName: spaceStatusName
+            spaceStatusName: formData.spaceStatusId,
         };
         try {
             const response = await updateSpace(id, requestData);
@@ -306,7 +305,7 @@ const UpdateSpace = () => {
                                         return (
                                             <option
                                                 key={status.id}
-                                                value={status.id}
+                                                value={status.name}
                                                 disabled={isDisabled}
                                                 style={isDisabled ? { color: "#999", backgroundColor: "#f0f0f0", cursor: "not-allowed" } : {}}
                                             >
