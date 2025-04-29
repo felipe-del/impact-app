@@ -95,7 +95,7 @@ const UpdateAsset = () => {
                     brand: selectedAsset.brand.id,
                     subcategory: selectedAsset.subcategory.id,
                     responsible: selectedAsset.user.id,
-                    status: selectedAsset.status.id,
+                    status: selectedAsset.status.name,
                     currency: selectedAsset.currency.id,
                     assetModel: selectedAsset.model.id,
                     assetSeries: selectedAsset.assetSeries,
@@ -169,6 +169,7 @@ const UpdateAsset = () => {
 
     const handleSubmit = async () => {
         const currencyName = currencies.find(currency => currency.id === parseInt(formData.currency)).stateName;
+
         const requestData = {
             purchaseDate: formData.purchaseDate,
             value: formData.value,
@@ -176,13 +177,14 @@ const UpdateAsset = () => {
             supplierId: parseInt(formData.supplier),
             subCategoryId: parseInt(formData.subcategory),
             brandId: parseInt(formData.brand),
-            statusName: parseInt(formData.status),
+            statusName: formData.status,
             assetSeries: formData.assetSeries,
             plateNumber: formData.plateNumber,
             assetModelId: parseInt(formData.assetModel),
             currencyName: currencyName,
             locationNumberId: parseInt(formData.locationNumber),
         };
+        console.log(requestData)
         try {
             const response = await updateAsset(id, requestData);
             toast.success(response.message, { duration: 7000 });
@@ -433,7 +435,7 @@ const UpdateAsset = () => {
                                         return (
                                             <option
                                                 key={status.id}
-                                                value={status.id}
+                                                value={status.name}
                                                 disabled={isDisabled}
                                                 style={isDisabled ? { color: "#999", backgroundColor: "#f0f0f0", cursor: "not-allowed" } : {}}
                                             >
