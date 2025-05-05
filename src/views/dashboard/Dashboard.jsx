@@ -501,12 +501,15 @@ const Dashboard = () => {
         };
     }    
     
-    const getComparisonData = (requests, assets, startDate, endDate) => {
-        const loanData = getAllRequestByDate(requests, startDate, endDate); // ahora barras
-        const incomeData = getAssetsByPurchaseDate(assets, startDate, endDate); // ahora línea
+    const getComparisonData = (requests, assets, productEntries, startDate, endDate) => {
+        const loanData = getAllRequestByDate(requests, startDate, endDate);
+    
+        // Obtener ambos conjuntos de datos
+        const assetsData = getAssetsByPurchaseDate(assets, startDate, endDate);
+        const productsData = getProductEntriesByDate(productEntries, startDate, endDate);
     
         // Unificar etiquetas asegurando que ambas series tienen la misma escala de tiempo
-        const labelsSet = new Set([...loanData.labels, ...incomeData.labels]);
+        const labelsSet = new Set([...loanData.labels, ...assetsData.labels, ...productsData.labels]);
         const labels = Array.from(labelsSet).sort((a, b) => {
             const [monthA, yearA] = a.split(' ');
             const [monthB, yearB] = b.split(' ');
@@ -514,11 +517,16 @@ const Dashboard = () => {
             return yearA - yearB || months.indexOf(monthA) - months.indexOf(monthB);
         });
     
-        // Mapear valores asegurando alineación con etiquetas
+        // Función para alinear y mapear valores por etiqueta
         const getValuesAligned = (data) => labels.map(label => {
             const index = data.labels.indexOf(label);
             return index !== -1 ? data.values[index] : 0;
         });
+    
+        // Alinear y sumar los datos de incomeData
+        const alignedAssets = getValuesAligned(assetsData);
+        const alignedProducts = getValuesAligned(productsData);
+        const combinedIncome = alignedAssets.map((val, idx) => val + alignedProducts[idx]);
     
         return {
             loanData: {
@@ -527,10 +535,11 @@ const Dashboard = () => {
             },
             incomeData: {
                 labels,
-                values: getValuesAligned(incomeData)
+                values: combinedIncome
             }
         };
     };
+    
     
     
     const csvRequestData = [
@@ -543,34 +552,61 @@ const Dashboard = () => {
         ])
     ];
     const handleExportToPDF = () => {
-        const doc = new jsPDF();
+        const doc = new jsPDF({
+            orientation: 'landscape',
+            unit: 'mm',
+            format: [297, 210]
+        });
     
-        // Título
+        const currentDate = new Date();
+        const formattedDate = currentDate.toLocaleDateString();
+        doc.setFontSize(8);
+        doc.text(`Fecha de elaboración: ${formattedDate}`, 80, 10);
+    
+        const CIMPA = "/UCR_CIMPA_BANNER_LOGO.png";
+        doc.addImage(CIMPA, 'PNG', 10, 15, 80, 22);
+    
+        const impactLogo = "/NEW_IMPACT_WHITE_LOGO.png";
+        doc.addImage(impactLogo, 'PNG', 140, 10, 60, 34);
+    
+        doc.setFont("helvetica", "bold");
         doc.setFontSize(16);
-        doc.text("Bitácora: Préstamos del sistema", 14, 20);
+        doc.text("Bitácora: Préstamos del sistema", 80, 50);  // Título centrado
     
-        // Encabezados de tabla
+        doc.setFontSize(14);
+        doc.text("Registros de solicitudes", 14, 60);
+    
         const headers = [["Fecha de solicitud", "Tipo", "Estado", "Usuario responsable"]];
-    
-        // Datos de las solicitudes
         const data = requests.map(req => [
             req.createdAt,
             req.tipo,
             req.status?.description || "N/A",
             req.user?.email || "N/A",
-            
         ]);
     
         autoTable(doc, {
-            startY: 30,
+            startY: 65,
             head: headers,
             body: data,
             styles: { fontSize: 10 },
-            headStyles: { fillColor: [22, 160, 133] }, // Verde
+            headStyles: {
+                fillColor: [0, 60, 116],  // Azul oscuro (como en el otro método)
+                textColor: 255,
+                fontSize: 9,
+                fontStyle: 'bold',
+            },
+            bodyStyles: {
+                textColor: 50,
+            },
+            alternateRowStyles: {
+                fillColor: [240, 240, 240]
+            },
+            margin: { top: 20, left: 10, right: 10 },
         });
     
-        doc.save("Comparativo_Solicitudes.pdf");
+        doc.save("Comparativo_SolicitudesVSIngresos.pdf");
     };
+    
 
 
     // Contamos la cantidad de cada tipo
@@ -1150,6 +1186,7 @@ const Dashboard = () => {
                                     {...getComparisonData(
                                         requests,
                                         assets?.data || [],
+                                        productEntries?.data || [],
                                         comparisonDates.startDate,
                                         comparisonDates.endDate
                                     )}
