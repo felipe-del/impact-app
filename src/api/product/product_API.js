@@ -1,5 +1,6 @@
 import api from "../../config/axios.js";
 import handleAxiosError from "../handleAxiosError.js";
+import {StatusTranslator} from "../../util/Translator.js";
 
 const root = '/api/product'
 
@@ -24,7 +25,26 @@ export async function deleteProduct(id) {
 export async function getAllProduct() {
     try {
         const { data } = await api.get(root)
-        return data
+
+        const translatedProducts = data.data.map(product => {
+            const originalStatus = product.status?.name;
+            const translatedStatus = StatusTranslator.translate(originalStatus);
+
+            return {
+                ...product,
+                status: {
+                    ...product.status,
+                    name: translatedStatus
+                }
+            };
+        });
+
+        const response = {
+            ...data,
+            data: translatedProducts
+        };
+
+        return response;
     } catch (error) {
         handleAxiosError(error)
     }

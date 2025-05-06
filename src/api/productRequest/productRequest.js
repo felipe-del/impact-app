@@ -1,5 +1,6 @@
 import api from "../../config/axios.js";
 import handleAxiosError from "../handleAxiosError.js";
+import {StatusTranslator} from "../../util/Translator.js";
 
 const root = '/api/product-request'
 
@@ -69,7 +70,25 @@ export async function getProductRequestsExcludingEarringAndRenewal(){
 export async function getProductRequestsWithEarring(){
     try {
         const { data } = await api.get(`${root}/filter/earring`)
-        return data
+        const translatedRequest = data.data.map(request => {
+            const originalStatus = request.status?.name;
+            const translatedStatus = StatusTranslator.translate(originalStatus);
+
+            return {
+                ...request,
+                status: {
+                    ...request.status,
+                    name: translatedStatus
+                }
+            };
+        });
+
+        const response = {
+            ...data,
+            data: translatedRequest
+        };
+
+        return response;
     } catch (error) {
         handleAxiosError(error)
     }

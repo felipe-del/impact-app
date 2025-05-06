@@ -314,7 +314,6 @@ const AssetTable = () => {
                 toast.success("No hay solicitudes pendientes.", { icon: "🔔" });
                 return
             }
-            console.log(assetRequests)
         } catch (error) {
             console.error(error);
             toast.error(error.message);
@@ -334,7 +333,6 @@ const AssetTable = () => {
                 toast.success("No hay activos en el sistema.", { icon: "🔔" });
                 return
             }
-            console.log(inventoryValue[0]?.amount)
         } catch (error) {
             console.error(error);
             toast.error(error.message);
