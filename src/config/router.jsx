@@ -78,9 +78,9 @@ export default function Router() {
                         <Route path="allRequest" element={<AllRequest/>}/>
                         <Route path="requestManagement" element={<RequestManagement/>}/>
                         <Route path="assetRenewalTable" element={<AssetRenewalTable/>}/>
+                        <Route path="dashboard" element={<Dashboard />} />
                     </Route>
                     <Route element={<ProtectedRoute allowedRoles={["ADMINISTRATOR", "MANAGER","TEACHER"]} />}>
-                        <Route path="dashboard" element={<Dashboard />} />
                         <Route path="productLoan" element={<ProductLoan/>} />
                         <Route path="spaceLoan" element={<SpaceLoan/>} />
                         <Route path="assetLoan" element={<AssetLoan/>} />
