@@ -1,5 +1,6 @@
 import api from "../../config/axios.js";
 import handleAxiosError from "../handleAxiosError.js";
+import {StatusTranslator} from "../../util/Translator.js";
 
 const root = '/api/asset'
 
@@ -23,12 +24,33 @@ export async function deleteAsset(id) {
 
 export async function getAllAssets() {
     try {
-        const { data } = await api.get(root)
-        return data
+        const { data } = await api.get(root);
+
+        const translatedAssets = data.data.map(asset => {
+            const originalStatus = asset.status?.name;
+            const translatedStatus = StatusTranslator.translate(originalStatus);
+
+            return {
+                ...asset,
+                status: {
+                    ...asset.status,
+                    name: translatedStatus
+                }
+            };
+        });
+
+        const response = {
+            ...data,
+            data: translatedAssets
+        };
+
+        return response;
     } catch (error) {
-        handleAxiosError(error)
+        handleAxiosError(error);
     }
 }
+
+
 
 export async function getAssetById(id) {
     try {
