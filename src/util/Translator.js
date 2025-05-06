@@ -17,7 +17,7 @@ export class StatusTranslator {
     };
 
     static translate(status) {
-        return this.statusMap[status] || "Desconocido";
+        return this.statusMap[status] ?? status;
     }
 }
 
