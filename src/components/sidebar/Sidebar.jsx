@@ -37,14 +37,20 @@ const Sidebar = ({ role }) => {
                 </div>
             </a>
 
-            <hr className="sidebar-divider my-0"/>
 
+
+            {(role === 'MANAGER' || role === 'ADMINISTRATOR') && (
+                <>
+                    <hr className="sidebar-divider my-0"/>
             <li className="nav-item active" id="dashboard-item">
             <Link className="nav-link" to="/app/dashboard">
                     <i className="fas fa-fw fa-tachometer-alt"></i>
                     <span>Panel</span>
                 </Link>
             </li>
+
+                </>
+                )}
             <hr className="sidebar-divider" />
 
             <div className="sidebar-heading" id="complementos-heading">
