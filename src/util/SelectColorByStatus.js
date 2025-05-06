@@ -17,6 +17,6 @@ export const getStateColor = (state) => {
         case 'CANCELADO':
             return 'salmon';
         default:
-            return 'inherit';
+            return 'black';
     }
 };
