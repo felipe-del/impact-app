@@ -1,7 +1,7 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faClipboardCheck } from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faPlus, faClipboardCheck} from '@fortawesome/free-solid-svg-icons';
 import DevicesIcon from '@mui/icons-material/Devices';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import './sidebar.css';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
@@ -20,7 +20,7 @@ import LocalConvenienceStoreIcon from '@mui/icons-material/LocalConvenienceStore
 import PropTypes from 'prop-types';
 
 
-const Sidebar = ({ role }) => {
+const Sidebar = ({role}) => {
 
     return (
         <ul className="navbar-nav bg-custom sidebar sidebar-dark accordion" id="accordionSidebar">
@@ -31,30 +31,32 @@ const Sidebar = ({ role }) => {
                 </div>*/}
 
                 <div>
-                    <img src="/NEW_IMPACT_REDUCE_BLUE_LOGO.png" alt="Escudo IMPACT" className="impact-img-side" />
+                    <img src="/NEW_IMPACT_REDUCE_BLUE_LOGO.png" alt="Escudo IMPACT" className="impact-img-side"/>
                 </div>
-                <div className="sidebar-brand-text mx-3">IMPACT 
+                <div className="sidebar-brand-text mx-3">IMPACT
                 </div>
             </a>
 
 
-
             {(role === 'MANAGER' || role === 'ADMINISTRATOR') && (
                 <>
-                    <hr className="sidebar-divider my-0"/>
-            <li className="nav-item active" id="dashboard-item">
-            <Link className="nav-link" to="/app/dashboard">
-                    <i className="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Panel</span>
-                </Link>
-            </li>
+                    <hr className="sidebar-divider"/>
+                    <div className="sidebar-heading" id="complementos-heading">
+                        Reportes
+                    </div>
+                    <li className="nav-item " id="dashboard-item">
+                        <Link className="nav-link" to="/app/dashboard">
+                            <i className="fas fa-fw fa-tachometer-alt"></i>
+                            <span>Gráficos y Estadísticas</span>
+                        </Link>
+                    </li>
 
                 </>
-                )}
-            <hr className="sidebar-divider" />
+            )}
+            <hr className="sidebar-divider"/>
 
             <div className="sidebar-heading" id="complementos-heading">
-                Recursos del Sistema
+                Recursos
             </div>
 
             {/* Activos Section */}
@@ -65,18 +67,23 @@ const Sidebar = ({ role }) => {
                         <i className="fas fa-fw fa-desktop"></i>
                         <span>Activos</span>
                     </a>
-                    <div id="collapseActivos" className="collapse" aria-labelledby="headingActivos" data-parent="#accordionSidebar">
+                    <div id="collapseActivos" className="collapse" aria-labelledby="headingActivos"
+                         data-parent="#accordionSidebar">
                         <div className="bg-white py-2 collapse-inner rounded">
                             <Link className="collapse-item" to="/app/assetTable"><DevicesIcon/> Activo</Link>
-                            <Link className="collapse-item" to="/app/assetSubCategoryManagement"><DragIndicatorIcon/> Subcategoría</Link>
+                            <Link className="collapse-item"
+                                  to="/app/assetSubCategoryManagement"><DragIndicatorIcon/> Subcategoría</Link>
                             <Link className="collapse-item" to="/app/supplierManagement"><LocalShippingIcon/> Proveedor</Link>
 
                             <Link className="collapse-item" to="/app/assetCategoryManagement"><CategoryIcon/> Categoría</Link>
-                            <Link className="collapse-item" to="/app/assetModelManagement"><ScatterPlotIcon/> Modelos</Link>
-                            <Link className="collapse-item" to="/app/brandManagement"><LocalOfferIcon icon={faPlus} /> Marca</Link>
-                            <Link className="collapse-item" to="/app/spaceEquipmentManagement"><ConstructionIcon/> Equipo Tecnológico</Link>
-                            <Link className="collapse-item" to="/app/assetLoan"><CreditScoreIcon /> Solicitud</Link>
-                            </div>
+                            <Link className="collapse-item"
+                                  to="/app/assetModelManagement"><ScatterPlotIcon/> Modelos</Link>
+                            <Link className="collapse-item" to="/app/brandManagement"><LocalOfferIcon
+                                icon={faPlus}/> Marca</Link>
+                            <Link className="collapse-item"
+                                  to="/app/spaceEquipmentManagement"><ConstructionIcon/> Equipo Tecnológico</Link>
+                            <Link className="collapse-item" to="/app/assetLoan"><CreditScoreIcon/> Solicitud</Link>
+                        </div>
                     </div>
                 </li>
             )}
@@ -89,9 +96,11 @@ const Sidebar = ({ role }) => {
                         <i className="fas fa-fw fa-desktop"></i>
                         <span>Activos</span>
                     </a>
-                    <div id="collapseActivos" className="collapse" aria-labelledby="headingActivos" data-parent="#accordionSidebar">
+                    <div id="collapseActivos" className="collapse" aria-labelledby="headingActivos"
+                         data-parent="#accordionSidebar">
                         <div className="bg-white py-2 collapse-inner rounded">
-                            <Link className="collapse-item" to="/app/assetLoan"><FontAwesomeIcon icon={faClipboardCheck} /> Solicitud</Link>
+                            <Link className="collapse-item" to="/app/assetLoan"><FontAwesomeIcon
+                                icon={faClipboardCheck}/> Solicitud</Link>
                         </div>
                     </div>
                 </li>
@@ -105,17 +114,22 @@ const Sidebar = ({ role }) => {
                         <i className="fas fa-fw fa-building"></i>
                         <span>Espacios</span>
                     </a>
-                    <div id="collapseEspacios" className="collapse" aria-labelledby="headingEspacios" data-parent="#accordionSidebar">
+                    <div id="collapseEspacios" className="collapse" aria-labelledby="headingEspacios"
+                         data-parent="#accordionSidebar">
                         <div className="bg-white py-2 collapse-inner rounded">
-                            <Link className="collapse-item" to="/app/spaceManagement"><RoomIcon /> Espacios</Link>
+                            <Link className="collapse-item" to="/app/spaceManagement"><RoomIcon/> Espacios</Link>
 
-                            <Link className="collapse-item" to="/app/locationTypeManagement"><MapIcon/> Tipo de Ubicación</Link>
-                            <Link className="collapse-item" to="/app/locationNumberManagement"><FmdGoodIcon/> Número de Ubicación</Link>
-                            <Link className="collapse-item" to="/app/buildingManagement"><AccountBalanceIcon /> Edificio</Link>
-                            <Link className="collapse-item" to="/app/buildingLocationManagement"><LocalConvenienceStoreIcon /> Pisos de Edificio </Link>
+                            <Link className="collapse-item" to="/app/locationTypeManagement"><MapIcon/> Tipo de
+                                Ubicación</Link>
+                            <Link className="collapse-item" to="/app/locationNumberManagement"><FmdGoodIcon/> Número de
+                                Ubicación</Link>
+                            <Link className="collapse-item" to="/app/buildingManagement"><AccountBalanceIcon/> Edificio</Link>
+                            <Link className="collapse-item"
+                                  to="/app/buildingLocationManagement"><LocalConvenienceStoreIcon/> Pisos de Edificio
+                            </Link>
 
                             <Link className="collapse-item" to="/app/spaceLoan"><CreditScoreIcon/> Solicitud de Espacios</Link>
-                         </div>
+                        </div>
                     </div>
                 </li>
             )}
@@ -128,9 +142,11 @@ const Sidebar = ({ role }) => {
                         <i className="fas fa-fw fa-building"></i>
                         <span>Espacios</span>
                     </a>
-                    <div id="collapseEspacios" className="collapse" aria-labelledby="headingEspacios" data-parent="#accordionSidebar">
+                    <div id="collapseEspacios" className="collapse" aria-labelledby="headingEspacios"
+                         data-parent="#accordionSidebar">
                         <div className="bg-white py-2 collapse-inner rounded">
-                            <Link className="collapse-item" to="/app/spaceLoan"><FontAwesomeIcon icon={faClipboardCheck} /> Solicitud de Espacios</Link>
+                            <Link className="collapse-item" to="/app/spaceLoan"><FontAwesomeIcon
+                                icon={faClipboardCheck}/> Solicitud de Espacios</Link>
                         </div>
                     </div>
                 </li>
@@ -145,13 +161,17 @@ const Sidebar = ({ role }) => {
                         <i className="fas fa-fw fa-box"></i>
                         <span>Productos</span>
                     </a>
-                    <div id="collapseProductos" className="collapse" aria-labelledby="headingProductos" data-parent="#accordionSidebar">
+                    <div id="collapseProductos" className="collapse" aria-labelledby="headingProductos"
+                         data-parent="#accordionSidebar">
                         <div className="bg-white py-2 collapse-inner rounded">
-                            <Link className="collapse-item" to="/app/productManagement"><ProductionQuantityLimitsIcon /> Productos</Link>
+                            <Link className="collapse-item"
+                                  to="/app/productManagement"><ProductionQuantityLimitsIcon/> Productos</Link>
 
-                            <Link className="collapse-item" to="/app/productCategoryManagement"><CategoryIcon/> Categoría</Link>
-                            <Link className="collapse-item" to="/app/productCategoryTypeManagement"><FitbitIcon/> Tipo de Categoría</Link>
-                            <Link className="collapse-item" to="/app/productLoan"><CreditScoreIcon /> Solicitud</Link>
+                            <Link className="collapse-item"
+                                  to="/app/productCategoryManagement"><CategoryIcon/> Categoría</Link>
+                            <Link className="collapse-item" to="/app/productCategoryTypeManagement"><FitbitIcon/> Tipo
+                                de Categoría</Link>
+                            <Link className="collapse-item" to="/app/productLoan"><CreditScoreIcon/> Solicitud</Link>
 
                         </div>
                     </div>
@@ -166,15 +186,17 @@ const Sidebar = ({ role }) => {
                         <i className="fas fa-fw fa-box"></i>
                         <span>Productos</span>
                     </a>
-                    <div id="collapseProductos" className="collapse" aria-labelledby="headingProductos" data-parent="#accordionSidebar">
+                    <div id="collapseProductos" className="collapse" aria-labelledby="headingProductos"
+                         data-parent="#accordionSidebar">
                         <div className="bg-white py-2 collapse-inner rounded">
-                            <Link className="collapse-item" to="/app/productLoan"><FontAwesomeIcon icon={faClipboardCheck} /> Solicitud</Link>
-                         </div>
+                            <Link className="collapse-item" to="/app/productLoan"><FontAwesomeIcon
+                                icon={faClipboardCheck}/> Solicitud</Link>
+                        </div>
                     </div>
                 </li>
             )}
 
-            <hr className="sidebar-divider" />
+            <hr className="sidebar-divider"/>
 
             <div className="sidebar-heading" id="complementos-heading">
                 Historial
@@ -194,7 +216,8 @@ const Sidebar = ({ role }) => {
                         <i className="fas fa-fw fa-clipboard-list"></i>
                         <span>Solicitudes</span>
                     </a>
-                    <div id="collapseMisSolicitudes" className="collapse" aria-labelledby="headingMisSolicitudes" data-parent="#accordionSidebar">
+                    <div id="collapseMisSolicitudes" className="collapse" aria-labelledby="headingMisSolicitudes"
+                         data-parent="#accordionSidebar">
                         <div className="bg-white py-2 collapse-inner rounded">
                             <Link className="collapse-item" to="/app/myRequest">
                                 <i className="fas fa-fw fa-list-ol"></i> Mis Solicitudes </Link>
@@ -217,7 +240,6 @@ const Sidebar = ({ role }) => {
             )}
 
 
-
             {/*<li className="nav-item" id="charts-item">
                 <Link className="nav-link" to="/charts">
                     <i className="fas fa-fw fa-chart-area"></i>
@@ -227,7 +249,7 @@ const Sidebar = ({ role }) => {
 
             {(role === 'MANAGER' || role === 'ADMINISTRATOR') && (
                 <div>
-                    <hr className="sidebar-divider" />
+                    <hr className="sidebar-divider"/>
                     <div className="sidebar-heading" id="complementos-heading">
                         Administrativo
                     </div>
@@ -239,10 +261,10 @@ const Sidebar = ({ role }) => {
                     </li>
                 </div>
             )}
-            <hr className="sidebar-divider" />
+            <hr className="sidebar-divider"/>
 
             {/* Checkbox oculto para controlar la animación */}
-            <input type="checkbox" id="toggle-info" className="sidebar-checkbox" />
+            <input type="checkbox" id="toggle-info" className="sidebar-checkbox"/>
 
             {/* Ícono para mostrar/ocultar información */}
             <label htmlFor="toggle-info" className="sidebar-toggle">
@@ -251,9 +273,12 @@ const Sidebar = ({ role }) => {
             </label>
 
             <div className="sidebar-card">
-                <img className="sidebar-card-illustration img-fluid" src="/Escudo_UCR.png" alt="Escudo de la Universidad" />
-                <p className="text-center"><strong>Conoce más sobre CIMPA</strong> y su impacto en nuestros proyectos y en la comunidad.</p>
-                <a className="btn btn-info btn-sm" href="https://www.cimpa.ucr.ac.cr/" target="_blank" rel="noopener noreferrer">
+                <img className="sidebar-card-illustration img-fluid" src="/Escudo_UCR.png"
+                     alt="Escudo de la Universidad"/>
+                <p className="text-center"><strong>Conoce más sobre CIMPA</strong> y su impacto en nuestros proyectos y
+                    en la comunidad.</p>
+                <a className="btn btn-info btn-sm" href="https://www.cimpa.ucr.ac.cr/" target="_blank"
+                   rel="noopener noreferrer">
                     Visita el sitio web de CIMPA
                 </a>
             </div>
