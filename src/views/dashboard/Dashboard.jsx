@@ -700,23 +700,30 @@ const Dashboard = () => {
                 <div className="col-xl-8 col-lg-8 col-md-12">
                     <Card className="shadow mb-4 h-100">
                         <Card.Header>
-                            <div className="d-flex flex-row align-items-center justify-content-between">
-                                <h6 className="m-0 font-weight-bold text-primary">Resumen de Activos</h6>
-                                <div className="dropdown no-arrow">
-                                    <a className="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    </a>
-                                </div>
-                            </div>
+                            <h6 className="m-2 font-weight-bold text-primary">Préstamos del sistema</h6>
                         </Card.Header>
                         <Card.Body>
-                            <div className="chart-area mb-4">
-                                <AreaChart/>
+                            <div className="d-flex justify-content-around align-items-center h-100">
+                                {[
+                                    {label: 'Activos', value: activosPercentage, variant: 'danger'},
+                                    {label: 'Productos', value: productosPercentage, variant: 'warning'},
+                                    {label: 'Espacios', value: espaciosPercentage, variant: 'info'}
+                                ].map((item, idx) => (
+                                    <div key={idx} className="text-center" style={{width: '30%'}}>
+                                        <h4 className="small font-weight-bold mb-2">
+                                            {item.label} <span className="d-block mt-1">{item.value.toFixed(0)}%</span>
+                                        </h4>
+                                        <ProgressBar
+                                            now={item.value}
+                                            variant={item.variant}
+                                            style={{height: '10vh', borderRadius: '1vh'}}
+                                        />
+                                    </div>
+                                ))}
                             </div>
                         </Card.Body>
                     </Card>
                 </div>
-
                 <div className="col-xl-4 col-lg-4 col-md-12">
                     <Card className="shadow mb-4 h-100">
                         <Card.Header>
@@ -860,42 +867,11 @@ const Dashboard = () => {
                         </Card.Body>
                     </Card>
                 </div>
-
-                <div className="col-lg-12 mb-4 mt-4">
-                    <Card className="shadow mb-4 h-100">
-                        <Card.Header>
-                            <h6 className="m-2 font-weight-bold text-primary">Préstamos del sistema</h6>
-                        </Card.Header>
-                        <Card.Body>
-                            <div className="row">
-                                <div className="col-md-4">
-                                    <h4 className="small font-weight-bold mb-1">
-                                        Activos <span className="float-right">{activosPercentage.toFixed(0)}%</span>
-                                    </h4>
-                                    <ProgressBar now={34} variant="danger" className="mb-2"/>
-                                </div>
-                                <div className="col-md-4">
-                                    <h4 className="small font-weight-bold mb-1">
-                                        Productos <span className="float-right">{productosPercentage.toFixed(0)}%</span>
-                                    </h4>
-                                    <ProgressBar now={47} variant="warning" className="mb-2"/>
-                                </div>
-                                <div className="col-md-4">
-                                    <h4 className="small font-weight-bold mb-1">
-                                        Espacios <span className="float-right">{espaciosPercentage.toFixed(0)}%</span>
-                                    </h4>
-                                    <ProgressBar now={11} variant="info" className="mb-2"/>
-                                </div>
-                            </div>
-                        </Card.Body>
-
-                    </Card>
-                </div>
             </div>
 
             <div className="row mb-4 mt-3">
                 <div className="col-12 text-center">
-                    <hr className="mb-3 border-primary" />
+                    <hr className="mb-3 border-primary"/>
                     <h4 className="font-weight-bold text-primary">📊 Estadísticas de Activos</h4>
                 </div>
             </div>
