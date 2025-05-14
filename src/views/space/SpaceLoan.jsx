@@ -172,7 +172,7 @@ const SpaceLoan = () => {
                                         clearErrors("selectedSpace");
                                     }}
                                 >
-                                    <option value="">Seleccione un activo</option>
+                                    <option value="">Seleccione un espacio</option>
                                     {spaceData && spaceData.length > 0 ? (
                                         spaceData
                                             .filter(space => space.spaceStatus.name.toLowerCase() !== "earring")
