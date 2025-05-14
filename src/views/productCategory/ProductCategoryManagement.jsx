@@ -1,3 +1,10 @@
+/**
+ * ProductCategoryManagement Component
+ * 
+ * This component is used to manage product categories in the system.
+ * It includes functionalities to create, update, and delete product categories.
+ * It also displays a table with the list of product categories and their details.
+ */
 import ProductCategoryBanner from "./ProductCategoryBanner.jsx";
 import useProductCategoryData from "../../hooks/apiData/productCategory/productCategoryData.jsx";
 import {useEffect, useMemo, useState} from "react";
@@ -17,6 +24,12 @@ import {
 } from "../../api/productCategory/productCategory_API.js";
 import LoadingPointsSpinner from "../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
 
+/**
+ * This component validates the product category data.
+ * 
+ * @param {object} values - The product category data to validate.
+ * @returns {boolean} - Returns true if the data is valid, false otherwise.
+ */
 const ProductCategoryManagement = () => {
 
     const {productCategories, isLoading, isError, refetch} = useProductCategoryData();
@@ -40,11 +53,14 @@ const ProductCategoryManagement = () => {
         if (productCategories) setProductCategoryData(productCategories.data);
         if (unitOfMeasurements) setUnitOfMeasurementData(unitOfMeasurements.data);
         if (productCategoryTypes) setProductCategoryTypeData(productCategoryTypes.data);
-        console.log(productCategories.data);
-        console.log(unitOfMeasurements.data);
-        console.log(productCategoryTypes.data);
     }, [productCategories, unitOfMeasurements, productCategoryTypes]);
 
+    /**
+     * Validates the product category data.
+     * 
+     * @param {object} values - The product category data to validate.
+     * @returns {boolean} - Returns true if the data is valid, false otherwise.
+     */
     const validateProductCategory = (values) => {
         if (!values.name) {
             toast.error("El campo 'Nombre' es requerido.");
@@ -65,6 +81,13 @@ const ProductCategoryManagement = () => {
         return true;
     }
 
+    /**
+     * Handles the creation of a new product category.
+     * 
+     * @param {object} values - The product category data to create.
+     * @param {object} table - The table instance.
+     * @return {Promise<void>} - A promise that resolves when the product category is created.
+     */
     const handleCreateProductCategory = async ({ values, table }) => {
         if (!validateProductCategory(values)) return;
         try {
@@ -85,6 +108,12 @@ const ProductCategoryManagement = () => {
         }
     }
 
+    /**
+     * Handles the deletion of a product category.
+     * 
+     * @param {void}
+     * @returns {Promise<void>} - A promise that resolves when the product category is deleted.
+     */
     const handleDeleteProductCategory = async () => {
         if (!rowToEdit?.original?.id) {
             toast.error("Error al eliminar: ID no encontrado.");
@@ -100,10 +129,16 @@ const ProductCategoryManagement = () => {
         }
     }
 
+    /**
+     * Handles the update of a product category.
+     * 
+     * @param {object} values - The product category data to update.
+     * @param {object} row - The row instance.
+     * @return {Promise<void>} - A promise that resolves when the product category is updated.
+     */
     const handleUpdateProductCategory = async ({ values, row }) => {
         if (!validateProductCategory(values)) return;
         try {
-            console.log(values)
             const categoryTypeId = productCategoryTypeData.find((type) => type.name === values["categoryType.name"])?.id;
             const unitOfMeasurementId = unitOfMeasurementData.find((type) => type.name === values["unitOfMeasurement.name"])?.id;
             const response = await updateProductCategory(row.original.id, {
@@ -116,7 +151,6 @@ const ProductCategoryManagement = () => {
             table.setEditingRow(null);
             refetch();
         } catch (error) {
-            console.log(error);
             toast.error(error.message);
         }
     }

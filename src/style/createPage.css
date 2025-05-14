@@ -22,14 +22,14 @@
 
 .input-text-error {
     margin-top: 7px;
-    color: #f44336; /* Rojo para el mensaje de error */
+    color: #f44336;
     font-family: 'Montserrat', sans-serif;
     font-size: .85rem;
-    display: none; /* Inicialmente está oculto */
+    display: none;
 }
 
 .input-text-error.show {
-    display: block; /* Muestra el error cuando se añade la clase 'show' */
+    display: block; 
 }
 
 .text-danger {

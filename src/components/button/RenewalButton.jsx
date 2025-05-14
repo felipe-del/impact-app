@@ -1,8 +1,23 @@
+/**
+ * RenewalButton Component
+ * 
+ * This component renders a button with a renewal icon and a tooltip.
+ * When hovered, it expands to show the text "Renovar".
+ * It is used to renew a row in a table or list.
+ */
 import { useState } from "react";
 import { IconButton, Tooltip, Typography } from "@mui/material";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import PropTypes from "prop-types";
 
+/**
+ * RenewalButton component that displays a renewal icon and expands to show text on hover.
+ * 
+ * @component
+ * @param {function} renewAction - Function to call when the button is clicked.
+ * @param {object} row - The row data associated with the button.
+ * @returns {JSX.Element} The rendered RenewalButton component.
+ */
 const RenewalButton = ({ renewAction, row }) => {
     const [hover, setHover] = useState(false);
 

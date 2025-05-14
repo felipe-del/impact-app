@@ -33,11 +33,11 @@ export const bannerStyle = {
 };
 
 export const gradientMapping = {
-    darkPrimary: 'linear-gradient(45deg, #005DA4, #0078D4)', // Dark Primary Gradient
-    primary: 'linear-gradient(45deg, #1976d2, #42a5f5)', // Primary Gradient
-    secondary: 'linear-gradient(45deg, #dc004e, #f73378)', // Secondary Gradient
-    error: 'linear-gradient(45deg, #d32f2f, #f44336)', // Error Gradient
-    warning: 'linear-gradient(45deg, #f57c00, #ff9800)', // Warning Gradient
-    info: 'linear-gradient(45deg, #0288d1, #03a9f4)', // Info Gradient
-    success: 'linear-gradient(45deg, #388e3c, #4caf50)', // Success Gradient
+    darkPrimary: 'linear-gradient(45deg, #005DA4, #0078D4)', 
+    primary: 'linear-gradient(45deg, #1976d2, #42a5f5)', 
+    secondary: 'linear-gradient(45deg, #dc004e, #f73378)', 
+    error: 'linear-gradient(45deg, #d32f2f, #f44336)', 
+    warning: 'linear-gradient(45deg, #f57c00, #ff9800)', 
+    info: 'linear-gradient(45deg, #0288d1, #03a9f4)',
+    success: 'linear-gradient(45deg, #388e3c, #4caf50)', 
 };

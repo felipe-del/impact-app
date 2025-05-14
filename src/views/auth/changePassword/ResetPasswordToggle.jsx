@@ -1,3 +1,11 @@
+/**
+ * ResetPasswordToggle component
+ * 
+ * This component handles the toggle between the "Forgot Password" and "Reset Password" views.
+ * It uses React Router for navigation and manages the state of the email sent status.
+ * It also includes a useEffect hook to check for an authentication token in local storage.
+ * If the token is found, it redirects the user to the app page.
+ */
 import {useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import './resetPasswordToggle.css';
@@ -6,9 +14,14 @@ import NorthWestIcon from '@mui/icons-material/NorthWest';
 import ForgotPassword from "../../../components/changePassword/forgotPassword/ForgotPassword.jsx";
 import ResetPassword from "../../../components/changePassword/resetPassword/ResetPassword.jsx";
 
-
+/**
+ * ResetPasswordToggle component that handles the toggle between the "Forgot Password" and "Reset Password" views.
+ * 
+ * @component
+ * @returns {JSX.Element} - The ResetPasswordToggle component.
+ */
 const ResetPasswordToggle = () => {
-    const [isSendEmail, setIsSendEmail] = useState(false); // Default to send email view
+    const [isSendEmail, setIsSendEmail] = useState(false); 
 
     const navigate = useNavigate();
 
@@ -19,17 +32,32 @@ const ResetPasswordToggle = () => {
         }
     }, [navigate]);
 
-    // Callback to update `isSendEmail`
+    /**
+     * Handles the email sent status and updates the state accordingly.
+     * 
+     * @param {boolean} emailSent - The status of the email sent.
+     * @returns {void}
+     */
     const handleEmailSent = () => {
         setIsSendEmail(true);
     };
 
-    // Navigate to login page
+    /**
+     * Handles the back to login action and navigates to the login page.
+     * 
+     * @param {void}
+     * @returns {void}
+     */
     const handleBackToLogin = () => {
         navigate('/auth');
     };
 
-    // Resend token
+    /**
+     * Handles the resend token action and updates the state accordingly.
+     * 
+     * @param {void}
+     * @returns {void}
+     */
     const handleResendToken = () => {
         if (isSendEmail) {
             setIsSendEmail(false);

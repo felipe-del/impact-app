@@ -2,8 +2,15 @@ import api from "../../config/axios.js";
 import handleAxiosError from "../handleAxiosError.js";
 import {StatusTranslator} from "../../util/Translator.js";
 
+// Defines the base API path for product-related requests
 const root = '/api/product'
 
+/**
+ * Updates a product with the given ID on the server.
+ * @param {string} id - The ID of the product to update.
+ * @param {object} product - The updated product data.
+ * @returns {object} - The updated product data returned from the server.
+ */
 export async function updateProduct(id, product) {
     try {
         const { data } = await api.put(`${root}/${id}`, product)
@@ -13,6 +20,11 @@ export async function updateProduct(id, product) {
     }
 }
 
+/**
+ * Deletes a product with the given ID from the server.
+ * @param {string} id - The ID of the product to delete.
+ * @returns {object} - The server's response after deletion.
+ */
 export async function deleteProduct(id) {
     try {
         const response = await api.delete(`${root}/${id}`)
@@ -22,6 +34,10 @@ export async function deleteProduct(id) {
     }
 }
 
+/**
+ * Retrieves all products from the server and translates their status names.
+ * @returns {object} - The response object containing the list of products with translated status names.
+ */
 export async function getAllProduct() {
     try {
         const { data } = await api.get(root)
@@ -50,6 +66,11 @@ export async function getAllProduct() {
     }
 }
 
+/**
+ * Saves a new product to the server.
+ * @param {object} product - The product data to save.
+ * @returns {object} - The saved product data returned from the server.
+ */
 export async function saveProduct(product) {
     try {
         const { data } = await api.post(root, product)
@@ -58,6 +79,12 @@ export async function saveProduct(product) {
         handleAxiosError(error)
     }
 }
+
+/**
+ * Updates the availability status of a product with the given ID on the server.
+ * @param {string} productId - The ID of the product to update.
+ * @returns {object} - The updated product data returned from the server.
+ */
 export async function productAvailable(productId) {
     try {
         const { data } = await api.put(`${root}/1/${productId}`)

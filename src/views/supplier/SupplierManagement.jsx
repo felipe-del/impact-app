@@ -1,3 +1,13 @@
+/**
+ * SupplierManagement Component
+ * 
+ * This component is used to manage suppliers in the system.
+ * It includes functionalities to create, update, and delete suppliers.
+ * It also displays a table with the list of suppliers and their details.
+ * It uses Material-UI for styling and icons.
+ * It also includes a modal for displaying confirmation messages.
+ * It uses the Material React Table library for displaying the table.
+ */
 import useSupplierData from "../../hooks/apiData/supplierData/SupplierData.jsx";
 import {useEffect, useMemo, useState} from "react";
 import useEntityTypeData from "../../hooks/apiData/entityType/entityTypeData.jsx";
@@ -18,7 +28,12 @@ const entityTypesStatic = [
 ];
 
 
-
+/**
+ * This component manages the suppliers in the system.
+ * 
+ * @component
+ * @return {JSX.Element} - The SupplierManagement component.
+ */
 const SupplierManagement = () => {
 
     const { suppliers, isLoading, isError, refetch } = useSupplierData();
@@ -66,6 +81,12 @@ const SupplierManagement = () => {
 
     ], []);
 
+    /**
+     * Validates the supplier data.
+     * 
+     * @param {object} values - The supplier data to validate.
+     * @return {boolean} - Returns true if the data is valid, false otherwise.
+     */
     const validateSupplier = (values) => {
         const errors = [];
         if (!values.name) errors.push("El nombre no puede estar vacío.");
@@ -82,6 +103,13 @@ const SupplierManagement = () => {
         return true;
     }
 
+    /**
+     * Handles the creation of a new supplier.
+     * 
+     * @param {object} values - The supplier data to create.
+     * @param {object} table - The table instance.
+     * @return {Promise<void>} - A promise that resolves when the supplier is created.
+     */
     const handleCreateSupplier = async ({ values, table }) => {
 
         if (!validateSupplier(values)) return;
@@ -104,6 +132,13 @@ const SupplierManagement = () => {
         }
     }
 
+    /**
+     * Handles the update of an existing supplier.
+     * 
+     * @param {object} values - The supplier data to update.
+     * @param {object} table - The table instance.
+     * @return {Promise<void>} - A promise that resolves when the supplier is updated.
+     */
     const handleUpdateSupplier = async ({ values, table }) => {
         if (!validateSupplier(values)) return;
         try {
@@ -124,6 +159,12 @@ const SupplierManagement = () => {
         }
     }
 
+    /**
+     * Handles the deletion of a supplier.
+     * 
+     * @param {void}
+     * @return {Promise<void>} - A promise that resolves when the supplier is deleted.
+     */
     const handleDeleteSupplier = async () => {
         if (!rowToEdit?.original?.id) {
             toast.error("Error al eliminar: ID no encontrado.");
@@ -157,7 +198,7 @@ const SupplierManagement = () => {
         onCreatingRowSave: handleCreateSupplier,
         onEditingRowSave: handleUpdateSupplier,
         renderRowActions: ({ row, table }) => {
-            if (!row?.original) return null; // Evita errores si row no está bien definido
+            if (!row?.original) return null; 
 
             return (
                 <Box sx={{ display: 'flex', gap: '1rem' }}>

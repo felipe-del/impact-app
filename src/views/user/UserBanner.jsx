@@ -1,3 +1,11 @@
+/**
+ * User Banner Component
+ * 
+ * This component is used to display a banner for the User management page.
+ * It includes a title and action buttons for navigation and exporting data.
+ * It uses Material-UI for styling and icons.
+ * It also includes a modal for displaying roles and states.
+ */
 import { useState } from "react";
 import { Menu, MenuItem } from "@mui/material";
 import LockResetIcon from '@mui/icons-material/LockReset';
@@ -8,17 +16,27 @@ import PropTypes from "prop-types";
 import BannerActionButton from "../../components/button/BannerActionButton.jsx";
 import {bannerStyle} from "../../style/codeStyle.js";
 
+/**
+ * UserBanner component that displays a banner for the User management page.
+ * 
+ * @component
+ * @param {string} title - The title of the banner.
+ * @param {Array} flatUsers - The list of users to export.
+ * @param {function} exportToPDF - The function to call when exporting to PDF.
+ * @param {function} handleOpen - The function to call when opening the roles and states modal.
+ * @param {Array} visibleButtons - The list of buttons to display on the banner.
+ * @param {function} showChangePasswordForm - The function to call when showing the change password form.
+ * @return {JSX.Element} - The UserBanner component.
+ */
 const UserBanner = ({ title = "", flatUsers, exportToPDF, handleOpen,
                         visibleButtons = ["csv", "pdf", "roles", "createUser", "export"], showChangePasswordForm }) => {
-    const navigate = useNavigate(); // Hook para la navegación
+    const navigate = useNavigate(); 
     const [anchorEl, setAnchorEl] = useState(null);
 
-    // Abre el menú
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
 
-    // Cierra el menú
     const handleClose = () => {
         setAnchorEl(null);
     };

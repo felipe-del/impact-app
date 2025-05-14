@@ -1,5 +1,21 @@
+/**
+ * LoadingSpinner component
+ * 
+ * This component renders a loading spinner with a loading message.
+ * It is used to indicate that data is being loaded or processed.
+ * It can be used in various parts of the application where loading is required.
+ * It is a simple and reusable component that can be customized as needed.
+ */
 import './loadingSpinner.css'
 
+/**
+ * LoadingSpinner component that displays a loading spinner and a loading message.
+ * 
+ * @component
+ * @param {Object} props - Component props.
+ * @param {boolean} props.loading - Indicates whether the spinner is loading or not.
+ * @returns {JSX.Element} The rendered LoadingSpinner component.
+ */
 const LoadingSpinner = () => {
     return (
         <div style={{

@@ -1,3 +1,12 @@
+/**
+ * SpaceManagement Component
+ * 
+ * This component is used to manage spaces in the system.
+ * It includes functionalities to create, update, and delete spaces.
+ * It also displays a table with the list of spaces and their details.
+ * It uses Material-UI for styling and icons.
+ * It also includes a modal for displaying general information.
+ */
 import useSpaceData from "../../hooks/apiData/space/SpaceData.jsx";
 import {useEffect, useMemo, useState} from "react";
 import SpaceBanner from "./SpaceBanner.jsx";
@@ -21,7 +30,12 @@ const initialData = {
     spaceStatusId: 0
 };
 
-
+/**
+ * SpaceManagement component that displays a table for managing spaces.
+ * 
+ * @component
+ * @returns {JSX.Element} - The SpaceManagement component.
+ */
 const SpaceManagement = () => {
 
     const {spaces, isError, isLoading, refetch} = useSpaceData();
@@ -35,6 +49,12 @@ const SpaceManagement = () => {
 
     const navigate = useNavigate()
 
+    /**
+     * Handles the edit action for a space row.
+     * 
+     * @param {object} row - The row data of the space to edit.
+     * @returns {void}
+     */
     const handleEdit = (row) => {
         navigate("/app/editSpace/" + row.original.id)
     }

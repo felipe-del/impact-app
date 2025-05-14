@@ -1,5 +1,13 @@
 import {isAxiosError} from "axios";
 
+/**
+ * Handles errors from Axios requests by checking if the error is an AxiosError and has a response.
+ * If so, it creates a detailed error message based on the response data.
+ * If not, it throws a generic connection error.
+ * @param {object} error - The error object from the Axios request.
+ * @throws {Error} - Throws an error with a detailed message based on the response data or a generic connection error.
+ * @returns {void}
+ */
 export default function handleAxiosError(error) {
     if (isAxiosError(error) && error.response) {
         const backendError = createErrorMessage(error.response.data)
@@ -9,19 +17,21 @@ export default function handleAxiosError(error) {
     }
 }
 
+/**
+ * Creates a detailed error message based on the response from the server.
+ * @param {object} responseWrapper - The response object from the server.
+ * @returns {string} - A detailed error message.
+ */
 function createErrorMessage(responseWrapper) {
     let detailMessage = "";
 
-    // Verifica que responseWrapper.data esté definido y sea un objeto antes de acceder a sus propiedades
     if (responseWrapper.data && responseWrapper.data.message) {
         detailMessage = responseWrapper.data.message;
     } else if (responseWrapper.data) {
-        // Si no tiene message, recorre los detalles de error
         detailMessage = Object.entries(responseWrapper.data)
             .map(([field, error]) => `${field}: ${error}`)
             .join("\n");
     } else {
-        // Si responseWrapper.data no está definido, asignar un mensaje de error genérico
         detailMessage = "Server Error. Please try again later.";
     }
 

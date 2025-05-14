@@ -1,3 +1,10 @@
+/**
+ * CreateAsset component
+ * 
+ * This component is used to create a new asset in the system.
+ * It includes a form with various fields to input asset details.
+ * It also includes a modal for confirming the creation of the asset.
+ */
 import {useState, useRef, useEffect} from 'react';
 import InputMask from 'react-input-mask';
 import { NumericFormat } from 'react-number-format';
@@ -35,11 +42,16 @@ const initialData = {
     locationNumber: '',
 };
 
+/**
+ * CreateAsset component that allows users to create a new asset.
+ * 
+ * @component
+ * @returns {JSX.Element} - The CreateAsset component.
+ */
 const CreateAsset = () => {
 
     const [formData, setFormData] = useState(initialData);
     const [formErrors, setFormErrors] = useState({});
-
 
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const handleShowConfirmationModal = () => setShowConfirmationModal(true);
@@ -74,7 +86,6 @@ const CreateAsset = () => {
     const {data: currencyData} = useQuery({queryKey: ['currencies'], queryFn: getAllCurrencies})
     const {data: locationsData} = useQuery({queryKey: ['locations'], queryFn: getAllLocationNumber})
 
-
     useEffect(() => {
         if (assetStatusData) setAssetStatus(assetStatusData.data)
         if (suppliersData) setSuppliers(suppliersData.data)
@@ -86,6 +97,12 @@ const CreateAsset = () => {
         if (locationsData) setLocationNumbers(locationsData.data)
     }, [assetStatusData, suppliersData, subCategoriesData, usersData, brandsData, assetModelsData, currencyData, locationsData])
 
+    /**
+     * Handles the change event for form inputs.
+     * 
+     * @param {object} e - The event object.
+     * @returns {void}
+     */
     const handleChange = (e) => {
         const { name, value } = e.target;
 
@@ -100,6 +117,11 @@ const CreateAsset = () => {
         });
     };
 
+    /**
+     * Validates the form data and checks for errors.
+     * 
+     * @returns {void}
+     */
     const checkErrors = () => {
         const errors = {};
         setFormErrors(errors);
@@ -119,12 +141,16 @@ const CreateAsset = () => {
 
         setFormErrors(errors);
 
-        // Solo enviar si no hay errores
         if (Object.keys(errors).length === 0) {
             handleShowConfirmationModal();
         }
     }
 
+    /**
+     * Handles the form submission and saves the asset data.
+     * 
+     * @returns {void}
+     */
     const handleSubmit = async () => {
         const requestData = {
             purchaseDate: formData.purchaseDate,
@@ -146,7 +172,6 @@ const CreateAsset = () => {
             navigate('/app/assetTable')
             clearForm();
         } catch (error) {
-            console.log({ error });
             toast.error(error.message, { duration: 7000 });
         }
     };
@@ -386,7 +411,7 @@ const CreateAsset = () => {
                                 >
                                     <option value="">Seleccionar estado</option>
                                     {assetStatus.map((status) => {
-                                        const isDisabled = [3, 4, 5].includes(status.id); // IDs de opciones deshabilitadas
+                                        const isDisabled = [3, 4, 5].includes(status.id);
                                         return (
                                             <option
                                                 key={status.id}

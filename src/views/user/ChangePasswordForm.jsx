@@ -1,3 +1,12 @@
+/**
+ * ChangePasswordForm Component
+ * 
+ * This component is used to change the user's password.
+ * It includes a form with fields for the current password, new password, and confirmation of the new password.
+ * It uses Material-UI for styling and icons.
+ * It also includes a modal for displaying confirmation messages.
+ * It uses the Framer Motion library for animations.
+ */
 import { useState } from "react";
 import PropTypes from "prop-types";
 import { Card, CardContent, Typography, Divider, TextField, Grid, Box, IconButton, InputAdornment } from "@mui/material";
@@ -8,6 +17,13 @@ import { changePassword } from "../../api/auth/auth_API.js";
 import GenericModal from "../../components/popUp/generic/GenericModal.jsx";
 import SaveButton from "../../components/button/SaveButton.jsx";
 
+/**
+ * ChangePasswordForm component that displays a form for changing the user's password.
+ * 
+ * @component
+ * @param {boolean} showForm - Whether to show the form or not.
+ * @return {JSX.Element} - The ChangePasswordForm component.
+ */
 const ChangePasswordForm = ({ showForm }) => {
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const handleShowConfirmationModal = () => setShowConfirmationModal(true);
@@ -32,10 +48,21 @@ const ChangePasswordForm = ({ showForm }) => {
         setError("");
     };
 
+    /**
+     * Toggles the visibility of the password field.
+     * 
+     * @param {string} field - The name of the field to toggle.
+     * @returns {void}
+     */
     const togglePasswordVisibility = (field) => {
         setShowPassword((prev) => ({ ...prev, [field]: !prev[field] }));
     };
 
+    /**
+     * Clears the form fields after successful submission.
+     * 
+     * @return {void}
+     */
     const clearForm = () => {
         setForm({
             oldPassword: "",
@@ -44,6 +71,12 @@ const ChangePasswordForm = ({ showForm }) => {
         });
     };
 
+    /**
+     * Handles the form submission and validates the input fields.
+     * 
+     * @param {object} e - The event object.
+     * @return {void}
+     */
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -62,9 +95,15 @@ const ChangePasswordForm = ({ showForm }) => {
             return;
         }
 
-        handleShowConfirmationModal(); // Show confirmation modal
+        handleShowConfirmationModal();
     };
 
+    /**
+     * Handles the confirmation of the password change.
+     * 
+     * @param {object} e - The event object.
+     * @return {void}
+     */
     const handleConfirmPasswordChange = async () => {
         try {
             const response = await changePassword(form.oldPassword, form.newPassword, form.confirmNewPassword);
@@ -73,10 +112,10 @@ const ChangePasswordForm = ({ showForm }) => {
         } catch (error) {
             toast.error(error.message);
         }
-        handleHideConfirmationModal(); // Hide modal after confirmation
+        handleHideConfirmationModal(); 
     };
 
-    if (!showForm) return null; // No renderiza el formulario si showForm es false
+    if (!showForm) return null; 
 
     return (
         <>

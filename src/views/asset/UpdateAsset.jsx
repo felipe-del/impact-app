@@ -1,3 +1,11 @@
+/**
+ * UpdateAsset component
+ * 
+ * This component is used to update the details of an asset in the system.
+ * It includes a form with various fields to input asset information.
+ * It also includes validation for the form fields and a confirmation modal before saving changes.
+ * The component fetches data from the API to populate the form fields and handle the submission of the form.
+ */
 import {useState, useRef, useEffect} from 'react';
 import InputMask from 'react-input-mask';
 import { NumericFormat } from 'react-number-format';
@@ -35,6 +43,15 @@ const initialData = {
     locationNumber: '',
 };
 
+/**
+ * UpdateAsset component
+ * 
+ * This component is used to update the details of an asset in the system.
+ * It includes a form with various fields to input asset information.
+ * 
+ * @component
+ * @returns {JSX.Element} - The UpdateAsset component.
+ */
 const UpdateAsset = () => {
     const { id } = useParams();
     const [formData, setFormData] = useState(initialData);
@@ -87,7 +104,6 @@ const UpdateAsset = () => {
         if (assetsData?.data) {
             const selectedAsset = assetsData.data.find(asset => asset.id === parseInt(id));
             if (selectedAsset) {
-                console.log({ selectedAsset });
                 setFormData({
                     purchaseDate: selectedAsset.purchaseDate,
                     value: selectedAsset.value,
@@ -128,6 +144,12 @@ const UpdateAsset = () => {
         locationsData
     ])
 
+    /**
+     * Handles the change event for form inputs.
+     * 
+     * @param {object} e - The event object.
+     * @returns {void}
+     */
     const handleChange = (e) => {
         const { name, value } = e.target;
 
@@ -142,6 +164,11 @@ const UpdateAsset = () => {
         });
     };
 
+    /**
+     * Validates the form data and checks for errors.
+     * 
+     * @returns {void}
+     */
     const checkErrors = () => {
         const errors = {};
         setFormErrors(errors);
@@ -161,12 +188,16 @@ const UpdateAsset = () => {
 
         setFormErrors(errors);
 
-        // Solo enviar si no hay errores
         if (Object.keys(errors).length === 0) {
             handleShowConfirmationModal();
         }
     }
 
+    /**
+     * Handles the submission of the form data.
+     * 
+     * @returns {void}
+     */
     const handleSubmit = async () => {
         const currencyName = currencies.find(currency => currency.id === parseInt(formData.currency)).stateName;
 
@@ -184,14 +215,12 @@ const UpdateAsset = () => {
             currencyName: currencyName,
             locationNumberId: parseInt(formData.locationNumber),
         };
-        console.log(requestData)
         try {
             const response = await updateAsset(id, requestData);
             toast.success(response.message, { duration: 7000 });
             navigate('/app/assetTable')
             clearForm();
         } catch (error) {
-            console.log({ error });
             toast.error(error.message, { duration: 7000 });
         }
     };

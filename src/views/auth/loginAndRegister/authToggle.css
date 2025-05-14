@@ -79,21 +79,21 @@
 }
 
 #login-title {
-    margin-bottom: 35px; /* Adjust the space below the title */
+    margin-bottom: 35px; 
     color: #0a65aa;
 }
 
 #register-title {
-    margin-bottom: 35px; /* Adjust the space below the title */
+    margin-bottom: 35px;
     color: #0a65aa;
 }
 
 #sign-button {
-    margin-top: 35px; /* Adjust the space above the button */
+    margin-top: 35px;
 }
 
 #register-button {
-    margin-top: 35px; /* Adjust the space above the button */
+    margin-top: 35px; 
 }
 
 .form-container{
@@ -115,11 +115,11 @@
     right: 43px;
     font-size: 12px;
     color: #333;
-    cursor: pointer; /* Añade un cursor de mano para indicar interactividad */
+    cursor: pointer; 
 }
 
 .sign-in a#forgot-password :hover {
-    text-decoration: underline; /* Subraya el texto al pasar el ratón por encima */
+    text-decoration: underline; 
 }
 
 .container.active .sign-in{
@@ -266,8 +266,8 @@
 }
 
 .input-wrapper svg {
-    margin-right: 10px; /* Space between icon and input */
-    font-size: 1.5rem;  /* Adjust the size if needed */
+    margin-right: 10px; 
+    font-size: 1.5rem; 
 }
 
 .input-field {
@@ -279,11 +279,11 @@
     border-radius: 8px;
     width: 100%;
     outline: none;
-    padding-left: 60px; /* Space for the icon */
+    padding-left: 60px;
 }
 
 .input-wrapper .MuiInputBase-root {
-    width: 100%;  /* Ensure the input field takes up full width */
+    width: 100%;
 }
 
 @keyframes fadeIn {

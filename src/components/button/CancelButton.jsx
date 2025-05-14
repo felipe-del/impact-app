@@ -1,3 +1,11 @@
+/**
+ * CancelButton Component
+ * 
+ * This component renders a button with a cancel icon and a tooltip.
+ * When hovered, it expands to show the text "Cancelar".
+ * It is used to cancel a row in a table or list.
+ */
+
 import { useState } from 'react';
 import { IconButton, Tooltip, Typography } from '@mui/material';
 import DoDisturbIcon from '@mui/icons-material/DoDisturb';
@@ -5,6 +13,14 @@ import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 import PropTypes from 'prop-types';
 import {gradientMapping} from "../../style/codeStyle.js";
 
+/**
+ * CancelButton component that displays a cancel icon and expands to show text on hover.
+ * 
+ * @component
+ * @param {function} handleCancel - Function to call when the button is clicked.
+ * @param {object} row - The row data associated with the button.
+ * @returns {JSX.Element} The rendered CancelButton component.
+ */
 const CancelButton = ({ handleCancel, row }) => {
     const [hover, setHover] = useState(false);
 

@@ -1,8 +1,24 @@
+/**
+ * AreaChart Component
+ * 
+ * This component renders an area chart using Chart.js and React.
+ * It displays earnings data over a period of time.
+ * It is used to visualize earnings trends in a dashboard or report.
+ */
 import { useEffect, useRef } from 'react';
 import { Card } from 'react-bootstrap';
 import { Chart } from 'chart.js/auto';
 
-// Function to format numbers
+/**
+ * Formats a number to a specified decimal and thousands separator.
+ * 
+ * @component
+ * @param {number} number - The number to format.
+ * @param {number} [decimals=0] - The number of decimal points to display.
+ * @param {string} [dec_point='.'] - The decimal point character.
+ * @param {string} [thousands_sep=','] - The thousands separator character.
+ * @returns {string} The formatted number as a string.
+ */
 function number_format(
     number,
     decimals = 0,
@@ -27,13 +43,15 @@ function number_format(
     return s.join(dec);
 }
 
-// AreaChart component
+/**
+ * AreaChart component that displays an area chart using Chart.js.
+ * * @returns {JSX.Element} The rendered AreaChart component.
+*/
 const AreaChart = () => {
     const chartRef = useRef(null);
     const chartInstanceRef = useRef(null);
 
     useEffect(() => {
-        // Chart.js configuration
         if (chartRef.current) {
             if (chartInstanceRef.current) {
                 chartInstanceRef.current.destroy();

@@ -1,3 +1,10 @@
+/**
+ * Router component configuration for the application.
+ * 
+ * This file defines the routes and their corresponding components for the application.
+ * It uses React Router for navigation and includes protected routes for authentication and authorization.
+ * It also handles the layout and structure of the application using the AppLayout component.
+*/
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AuthToggle from "../views/auth/loginAndRegister/AuthToggle.jsx";
 import AppLayout from "../layouts/AppLayout.jsx";
@@ -40,6 +47,15 @@ import AllRequest from "../views/requestHistory/allRequest/AllRequest.jsx";
 import RequestManagement from "../views/requestHistory/requestManagement/RequestManagement.jsx";
 import AssetRenewalTable from "../views/asset/AssetRenewalTable.jsx";
 
+/**
+ * Router component for the application.
+ * 
+ * This component defines the routing structure of the application using React Router.
+ * It includes public and protected routes, and handles navigation between different views.
+ * 
+ * @component
+ * @returns {JSX.Element} The rendered Router component.
+ */
 export default function Router() {
     return (
         <BrowserRouter>

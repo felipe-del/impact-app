@@ -1,8 +1,24 @@
+/**
+ * AssetStatusModal Component
+ * 
+ * This component renders a modal that displays a table of asset statuses.
+ * It includes a close button to hide the modal.
+ * It is used to show asset status information in a user-friendly way.
+ */
 import { Modal, Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import {StatusTranslator} from "../../../util/Translator.js";
 
+/**
+ * AssetStatusModal component that displays a modal with a table of asset statuses.
+ * 
+ * @component
+ * @param {boolean} open - Indicates whether the modal is open or closed.
+ * @param {function} onClose - Function to call when the modal is closed.
+ * @param {Array} assetStatuses - Array of asset status objects to display in the table.
+ * @returns {JSX.Element} The rendered AssetStatusModal component.
+ */
 const AssetStatusModal = ({ open, onClose, assetStatuses }) => {
     return (
         <Modal open={open} onClose={onClose} aria-labelledby="modal-title" aria-describedby="modal-description">
@@ -45,7 +61,8 @@ const AssetStatusModal = ({ open, onClose, assetStatuses }) => {
     );
 };
 
-// **Estilos Responsivos**
+
+//Styles for the modal and its components.
 const modalStyle = {
     position: 'absolute',
     top: '50%',
@@ -59,6 +76,7 @@ const modalStyle = {
     borderRadius: 2,
 };
 
+// Styles for the title of the modal
 const titleStyle = {
     fontSize: '22px',
     fontWeight: 'bold',
@@ -71,12 +89,12 @@ const titleStyle = {
     paddingBottom: '10px',
 };
 
+// Styles for the table container
 const tableContainerStyle = {
     maxHeight: '300px',
     overflowX: 'auto',
 };
 
-// **PropTypes**
 AssetStatusModal.propTypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,

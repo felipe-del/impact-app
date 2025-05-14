@@ -1,5 +1,11 @@
+/**
+ * AssetRenewalBanner component.
+ * 
+ * This component displays a banner with a title and buttons for navigation and information.
+ * It is used in the asset renewal process to provide a user-friendly interface for administrators and managers.
+ * The component includes a modal for displaying general information about the asset renewal process.
+ */
 import PropTypes from "prop-types";
-
 import { ArrowBack, InfoOutlined } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -7,7 +13,14 @@ import BannerActionButton from "../../components/button/BannerActionButton.jsx";
 import GenericInformationModal from "../../components/popUp/GenericInformationModal/GenericInformationModal.jsx";
 import {bannerStyle} from "../../style/codeStyle.js";
 
-
+/**
+ * AssetRenewalBanner component that displays a banner with a title and buttons for navigation and information.
+ * 
+ * @component
+ * @param {string} title - The title of the banner.
+ * @param {Array} visibleButtons - Array of buttons to be displayed in the banner.
+ * @returns {JSX.Element} - The AssetRenewalBanner component.
+ */
 const AssetRenewalBanner = ({
                                      title = "",
                                      visibleButtons = ["goBack", "info"],

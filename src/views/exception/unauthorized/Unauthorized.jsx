@@ -1,6 +1,19 @@
+/**
+ * Unauthorized Component
+ * 
+ * This component is used to display an Unauthorized Access page.
+ * It includes a background image, a logo, a heading, a description,
+ * and a button to navigate back to the previous page.
+ */
 import { Link } from "react-router-dom";
 import "./unauthorized.css";
 
+/**
+ * Unauthorized component that displays an Unauthorized Access page.
+ * 
+ * @component
+ * @returns {JSX.Element} - The Unauthorized component.
+ */
 const Unauthorized = () => {
     return (
         <div className="unauthorized-page-container">

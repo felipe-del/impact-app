@@ -1,8 +1,26 @@
+/**
+ * RoleAndStateModal Component
+ * 
+ * This component renders a modal that displays user roles and states.
+ * It includes a title, two sections for roles and states, and a close button.
+ * It is used to show information about user roles and states in a user-friendly way.
+ * The modal can be customized with additional content.
+ */
 import { Modal, Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import {StatusTranslator} from "../../../util/Translator.js";
 
+/**
+ * RoleAndStateModal component that displays a modal with user roles and states.
+ * 
+ * @component
+ * @param {boolean} open - Indicates whether the modal is open or closed.
+ * @param {function} onClose - Function to call when the modal is closed.
+ * @param {Array} roles - Array of user roles to display in the modal.
+ * @param {Array} states - Array of user states to display in the modal.
+ * @returns {JSX.Element} The rendered RoleAndStateModal component.
+ */
 const RoleAndStateModal = ({ open, onClose, roles, states }) => {
     return (
         <Modal open={open} onClose={onClose} aria-labelledby="modal-title" aria-describedby="modal-description">
@@ -76,20 +94,21 @@ const RoleAndStateModal = ({ open, onClose, roles, states }) => {
     );
 };
 
-// **Estilos Responsivos**
+// Modal styles
 const modalStyle = {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: '90%',    // En móviles ocupará casi todo el ancho
-    maxWidth: 750,   // En pantallas grandes no pasará de 750px
+    width: '90%',   
+    maxWidth: 750,   
     bgcolor: 'background.paper',
     boxShadow: 24,
     p: 4,
-    borderRadius: 2, // Bordes redondeados
+    borderRadius: 2, 
 };
 
+// Styles for the title
 const titleStyle = {
     fontSize: '22px',
     fontWeight: 'bold',
@@ -102,6 +121,7 @@ const titleStyle = {
     paddingBottom: '10px',
 };
 
+// Styles for the section titles
 const sectionTitleStyle = {
     fontSize: '16px',
     fontWeight: '500',
@@ -111,12 +131,12 @@ const sectionTitleStyle = {
     paddingBottom: '5px',
 };
 
+// Styles for the table container
 const tableContainerStyle = {
-    maxHeight: '300px', // Hace que las tablas sean scrollables
-    overflowX: 'auto',  // Permite scroll horizontal si es necesario
+    maxHeight: '300px', 
+    overflowX: 'auto',  
 };
 
-// **PropTypes**
 RoleAndStateModal.propTypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,

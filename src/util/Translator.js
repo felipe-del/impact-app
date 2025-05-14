@@ -1,3 +1,13 @@
+/**
+ * Function to translate status codes to Spanish.
+ * 
+ * @class
+ * @static
+ * @property {object} statusMap - A mapping of status codes to their Spanish translations.
+ * @method translate - Translates a given status code to Spanish.
+ * @param {string} status - The status code to translate.
+ * @returns {string} - The translated status code in Spanish.
+ */
 export class StatusTranslator {
     static statusMap = {
         "AVAILABLE": "DISPONIBLE",

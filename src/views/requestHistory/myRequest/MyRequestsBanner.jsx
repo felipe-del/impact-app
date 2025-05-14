@@ -1,7 +1,28 @@
+/**
+ * MyRequestsBanner Component
+ * 
+ * This component is used to display a banner for the My Requests management page.
+ * It includes a title and action buttons for navigation and filtering requests.
+ * It uses Material-UI for styling and icons.
+ * It also includes a modal for displaying general information.
+ */
 import PropTypes from "prop-types";
 import { bannerStyle } from "../../../style/codeStyle.js";
 import BannerToggleButton from "../../../components/button/BannerToggleButton.jsx";
 
+/**
+ * MyRequestsBanner component that displays a banner for the My Requests management page.
+ * 
+ * @component
+ * @param {string} title - The title of the banner.
+ * @param {Array} activeFilters - The active filters for the requests.
+ * @param {function} handleButtonClick - The function to call when a button is clicked.
+ * @param {function} handleAdditionalButtonClick - The function to call when an additional button is clicked.
+ * @param {string} activeButton - The currently active button.
+ * @param {string} activeAdditionalButton - The currently active additional button.
+ * @param {boolean} showAdditionalButtons - Whether to show additional buttons or not.
+ * @return {JSX.Element} - The MyRequestsBanner component.
+ */
 const MyRequestsBanner = ({
                                   title = "",
                                   activeFilters = [],

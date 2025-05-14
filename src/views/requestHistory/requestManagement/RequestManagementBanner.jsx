@@ -1,3 +1,11 @@
+/**
+ * RequestManagementBanner Component
+ * 
+ * This component is used to display a banner for the Request Management page.
+ * It includes a title and action buttons for navigation and information.
+ * It uses Material-UI for styling and icons.
+ * It also includes a modal for displaying general information.
+ */
 import PropTypes from "prop-types";
 import { bannerStyle } from "../../../style/codeStyle.js";
 import BannerActionButton from "../../../components/button/BannerActionButton.jsx";
@@ -6,6 +14,14 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import GenericInformationModal from "../../../components/popUp/GenericInformationModal/GenericInformationModal.jsx";
 
+/**
+ * RequestManagementBanner component that displays a banner for the Request Management page.
+ * 
+ * @component
+ * @param {string} title - The title of the banner.
+ * @param {Array} visibleButtons - The buttons to display on the banner.
+ * * @returns {JSX.Element} - The RequestManagementBanner component.
+ */
 const RequestManagementBanner = ({
                                      title = "",
                                      visibleButtons = ["goBack", "info"],

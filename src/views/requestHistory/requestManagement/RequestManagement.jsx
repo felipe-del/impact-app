@@ -1,3 +1,13 @@
+/**
+ * RequestManagement Component
+ * 
+ * This component is used to manage requests in the system.
+ * It includes functionalities to accept and reject requests,
+ * as well as displaying a table with the list of requests and their details.
+ * It uses Material-UI for styling and icons.
+ * It also includes a modal for displaying confirmation messages.
+ * It uses the Material React Table library for rendering the table.
+ */
 import RequestManagementBanner from "./RequestManagementBanner.jsx";
 import {useEffect, useMemo, useState} from "react";
 import {MaterialReactTable, useMaterialReactTable} from "material-react-table";
@@ -29,6 +39,15 @@ import CloseIcon from "@mui/icons-material/Close";
 import {gradientMapping as toastr} from "../../../style/codeStyle.js";
 import {toast} from "react-hot-toast";
 
+/**
+ * RequestManagement component that displays a banner for the Request Management page.
+ * 
+ * @component
+ * @param {string} title - The title of the banner.
+ * @param {Array} visibleButtons - The buttons to display on the banner.
+ * @param {function} createProductCategoryType - The function to call when creating a new product category type.
+ * @return {JSX.Element} - The RequestManagement component.
+ */
 const RequestManagement = () => {
     const [requests, setRequests] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -56,6 +75,13 @@ const RequestManagement = () => {
         startEditing(row.original.id, row.original);
     };
 
+    /**
+     * Fetches all requests from the API and sets them in the state.
+     * 
+     * @async
+     * @function
+     * @returns {Promise<void>} - A promise that resolves when the requests are fetched and set in the state.
+     */
     const fetchAllRequests = async () => {
         try {
             const [assetEarring, productEarring, spaceEarring] = await Promise.all([
@@ -80,6 +106,12 @@ const RequestManagement = () => {
         fetchAllRequests();
     }, []);
 
+    /**
+     * Saves the changes made to a request.
+     * 
+     * @param {string} rowId - The ID of the request to save changes for.
+     * @return {Promise<void>} - A promise that resolves when the changes are saved.
+     */
     const saveChanges = async (rowId) => {
         const request = tempRequest[rowId];
         let response
@@ -101,6 +133,12 @@ const RequestManagement = () => {
         }
     };
 
+    /**
+     * Rejects the changes made to a request.
+     * 
+     * @param {string} rowId - The ID of the request to reject changes for.
+     * @return {Promise<void>} - A promise that resolves when the changes are rejected.
+     */
     const rejectChanges = async (rowId) => {
         const request = tempRequest[rowId];
         let response
@@ -267,11 +305,17 @@ const RequestManagement = () => {
         },
     ], [editRowId]);
 
+    /**
+     * Renders the detail panel for each row in the table.
+     * 
+     * @param {Object} row - The row data.
+     * @param {string} row.original - The original data of the row.
+     * @return {JSX.Element} - The detail panel for the row.
+     */
     const renderDetailPanel = ({row}) => {
         const data = row.original;
         const tipo = data.tipo;
 
-        // Función para renderizar detalles comunes
         const renderCommonDetails = (items) => {
             return items.map((item, index) => (
                 <Box
@@ -305,7 +349,6 @@ const RequestManagement = () => {
             ));
         };
 
-        // Detalles específicos de tipo "Activo"
         if (tipo === "Activo") {
             return (
                 <Box
@@ -352,7 +395,6 @@ const RequestManagement = () => {
             );
         }
 
-        // Detalles específicos de tipo "Producto"
         if (tipo === "Producto") {
             return (
                 <Box
@@ -392,7 +434,6 @@ const RequestManagement = () => {
             );
         }
 
-        // Detalles específicos de tipo "Espacio"
         if (tipo === "Espacio") {
             return (
                 <Box

@@ -1,8 +1,25 @@
+/**
+ * BarChart Component
+ * 
+ * This component renders a bar chart using Chart.js and React.
+ * It displays data with labels and values, and supports a maximum of 12 months.
+ * It is used to visualize data trends in a dashboard or report.
+ */
+
 import React, { useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { toast } from "react-hot-toast";
 
+/**
+ * BarChart component that displays a bar chart using Chart.js.
+ * 
+ * @component
+ * @param {Object} props - Component props.
+ * @param {Array} props.data - The data to be displayed in the chart.
+ * @param {string} props.label - The label for the dataset.
+ * @returns {JSX.Element} The rendered BarChart component.
+ */
 const BarChart = ({ data, label }) => {
   useEffect(() => {
     if (data?.labels && data.labels.length > 12) {
@@ -12,7 +29,6 @@ const BarChart = ({ data, label }) => {
     }
   }, [data?.labels]);
 
-  // Mantener el orden descendente de los datos recibidos
   const limitedLabels = data?.labels?.slice(0, 12) || [];
   const limitedValues = data?.values?.slice(0, 12) || [];
 

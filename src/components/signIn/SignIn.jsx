@@ -1,17 +1,34 @@
+/**
+ * SignIn Component
+ * 
+ * This component renders a sign-in form for users to log in to the application.
+ * It includes fields for email and password, and handles form submission.
+ * It validates the input and displays error messages if needed.
+ * It also provides a link to reset the password.
+ * The component uses React Hook Form for form handling and validation.
+ * It uses Material-UI icons for visual elements.
+ * It uses react-hot-toast for displaying notifications.
+ * It uses react-router-dom for navigation.
+ */
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import './signIn.css';
-
 import PropTypes from 'prop-types';
 import { login } from '../../api/auth/auth_API.js';
 import { toast } from 'react-hot-toast';
-
-// MUI icons
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import LoginIcon from '@mui/icons-material/Login';
 import { useState } from 'react';
 
+/**
+ * SignIn React component.
+ * 
+ * @component
+ * @param {Object} props - Component props.
+ * @param {function} props.switchToSignUp - Function to switch to the sign-up form.
+ * @returns {JSX.Element} The rendered SignIn component.
+ */
 const SignIn = () => {
     const navigate = useNavigate();
 
@@ -24,9 +41,15 @@ const SignIn = () => {
         register,
         handleSubmit,
         watch,
-        formState: { errors }, // <-- Agregado aquí para manejar errores
+        formState: { errors }, 
     } = useForm({ defaultValues: initialValues });
 
+    /**
+     * Handles the form submission for login.
+     * Validates the email and password, and sends the request to the backend API.
+     * @param {Object} formData - The form data containing email and password.
+     * @returns {Promise<void>} - A promise that resolves when the form is submitted.
+     */
     const handleLogin = async (formData) => {
         try {
             const response = await login(formData.email, formData.password);
@@ -38,9 +61,8 @@ const SignIn = () => {
         }
     };
 
-    // Password Field
     const [showPassword, setShowPassword] = useState(false);
-    const passwordValue = watch('password', ''); // Watch the password value
+    const passwordValue = watch('password', ''); 
 
     return (
         <div className='form-container sign-in'>

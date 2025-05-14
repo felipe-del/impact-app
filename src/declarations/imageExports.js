@@ -1,4 +1,9 @@
-// Importa todas las imágenes de una vez
+/**
+ * imageExports.js
+ * 
+ * This file exports all image assets used in the application.
+ * It allows for easy import of images in other parts of the application.
+ */
 import Rocket from '../assets/undraw_rocket.svg';
 import Profile_0 from '../assets/undraw_profile.svg';
 import Profile_1 from '../assets/undraw_profile_1.svg';
@@ -11,7 +16,6 @@ import Pencil from '../assets/pencil.png';
 import UCR from '../assets/UCR.png';
 import CIMPA from '../assets/CIMPA.png';
 
-// Exporta todas las imágenes de una vez
 export {
   Rocket,
   Profile_0,

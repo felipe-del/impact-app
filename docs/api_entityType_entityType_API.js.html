@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>api/entityType/entityType_API.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#acceptAssetRenewalRequest">acceptAssetRenewalRequest</a></li><li><a href="global.html#acceptAssetRequest">acceptAssetRequest</a></li><li><a href="global.html#acceptProductRequest">acceptProductRequest</a></li><li><a href="global.html#acceptSpaceRequest">acceptSpaceRequest</a></li><li><a href="global.html#assetAvailable">assetAvailable</a></li><li><a href="global.html#assetInventoryValue">assetInventoryValue</a></li><li><a href="global.html#cancelResAndReq">cancelResAndReq</a></li><li><a href="global.html#cancelledAssetRequest">cancelledAssetRequest</a></li><li><a href="global.html#cancelledProductRequest">cancelledProductRequest</a></li><li><a href="global.html#capitalizeFirstLetter">capitalizeFirstLetter</a></li><li><a href="global.html#changePassword">changePassword</a></li><li><a href="global.html#changeUserRole">changeUserRole</a></li><li><a href="global.html#changeUserState">changeUserState</a></li><li><a href="global.html#createErrorMessage">createErrorMessage</a></li><li><a href="global.html#deleteAsset">deleteAsset</a></li><li><a href="global.html#deleteAssetCategory">deleteAssetCategory</a></li><li><a href="global.html#deleteAssetModel">deleteAssetModel</a></li><li><a href="global.html#deleteAssetRequest">deleteAssetRequest</a></li><li><a href="global.html#deleteBrand">deleteBrand</a></li><li><a href="global.html#deleteBuilding">deleteBuilding</a></li><li><a href="global.html#deleteBuildingLocation">deleteBuildingLocation</a></li><li><a href="global.html#deleteLocationNumber">deleteLocationNumber</a></li><li><a href="global.html#deleteLocationType">deleteLocationType</a></li><li><a href="global.html#deleteProduct">deleteProduct</a></li><li><a href="global.html#deleteProductCategory">deleteProductCategory</a></li><li><a href="global.html#deleteProductCategoryType">deleteProductCategoryType</a></li><li><a href="global.html#deleteProductRequest">deleteProductRequest</a></li><li><a href="global.html#deleteSpace">deleteSpace</a></li><li><a href="global.html#deleteSpaceEquipment">deleteSpaceEquipment</a></li><li><a href="global.html#deleteSubCategory">deleteSubCategory</a></li><li><a href="global.html#deleteSupplier">deleteSupplier</a></li><li><a href="global.html#forgotPassword">forgotPassword</a></li><li><a href="global.html#getAllAssetCategories">getAllAssetCategories</a></li><li><a href="global.html#getAllAssetModels">getAllAssetModels</a></li><li><a href="global.html#getAllAssetRequest">getAllAssetRequest</a></li><li><a href="global.html#getAllAssetStatus">getAllAssetStatus</a></li><li><a href="global.html#getAllAssets">getAllAssets</a></li><li><a href="global.html#getAllBrands">getAllBrands</a></li><li><a href="global.html#getAllBuilding">getAllBuilding</a></li><li><a href="global.html#getAllBuildingLocation">getAllBuildingLocation</a></li><li><a href="global.html#getAllCurrencies">getAllCurrencies</a></li><li><a href="global.html#getAllEntityType">getAllEntityType</a></li><li><a href="global.html#getAllLocationNumber">getAllLocationNumber</a></li><li><a href="global.html#getAllLocationType">getAllLocationType</a></li><li><a href="global.html#getAllProduct">getAllProduct</a></li><li><a href="global.html#getAllProductCategory">getAllProductCategory</a></li><li><a href="global.html#getAllProductCategoryType">getAllProductCategoryType</a></li><li><a href="global.html#getAllProductRequests">getAllProductRequests</a></li><li><a href="global.html#getAllProductStatus">getAllProductStatus</a></li><li><a href="global.html#getAllSpace">getAllSpace</a></li><li><a href="global.html#getAllSpaceEquipment">getAllSpaceEquipment</a></li><li><a href="global.html#getAllSpaceRequests">getAllSpaceRequests</a></li><li><a href="global.html#getAllSpaceStatus">getAllSpaceStatus</a></li><li><a href="global.html#getAllSubCategory">getAllSubCategory</a></li><li><a href="global.html#getAllSupplier">getAllSupplier</a></li><li><a href="global.html#getAllUnitOfMeasurement">getAllUnitOfMeasurement</a></li><li><a href="global.html#getAllUserRoles">getAllUserRoles</a></li><li><a href="global.html#getAllUserStates">getAllUserStates</a></li><li><a href="global.html#getAllUsers">getAllUsers</a></li><li><a href="global.html#getAssetById">getAssetById</a></li><li><a href="global.html#getAssetByPurchaseDate">getAssetByPurchaseDate</a></li><li><a href="global.html#getAssetRequestById">getAssetRequestById</a></li><li><a href="global.html#getAssetRequestByUser">getAssetRequestByUser</a></li><li><a href="global.html#getAssetRequestRenewal">getAssetRequestRenewal</a></li><li><a href="global.html#getAssetRequestsExcludingEarringAndRenewal">getAssetRequestsExcludingEarringAndRenewal</a></li><li><a href="global.html#getAssetRequestsWithEarring">getAssetRequestsWithEarring</a></li><li><a href="global.html#getProductRequestByUser">getProductRequestByUser</a></li><li><a href="global.html#getProductRequestsExcludingEarringAndRenewal">getProductRequestsExcludingEarringAndRenewal</a></li><li><a href="global.html#getProductRequestsWithEarring">getProductRequestsWithEarring</a></li><li><a href="global.html#getSpaceRandRByUser">getSpaceRandRByUser</a></li><li><a href="global.html#getSpaceRequestsExcludingEarringAndRenewal">getSpaceRequestsExcludingEarringAndRenewal</a></li><li><a href="global.html#getSpaceRequestsWithEarring">getSpaceRequestsWithEarring</a></li><li><a href="global.html#getStateColor">getStateColor</a></li><li><a href="global.html#getUserSession">getUserSession</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#productAvailable">productAvailable</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#rejectAssetRenewalRequest">rejectAssetRenewalRequest</a></li><li><a href="global.html#rejectAssetRequest">rejectAssetRequest</a></li><li><a href="global.html#rejectProductRequest">rejectProductRequest</a></li><li><a href="global.html#rejectSpaceRequest">rejectSpaceRequest</a></li><li><a href="global.html#resetPassword">resetPassword</a></li><li><a href="global.html#saveAsset">saveAsset</a></li><li><a href="global.html#saveAssetCategory">saveAssetCategory</a></li><li><a href="global.html#saveAssetModel">saveAssetModel</a></li><li><a href="global.html#saveAssetRequest">saveAssetRequest</a></li><li><a href="global.html#saveAssetRequestRenewal">saveAssetRequestRenewal</a></li><li><a href="global.html#saveBrand">saveBrand</a></li><li><a href="global.html#saveBuilding">saveBuilding</a></li><li><a href="global.html#saveBuildingLocation">saveBuildingLocation</a></li><li><a href="global.html#saveLocationNumber">saveLocationNumber</a></li><li><a href="global.html#saveLocationType">saveLocationType</a></li><li><a href="global.html#saveProduct">saveProduct</a></li><li><a href="global.html#saveProductCategory">saveProductCategory</a></li><li><a href="global.html#saveProductCategoryType">saveProductCategoryType</a></li><li><a href="global.html#saveProductRequest">saveProductRequest</a></li><li><a href="global.html#saveSpace">saveSpace</a></li><li><a href="global.html#saveSpaceEquipment">saveSpaceEquipment</a></li><li><a href="global.html#saveSpaceRequest">saveSpaceRequest</a></li><li><a href="global.html#saveSubCategory">saveSubCategory</a></li><li><a href="global.html#saveSupplier">saveSupplier</a></li><li><a href="global.html#saveUser">saveUser</a></li><li><a href="global.html">translate - Translates a given status code to Spanish.</a></li><li><a href="global.html#updateAsset">updateAsset</a></li><li><a href="global.html#updateAssetCategory">updateAssetCategory</a></li><li><a href="global.html#updateAssetModel">updateAssetModel</a></li><li><a href="global.html#updateAssetRequest">updateAssetRequest</a></li><li><a href="global.html#updateAssetRequestRenewal">updateAssetRequestRenewal</a></li><li><a href="global.html#updateBrand">updateBrand</a></li><li><a href="global.html#updateBuilding">updateBuilding</a></li><li><a href="global.html#updateBuildingLocation">updateBuildingLocation</a></li><li><a href="global.html#updateLocationNumber">updateLocationNumber</a></li><li><a href="global.html#updateLocationType">updateLocationType</a></li><li><a href="global.html#updateProduct">updateProduct</a></li><li><a href="global.html#updateProductCategory">updateProductCategory</a></li><li><a href="global.html#updateProductCategoryType">updateProductCategoryType</a></li><li><a href="global.html#updateProductRequest">updateProductRequest</a></li><li><a href="global.html#updateSpace">updateSpace</a></li><li><a href="global.html#updateSpaceEquipment">updateSpaceEquipment</a></li><li><a href="global.html#updateSubCategory">updateSubCategory</a></li><li><a href="global.html#updateSupplier">updateSupplier</a></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">api/entityType/entityType_API.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import api from "../../config/axios.js";
+import handleAxiosError from "../handleAxiosError.js";
+
+// Defines the base API path for entity-type-related requests
+const root = '/api/entity-type'
+
+/**
+ * Retrieves all entity types from the server.
+ * @returns {object} - The response object containing the list of entity types.
+ */
+export async function getAllEntityType() {
+    try {
+        const { data } = await api.get(root)
+        return data
+    } catch (error) {
+        handleAxiosError(error)
+    }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.4</a> on Tue May 13 2025 23:58:06 GMT-0600 (hora estándar central) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

@@ -1,7 +1,13 @@
+/**
+ * ResetPassword Component
+ * 
+ * This component renders a form for resetting the password using a token.
+ * It includes fields for the token, new password, and confirmation of the new password.
+ * It validates the input and handles the submission of the form.
+ * On successful submission, it navigates the user to the login page.
+ */
 import { useState } from 'react';
 import './resetPassword.css';
-
-// MUI icons
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import LockIcon from '@mui/icons-material/Lock';
 import InfoIcon from '@mui/icons-material/Info';
@@ -10,6 +16,12 @@ import { toast } from 'react-hot-toast';
 import {resetPassword} from "../../../api/auth/auth_API.js";
 import {useNavigate} from "react-router-dom";
 
+/**
+ * ResetPassword React component.
+ * 
+ * @component
+ * @returns {JSX.Element} A form for resetting the password using a token.
+ */
 const ResetPassword = () => {
     const [token, setToken] = useState('');
     const [password, setPassword] = useState('');
@@ -21,24 +33,26 @@ const ResetPassword = () => {
 
     const navigate = useNavigate();
 
-    // Handle form submission for password reset
+    /**
+     * Handles the form submission for resetting the password.
+     * Validates the token and password, and sends the request to the backend API.
+     * @param {Object} e - The event object.
+     * @returns {Promise<void>} - A promise that resolves when the form is submitted.
+     */
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Token validation
         if (!token) {
             setRegisterError('Por favor ingrese el token de restablecimiento.');
             return;
         }
 
-        // Password validation
         const passwordRegex = /^(?=.*[0-9].*[0-9])(?=.*[!@#$%"^&*.])[A-Za-z0-9!@#$%^&*."]{8,}$/;
         if (!passwordRegex.test(password)) {
             setRegisterError('La contraseña debe tener al menos ocho caracteres, incluyendo dos números y un carácter especial (!@#$%"^&*.).');
             return;
         }
 
-        // Confirm password validation
         if (password !== confirmPassword) {
             setRegisterError('Las contraseñas no coinciden.');
             return;
@@ -54,13 +68,22 @@ const ResetPassword = () => {
         }
     };
 
-    // Handle input changes and reset success/error messages
+    /**
+     * Handles input changes for the form fields.
+     * Updates the corresponding state and resets any error or success messages.
+     * @param {Function} setter - The state setter function for the input field.
+     * @returns {Function} - A function that handles the input change event.
+    */
     const handleInputChange = (setter) => (e) => {
         setter(e.target.value);
         setRegisterSuccess('');
         setRegisterError('');
     };
 
+    /**
+     * Resets the form fields and any error or success messages.
+     * @returns {void}
+     */
     const resetForm = () => {
         setToken('');
         setPassword('');

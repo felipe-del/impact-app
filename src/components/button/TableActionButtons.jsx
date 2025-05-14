@@ -1,9 +1,25 @@
+/**
+ * TableActionButtons Component
+ * 
+ * This component renders two action buttons: "Guardar" (Save) and "Cancelar" (Cancel).
+ * Each button has an icon and expands to show text on hover.
+ * It is used to perform actions in a table or list.
+ */
 import { useState } from 'react';
 import { IconButton, Tooltip, Typography } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import PropTypes from "prop-types";
 
+/**
+ * TableActionButtons component that displays Save and Cancel buttons with icons.
+ * 
+ * @component
+ * @param {function} confirmationModal - Function to call when the Save button is clicked.
+ * @param {function} cancelEditing - Function to call when the Cancel button is clicked.
+ * @param {object} row - The row data associated with the buttons.
+ * @returns {JSX.Element} The rendered TableActionButtons component.
+*/
 const TableActionButtons = ({ confirmationModal, cancelEditing, row }) => {
     const [hover, setHover] = useState('save');
 

@@ -1,6 +1,19 @@
+/**
+ * NotFound Component
+ * 
+ * This component is used to display a 404 Not Found page.
+ * It includes a background image, a logo, a heading, a description,
+ * and a button to navigate back to the previous page.
+ */
 import { Link } from 'react-router-dom';
 import './notFound.css';
 
+/**
+ * NotFound component that displays a 404 Not Found page.
+ * 
+ * @component
+ * @returns {JSX.Element} - The NotFound component.
+ */
 const NotFound = () => {
     return (
         <main

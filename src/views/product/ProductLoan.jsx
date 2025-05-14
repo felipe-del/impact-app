@@ -1,3 +1,12 @@
+/**
+ * ProductLoan Component
+ * 
+ * This component is used to manage product loans in the system.
+ * It includes functionalities to request products, view product information,
+ * and submit requests for product loans.
+ * It uses Material-UI for styling and icons.
+ * It also uses react-hook-form for form handling and validation.
+ */
 import ProductBanner from "./ProductBanner.jsx";
 import useProductData from "../../hooks/apiData/product/productData.jsx";
 import {useEffect, useState} from "react";
@@ -8,14 +17,19 @@ import {useForm} from "react-hook-form";
 import {saveProductRequest} from "../../api/productRequest/productRequest.js";
 import {Box, Typography} from "@mui/material";
 
-
+/**
+ * ProductLoan component that manages product loans in the system.
+ * 
+ * @component
+ * @param {object} props - The props for the component.
+ * @returns {JSX.Element} - The ProductLoan component.
+ */
 const ProductLoan = () => {
 
     const {products, refetch} = useProductData();
     const [productData, setProductData] = useState([]);
     useEffect(() => {
         if(products) setProductData(products.data)
-        console.log(products.data)
     }, [products]);
 
     const [selectedProduct, setSelectedProduct] = useState(null);
@@ -48,9 +62,14 @@ const ProductLoan = () => {
         handleShowConfirmationModal();
     };
 
+    /**
+     * Handles the final submission of the product request.
+     * 
+     * @param {object} data - The form data containing the product request details.
+     * @returns {Promise<void>} - A promise that resolves when the request is submitted.
+     */
     const handleFinalSubmit = async (data) => {
         try{
-            console.log(data)
             const response = await saveProductRequest({
                 quantity: data.quantity,
                 productId: data.selectedProduct,
@@ -128,16 +147,15 @@ const ProductLoan = () => {
                                     onChange={(e) => {
                                         setSelectedProduct(e.target.value);
                                         if (e.target.value === "") setProductInfo(null);
-                                        clearErrors("selectedProduct"); // Clear the error when selecting a new asset
+                                        clearErrors("selectedProduct"); 
                                     }}
                                 >
                                     <option value="">Seleccione un activo</option>
                                     {productData && productData.length > 0 ? (
                                         Array.from(
                                             productData
-                                                .filter(product => product.status.name.toLowerCase() !== "earring") // Exclude products with status "EARRING"
+                                                .filter(product => product.status.name.toLowerCase() !== "earring") 
                                                 .reduce((acc, product) => {
-                                                    // If category doesn't exist in the accumulator, add it with the product
                                                     if (!acc.has(product.category.id)) {
                                                         acc.set(product.category.id, {
                                                             categoryName: product.category.name,

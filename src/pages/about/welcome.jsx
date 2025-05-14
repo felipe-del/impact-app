@@ -1,9 +1,25 @@
+/**
+ * Welcome component
+ * 
+ * This file contains the Welcome component, which is a functional component that displays a welcome message and information about the UCR and CIMPA.
+ * It uses React and CSS for styling.
+ * It also imports images from the imageExports module. 
+ */
 import React, { useEffect } from 'react';
 import './welcome.css'; 
 import { UCR } from '../../declarations/imageExports';
 import { CIMPA } from '../../declarations/imageExports';
 import { usePage } from '../../context/pageContext';
 
+/**
+ * Welcome component
+ * 
+ * This component displays a welcome message and information about the UCR and CIMPA.
+ * It also includes links to the UCR and CIMPA websites.
+ * 
+ * @component
+ * @returns {JSX.Element} - The rendered component.
+ */
 const Welcome= () => {
 
   return(

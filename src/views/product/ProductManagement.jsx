@@ -1,3 +1,12 @@
+/**
+ * ProductManagement Component
+ * 
+ * This component is used to manage products in the system.
+ * It includes functionalities to create, update, and delete products.
+ * It also displays a table with the list of products and their details.
+ * It uses Material-UI for styling and icons.
+ * It also includes functionalities to export product data to PDF and CSV formats.
+ */
 import ProductBanner from "./ProductBanner.jsx";
 import useProductData from "../../hooks/apiData/product/productData.jsx";
 import {getAllProductRequests} from "../../api/productRequest/productRequest.js";
@@ -15,6 +24,18 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { toast } from "react-hot-toast";
 
+/**
+ * ProductManagement component that displays a banner for the Product management page.
+ * 
+ * @component
+ * @param {string} title - The title of the banner.
+ * @param {Array} visibleButtons - The buttons to display on the banner.
+ * @param {function} productInfo - The function to call when displaying product information.
+ * @param {function} exportToPDF - The function to call when exporting data to PDF.
+ * @param {function} preparePDF - The function to call when preparing data for PDF export.
+ * @param {Array} productData - The data to export to CSV.
+ * @return {JSX.Element} - The ProductBanner component.
+ */
 const ProductManagement = () => {
     const { products, isLoading, isError, refetch } = useProductData();
     const [productData, setProductData] = useState([]);
@@ -27,20 +48,31 @@ const ProductManagement = () => {
                 ...product,
                 status: {
                     ...product.status,
-                    name: StatusTranslator.translate(product.status.name) // Traducir el status antes de setearlo
+                    name: StatusTranslator.translate(product.status.name)
                 }
             }));
 
-            // Setear los datos con el status traducido
             setProductData(translatedData);
         }
         preparePDF()
     }, [products]);
 
+    /**
+     * VHandle the edit action for a product row.
+     * 
+     * @param {object} row - The row data of the product to edit.
+     * @returns {void}
+     */
     const handleEdit = (row) => {
         navigate("/app/updateProduct/" + row.original.id);
     };
 
+    /**
+     * Prepare the PDF document with product data and requests.
+     * 
+     * @param {object} row - The row data of the product to edit.
+     * @returns {void}
+     */
     const preparePDF = async () =>{
             try {
                 const response = await getAllProductRequests();
@@ -55,6 +87,12 @@ const ProductManagement = () => {
             } 
         }
 
+    /**
+     * Export the product data to a PDF document.
+     * 
+     * @param {object} row - The row data of the product to edit.
+     * @returns {void}
+     */
     const exportToPDF = async () => {
         const doc = new jsPDF();
     
@@ -112,7 +150,6 @@ const ProductManagement = () => {
             },
         });
         
-        //Tabla de salida de productos
         const afterValueTextY = doc.lastAutoTable.finalY + 10;
             doc.setFontSize(14);
             doc.text("Salidas de productos (Préstamos)",14, afterValueTextY);
@@ -136,7 +173,6 @@ const ProductManagement = () => {
                 },
             });
     
-        // Guardar PDF
         doc.save("Informe_de_Productos.pdf");
     };
     

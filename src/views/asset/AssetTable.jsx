@@ -1,3 +1,10 @@
+/**
+ * AssetTable component.
+ * 
+ * This component displays a table of assets with various details and allows exporting the data to a PDF file.
+ * It uses Material React Table for rendering the table and Axios for API calls.
+ * It also includes a modal for displaying asset status information.
+ */
 import {useEffect, useMemo, useState} from 'react';
 import {
     MaterialReactTable,
@@ -16,81 +23,19 @@ import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import { assetInventoryValue } from '../../api/asset/asset_API.js';
 import { getAllAssetRequest } from '../../api/assetRequest/assetRequest_API.js';
 import { toast } from "react-hot-toast";
-
-const initialArray = [
-    {
-        "id": 1,
-        "purchaseDate": "2024-01-01",
-        "value": 1000,
-        "user": {
-            "id": 1,
-            "name": "John Doe",
-            "email": "johndoe@example.com",
-            "userRoleResponse": {
-                "id": 1,
-                "roleName": "USER",
-                "description": "Standard system user"
-            },
-            "userStateResponse": {
-                "id": 1,
-                "stateName": "ACTIVE",
-                "description": "User is active and can log in"
-            }
-        },
-        "supplier": {
-            "id": 1,
-            "name": "Supplier Inc.",
-            "phone": "1234-5678",
-            "email": "supplier@example.com",
-            "address": "123 Main Street",
-            "entityTypeName": "PHYSICAL",
-            "clientContact": "5678-1234",
-            "idNumber": "1-2345-6789"
-        },
-        "subcategory": {
-            "id": 1,
-            "name": "Laptop",
-            "description": "Portable computer",
-            "assetCategoryName": "Electronics"
-        },
-        "category": {
-            "id": 1,
-            "name": "Electronics"
-        },
-        "brand": {
-            "id": 1,
-            "name": "Dell"
-        },
-        "status": {
-            "id": 1,
-            "name": "AVAILABLE",
-            "description": "The asset is available for use."
-        },
-        "assetSeries": "SER_001",
-        "plateNumber": "PLA_001",
-        "model": {
-            "id": 1,
-            "modelName": "XPS 15"
-        },
-        "currency": {
-            "id": 1,
-            "code": "USD",
-            "symbol": "$",
-            "stateName": "DOLLAR"
-        },
-        "locationNumber": {
-            "id": 1,
-            "locationTypeName": "Building",
-            "locationNumber": 101
-        }
-    }
-];
 import EditButton from "../../components/button/EditButton.jsx";
 import {useNavigate} from "react-router-dom";
 import {StatusTranslator} from "../../util/Translator.js";
 import {getStateColor} from "../../util/SelectColorByStatus.js";
 import {getStateIcon} from "../../util/SelectIconByStatus.jsx";
 
+/**
+ * AssetTable component that displays a table of assets with various details and allows exporting the data to a PDF file.
+ * 
+ * @component
+ * @param {Array} initialArray - Initial array of assets to be displayed in the table.
+ * @returns {JSX.Element} - The AssetTable component.
+ */
 const AssetTable = () => {
 
     const [assets, setAssets] = useState(initialArray);
@@ -120,6 +65,12 @@ const AssetTable = () => {
 
     const navigate = useNavigate();
 
+    /**
+     * Handles the edit action for a specific asset row.
+     * 
+     * @param {object} row - The row object containing the asset data.
+     * @returns {void}
+     */
     const handleEdit = (row) => {
         navigate("/app/editAsset/" + row.original.id)
     }
@@ -144,8 +95,6 @@ const AssetTable = () => {
 
                         return <span>{formattedValue}</span>;
                     }
-
-                    // Si no se cumplen las condiciones, devolver un valor por defecto
                     return <span>N/A</span>;
                 },
             },
@@ -306,6 +255,13 @@ const AssetTable = () => {
         }
     });
 
+    /**
+     * Prepares the PDF document by fetching asset requests and inventory values.
+     * 
+     * @async
+     * @function preparePDF
+     * @return {Promise<void>} - A promise that resolves when the PDF is prepared.
+     */
     const preparePDF = async () =>{
         try {
             const response = await getAllAssetRequest();
@@ -339,11 +295,18 @@ const AssetTable = () => {
         } 
     }
 
+    /**
+     * Exports the asset data to a PDF file.
+     * 
+     * @async
+     * @function exportToPDF
+     * @return {Promise<void>} - A promise that resolves when the PDF is exported.
+     */
     const exportToPDF = async () => {
         const doc = new jsPDF({
-            orientation: 'landscape',  // Hace que la página sea horizontal
+            orientation: 'landscape',  
             unit: 'mm',
-            format: [297, 210]  // Personalizado (ancho 297mm, alto 210mm)
+            format: [297, 210] 
         });
 
         const currentDate = new Date();
@@ -410,12 +373,10 @@ const AssetTable = () => {
             },
         });
 
-        // Valor total del inventario
     const afterInventoryTableY = doc.lastAutoTable.finalY + 10;
     doc.setFontSize(14)
     doc.text('Valor total de activos: '+ `${inventoryValue[0]?.amount} colones`, 14, afterInventoryTableY);
 
-    // Tabla de Requests de Activos
     const afterValueTextY = afterInventoryTableY + 10;
     doc.setFontSize(14);
     doc.text("Salidas de activos (Préstamos)",14, afterValueTextY);
@@ -439,7 +400,6 @@ const AssetTable = () => {
         },
     });
 
-    // Guardar PDF
     doc.save("Informe_de_Activos.pdf");
     };
 

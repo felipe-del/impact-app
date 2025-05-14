@@ -1,3 +1,10 @@
+/**
+ * CreateProduct Component
+ * 
+ * This component is used to create a new product in the system.
+ * It includes a form with fields for product details such as quantity, purchase date, expiry date, category, and status.
+ * It uses Material-UI for styling and icons.
+ */
 import ProductBanner from "./ProductBanner.jsx";
 import useProductCategoryData from "../../hooks/apiData/productCategory/productCategoryData.jsx";
 import {useEffect, useRef, useState} from "react";
@@ -17,6 +24,12 @@ const initialData = {
     statusName: ""
 }
 
+/**
+ * CreateProduct component that allows users to create a new product.
+ * 
+ * @component
+ * @returns {JSX.Element} - The CreateProduct component.
+ */
 const CreateProduct = () => {
 
     const {productCategories} = useProductCategoryData()
@@ -36,9 +49,14 @@ const CreateProduct = () => {
     useEffect(() => {
         if (productCategories?.data && Array.isArray(productCategories.data)) setProductCategoryData(productCategories.data);
         if (productStatus?.data && Array.isArray(productStatus.data)) setProductStatusData(productStatus.data);
-        console.log(productCategories.data)
     }, [productCategories, productStatus]);
 
+    /**
+     * Validates the form data and checks for errors.
+     * 
+     * @param {object} formData - The form data to validate.
+     * @returns {object} - An object containing any validation errors.
+     */
     const checkErrors = () => {
         const errors = {};
         setFormErrors(errors);
@@ -46,10 +64,9 @@ const CreateProduct = () => {
         if (!formData.quantity) errors.quantity = "La cantidad es obligatoria.";
         if (!formData.purchaseDate) errors.purchaseDate = "La fecha de compra es obligatoria.";
         else {
-            // Check if purchaseDate is today or in the past
             const purchaseDate = new Date(formData.purchaseDate);
             const today = new Date();
-            today.setHours(0, 0, 0, 0); // Set time to 00:00:00 for comparison
+            today.setHours(0, 0, 0, 0); 
             if (purchaseDate > today) {
                 errors.purchaseDate = "La fecha de compra debe ser en el pasada.";
             }
@@ -58,10 +75,9 @@ const CreateProduct = () => {
         if (!formData.expiryDate && !noExpiry) {
             errors.expiryDate = "La fecha de expiración es obligatoria.";
         } else if (formData.expiryDate) {
-            // Check if expiryDate is in the future
             const expiryDate = new Date(formData.expiryDate);
             const today = new Date();
-            today.setHours(0, 0, 0, 0); // Set time to 00:00:00 for comparison
+            today.setHours(0, 0, 0, 0); 
             if (expiryDate <= today) {
                 errors.expiryDate = "La fecha de expiración debe ser en el futuro.";
             }
@@ -74,12 +90,17 @@ const CreateProduct = () => {
 
         setFormErrors(errors);
 
-        // Solo enviar si no hay errores
         if (Object.keys(errors).length === 0) {
             handleShowConfirmationModal();
         }
     }
 
+    /**
+     * Handles the change event for form inputs.
+     * 
+     * @param {object} e - The event object.
+     * @returns {void}
+     */
     const handleChange = (e) => {
         const { name, value } = e.target;
 
@@ -94,6 +115,11 @@ const CreateProduct = () => {
         });
     };
 
+    /**
+     * Handles the submission of the form data.
+     * 
+     * @returns {void}
+     */
     const handleSubmit = async () => {
 
         const requestData = {
@@ -118,6 +144,12 @@ const CreateProduct = () => {
 
     const [noExpiry, setNoExpiry] = useState(true);
 
+    /**
+     * Toggles the expiry date field and updates the form data accordingly.
+     * 
+     * @param {object} e - The event object.
+     * @returns {void}
+     */
     const toggleExpiry = () => {
         setNoExpiry(!noExpiry);
         setFormData({ ...formData, expiryDate: noExpiry ? "" : null });
@@ -147,7 +179,6 @@ const CreateProduct = () => {
                                     placeholder="Ej: 10"
                                     style={{ fontSize: ".9rem" }}
                                     required
-                                    // minimum="0"
 
                                 />
                                 {formErrors.quantity && <div className="input-text-error show">{formErrors.quantity}</div>}
@@ -182,7 +213,7 @@ const CreateProduct = () => {
                                 >
                                     <option value="">Seleccionar estado</option>
                                     {productStatusData.map((status) => {
-                                        const isDisabled = [2, 3].includes(status.id); // IDs de opciones deshabilitadas
+                                        const isDisabled = [2, 3].includes(status.id); 
                                         return (
                                             <option
                                                 key={status.id}

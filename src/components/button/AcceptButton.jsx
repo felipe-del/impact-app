@@ -1,3 +1,11 @@
+/**
+ * AcceptButton Component
+ * 
+ * This component renders a button with a check icon and a tooltip.
+ * When hovered, it expands to show the text "Aceptar".
+ * It is used to accept a row in a table or list.
+ */
+
 import { useState } from 'react';
 import { IconButton, Tooltip, Typography } from '@mui/material';
 import CheckIcon from "@mui/icons-material/Check";
@@ -5,6 +13,14 @@ import CheckIcon from "@mui/icons-material/Check";
 import PropTypes from 'prop-types';
 import {gradientMapping} from "../../style/codeStyle.js";
 
+/**
+ * AcceptButton component that displays a check icon and expands to show text on hover.
+ * 
+ * @component
+ * @param {function} handleAccept - Function to call when the button is clicked.
+ * @param {object} row - The row data associated with the button.
+ * @returns {JSX.Element} The rendered AcceptButton component.
+ */
 const AcceptButton = ({ handleAccept, row }) => {
     const [hover, setHover] = useState(false);
 

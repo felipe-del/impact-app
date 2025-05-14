@@ -1,3 +1,11 @@
+/**
+ * BrandBanner Component
+ * 
+ * This component renders a banner for the Brand page.
+ * It includes a title and action buttons for navigating back, creating a new brand, and exporting data.
+ * It uses Material-UI for styling and icons.
+ * The component is customizable with props for the title, visible buttons, and export functionality.
+ */
 import { useState } from "react";
 import { Menu, MenuItem } from "@mui/material";
 import {FileDownload, ArrowBack, AddBusiness } from "@mui/icons-material";
@@ -8,17 +16,37 @@ import PropTypes from "prop-types";
 import BannerActionButton from "../../components/button/BannerActionButton.jsx";
 import {bannerStyle} from "../../style/codeStyle.js";
 
+/**
+ * BrandBanner component that displays a banner with a title and action buttons.
+ * 
+ * @component
+ * @param {string} title - The title of the banner.
+ * @param {Array<string>} visibleButtons - An array of strings representing the buttons to be displayed.
+ * @param {function} exportToPDF - Function to call when the "Exportar a PDF" button is clicked.
+ * @param {Array} flatBrands - Array of brand data to be exported.
+ * @param {function} createBrandMethod - Function to call when the "Agregar Marca" button is clicked.
+ * @returns {JSX.Element} - The BrandBanner component.
+ */
 const BrandBanner = ({ title = "", visibleButtons = [""], exportToPDF, flatBrands, createBrandMethod}) => {
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState(null);
 
-
-    // Abre el menú
+    /**
+     * Handles the click event for the export button.
+     * 
+     * @param {object} event - The click event.
+     * @returns {void}
+     */
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
 
-    // Cierra el menú
+    /**
+     * Handles the close event for the menu.
+     * 
+     * @param {void}
+     * @returns {void}
+     */
     const handleClose = () => {
         setAnchorEl(null);
     };

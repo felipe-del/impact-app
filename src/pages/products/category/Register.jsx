@@ -1,9 +1,23 @@
+/**
+ * Register component for adding product categories.
+ * 
+ * This component allows users to register new product categories by providing details such as name, minimum quantity, type, and unit of measurement.
+ * It includes form validation, success/error modals, and a confirmation modal for user actions.
+ */
 import React, { useState, useEffect, useRef } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importa Bootstrap CSS
 import './Register.css';
 import { usePage } from '../../../context/pageContext';
 
+/**
+ * Register component for adding product categories.
+ * 
+ * @component
+ * @param {object} props - The component props.
+ * @param {function} props.setPageName - Function to set the page name in the context.
+ * @returns {JSX.Element} - The rendered component.
+ */
 const Register = () => {
     const [types, setTypes] = useState([]);
     const [measureU, setMeasureU] = useState([]);
@@ -23,6 +37,14 @@ const Register = () => {
         setPageName("Agregar categoria de producto");
     }, [setPageName]);
 
+    /**
+     * Fetches product types and units of measurement from the server when the component mounts.
+     * 
+     * This effect runs only once when the component is mounted.
+     * 
+     * @function
+     * @returns {void}
+     */
     useEffect(() => {
         fetch('http://localhost:8080/product/units', {
             method: 'GET',
@@ -51,6 +73,11 @@ const Register = () => {
             .catch(error => console.error('Fetch error:', error));
     }, []);
 
+    /**
+     * Handles form submission by preventing the default behavior and showing a confirmation modal.
+     * @param {object} e - The event object.
+     * @return {void}
+     */
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -59,11 +86,22 @@ const Register = () => {
 
     };
 
+    /**
+     * Handles the cancel button click by showing a confirmation modal.
+     * @param {object} e - The event object.
+     * @return {void}
+     */
     const handleCancel = () => {
         setConfirmAction('Cancelar'); 
         setShowConfirmModal(true);
     };
 
+    /**
+     * Handles the confirmation action based on the user's choice in the confirmation modal.
+     * If the user confirms, it saves the category; if they cancel, it resets the form.
+     * @param {object} e - The event object.
+     * @return {void}
+     */
     const handleConfirm = () => {
         if (confirmAction === 'Guardar') {
             const newCategory = {
@@ -101,6 +139,11 @@ const Register = () => {
         setShowConfirmModal(false); 
     };
 
+    /**
+     * Handles the click event of the "Registro de productos" button by redirecting to the product registration page.
+     * @param {object} e - The event object.
+     * @return {void}
+     */
     const handleRegisterP = () => {
         window.location.href = 'productRegister';
     };

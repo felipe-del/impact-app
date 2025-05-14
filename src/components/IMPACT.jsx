@@ -1,11 +1,28 @@
+/**
+ * IMPACT Component
+ * 
+ * This component serves as the main layout for the application.
+ * It includes a sidebar, top navigation bar, and a content area.
+ * It uses the UserProvider to manage user state and context.
+ * The component is designed to be responsive and adapts to different screen sizes.
+ */
 import { useState } from "react";
 import PropTypes from "prop-types";
 import Sidebar from "./sidebar/Sidebar.jsx";
 import TopBar from "./topBar/TopBar.jsx";
 import {UserProvider} from "../hooks/user/UserProvider.jsx";
 
+/**
+ * IMPACT React component.
+ * 
+ * @component
+ * @param {Object} props - Component props.
+ * @param {Object} props.responseWrapper - The response wrapper containing user data.
+ * @param {ReactNode} props.children - Optional children to render inside the component.
+ * @returns {JSX.Element} The rendered IMPACT component.
+ */
 export default function IMPACT({ responseWrapper, children }) {
-    const [user] = useState(responseWrapper.data);  // Suponemos que el `responseWrapper.data` es el usuario
+    const [user] = useState(responseWrapper.data);
 
     return (
         <UserProvider user={user}>

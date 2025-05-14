@@ -8,6 +8,11 @@ import MonitorIcon from '@mui/icons-material/Monitor';
 import ApartmentIcon from '@mui/icons-material/Apartment';
 import TakeoutDiningIcon from '@mui/icons-material/TakeoutDining';
 
+/**
+ * Function to get the icon based on the state of an item.
+ * @param {string} state - The state of the item.
+ * @return {JSX.Element} - The icon corresponding to the state.
+ */
 export const getStateIcon = (state) => {
     switch (state) {
         case 'DISPONIBLE':

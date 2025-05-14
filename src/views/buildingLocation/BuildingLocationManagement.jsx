@@ -1,3 +1,10 @@
+/**
+ * BuildingLocationManagement component.
+ * 
+ * This component manages the building location data and provides functionality to create, update, and delete building locations.
+ * It uses Material React Table for displaying the data and MUI for styling.
+ * It also includes a modal for confirming deletion of building locations.
+ */
 import BuildingLocationBanner from "./BuildingLocationBanner.jsx";
 import useBuildingLocationData from "../../hooks/apiData/buildingLocation/BuildingLocationData.jsx";
 import LoadingPointsSpinner from "../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
@@ -17,6 +24,12 @@ import {MRT_Localization_ES} from "material-react-table/locales/es/index.js";
 import EditIcon from "@mui/icons-material/Edit.js";
 import DeleteIcon from "@mui/icons-material/Delete.js";
 
+/**
+ * BuildingLocationManagement component that manages building location data.
+ * 
+ * @component
+ * @returns {JSX.Element} - The BuildingLocationManagement component.
+ */
 const BuildingLocationManagement = () => {
 
     const {buildingLocations,isError,refetch,isLoading} = useBuildingLocationData();
@@ -40,7 +53,6 @@ const BuildingLocationManagement = () => {
         if (building?.data && Array.isArray(building.data)) {
             setBuildingData(building.data);
         }
-        console.log(buildingLocations.data)
     }, [buildingLocations, building]);
 
     const columns = useMemo(() => [
@@ -66,8 +78,13 @@ const BuildingLocationManagement = () => {
             }),},
     ], [buildingData]);
 
+    /**
+     * Validates the building location data before creating or updating it.
+     * 
+     * @param {object} values - The values of the building location.
+     * @returns {boolean} - Returns true if the data is valid, false otherwise.
+     */
     const validateBuildingLocation = (values) => {
-        console.log(values)
         if (!values.floor) {
             toast.error("El número de piso no puede estar vacío.");
             return false;
@@ -79,6 +96,13 @@ const BuildingLocationManagement = () => {
         return true;
     }
 
+    /**
+     * Handles the creation of a new building location.
+     * 
+     * @param {object} values - The values of the new building location.
+     * @param {object} table - The table instance.
+     * @return {void}
+     */
     const handleCreateBuildingLocation = async ({ values, table }) => {
         if (!validateBuildingLocation(values)) {
             return;
@@ -97,6 +121,12 @@ const BuildingLocationManagement = () => {
         }
     };
 
+    /**
+     * Handles the deletion of a building location.
+     * 
+     * @param {void}
+     * @return {void}
+     */
     const handleDeleteBuildingLocation  = async () => {
         if (!rowToEdit?.original?.id) {
             toast.error("Error al eliminar: ID no encontrado.");
@@ -112,6 +142,13 @@ const BuildingLocationManagement = () => {
         }
     };
 
+    /**
+     * Handles the update of a building location.
+     * 
+     * @param {object} values - The updated values of the building location.
+     * @param {object} row - The row instance.
+     * @return {void}
+     */
     const handleUpdateBuildingLocation  = async ({ values, row }) => {
         if (!validateBuildingLocation(values)) {
             return;
@@ -138,9 +175,9 @@ const BuildingLocationManagement = () => {
         enableEditing: true,
         editingMode: "row",
         enableExpandAll: false,
-        manualFiltering: true, //turn off built-in client-side filtering
-        manualPagination: true, //turn off built-in client-side pagination
-        manualSorting: true, //turn off built-in client-side sorting
+        manualFiltering: true, 
+        manualPagination: true, 
+        manualSorting: true, 
         initialState: { density: "comfortable", pagination: { pageSize: 5 } },
         onCreatingRowSave: handleCreateBuildingLocation,
         onEditingRowSave: handleUpdateBuildingLocation,

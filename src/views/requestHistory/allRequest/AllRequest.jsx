@@ -1,3 +1,10 @@
+/**
+ * AllRequest component.
+ * 
+ * This component fetches and displays all requests (Asset, Product, Space) in a table format.
+ * It includes a detail panel for each request to show more information.
+ * It uses Material-UI and Material React Table for styling and functionality.
+ */
 import {useEffect, useMemo, useState} from "react"
 import AllRequestBanner from "./AllRequestBanner.jsx"
 import {getAssetRequestsExcludingEarringAndRenewal} from "../../../api/assetRequest/assetRequest_API.js"
@@ -11,11 +18,25 @@ import {getStateColor} from "../../../util/SelectColorByStatus.js";
 import {getStateIcon} from "../../../util/SelectIconByStatus.jsx";
 import LoadingPointsSpinner from "../../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
 
+/**
+ * AllRequest component that fetches and displays all requests (Asset, Product, Space) in a table format.
+ * 
+ * @component
+ * @returns {JSX.Element} - The AllRequest component.
+ */
 const AllRequest = () => {
     const [requests, setRequests] = useState([])
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
+
+        /**
+         * Fetches all requests (Asset, Product, Space) excluding earring and renewal.
+         * 
+         * @async
+         * @function fetchAllRequests
+         * @returns {Promise<void>} - A promise that resolves when the requests are fetched and set in state.
+         */
         const fetchAllRequests = async () => {
             try {
                 const [assetRes, productRes, spaceRes] = await Promise.all([
@@ -112,12 +133,16 @@ const AllRequest = () => {
         },
     ], []);
 
-
+    /**
+     * Renders the detail panel for each row in the table.
+     * 
+     * @param {object} row - The row data for which to render the detail panel.
+     * @returns {JSX.Element} - The detail panel component.
+     */
     const renderDetailPanel = ({row}) => {
         const data = row.original;
         const tipo = data.tipo;
 
-        // Función para renderizar detalles comunes
         const renderCommonDetails = (items) => {
             return items.map((item, index) => (
                 <Box
@@ -151,7 +176,6 @@ const AllRequest = () => {
             ));
         };
 
-        // Detalles específicos de tipo "Activo"
         if (tipo === "Activo") {
             return (
                 <Box
@@ -198,7 +222,6 @@ const AllRequest = () => {
             );
         }
 
-        // Detalles específicos de tipo "Producto"
         if (tipo === "Producto") {
             return (
                 <Box
@@ -238,7 +261,6 @@ const AllRequest = () => {
             );
         }
 
-        // Detalles específicos de tipo "Espacio"
         if (tipo === "Espacio") {
             return (
                 <Box

@@ -1,3 +1,12 @@
+/**
+ * AssetCategoryManagement component.
+ * 
+ * This component is responsible for managing asset categories.
+ * It includes a banner for navigation and action buttons,
+ * a table for displaying asset categories,
+ * and modals for creating, editing, and deleting categories.
+ * It uses Material-UI for styling and Material React Table for displaying the data.
+ */
 import AssetCategoryBanner from "./AssetCategoryBanner.jsx";
 import useAssetCategory from "../../hooks/apiData/assetCategory/AssetCategoryData.jsx";
 import {useEffect, useMemo, useState} from "react";
@@ -15,6 +24,12 @@ import GenericModal from "../../components/popUp/generic/GenericModal.jsx";
 import LoadingPointsSpinner from "../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
 
+/**
+ * AssetCategoryManagement component that manages asset categories.
+ * 
+ * @component
+ * @returns {JSX.Element} - The AssetCategoryManagement component.
+ */
 const AssetCategoryManagement = () => {
 
     const { assetCategories, isLoading, isError, refetch } = useAssetCategory();
@@ -40,6 +55,12 @@ const AssetCategoryManagement = () => {
         { accessorKey: "name", header: "Nombre", enableEditing: true },
     ], []);
 
+    /**
+     * Validates the asset category data.
+     * 
+     * @param {object} values - The asset category data to validate.
+     * @returns {boolean} - Returns true if the data is valid, false otherwise.
+     */
     const validateAssetCategory = (values) => {
         if (!values.name) {
             toast.error("El nombre no puede estar vacío.");
@@ -48,6 +69,14 @@ const AssetCategoryManagement = () => {
         return true;
     }
 
+    /**
+     * Handles the creation of a new asset category.
+     *
+     * @param {object} params - The parameters for creating the asset category.
+     * @param {object} params.values - The values for the new asset category.
+     * @param {object} params.table - The table instance.
+     * @returns {void}
+     */
     const handleCreateAssetCategory = async ({ values, table }) => {
         if (!validateAssetCategory(values)) return;
         try {
@@ -60,6 +89,12 @@ const AssetCategoryManagement = () => {
         }
     }
 
+    /**
+     * Handles the deletion of an asset category.
+     * 
+     * @param {void}
+     * @returns {void}
+     */
     const handleDeleteAssetCategory = async () => {
         if (!rowToEdit?.original?.id) {
             toast.error("Error al eliminar: ID no encontrado.");
@@ -75,6 +110,14 @@ const AssetCategoryManagement = () => {
         }
     }
 
+    /**
+     * Handles the update of an asset category.
+     * 
+     * @param {object} params - The parameters for updating the asset category.
+     * @param {object} params.values - The updated values of the asset category.
+     * @param {object} params.row - The row instance.
+     * @returns {void}
+     */
     const handleUpdateAssetCategory = async ({ values, row }) => {
         if (!validateAssetCategory(values)) return;
         try {

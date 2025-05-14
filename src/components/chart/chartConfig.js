@@ -1,3 +1,9 @@
+/**
+ * chartConfig.js
+ * 
+ * This file contains the configuration for Chart.js, including the registration of necessary components and the options for the chart.
+ * It is used to set up the chart's appearance, behavior, and data handling.
+ */
 import { Chart as ChartJS, 
     CategoryScale, 
     LinearScale, 

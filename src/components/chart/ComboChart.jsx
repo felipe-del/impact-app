@@ -1,10 +1,27 @@
+/**
+ * ComboChart Component
+ * 
+ * This component renders a combination chart using Chart.js and React.
+ * It displays income and loan data over a period of time.
+ * It is used to visualize financial trends in a dashboard or report.
+ * It also shows a toast notification if there are more than 12 months.
+ */
 import React, { useEffect } from 'react';
 import { Chart } from 'react-chartjs-2';
 import { chartOptions } from './chartConfig';
 import { toast } from "react-hot-toast";
 
+/**
+ * ComboChart component that displays a combination chart using Chart.js.
+ * 
+ * @component
+ * @param {Object} props - Component props.
+ * @param {Object} props.incomeData - The income data to be displayed in the chart.
+ * @param {Object} props.loanData - The loan data to be displayed in the chart.
+ * @returns {JSX.Element} The rendered ComboChart component.
+ */
 const ComboChart = ({ incomeData, loanData }) => {
-  // Verificar si hay más de 12 meses al montar el componente
+
   useEffect(() => {
     const labels = incomeData?.labels || loanData?.labels;
     if (labels && labels.length > 12) {
@@ -14,7 +31,6 @@ const ComboChart = ({ incomeData, loanData }) => {
     }
   }, [incomeData?.labels, loanData?.labels]);
 
-  // Limitar a 12 meses si hay más
   const labels = incomeData?.labels || loanData?.labels || ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'];
   const limitedLabels = labels.slice(0, 12);
   
@@ -30,7 +46,6 @@ const ComboChart = ({ incomeData, loanData }) => {
     '#d35400', '#c0392b', '#2980b9', '#27ae60', '#f1c40f', '#8e44ad'
   ];
 
-  // Configuración para gráfico combinado
   const comboOptions = {
     ...chartOptions,
     scales: {

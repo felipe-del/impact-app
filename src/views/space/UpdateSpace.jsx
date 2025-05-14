@@ -1,3 +1,13 @@
+/**
+ * UpdateSpace Component
+ * 
+ * This component is used to update the details of a space in the system.
+ * It includes a form for editing space details such as name, code, location, capacity, and status.
+ * It also includes a modal for confirming the update action.
+ * It uses React Router for navigation and toast notifications for user feedback.
+ * It also includes a modal for displaying space status information.
+ * It uses custom hooks for fetching space, building location, and space status data.
+ */
 import {useNavigate, useParams} from "react-router-dom";
 import useSpaceData from "../../hooks/apiData/space/SpaceData.jsx";
 import {useEffect, useRef, useState} from "react";
@@ -22,6 +32,12 @@ const initialData = {
     spaceStatusId: 0
 };
 
+/**
+ * UpdateSpace component that allows users to update the details of a space.
+ * 
+ * @component
+ * @returns {JSX.Element} - The UpdateSpace component.
+ */
 const UpdateSpace = () => {
     const { id } = useParams();
     const {spaces} = useSpaceData()
@@ -50,7 +66,6 @@ const UpdateSpace = () => {
     useEffect(() => {
         if (spaces?.data && Array.isArray(spaces.data)) {
             const spaceToUpdate = spaces.data.find((space) => space.id === parseInt(id));
-            console.log(spaceToUpdate);
             setFormData(
                 {
                     name: spaceToUpdate.name,
@@ -71,6 +86,12 @@ const UpdateSpace = () => {
         }
     }, [spaces, spaceStatus, buildingLocationData]);
 
+    /**
+     * Handles the change event for form inputs.
+     * 
+     * @param {object} e - The event object.
+     * @returns {void}
+     */
     const handleChange = (e) => {
         const { name, value } = e.target;
 
@@ -85,6 +106,12 @@ const UpdateSpace = () => {
         });
     };
 
+    /**
+     * Validates the form data and checks for errors.
+     * 
+     * @param {object} values - The form data to validate.
+     * @returns {boolean} - Returns true if the data is valid, false otherwise.
+     */
     const checkErrors = () => {
         const errors = {};
         setFormErrors(errors);
@@ -103,12 +130,17 @@ const UpdateSpace = () => {
 
         setFormErrors(errors);
 
-        // Solo enviar si no hay errores
         if (Object.keys(errors).length === 0) {
             handleShowConfirmationModal();
         }
     }
 
+    /**
+     * Handles the submission of the form data.
+     * 
+     * @param {object} e - The event object.
+     * @returns {void}
+     */
     const handleSubmit = async () => {
         const requestData = {
             name: formData.name,
@@ -173,7 +205,7 @@ const UpdateSpace = () => {
                                     className="form-control border-primary"
                                     value={formData.spaceCode}
                                     onChange={(e) => {
-                                        const numericValue = e.target.value.replace(/\D/g, ""); // Elimina todo lo que no sea número
+                                        const numericValue = e.target.value.replace(/\D/g, ""); 
                                         handleChange({ target: { name: "spaceCode", value: numericValue } });
                                     }}
                                     placeholder="Ej: 123456"
@@ -216,8 +248,8 @@ const UpdateSpace = () => {
                                             }));
                                         }
                                     }}
-                                    thousandSeparator={false} // No separadores de miles
-                                    decimalScale={0} // Solo números enteros
+                                    thousandSeparator={false} 
+                                    decimalScale={0}
                                     fixedDecimalScale={false}
                                     allowNegative={false}
                                     isNumericString={true}
@@ -301,7 +333,7 @@ const UpdateSpace = () => {
                                 >
                                     <option value="">Seleccionar estado</option>
                                     {spaceStatusData.map((status) => {
-                                        const isDisabled = [2, 4, 5].includes(status.id); // IDs de opciones deshabilitadas
+                                        const isDisabled = [2, 4, 5].includes(status.id);
                                         return (
                                             <option
                                                 key={status.id}
