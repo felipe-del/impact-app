@@ -1,5 +1,18 @@
+/**
+ * Home Component.
+ * 
+ * This component serves as the main landing page for the application.
+ * It includes information about the IMPACT system, the team behind it,
+ * and the Universidad de Costa Rica (UCR) and CIMPA.
+ */
 import './Home.css';
 
+/**
+ * Home component that serves as the main landing page for the application.
+ * 
+ * @component
+ * @returns {JSX.Element} - The Home component.
+ */
 const Home = () => {
     return (
         <div className="home-container">

@@ -1,3 +1,10 @@
+/**
+ * RequestButton Component
+ * 
+ * This component renders a button with a check and cancel icon and a tooltip.
+ * When hovered, it expands to show the text "Aprobar o Denegar".
+ * It is used to approve or deny a row in a table or list.
+ */
 import { useState } from 'react';
 import { IconButton, Tooltip, Box } from '@mui/material';
 import DoneIcon from '@mui/icons-material/Done';
@@ -5,6 +12,14 @@ import CloseIcon from '@mui/icons-material/Close';
 import PropTypes from 'prop-types';
 import { gradientMapping } from "../../style/codeStyle.js";
 
+/**
+ * RequestButton component that displays a check and cancel icon and expands to show text on hover.
+ * 
+ * @component
+ * @param {function} handleEdit - Function to call when the button is clicked.
+ * @param {object} row - The row data associated with the button.
+ * @returns {JSX.Element} The rendered RequestButton component.
+ */
 const RequestButton = ({ handleEdit, row }) => {
     const [hover, setHover] = useState(false);
 

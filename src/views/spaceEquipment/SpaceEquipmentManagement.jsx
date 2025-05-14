@@ -1,3 +1,13 @@
+/**
+ * SpaceEquipmentManagement Component
+ * 
+ * This component is used to manage space equipment in the system.
+ * It includes functionalities to create, update, and delete space equipment.
+ * It also displays a table with the list of space equipment and their details.
+ * It uses Material-UI for styling and icons.
+ * It also includes a modal for displaying general information.
+ * It uses Material React Table for displaying the data in a table format.
+ */
 import SpaceEquipmentBanner from "./SpaceSquipmentBanner.jsx";
 import useSpaceEquipmentData from "../../hooks/apiData/spaceEquipment/SpaceEquipmentData.jsx";
 import {useEffect, useMemo, useState} from "react";
@@ -47,6 +57,13 @@ DetailItem.propTypes = {
     label: PropTypes.string.isRequired,
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
 };
+
+/**
+ * SpaceEquipmentManagement Component
+ * 
+ * @param {object} props - The component props.
+ * @returns {JSX.Element} - The rendered component.
+ */
 const SpaceEquipmentManagement = () => {
 
     const { spaceEquipment, isError, isLoading, refetch } = useSpaceEquipmentData();
@@ -71,6 +88,12 @@ const SpaceEquipmentManagement = () => {
         if (brands) setBrandsData(brands.data);
     }, [spaceEquipment, spaces, brands]);
 
+    /**
+     * Validates the asset equipment data.
+     * 
+     * @param {object} values - The asset equipment data to validate.
+     * @returns {boolean} - Returns true if the data is valid, false otherwise.
+     */
     const validateAssetEquipment = (values) => {
         if (!values.name) {
             toast.error("El nombre no puede estar vacío.");
@@ -83,6 +106,13 @@ const SpaceEquipmentManagement = () => {
         return true;
     }
 
+    /**
+     * Handles the creation of space equipment.
+     * 
+     * @param {object} values - The values for the new space equipment.
+     * @param {object} table - The table instance.
+     * @return {Promise<void>} - A promise that resolves when the operation is complete.
+     */
     const handleCreateSpaceEquipment = async ({ values, table }) => {
         if (!validateAssetEquipment(values)) return;
         const brandId = brandsData.find(brand => brand.name === values["brandResponse.name"])?.id;
@@ -102,6 +132,12 @@ const SpaceEquipmentManagement = () => {
         }
     }
 
+    /**
+     * Handles the deletion of space equipment.
+     * 
+     * @param {void}
+     * @returns {Promise<void>} - A promise that resolves when the operation is complete.
+     */
     const handleDeleteSpaceEquipment = async () => {
         if (!rowToEdit?.original?.id) {
             toast.error("Error al eliminar: ID no encontrado.");
@@ -117,6 +153,13 @@ const SpaceEquipmentManagement = () => {
         }
     }
 
+    /**
+     * Handles the update of space equipment.
+     * 
+     * @param {object} values - The updated values for the space equipment.
+     * @param {object} row - The row instance.
+     * @return {Promise<void>} - A promise that resolves when the operation is complete.
+     */
     const handleUpdateSpaceEquipment = async ({ values, row }) => {
         if (!validateAssetEquipment(values)) return;
         const brandId = brandsData.find(brand => brand.name === values["brandResponse.name"])?.id;

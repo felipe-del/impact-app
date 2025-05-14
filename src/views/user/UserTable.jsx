@@ -1,3 +1,13 @@
+/**
+ * UserTable component
+ * 
+ * This component displays a table of users with their roles and states.
+ * It allows the user to edit the roles and states of the users.
+ * It also includes a banner with export options and a modal for displaying roles and states.
+ * It uses Material-UI for styling and icons.
+ * It also includes a modal for displaying confirmation messages.
+ * It uses react-query for data fetching and caching.
+ */
 import { useState, useEffect, useMemo } from 'react';
 import {
     MaterialReactTable,
@@ -30,6 +40,12 @@ import GenericModal from "../../components/popUp/generic/GenericModal.jsx";
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import {StatusTranslator} from "../../util/Translator.js";
 
+/**
+ * UserTable component that displays a table of users with their roles and states.
+ * 
+ * @component
+ * @return {JSX.Element} - The UserTable component.
+ */
 const UserTable = () => {
     const [openRoleAndStateModal, setOpenRoleAndStateModal] = useState(false);
     const [users, setUsers] = useState([]);
@@ -41,8 +57,6 @@ const UserTable = () => {
 
     const userSession = useUser();
 
-
-    // EDIT LOGIC
     const [editRowId, setEditRowId] = useState(null);
     const [tempState, setTempState] = useState({});
     const [tempRole, setTempRole] = useState({});
@@ -53,6 +67,12 @@ const UserTable = () => {
 
     const handleHideConfirmationModal = () => setShowConfirmationModal(false);
 
+    /**
+     * Handles the confirmation modal display logic.
+     * 
+     * @function
+     * @returns {void}
+     */
     const handleShowConfirmationModal = () => {
         const user = users.find(user => user.id === editRowId);
         if (!user) return;
@@ -112,21 +132,49 @@ const UserTable = () => {
         if (userStatesData) setStates(userStatesData.data);
     }, [usersData, userRolesData, userStatesData]);
 
+    /**
+     * Starts editing a user row by setting the editRowId and temporary role and state values.
+     * 
+     * @function
+     * @param {string|number} rowId - The ID of the user row to edit.
+     * @param {string} currentRole - The current role of the user.
+     * @param {string} currentState - The current state of the user.
+     * @return {void}
+     */
     const startEditing = (rowId, currentRole, currentState) => {
         setEditRowId(rowId);
         setTempRole({ ...tempRole, [rowId]: currentRole });
         setTempState({ ...tempState, [rowId]: currentState });
     };
 
+    /**
+     * Handles the edit button click event by starting the editing process for the selected user row.
+     * 
+     * @function
+     * @param {object} row - The user row object containing user data.
+     * @return {void}
+     */
     function handleEdit(row) {
         startEditing(row.original.id, row.original.userRoleResponse.roleName, row.original.userStateResponse.stateName);
     }
 
+    /**
+     * Cancels the editing process by resetting the editRowId to null.
+     * 
+     * @function
+     * @return {void}
+     */
     const cancelEditing = () => {
         setEditRowId(null);
     };
 
-
+    /**
+     * Handles the confirmation modal display logic for saving changes.
+     * 
+     * @function
+     * @param {string|number} rowId - The ID of the user row to save changes for.
+     * @return {void}
+     */
     const saveChanges = async (rowId) => {
         if (userSession.id === rowId) {
             toast.error('No puedes cambiar tu propio rol o estado');
@@ -175,6 +223,13 @@ const UserTable = () => {
         }
     };
 
+    /**
+     * Handles the state color based on the user state.
+     * 
+     * @function
+     * @param {string} state - The user state to determine the color for.
+     * @return {string} - The color associated with the user state.
+     */
     const getStateColor = (state) => {
         switch (state.toUpperCase()) {
             case 'ACTIVE':

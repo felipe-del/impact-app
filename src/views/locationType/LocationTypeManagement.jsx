@@ -1,3 +1,11 @@
+/**
+ * LocationTypeManagement Component
+ * 
+ * This component is used to manage location types in the system.
+ * It includes functionalities to create, update, and delete location types.
+ * It also displays a table with the list of location types and their details.
+ * It uses Material-UI for styling and icons.
+ */
 import LocationTypeBanner from "./LocationTypeBanner.jsx";
 import useLocationTypeData from "../../hooks/apiData/locationType/locationType.jsx";
 import {useEffect, useMemo, useState} from "react";
@@ -11,7 +19,12 @@ import {toast} from "react-hot-toast";
 import {deleteLocationType, saveLocationType, updateLocationType} from "../../api/locationType/locationType_API.js";
 import LoadingPointsSpinner from "../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
 
-
+/**
+ * This component manages the location types in the system.
+ * 
+ * @component
+ * @returns {JSX.Element} - The LocationTypeManagement component.
+ */
 const LocationTypeManagement = () => {
 
     const { locationType, isError, isLoading, refetch } = useLocationTypeData();
@@ -36,6 +49,12 @@ const LocationTypeManagement = () => {
         { accessorKey: "typeName", header: "Nombre", enableEditing: true },
     ], []);
 
+    /**
+     * Validates the location type data.
+     * 
+     * @param {object} values - The location type data to validate.
+     * @returns {boolean} - Returns true if the data is valid, false otherwise.
+     */
     const validateLocationType = (values) => {
         if (!values.typeName) {
             toast.error("El nombre no puede estar vacío.");
@@ -44,6 +63,13 @@ const LocationTypeManagement = () => {
         return true;
     }
 
+    /**
+     * Handles the creation of a new location type.
+     * 
+     * @param {object} values - The location type data to create.
+     * @param {object} table - The table instance.
+     * @returns {Promise<void>} - A promise that resolves when the operation is complete.
+     */
     const handleCreateLocationType = async ({ values, table }) => {
         if (!validateLocationType(values)) return;
         try {
@@ -56,6 +82,12 @@ const LocationTypeManagement = () => {
         }
     }
 
+    /**
+     * Handles the deletion of a location type.
+     * 
+     * @param {object} row - The row to delete.
+     * @returns {Promise<void>} - A promise that resolves when the operation is complete.
+     */
     const handleDeleteLocationType  = async () => {
         if (!rowToEdit?.original?.id) {
             toast.error("Error al eliminar: ID no encontrado.");
@@ -71,6 +103,14 @@ const LocationTypeManagement = () => {
         }
     }
 
+    /**
+     * Handles the update of a location type.
+     * 
+     * @param {object} values - The location type data to update.
+     * @param {object} row - The row to update.
+     * @param {object} table - The table instance.
+     * @returns {Promise<void>} - A promise that resolves when the operation is complete.
+     */
     const handleUpdateLocationType  = async ({ values, row }) => {
         if (!validateLocationType(values)) return;
         try {

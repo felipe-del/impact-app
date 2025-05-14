@@ -1,3 +1,11 @@
+/**
+ * AuthToggle component.
+ * 
+ * This component handles the toggle between the Sign In and Sign Up views.
+ * It uses React Router for navigation and manages the state of the sign-in status.
+ * It also includes a useEffect hook to check for an authentication token in local storage.
+ * If the token is found, it redirects the user to the app page.
+ */
 import {useEffect, useState} from 'react';
 import './authToggle.css';
 import { useNavigate } from 'react-router-dom';
@@ -8,12 +16,17 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LoginIcon from '@mui/icons-material/Login';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 
+/**
+ * AuthToggle component that handles the toggle between the Sign In and Sign Up views.
+ * 
+ * @component
+ * @returns {JSX.Element} - The AuthToggle component.
+ */
 const AuthToggle = () => {
-    const [isSignIn, setIsSignIn] = useState(false); // Default to Sign In view
+    const [isSignIn, setIsSignIn] = useState(false); 
 
     const navigate = useNavigate();
 
-    // Toggle between Sign In and Sign Up forms
     const toggleSignIn = () => {
         setIsSignIn(prevState => !prevState);
     };

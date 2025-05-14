@@ -1,10 +1,28 @@
+/**
+ * ColumnChart Component
+ * 
+ * This component renders a horizontal bar chart using Chart.js and React.
+ * It displays data with labels and values, and supports a maximum of 12 months.
+ * It is used to visualize data trends in a dashboard or report.
+ * It also shows a toast notification if there are more than 12 months.
+ */
+
 import React, { useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { toast } from "react-hot-toast";
 
+/**
+ * ColumnChart component that displays a horizontal bar chart using Chart.js.
+ * 
+ * @component
+ * @param {Object} props - Component props.
+ * @param {Array} props.data - The data to be displayed in the chart.
+ * @param {string} props.label - The label for the dataset.
+ * @returns {JSX.Element} The rendered ColumnChart component.
+ */
 const ColumnChart = ({ data, label }) => {
-  // Verificar si hay más de 12 meses al montar el componente
+
   useEffect(() => {
     if (data?.labels && data.labels.length > 12) {
       toast.error('El gráfico solo puede mostrar un máximo de 12 meses', {
@@ -13,7 +31,6 @@ const ColumnChart = ({ data, label }) => {
     }
   }, [data?.labels]);
 
-  // Limitar a 12 meses si hay más
   const limitedLabels = data?.labels ? data.labels.slice(0, 12) : ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'];
   const limitedValues = data?.values ? data.values.slice(0, 12) : [5, 10, 8, 12, 6, 9];
 
@@ -24,10 +41,9 @@ const ColumnChart = ({ data, label }) => {
     '#d35400', '#c0392b', '#2980b9', '#27ae60', '#f1c40f', '#8e44ad'
   ];
 
-  // Configuración específica para columnas horizontales
   const columnOptions = {
     responsive: true,
-    indexAxis: 'y', // Convierte el gráfico en columnas horizontales
+    indexAxis: 'y',
     plugins: {
       legend: {
         display: true,

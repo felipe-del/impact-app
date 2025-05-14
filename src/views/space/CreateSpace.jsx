@@ -1,3 +1,12 @@
+/**
+ * CreateSpace Component
+ * 
+ * This component is used to create a new space in the system.
+ * It includes a form with fields for space name, code, location, capacity, open and close times, and space status.
+ * It also includes a modal for confirming the creation of the space.
+ * It uses React hooks for state management and form handling.
+ * It also uses Material-UI for styling and icons.
+ */
 import {useState, useRef, useEffect} from 'react';
 import InputMask from 'react-input-mask';
 import { NumericFormat } from 'react-number-format';
@@ -23,6 +32,12 @@ const initialData = {
     spaceStatusId: 0
 };
 
+/**
+ * CreateSpace component that allows users to create a new space.
+ * 
+ * @component
+ * @returns {JSX.Element} - The CreateSpace component.
+ */
 const CreateSpace = () => {
 
     const [formData, setFormData] = useState(initialData);
@@ -66,6 +81,11 @@ const CreateSpace = () => {
         });
     };
 
+    /**
+     * Validates the form data and checks for errors before submission.
+     * 
+     * @returns {void}
+     */
     const checkErrors = () => {
         const errors = {};
         setFormErrors(errors);
@@ -81,15 +101,18 @@ const CreateSpace = () => {
         }
         if (!formData.spaceStatusId) errors.spaceStatusId = "El estado del activo es obligatorio.";
 
-
         setFormErrors(errors);
 
-        // Solo enviar si no hay errores
         if (Object.keys(errors).length === 0) {
             handleShowConfirmationModal();
         }
     }
 
+    /**
+     * Handles the submission of the form data to create a new space.
+     * 
+     * @returns {void}
+     */
     const handleSubmit = async () => {
         const spaceStatusName = spaceStatusData.find(status => status.id === parseInt(formData.spaceStatusId))?.name;
         const requestData = {
@@ -198,8 +221,8 @@ const CreateSpace = () => {
                                             }));
                                         }
                                     }}
-                                    thousandSeparator={false} // No separadores de miles
-                                    decimalScale={0} // Solo números enteros
+                                    thousandSeparator={false}
+                                    decimalScale={0}
                                     fixedDecimalScale={false}
                                     allowNegative={false}
                                     isNumericString={true}
@@ -282,7 +305,7 @@ const CreateSpace = () => {
                                 >
                                     <option value="">Seleccionar estado</option>
                                     {spaceStatusData.map((status) => {
-                                        const isDisabled = [2, 4, 5].includes(status.id); // IDs de opciones deshabilitadas
+                                        const isDisabled = [2, 4, 5].includes(status.id); 
                                         return (
                                             <option
                                                 key={status.id}

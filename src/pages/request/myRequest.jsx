@@ -1,8 +1,20 @@
+/**
+ * MyRequest Component
+ * 
+ * This component renders a page that displays a list of user requests.
+ * It includes a breadcrumb navigation and a search bar for filtering requests.
+ */
 import React from "react";
 import { useState } from 'react';
 import DynamicTable from "../../components/dynamicTable/dynamicTable";
 import SearchBar from "../../components/searchBar/searchBar";
 
+/**
+ * MyRequest component that displays a list of user requests.
+ * 
+ * @component
+ * @returns {JSX.Element} - The MyRequest component.
+ */
 const Myrequest= () => {
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -21,25 +33,6 @@ const Myrequest= () => {
             onSearchChange={setSearchTerm} 
             placeholder="Buscar solicitudes" 
         />
-        {/* <div className="ms-auto">
-            <label className="me-2">
-                <input
-                    type="checkbox"
-                    className="me-1"
-                    checked={showOficina}
-                    onChange={() => handleCategoryChange('Oficina')}
-                /> Productos oficina
-            </label>
-            <label>
-                <input
-                    type="checkbox"
-                    className="me-1"
-                    checked={showLimpieza}
-                    onChange={() => handleCategoryChange('Limpieza')}
-                /> Productos limpieza
-            </label>
-        </div> */}
-        {/* <DynamicTable  style={{maxHeight: '60vh'}}/> */}
       </div>
     </div>
   )

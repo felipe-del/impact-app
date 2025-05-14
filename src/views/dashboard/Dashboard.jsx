@@ -1,3 +1,9 @@
+/**
+ * Dashboard Component
+ * 
+ * This component serves as the main dashboard for the application, displaying various statistics and charts related to assets, products, and spaces.
+ * It includes functionality to filter data by date ranges and export reports in PDF and CSV formats.
+ */
 import {Card, ProgressBar} from 'react-bootstrap';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faBox, faBuilding, faClipboardList, faComments, faEllipsisV} from '@fortawesome/free-solid-svg-icons';
@@ -37,31 +43,26 @@ const initialData = {
     assetQuantityCRC: ''
 };
 
-// Estado inicial para activos por fecha de compra
 const initialAssetsByPurchaseDate = {
     startDate: '2024-03-03',
     endDate: formattedToday
 };
 
-// Estado inicial para préstamos de activos
 const initialLoanDates = {
     startDate: '2024-03-11',
     endDate: formattedToday
 };
 
-// Estado inicial para solicitudes de productos
 const initialProductRequestsDates = {
     startDate: '2024-03-11',
     endDate: formattedToday
 };
 
-// Estado inicial para ingresos de productos
 const initialProductEntriesDates = {
     startDate: '2024-03-11',
     endDate: formattedToday
 };
 
-// Estado inicial para comparación
 const initialComparisonDates = {
     startDate: '2024-03-11',
     endDate: formattedToday
@@ -73,7 +74,12 @@ const todayDate = {
     year: today.getFullYear(),
 }
 
-
+/**
+ * Dashboard component that displays various statistics and charts related to assets, products, and spaces.
+ * 
+ * @component
+ * @returns {JSX.Element} - The Dashboard component.
+ */
 const Dashboard = () => {
 
     const [formData, setFormData] = useState(initialData);
@@ -119,12 +125,7 @@ const Dashboard = () => {
                 const assetRequests = assetRes?.data?.map(req => ({...req, tipo: "Activo"})) || []
                 const productRequests = productRes?.data?.map(req => ({...req, tipo: "Producto"})) || []
                 const spaceRequests = spaceRes?.data?.map(req => ({...req, tipo: "Espacio"})) || []
-                console.log(assetRequests)
-                console.log(productRequests)
-                console.log(spaceRequests)
-
                 const all = [...assetRequests,...productRequests,...spaceRequests]
-                console.log(all)
                 setRequests(all)
             }catch(error){
                 console.error("Error al cargar solicitudes", error)
@@ -196,10 +197,9 @@ const Dashboard = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setFetchData(true); // Set flag to true to trigger data fetching
+        setFetchData(true); 
     };
 
-    // Sample data for demonstration purposes
     const pendingRequestsCount = 18;
     const getAssetsByPurchaseDate = (assets, startDate, endDate) => {
         if (!startDate || !endDate) {
@@ -255,7 +255,6 @@ const Dashboard = () => {
 
         const values = sortedEntries.map(([, count]) => count);
 
-        // 🔹 Invertir el orden para que se muestren de más antiguo a más reciente
         return {
             labels: labels.reverse(),
             values: values.reverse()
@@ -316,7 +315,6 @@ const Dashboard = () => {
 
         const values = sortedRequests.map(([, count]) => count);
 
-        // 🔹 Invertir el orden para que se muestren de más antiguo a más reciente
         return {
             labels: labels.reverse(),
             values: values.reverse()
@@ -357,7 +355,7 @@ const Dashboard = () => {
                 const year = entryDate.getFullYear();
                 const month = entryDate.getMonth();
                 const key = `${year}-${month}`;
-                monthlyCounts[key] = (monthlyCounts[key] || 0) + productEntry.totalEntries; // Add totalEntries instead of 1
+                monthlyCounts[key] = (monthlyCounts[key] || 0) + productEntry.totalEntries; 
             }
         });
 
@@ -377,7 +375,6 @@ const Dashboard = () => {
 
         const values = sortedEntries.map(([, count]) => count);
 
-        // 🔹 Invertir el orden para que se muestren de más antiguo a más reciente
         return {
             labels: labels.reverse(),
             values: values.reverse()
@@ -385,7 +382,6 @@ const Dashboard = () => {
     };
 
     const getAssetsLoansByDate = (assetLoans, startDate, endDate) => {
-        // console.log(assetLoans)
         if (!startDate || !endDate) {
             return {
                 labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
@@ -623,16 +619,6 @@ const Dashboard = () => {
 
     return (
         <div>
-            {/* Page Heading
-            <div className="d-sm-flex align-items-center justify-content-between mb-4">
-                <h1 className="h3 mb-0" style={{ color: '#005da4' }}>Tablero de Control</h1>
-
-                <a href="#" className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                    <FontAwesomeIcon icon={faChartLine} className="text-white-50" /> Generar Reporte
-                </a>
-            </div>
-
-            {/* Content Row */}
             <div className="row">
                 <div className="col-xl-3 col-md-6 mb-4">
                     <Card className="border-left-primary shadow h-100 py-2">
@@ -750,7 +736,6 @@ const Dashboard = () => {
                                         <div className="row mt-3">
                                             {inventoryValue?.data?.length ? (
                                                 inventoryValue.data.map((item, index) => {
-                                                    // console.log(inventoryValue.data)
                                                     // Replace currency name
                                                     const currencyName = item.currency?.stateName === "DOLLAR" ? "dólares" :
                                                         item.currency?.stateName === "COLON" ? "colónes" :

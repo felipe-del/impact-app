@@ -1,3 +1,10 @@
+/**
+ * EditButton Component
+ * 
+ * This component renders an edit button with a tooltip and an icon.
+ * When hovered, it expands to show the text "Editar".
+ * It is used to edit a row in a table or list.
+ */
 import { useState } from 'react';
 import { IconButton, Tooltip, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
@@ -5,6 +12,14 @@ import EditIcon from '@mui/icons-material/Edit';
 import PropTypes from 'prop-types';
 import {gradientMapping} from "../../style/codeStyle.js";
 
+/**
+ * EditButton component that displays an edit icon and expands to show text on hover.
+ * 
+ * @component
+ * @param {function} handleEdit - Function to call when the button is clicked.
+ * @param {object} row - The row data associated with the button.
+ * @returns {JSX.Element} The rendered EditButton component.
+ */
 const EditButton = ({ handleEdit, row }) => {
     const [hover, setHover] = useState(false);
 

@@ -1,3 +1,11 @@
+/**
+ * ProductBanner Component
+ * 
+ * This component is used to display a banner for the Product management page.
+ * It includes a title and action buttons for navigation, creating a new product,
+ * exporting data to CSV and PDF, and displaying product information.
+ * It uses Material-UI for styling and icons.
+ */
 import { useState } from "react";
 import { Menu, MenuItem } from "@mui/material";
 import { FileDownload, ArrowBack, VideoCall } from "@mui/icons-material";
@@ -8,12 +16,24 @@ import BannerActionButton from "../../components/button/BannerActionButton.jsx";
 import { bannerStyle } from "../../style/codeStyle.js";
 import InfoIcon from "@mui/icons-material/Info.js";
 
+/**
+ * ProductBanner component that displays a banner for the Product management page.
+ * 
+ * @component
+ * @param {string} title - The title of the banner.
+ * @param {Array} visibleButtons - The buttons to display on the banner.
+ * @param {function} productInfo - The function to call when displaying product information.
+ * @param {function} exportToPDF - The function to call when exporting data to PDF.
+ * @param {function} preparePDF - The function to call when preparing data for PDF export.
+ * @param {Array} productData - The data to export to CSV.
+ * @return {JSX.Element} - The ProductBanner component.
+ */
 const ProductBanner = ({
     title = "",
     visibleButtons = ["export", "csv", "pdf", "createProduct"],
     productInfo,
     exportToPDF,
-    preparePDF, // Asegurar que preparePDF esté disponible
+    preparePDF, 
     productData
 }) => {
     const navigate = useNavigate();
@@ -89,7 +109,7 @@ const ProductBanner = ({
                             style={{ textDecoration: "none", color: "black" }}
                         >
                             <MenuItem onClick={() => {
-                                preparePDF(); // Llamamos preparePDF antes de cerrar
+                                preparePDF();
                                 handleClose();
                             }}>Exportar a CSV</MenuItem>
                         </CSVLink>

@@ -1,3 +1,9 @@
+/**
+ * AssetBanner component.
+ * 
+ * This component displays a banner with export buttons and other actions related to assets.
+ * It includes options to export data to CSV or PDF, view asset information, and navigate back.
+ */
 import { useState } from "react";
 import { Menu, MenuItem } from "@mui/material";
 import {FileDownload, ArrowBack, PersonAdd} from "@mui/icons-material";
@@ -10,6 +16,21 @@ import {bannerStyle} from "../../style/codeStyle.js";
 import InfoIcon from '@mui/icons-material/Info';
 import AddToQueueIcon from '@mui/icons-material/AddToQueue';
 
+/**
+ * AssetBanner component that displays a banner with export buttons and other actions related to assets.
+ * 
+ * @component
+ * @param {string} title - The title of the banner.
+ * @param {Array} visibleButtons - Array of buttons to be displayed in the banner.
+ * @param {function} exportToPDF - Function to export data to PDF.
+ * @param {Array} flatAssets - Array of asset objects to be exported.
+ * @param {Array} flatRequests - Array of request objects to be exported.
+ * @param {function} preparePDF - Function to prepare data for PDF export.
+ * @param {number} inventoryValue - The current inventory value.
+ * @param {function} handleOpen - Function to open a modal or perform an action.
+ * @param {function} assetInfo - Function to display asset information.
+ * @returns {JSX.Element} - The AssetBanner component.
+ */
 const AssetBanner = ({ title = "",
                          visibleButtons = ["csv", "pdf", "statusModal", "export", "createAsset"],
                          exportToPDF,
@@ -22,12 +43,20 @@ const AssetBanner = ({ title = "",
     const navigate = useNavigate(); // Hook para la navegación
     const [anchorEl, setAnchorEl] = useState(null);
 
-    // Abre el menú
+    /**
+     * Handles the click event for the export button.
+     * 
+     * @param {object} event - The click event.
+     * @returns {void}
+     */
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
 
-    // Cierra el menú
+    /**
+     * Handles the close event for the menu.
+     * @returns {void}
+     */
     const handleClose = () => {
         setAnchorEl(null);
     };

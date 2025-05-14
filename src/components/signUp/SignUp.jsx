@@ -1,9 +1,16 @@
+/**
+ * SignUp Component
+ * 
+ * This component renders a sign-up form for user registration.
+ * It includes fields for name, email, and password, and handles form submission.
+ * It validates the input and displays error messages if needed.
+ * It uses Material-UI icons for visual elements.
+ * It uses react-hot-toast for displaying notifications.
+ * It uses PropTypes for type checking of props.
+ */
 import { useState } from 'react'
 import './signUp.css'
-
 import PropTypes from 'prop-types'
-
-// MUI icons
 import PersonIcon from '@mui/icons-material/Person'
 import EmailIcon from '@mui/icons-material/Email'
 import LockIcon from '@mui/icons-material/Lock'
@@ -12,6 +19,14 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import {toast} from "react-hot-toast";
 import {register} from "../../api/auth/auth_API.js";
 
+/** 
+ * SignUp React component.
+ * 
+ * @component
+ * @param {Object} props - Component props.
+ * @param {function} props.switchToSignIn - Function to switch to the sign-in form.
+ * @returns {JSX.Element} The rendered SignUp component.
+ */
 const SignUp = () => {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
@@ -20,7 +35,12 @@ const SignUp = () => {
     const [registerError, setRegisterError] = useState('')
     const [showInfoMessage, setShowInfoMessage] = useState(false)
 
-    // Handle form submission for registration
+    /**
+     * Handles the form submission for user registration.
+     * Validates the input and sends the request to the backend API.
+     * @param {Object} e - The event object.
+     * @returns {Promise<void>} - A promise that resolves when the form is submitted.
+     */
     const handleSubmit = async (e) => {
         e.preventDefault()
 
@@ -50,12 +70,20 @@ const SignUp = () => {
         }
     };
 
-    // Handle input changes and reset success/error messages
+    /**
+     * Handles input changes for the form fields.
+     * @param {function} setter - The state setter function for the input field.
+     * @returns {function} - A function that handles the input change event.
+     */
     const handleInputChange = (setter) => (e) => {
         setter(e.target.value)
         setRegisterError('')
     };
 
+    /**
+     * Resets the form fields and error messages.
+     * @returns {void}
+     */
     const resetForm = () => {
         setName('')
         setEmail('')

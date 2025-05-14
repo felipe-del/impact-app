@@ -1,3 +1,13 @@
+/**
+ * SpaceLoan Component
+ * 
+ * This component is used to manage space loan requests in the system.
+ * It includes functionalities to create, update, and delete space loan requests.
+ * It also displays a form for submitting space loan requests and a modal for confirmation.
+ * It uses Material-UI for styling and icons.
+ * It also includes a banner for navigation and information.
+ * It uses react-hook-form for form handling and validation.
+ */
 import SpaceBanner from "./SpaceBanner.jsx";
 import useSpaceData from "../../hooks/apiData/space/SpaceData.jsx";
 import LoadingPointsSpinner from "../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
@@ -11,7 +21,12 @@ import {Box, Typography} from "@mui/material";
 import useSpaceStatusData from "../../hooks/apiData/spaceStatus/SpaceStatusData.jsx";
 import {saveSpaceRequest} from "../../api/spaceRequest/SpaceRequest.js";
 
-
+/**
+ * SpaceLoan component that displays a form for submitting space loan requests.
+ * 
+ * @component
+ * @returns {JSX.Element} - The SpaceLoan component.
+ */
 const SpaceLoan = () => {
 
     const {spaceStatus} = useSpaceStatusData()
@@ -29,7 +44,6 @@ const SpaceLoan = () => {
     useEffect(() => {
         if (spaces) setSpaceData(spaces.data);
         if (spaceStatus) setSpaceData(spaces.data);
-        console.log(spaces.data)
     }, [spaces, spaceStatus]);
 
     const { register,
@@ -50,7 +64,6 @@ const SpaceLoan = () => {
         }
 
         const foundSpace = spaceData.find(space => space.id === parseInt(selectedSpace));
-        console.log(foundSpace)
         setSpaceInfo(foundSpace || null);
     }, [selectedSpace, spaceData]);
 
@@ -58,15 +71,18 @@ const SpaceLoan = () => {
         handleShowConfirmationModal();
     };
 
+    /**
+     * Handles the final submission of the space loan request form.
+     * 
+     * @param {object} data - The form data from the space loan request form.
+     * @returns {Promise<void>} - A promise that resolves when the submission is complete.
+     */
     const handleFinalSubmit = async (data) => {
         try{
-            console.log(data)
 
-            // Parsea la fecha correctamente con el formato adecuado
             const parsedStartTime = parse(data.startTime, "yyyy-MM-dd'T'HH:mm", new Date());
             const parsedEndTime = parse(data.endTime, "yyyy-MM-dd'T'HH:mm", new Date());
 
-            // Convertir a formato ISO 8601 con UTC
             const startTime = format(parsedStartTime, "yyyy-MM-dd'T'HH:mm:ss'Z'");
             const endTime = format(parsedEndTime, "yyyy-MM-dd'T'HH:mm:ss'Z'");
 

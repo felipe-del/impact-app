@@ -1,7 +1,21 @@
+/**
+ * PieChart Component
+ * 
+ * This component renders a pie chart using Chart.js and React.
+ * It displays data with labels and values.
+ * It is used to visualize data distribution in a dashboard or report.
+ * It also shows a toast notification if there are more than 12 months.
+ */
 import { useEffect } from 'react';
 import Chart from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
+/**
+ * PieChart component that displays a pie chart using Chart.js.
+ * 
+ * @component
+ * @returns {JSX.Element} The rendered PieChart component.
+ */
 const PieChart = () => {
     useEffect(() => {
         const ctx = document.getElementById('myPieChart');

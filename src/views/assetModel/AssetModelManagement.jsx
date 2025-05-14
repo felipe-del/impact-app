@@ -1,3 +1,10 @@
+/**
+ * AssetModelManagement component.
+ * 
+ * This component is used to manage asset models in the application.
+ * It includes functionality to create, update, and delete asset models.
+ * It uses Material-UI for styling and Material React Table for displaying the data.
+ */
 import AssetModelBanner from "./AssetModelBanner.jsx";
 import useAssetModel from "../../hooks/apiData/assetModel/AssetModelData.jsx";
 import {useEffect, useState, useMemo} from "react";
@@ -11,6 +18,12 @@ import GenericModal from "../../components/popUp/generic/GenericModal.jsx";
 import LoadingPointsSpinner from "../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
 
+/**
+ * AssetModelManagement component that manages asset models.
+ *
+ * @component
+ * @returns {JSX.Element} - The AssetModelManagement component.
+ */
 const AssetModelManagement = () => {
 
     const { assetModels, isLoading, isError, refetch } = useAssetModel();
@@ -35,6 +48,12 @@ const AssetModelManagement = () => {
         { accessorKey: "modelName", header: "Nombre", enableEditing: true },
     ], []);
 
+    /**
+     * Validates the asset model data.
+     * 
+     * @param {object} values - The asset model data to validate.
+     * @returns {boolean} - Returns true if the data is valid, false otherwise.
+     */
     const validateAssetModel = (values) => {
         if (!values.modelName) {
             toast.error("El nombre no puede estar vacío.");
@@ -43,6 +62,14 @@ const AssetModelManagement = () => {
         return true;
     }
 
+    /**
+     * Handles the creation of a new asset model.
+     * 
+     * @param {object} params - The parameters for creating the asset model.
+     * @param {object} params.values - The values for the new asset model.
+     * @param {object} params.table - The table instance.
+     * @returns {Promise<void>} - A promise that resolves when the asset model is created.
+     */
     const handleCreateAssetModel = async ({ values, table }) => {
         if (!validateAssetModel(values)) return;
         try {
@@ -55,6 +82,12 @@ const AssetModelManagement = () => {
         }
     }
 
+    /**
+     * Handles the deletion of an asset model.
+     * 
+     * @param {object} row - The row to delete.
+     * @returns {Promise<void>} - A promise that resolves when the asset model is deleted.
+     */
     const handleDeleteAssetModel = async () => {
         if (!rowToEdit?.original?.id) {
             toast.error("Error al eliminar: ID no encontrado.");
@@ -70,6 +103,15 @@ const AssetModelManagement = () => {
         }
     }
 
+    /**
+     * Handles the update of an asset model.
+     * 
+     * @param {object} params - The parameters for updating the asset model.
+     * @param {object} params.values - The values for the updated asset model.
+     * @param {object} params.row - The row to update.
+     * @param {object} params.table - The table instance.
+     * @returns {Promise<void>} - A promise that resolves when the asset model is updated.
+     */
     const handleUpdateAssetModel = async ({ values, row }) => {
         if (!validateAssetModel(values)) return;
         try {

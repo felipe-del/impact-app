@@ -1,6 +1,18 @@
+/**
+ * About page component
+ * 
+ * This component displays the about page of the application.
+ * It includes a welcome message, a description, and a button to start the application.
+ */
 import { Link } from 'react-router-dom';
 import './about.css';
 
+/**
+ * About component that renders the about page of the application.
+ * 
+ * @component
+ * @returns {JSX.Element} - The About component.
+ */
 const About = () => {
     return (
         <main className={"background"}>

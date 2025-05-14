@@ -1,3 +1,10 @@
+/**
+ * BuildingManagement component.
+ * 
+ * This component manages the building data and provides functionality to create, update, and delete buildings.
+ * It uses Material React Table for displaying the data and MUI for styling.
+ * It also includes a modal for confirming deletion of buildings.
+ */
 import BuildingBanner from "./BuildingBanner.jsx";
 import useBuildingData from "../../hooks/apiData/building/BuildingData.jsx";
 import LoadingPointsSpinner from "../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
@@ -12,6 +19,12 @@ import DeleteIcon from "@mui/icons-material/Delete.js";
 import GenericModal from "../../components/popUp/generic/GenericModal.jsx";
 import {deleteBuilding, saveBuilding, updateBuilding} from "../../api/building/building_API.js";
 
+/**
+ * BuildingManagement component that manages building data.
+ * 
+ * @component
+ * @returns {JSX.Element} - The BuildingManagement component.
+ */
 const BuildingManagement = () => {
 
     const {building, isError, isLoading, refetch} = useBuildingData();
@@ -30,7 +43,6 @@ const BuildingManagement = () => {
         if (building?.data && Array.isArray(building.data)) {
             setBuildingData(building.data);
         }
-        console.log(building.data)
     }, [building]);
 
     const columns = useMemo(
@@ -41,6 +53,13 @@ const BuildingManagement = () => {
         []
     )
 
+    /**
+     * Handles the creation of a new building.
+     * 
+     * @param {object} values - The values of the new building.
+     * @param {object} table - The table instance.
+     * @returns {void}
+     */
     const handleCreateBuilding = async ({ values, table }) => {
         if (!values.name) {
             toast.error("El nombre no puede estar vacío.");
@@ -56,6 +75,12 @@ const BuildingManagement = () => {
         }
     };
 
+    /**
+     * Handles the deletion of a building.
+     * 
+     * @param {void}
+     * @returns {void}
+     */
     const handleDeleteBuilding = async () => {
         if (!rowToEdit?.original?.id) {
             toast.error("Error al eliminar: ID no encontrado.");
@@ -71,6 +96,14 @@ const BuildingManagement = () => {
         }
     };
 
+    /**
+     * Handles the update of a building.
+     * 
+     * @param {object} values - The updated values of the building.
+     * @param {object} row - The row instance.
+     * @param {object} table - The table instance.
+     * @returns {void}
+     */
     const handleUpdateBuilding = async ({ values, row }) => {
         if (!values.name || !row?.original?.id) {
             toast.error("Error al actualizar: datos inválidos.");
@@ -94,14 +127,14 @@ const BuildingManagement = () => {
         enableEditing: true,
         editingMode: "row",
         enableExpandAll: false,
-        manualFiltering: true, //turn off built-in client-side filtering
-        manualPagination: true, //turn off built-in client-side pagination
-        manualSorting: true, //turn off built-in client-side sorting
+        manualFiltering: true, 
+        manualPagination: true, 
+        manualSorting: true, 
         initialState: { density: "comfortable", pagination: { pageSize: 5 } },
         onCreatingRowSave: handleCreateBuilding,
         onEditingRowSave: handleUpdateBuilding,
         renderRowActions: ({ row, table }) => {
-            if (!row?.original) return null; // Evita errores si row no está bien definido
+            if (!row?.original) return null; 
 
             return (
                 <Box sx={{ display: 'flex', gap: '1rem' }}>

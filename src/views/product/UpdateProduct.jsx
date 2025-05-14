@@ -1,3 +1,13 @@
+/**
+ * UpdateProduct Component
+ * 
+ * This component is used to update product information in the system.
+ * It includes a form with fields for purchase date, expiry date,
+ * product category, and product status.
+ * It also includes a confirmation modal for saving changes.
+ * It uses React Router for navigation and React Hot Toast for notifications.
+ * It uses custom hooks for fetching product category and status data.
+ */
 import {useNavigate, useParams} from "react-router-dom";
 import ProductBanner from "./ProductBanner.jsx";
 import useProductCategoryData from "../../hooks/apiData/productCategory/productCategoryData.jsx";
@@ -10,6 +20,12 @@ import GenericModal from "../../components/popUp/generic/GenericModal.jsx";
 import useProductData from "../../hooks/apiData/product/productData.jsx";
 import {StatusTranslator} from "../../util/Translator.js";
 
+/**
+ * UpdateProduct component that allows users to update product information.
+ * 
+ * @component
+ * @returns {JSX.Element} - The UpdateProduct component.
+ */
 const UpdateProduct = () => {
     const { id } = useParams();
     const {productCategories} = useProductCategoryData()
@@ -31,7 +47,6 @@ const UpdateProduct = () => {
     useEffect(() => {
         if (productCategories?.data && Array.isArray(productCategories.data)) setProductCategoryData(productCategories.data);
         if (productStatus?.data && Array.isArray(productStatus.data)) setProductStatusData(productStatus.data);
-        console.log(productCategories.data)
     }, [productCategories, productStatus]);
 
     useEffect(() => {
@@ -54,16 +69,20 @@ const UpdateProduct = () => {
 
     }, [id, products])
 
+    /**
+     * Validates the form data and checks for errors.
+     * 
+     * @returns {void}
+     */
     const checkErrors = () => {
         const errors = {};
         setFormErrors(errors);
 
         if (!formData.purchaseDate) errors.purchaseDate = "La fecha de compra es obligatoria.";
         else {
-            // Check if purchaseDate is today or in the past
             const purchaseDate = new Date(formData.purchaseDate);
             const today = new Date();
-            today.setHours(0, 0, 0, 0); // Set time to 00:00:00 for comparison
+            today.setHours(0, 0, 0, 0); 
             if (purchaseDate > today) {
                 errors.purchaseDate = "La fecha de compra debe ser en el pasada.";
             }
@@ -72,10 +91,9 @@ const UpdateProduct = () => {
         if (!formData.expiryDate && !noExpiry) {
             errors.expiryDate = "La fecha de expiración es obligatoria.";
         } else if (formData.expiryDate) {
-            // Check if expiryDate is in the future
             const expiryDate = new Date(formData.expiryDate);
             const today = new Date();
-            today.setHours(0, 0, 0, 0); // Set time to 00:00:00 for comparison
+            today.setHours(0, 0, 0, 0); 
             if (expiryDate <= today) {
                 errors.expiryDate = "La fecha de expiración debe ser en el futuro.";
             }
@@ -83,16 +101,19 @@ const UpdateProduct = () => {
         if (!formData.productStatus) errors.productStatus = "El estado del producto es obligatorio.";
         if (!formData.productCategory) errors.productCategory = "La categoría del producto es obligatoria.";
 
-
-
         setFormErrors(errors);
 
-        // Solo enviar si no hay errores
         if (Object.keys(errors).length === 0) {
             handleShowConfirmationModal();
         }
     }
 
+    /**
+     * Handles the change event for form inputs.
+     * 
+     * @param {object} e - The event object.
+     * @returns {void}
+     */
     const handleChange = (e) => {
         const { name, value } = e.target;
 
@@ -107,6 +128,11 @@ const UpdateProduct = () => {
         });
     };
 
+    /**
+     * Handles the form submission and updates the product.
+     * 
+     * @returns {void}
+     */
     const handleSubmit = async () => {
 
         const requestData = {
@@ -136,6 +162,11 @@ const UpdateProduct = () => {
 
     const [noExpiry, setNoExpiry] = useState(true);
 
+    /**
+     * Toggles the expiry date field and updates the form data accordingly.
+     * 
+     * @returns {void}
+     */
     const toggleExpiry = () => {
         setNoExpiry(!noExpiry);
         setFormData({ ...formData, expiryDate: noExpiry ? "" : null });
@@ -182,7 +213,7 @@ const UpdateProduct = () => {
                                 >
                                     <option value="">Seleccionar estado</option>
                                     {productStatusData.map((status) => {
-                                        const isDisabled = [2, 3].includes(status.id); // IDs de opciones deshabilitadas
+                                        const isDisabled = [2, 3].includes(status.id); 
                                         return (
                                             <option
                                                 key={status.id}

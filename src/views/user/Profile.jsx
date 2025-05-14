@@ -1,9 +1,24 @@
+/**
+ * Profile Component
+ * 
+ * This component is used to display the user's profile information.
+ * It includes the user's name, email, role, and state.
+ * It also includes a button to change the password.
+ * It uses Material-UI for styling and icons.
+ * It also includes a modal for displaying confirmation messages.
+ */
 import { Card, CardContent, Typography, Divider, Grid, Avatar, Box, Paper } from "@mui/material";
 import { useUser } from "../../hooks/user/useUser.jsx";
 import UserBanner from "./UserBanner.jsx";
 import ChangePasswordForm from "./ChangePasswordForm.jsx";
 import {useState} from "react";
 
+/**
+ * Profile component that displays the user's profile information.
+ * 
+ * @component
+ * @return {JSX.Element} - The Profile component.
+ */
 const Profile = () => {
 
     const userSession = useUser();
@@ -64,10 +79,10 @@ const Profile = () => {
                                 margin: "0 auto 16px",
                                 border: '4px solid #1976d2',
                                 fontFamily: 'Montserrat, sans-serif',
-                                transition: 'all 0.3s ease',  // Smooth transition for hover effect
+                                transition: 'all 0.3s ease', 
                                 '&:hover': {
-                                    borderColor: '#1565c0',  // Change border color on hover
-                                    transform: 'scale(1.1)',  // Slightly enlarge the avatar
+                                    borderColor: '#1565c0',  
+                                    transform: 'scale(1.1)',  
                                 },
                             }}
                         />

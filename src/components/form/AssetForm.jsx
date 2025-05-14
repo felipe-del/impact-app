@@ -1,3 +1,11 @@
+/**
+ * AssetForm Component
+ * 
+ * This component renders a form for adding or editing asset information.
+ * It includes fields for asset details such as plate number, series, value, purchase date, etc.
+ * It validates the input and handles the submission of the form.
+ * On successful submission, it triggers a confirmation modal.
+ */
 import InputMask from "react-input-mask";
 import {NumericFormat} from "react-number-format";
 import SaveButton from "../button/SaveButton.jsx";
@@ -22,13 +30,27 @@ const initialData = {
 };
 
 
-
+/**
+ * AssetForm component that displays a form for adding or editing asset information.
+ * 
+ * @component
+ * @param {Object} props - The component props.
+ * @param {Object} props.formData - The initial form data.
+ * @param {function} props.onChange - Function to handle form data changes.
+ * @param {function} props.onSubmit - Function to handle form submission.
+ * @returns {JSX.Element} The rendered AssetForm component.
+ */
 const AssetForm = ({ formData = initialData, onChange, onSubmit }) => {
 
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const handleShowConfirmationModal = () => setShowConfirmationModal(true);
     const handleHideConfirmationModal = () => setShowConfirmationModal(false);
 
+    /**
+     * Handles the change event for form inputs.
+     * @param {Object} event - The event object.
+     * @returns {void}
+     */
     const handleChange = (event) => {
         const { name, value } = event.target;
         onChange({ ...formData, [name]: value });
@@ -42,6 +64,10 @@ const AssetForm = ({ formData = initialData, onChange, onSubmit }) => {
         console.log(assetData)
     }, []);
 
+    /**
+     * Handles the error checking for form inputs.
+     * @returns {void}
+     */
     const checkErrors = () => {
         const errors = {};
         setFormErrors(errors);
@@ -66,6 +92,11 @@ const AssetForm = ({ formData = initialData, onChange, onSubmit }) => {
         }
     }
 
+    /**
+     * Handles the submission of the form.
+     * @param {Object} event - The event object.
+     * @returns {void}
+     */
     const handleSubmit = (event) => {
         event.preventDefault();
         checkErrors();

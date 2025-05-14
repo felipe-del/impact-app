@@ -1,3 +1,10 @@
+/**
+ * Sidebar component for the application.
+ * 
+ * This component renders the sidebar navigation menu with links to different sections of the application.
+ * It includes links for assets, spaces, products, requests, and user management.
+ * The sidebar is styled with a futuristic design and includes a logo and additional information about CIMPA.
+ */
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faPlus, faClipboardCheck} from '@fortawesome/free-solid-svg-icons';
 import DevicesIcon from '@mui/icons-material/Devices';
@@ -19,16 +26,20 @@ import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import LocalConvenienceStoreIcon from '@mui/icons-material/LocalConvenienceStore';
 import PropTypes from 'prop-types';
 
-
+/**
+ * Sidebar component that renders the sidebar navigation menu.
+ * 
+ * @component
+ * @param {Object} props - Component props.
+ * @param {string} props.role - The role of the user (e.g., 'MANAGER', 'ADMINISTRATOR', 'TEACHER').
+ * @returns {JSX.Element} The rendered Sidebar component.
+ */
 const Sidebar = ({role}) => {
 
     return (
         <ul className="navbar-nav bg-custom sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <a className="sidebar-brand d-flex align-items-center justify-content-center" href="/app">
-                {/*<div className="logo-container">
-                    <img className="small-logo" src='/logo_3_lightblue.png' alt="IMPACT LOGO"/>
-                </div>*/}
 
                 <div>
                     <img src="/NEW_IMPACT_REDUCE_BLUE_LOGO.png" alt="Escudo IMPACT" className="impact-img-side"/>
@@ -238,14 +249,6 @@ const Sidebar = ({role}) => {
                     </div>
                 </li>
             )}
-
-
-            {/*<li className="nav-item" id="charts-item">
-                <Link className="nav-link" to="/charts">
-                    <i className="fas fa-fw fa-chart-area"></i>
-                    <span>Gráficos</span>
-                </Link>
-            </li>*/}
 
             {(role === 'MANAGER' || role === 'ADMINISTRATOR') && (
                 <div>

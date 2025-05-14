@@ -1,3 +1,10 @@
+/**
+ * AssetRenewalTable component.
+ * 
+ * This component displays a table of asset renewal requests.
+ * It allows users to accept or reject renewal requests.
+ * It uses Material React Table for rendering the table and Axios for API calls.
+ */
 import { useEffect, useState, useMemo } from "react";
 import { useUser } from "../../hooks/user/useUser.jsx";
 import {
@@ -17,6 +24,12 @@ import AcceptButton from "../../components/button/AcceptButton.jsx";
 import handleAxiosError from "../../api/handleAxiosError.js";
 import GenericModal from "../../components/popUp/generic/GenericModal.jsx";
 
+/**
+ * AssetRenewalTable component that displays a table of asset renewal requests.
+ * 
+ * @component
+ * @returns {JSX.Element} - The AssetRenewalTable component.
+ */
 const AssetRenewalTable = () => {
     const user = useUser();
     const [requests, setRequests] = useState([]);
@@ -25,6 +38,13 @@ const AssetRenewalTable = () => {
     const [showAcceptRequestModal, setShowAcceptRequestModal] = useState(false);
     const [showRejectRequestModal, setShowRejectRequestModal] = useState(false);
 
+    /**
+     * Fetches asset renewal requests from the API.
+     * 
+     * @async
+     * @function fetchRenewRequests
+     * @return {Promise<void>} - A promise that resolves when the requests are fetched.
+     */
     const fetchRenewRequests = async () => {
       if (!user?.id) return;
       setLoading(true);
@@ -42,11 +62,24 @@ const AssetRenewalTable = () => {
       }
     };
 
+    /**
+     * Handles the pre-cancellation of an asset renewal request.
+     * 
+     * @param {object} row - The row object containing the request data.
+     * @returns {void}
+     */
     const handlePreCancel = (row) => {
         setRequestToHandle(row);
         setShowRejectRequestModal(true);
     };
 
+    /**
+     * Handles the cancellation of an asset renewal request.
+     * 
+     * @async
+     * @function handleCancel
+     * @return {Promise<void>} - A promise that resolves when the request is cancelled.
+     */
     const handleCancel = async () => {
         setRequestToHandle(true);
         try {
@@ -68,11 +101,24 @@ const AssetRenewalTable = () => {
         }
     }
 
+    /**
+     * Handles the pre-acceptance of an asset renewal request.
+     * 
+     * @param {object} row - The row object containing the request data.
+     * @returns {void}
+     */
     const handlePreAccept = (row) => {
         setRequestToHandle(row);
         setShowAcceptRequestModal(true);
     }
 
+    /**
+     * Handles the acceptance of an asset renewal request.
+     * 
+     * @async
+     * @function handleAccept
+     * @return {Promise<void>} - A promise that resolves when the request is accepted.
+     */
     const handleAccept = async () => {
         setLoading(true);
         try {

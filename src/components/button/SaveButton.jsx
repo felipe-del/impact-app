@@ -1,8 +1,24 @@
+/**
+ * SaveButton Component
+ * 
+ * This component renders a button with a save icon and a tooltip.
+ * When hovered, it expands to show the text "Aceptar".
+ * It is used to save a row in a table or list.
+ */
 import { useState } from "react";
 import { Tooltip, Typography } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 import PropTypes from "prop-types";
 
+
+/**
+ * SaveButton component that displays a save icon and expands to show text on hover.
+ * 
+ * @component
+ * @param {function} acceptAction - Function to call when the button is clicked.
+ * @param {string} labelAccept - The label to display when hovered.
+ * @returns {JSX.Element} The rendered SaveButton component.
+ */
 const SaveButton = ({ acceptAction, labelAccept = "Aceptar" }) => {
     const [hover, setHover] = useState(false);
 

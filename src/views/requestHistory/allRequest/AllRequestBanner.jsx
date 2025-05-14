@@ -1,3 +1,11 @@
+/**
+ * AllRequestBanner Component
+ * 
+ * This component is used to display a banner for the All Request management page.
+ * It includes a title and action buttons for navigation and information.
+ * It uses Material-UI for styling and icons.
+ * It also includes a modal for displaying general information.
+ */
 import PropTypes from "prop-types";
 import { bannerStyle } from "../../../style/codeStyle.js";
 import BannerActionButton from "../../../components/button/BannerActionButton.jsx";
@@ -6,6 +14,14 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import GenericInformationModal from "../../../components/popUp/GenericInformationModal/GenericInformationModal.jsx";
 
+/**
+ * AllRequestBanner component that displays a banner for the All Request management page.
+ * 
+ * @component
+ * @param {string} title - The title of the banner.
+ * @param {Array} visibleButtons - The buttons to display on the banner.
+ * @return {JSX.Element} - The AllRequestBanner component.
+ */
 const AllRequestBanner = ({
                               title = "",
                               visibleButtons = ["goBack"],
@@ -13,7 +29,6 @@ const AllRequestBanner = ({
     const styles = bannerStyle;
     const navigate = useNavigate();
 
-    // Estado para manejar el modal
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleOpenModal = () => setIsModalOpen(true);

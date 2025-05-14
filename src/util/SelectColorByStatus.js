@@ -1,3 +1,8 @@
+/**
+ * Function to get the color associated with a given state.
+ * @param {string} state - The state for which to get the color.
+ * @return {string} - The color associated with the state.
+ */
 export const getStateColor = (state) => {
     switch (state) {
         case 'DISPONIBLE':

@@ -5,9 +5,9 @@ body {
 
 .background {
     background-image: url("public/background2.jpg");
-    background-repeat: no-repeat; /* No repite la imagen */
-    background-size: cover; /* Expande la imagen para cubrir el área */
-    background-position: center; /* Centra la imagen */
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 }
 
 
@@ -25,7 +25,7 @@ body {
 
 /* Centering content with a shadowed box */
 .about-page-content {
-    background-color: rgba(255, 255, 255, 0.91); /* Slight transparency for better contrast */
+    background-color: rgba(255, 255, 255, 0.91); 
     padding: 30px;
     border-radius: 15px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -80,7 +80,7 @@ body {
     background: linear-gradient(135deg, #005da4, #2a9ef7);
     transform: translateY(-3px);
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
-    text-decoration: none; /* Prevent text underline */
+    text-decoration: none; 
     color: white;
 }
 

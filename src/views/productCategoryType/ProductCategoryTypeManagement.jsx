@@ -1,3 +1,11 @@
+/**
+ * ProductCategoryTypeManagement Component
+ * 
+ * This component is used to manage product category types in the system.
+ * It includes functionalities to create, update, and delete product category types.
+ * It also displays a table with the list of product category types and their details.
+ * It uses Material-UI for styling and icons.
+ */
 import ProductCategoryTypeBanner from "./ProductCategoryTypeBanner.jsx";
 import useProductCategoryTypeData from "../../hooks/apiData/productCategoryType/productCategoryTypeData.jsx";
 import {useEffect, useMemo, useState} from "react";
@@ -14,7 +22,12 @@ import {
 } from "../../api/productCategoryType/productCategoryType_API.js";
 import LoadingPointsSpinner from "../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
 
-
+/**
+ * This component manages the product category types in the system.
+ * 
+ * @param {object} values - The product category type data to validate.
+ * @returns {boolean} - Returns true if the data is valid, false otherwise.
+ */
 const ProductCategoryTypeManagement = () => {
 
     const {productCategoryTypes, isError, isLoading, refetch} = useProductCategoryTypeData();
@@ -41,6 +54,12 @@ const ProductCategoryTypeManagement = () => {
         []
     )
 
+    /**
+     * Validates the product category type data.
+     * 
+     * @param {object} values - The product category type data to validate.
+     * @return {boolean} - Returns true if the data is valid, false otherwise.
+     */
     const validateProductCategoryType = (values) => {
         if (!values.name) {
             toast.error("El nombre no puede estar vacío.");
@@ -53,6 +72,13 @@ const ProductCategoryTypeManagement = () => {
         return true;
     }
 
+    /**
+     * Handles the creation of a new product category type.
+     * 
+     * @param {object} values - The product category type data to create.
+     * @param {object} table - The table instance.
+     * @return {Promise<void>} - A promise that resolves when the product category type is created.
+     */
     const handleCreateProductCategoryType= async ({ values, table }) => {
         if (!validateProductCategoryType(values)) return;
         try {
@@ -68,6 +94,12 @@ const ProductCategoryTypeManagement = () => {
         }
     }
 
+    /**
+     * Handles the deletion of a product category type.
+     * 
+     * @param {void}
+     * @return {Promise<void>} - A promise that resolves when the product category type is deleted.
+     */
     const handleDeleteProductCategoryType  = async () => {
         if (!rowToEdit?.original?.id) {
             toast.error("Error al eliminar: ID no encontrado.");
@@ -83,6 +115,13 @@ const ProductCategoryTypeManagement = () => {
         }
     }
 
+    /**
+     * Handles the update of an existing product category type.
+     * 
+     * @param {object} values - The product category type data to update.
+     * @param {object} row - The row instance.
+     * @return {Promise<void>} - A promise that resolves when the product category type is updated.
+     */
     const handleUpdateProductCategoryType = async ({ values, row }) => {
         if (!validateProductCategoryType(values)) return;
         try {

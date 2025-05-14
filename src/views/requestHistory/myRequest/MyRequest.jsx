@@ -1,3 +1,13 @@
+/**
+ * MyRequest Component
+ * 
+ * This component is used to display the user's requests for assets, spaces, and products.
+ * It includes functionality to fetch, display, cancel, and renew requests.
+ * It uses Material-UI for styling and Material React Table for displaying data in a table format.
+ * It also includes modals for confirming cancellation and renewal of requests.
+ * It uses React hooks for state management and side effects.
+ * It uses the react-hot-toast library for displaying notifications.
+ */
 import {useState, useMemo} from "react";
 import {useUser} from "../../../hooks/user/useUser.jsx";
 import {getAssetRequestByUser, cancelledAssetRequest} from "../../../api/assetRequest/assetRequest_API.js";
@@ -19,18 +29,34 @@ import {updateAssetRequestRenewal} from "../../../api/assetRequest/assetRequest_
 import {Typography} from "@mui/material";
 import {gradientMapping} from "../../../style/codeStyle.js";
 
+/**
+ * MyRequest component that displays the user's requests for assets, spaces, and products.
+ * 
+ * @component
+ * @param {string} title - The title of the banner.
+ * @param {Array} activeFilters - The active filters for the requests.
+ * @param {function} handleButtonClick - The function to call when a button is clicked.
+ * @param {string} activeButton - The currently active button.
+ * @return {JSX.Element} - The MyRequest component.
+ */
 const MyRequest = () => {
     const user = useUser();
     const [activeButton, setActiveButton] = useState(null);
     const [showAdditionalButtons, setShowAdditionalButtons] = useState(false);
-    const [requests, setRequests] = useState([]); // Estado para guardar los datos de la API
-    const [loading, setLoading] = useState(false); // Estado para manejar la carga de solicitudes
+    const [requests, setRequests] = useState([]); 
+    const [loading, setLoading] = useState(false); 
     const [showRenewModal, setShowRenewModal] = useState(false);
     const [showCancelModal, setShowCancelModal] = useState(false);
     const [selectedRequest, setSelectedRequest] = useState(null);
     const [cancelReason, setCancelReason] = useState("");
-    const [newExpirationDate, setNewExpirationDate] = useState(null); // Estado para la nueva fecha de expiración
+    const [newExpirationDate, setNewExpirationDate] = useState(null); 
 
+    /**
+     * Fetches requests based on the API call provided.
+     * 
+     * @param {function} apiCall - The API call function to fetch requests.
+     * @returns {Promise<void>} - A promise that resolves when the requests are fetched.
+     */
     const fetchRequests = async (apiCall) => {
         if (!user?.id) return;
         setLoading(true);
@@ -52,7 +78,13 @@ const MyRequest = () => {
 
     const activeFilters = [];
     if (activeButton) activeFilters.push(activeButton);
-    // if (activeAdditionalButton) activeFilters.push(activeButton);
+
+    /**
+     * Handles the button click event to fetch requests based on the selected button.
+     * 
+     * @param {string} buttonKey - The key of the button that was clicked.
+     * @returns {void}
+     */
     const handleButtonClick = (buttonKey) => {
         setActiveButton(buttonKey);
         setShowAdditionalButtons(["spaceRequest", "productRequest", "assetRequest"].includes(buttonKey));
@@ -72,11 +104,24 @@ const MyRequest = () => {
         }
     };
 
+    /**
+     * Handles the pre-cancellation of a request.
+     * 
+     * @param {object} row - The row data of the request to be cancelled.
+     * @returns {void}
+     */
     const handlePreCancel = (row) => {
         setSelectedRequest(row);
         setShowCancelModal(true);
     };
 
+    /**
+     * Handles the cancellation of a request.
+     * 
+     * @async
+     * @param {void}
+     * @returns {void}  
+     */
     const handleCancel = async () => {
         if (!cancelReason.trim()) {
             toast.error("Por favor ingrese una razón de cancelación.", {duration: 7000});
@@ -110,39 +155,48 @@ const MyRequest = () => {
         }
     };
 
+    /**
+     * Handles the pre-renewal of a request.
+     * 
+     * @param {object} row - The row data of the request to be renewed.
+     * @return {void}
+     */
     const handlePreRenew = (row) => {
-        console.log(row);
         setSelectedRequest(row);
         setShowRenewModal(true);
     }
 
+    /**
+     * Handles the renewal of a request.
+     * 
+     * @async
+     * @param {void}
+     * @return {void}
+     */
     const renewAction = async () => {
-        console.log(selectedRequest);
         let localAssetId;
         let localRequestId;
         const currentExpirationDate = dayjs(selectedRequest.original.expirationDate);
         const newExpiration = dayjs(newExpirationDate);
 
-        // Validar que la nueva fecha de expiración sea posterior a la fecha de expiración actual
         if (newExpiration.isBefore(currentExpirationDate)) {
             toast.error("La nueva fecha de expiración debe ser posterior a la fecha de expiración actual.", {duration: 7000});
-            return; // Detener la ejecución si la validación falla
+            return; 
         }
 
         try {
             const response = await getAssetRequestById(selectedRequest.original.id);
-            localRequestId = response.data.id; // Almacena el ID de la solicitud en una variable local
-            localAssetId = response.data.asset.id; // Almacena el ID del activo en una variable local
-            console.log(localAssetId);
+            localRequestId = response.data.id; 
+            localAssetId = response.data.asset.id; 
         } catch (e) {
             toast.error(e.message);
-            return; // Detener la ejecución si hay un error
+            return; 
         }
         try {
             const response = await saveAssetRequestRenewal({
-                assetId: localAssetId, // Usa la variable local en lugar del estado
+                assetId: localAssetId, 
                 reason: selectedRequest.original.reason,
-                expirationDate: newExpirationDate, // Usar la nueva fecha de expiración seleccionada
+                expirationDate: newExpirationDate, 
                 createdAt: selectedRequest.original.expirationDate,
             });
             toast.success(response.message, {duration: 7000});
@@ -157,7 +211,6 @@ const MyRequest = () => {
             });
             toast.success(update.message, {duration: 7000});
 
-            // Actualizar la tabla después de la renovación
             const updatedRequests = await getAssetRequestByUser(user.id);
             setRequests(updatedRequests.data);
         } catch (e) {
@@ -165,7 +218,6 @@ const MyRequest = () => {
         }
     };
 
-    // Columnas y datos para cada tipo de solicitud
     const spaceRequestColumns = [
         {accessorKey: 'id', header: 'Id'},
         {accessorKey: 'maxPeople', header: 'Número de personas'},
@@ -220,7 +272,7 @@ const MyRequest = () => {
 
         },
     ];
-
+    
     const assetRequestColumns = [
         {accessorKey: 'id', header: 'ID'},
         {accessorKey: 'asset', header: 'Activo'},
@@ -260,7 +312,11 @@ const MyRequest = () => {
         },
     ];
 
-    // Transformar los datos según el tipo de solicitud
+    /**
+     * Flattens the requests data based on the active button.
+     * 
+     * @returns {Array} - The flattened requests data.
+     */
     const flatRequests = useMemo(() => {
         return requests.map(request => {
             switch (activeButton) {
@@ -302,7 +358,6 @@ const MyRequest = () => {
         });
     }, [requests, activeButton]);
 
-    // Configuración de la tabla para cada tipo de solicitud
     const spaceRequestTable = useMaterialReactTable({
         localization: MRT_Localization_ES,
         columns: spaceRequestColumns,

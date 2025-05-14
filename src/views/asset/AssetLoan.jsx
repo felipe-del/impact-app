@@ -1,3 +1,13 @@
+/**
+ * AssetLoan Component
+ * 
+ * This component renders a form for requesting an asset loan.
+ * It includes a dropdown for selecting an asset, a textarea for the purpose of the request,
+ * and a date input for the expiration date.
+ * It also displays asset information in a grid format when an asset is selected.
+ * It uses a modal to confirm the submission of the request.
+ * The component uses React Hook Form for form handling and validation.
+ */
 import { Button } from 'react-bootstrap';
 import { useEffect, useState } from "react";
 import AssetBanner from "./AssetBanner.jsx";
@@ -10,6 +20,12 @@ import { useForm } from 'react-hook-form';
 import {saveAssetRequest} from "../../api/assetRequest/assetRequest_API.js";
 import {saveAsset} from "../../api/asset/asset_API.js";
 
+/**
+ * AssetLoan component that renders a form for requesting an asset loan.
+ * 
+ * @component
+ * @returns {JSX.Element} - The AssetLoan component.
+ */
 const AssetLoan = () => {
     const [assetData, setAssetData] = useState([]);
     const [selectedAsset, setSelectedAsset] = useState("");
@@ -35,6 +51,11 @@ const AssetLoan = () => {
         setAssetInfo(foundAsset || null);
     }, [selectedAsset, assetData]);
 
+    /**
+     * Handles the display of asset information.
+     * 
+     * @returns {void}
+     */
     const handleShowInfo = () => {
         setShowAssetInfo(!showAssetInfo);
     };
@@ -42,13 +63,23 @@ const AssetLoan = () => {
     const handleShowConfirmationModal = () => setShowConfirmationModal(true);
     const handleHideConfirmationModal = () => setShowConfirmationModal(false);
 
+    /**
+     * Handles the form submission.
+     * 
+     * @param {object} data - The form data.
+     * @returns {void}
+     */
     const onSubmit = async (data) => {
-        // This function will only show a confirmation modal
         handleShowConfirmationModal();
     };
 
+    /**
+     * Handles the final submission of the form.
+     * 
+     * @param {object} data - The form data.
+     * @returns {void}
+     */
     const handleFinalSubmit = async (data) => {
-        console.log(data);
         try{
             const response = await saveAssetRequest({
                 assetId: data.selectedAsset,

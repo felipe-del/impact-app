@@ -1,3 +1,11 @@
+/**
+ * SpaceBanner Component
+ * 
+ * This component is used to display a banner for the Space management page.
+ * It includes a title and action buttons for navigation and information.
+ * It uses Material-UI for styling and icons.
+ * It also includes a modal for displaying general information.
+ */
 import { ArrowBack } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -7,6 +15,16 @@ import DomainAddIcon from '@mui/icons-material/DomainAdd';
 import ManageHistoryIcon from "@mui/icons-material/ManageHistory.js";
 import InfoIcon from "@mui/icons-material/Info";
 
+/**
+ * SpaceBanner component that displays a banner for the Space management page.
+ * 
+ * @component
+ * @param {string} title - The title of the banner.
+ * @param {Array} visibleButtons - The buttons to display on the banner.
+ * @param {function} handleOpen - The function to call when the status modal button is clicked.
+ * @param {function} spaceInfo - The function to call when the space info button is clicked.
+ * @returns {JSX.Element} - The SpaceBanner component.
+ */
 const SpaceBanner = ({ title = "", visibleButtons = [""], handleOpen, spaceInfo} ) => {
     const navigate = useNavigate();
 

@@ -1,3 +1,12 @@
+/**
+ * AssetSubCategoryManagement component.
+ * 
+ * This component is responsible for managing asset subcategories.
+ * It includes a banner for navigation and action buttons,
+ * a table for displaying asset subcategories,
+ * and modals for creating, editing, and deleting subcategories.
+ * It uses Material-UI for styling and Material React Table for displaying the data.
+ */
 import AssetSubCategoryBanner from "./AssetSubCategoryBanner.jsx";
 import useAssetSubCategory from "../../hooks/apiData/assetSubCategory/AssetSubCategoryData.jsx";
 import {useEffect, useMemo, useState} from "react";
@@ -12,6 +21,12 @@ import useAssetCategory from "../../hooks/apiData/assetCategory/AssetCategoryDat
 import LoadingPointsSpinner from "../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
 
+/**
+ * AssetSubCategoryManagement component that manages asset subcategories.
+ * 
+ * @component
+ * @returns {JSX.Element} - The AssetSubCategoryManagement component.
+ */
 const AssetSubCategoryManagement = () => {
 
     const { assetSubCategory, isLoading, isError, refetch } = useAssetSubCategory();
@@ -59,6 +74,12 @@ const AssetSubCategoryManagement = () => {
         ];
     }, [assetCategoriesData]); // Add assetCategoriesData as a dependency
 
+    /**
+     * Validates the asset subcategory data.
+     * 
+     * @param {object} values - The asset subcategory data to validate.
+     * @returns {boolean} - Returns true if the data is valid, false otherwise.
+     */
     const validateAssetSubCategory = (values) => {
         if (!values.name) {
             toast.error("El nombre no puede estar vacío.");
@@ -75,6 +96,14 @@ const AssetSubCategoryManagement = () => {
         return true;
     }
 
+    /**
+     * Handles the creation of a new asset subcategory.
+     * 
+     * @param {object} params - The parameters for creating the asset subcategory.
+     * @param {object} params.values - The values for the new asset subcategory.
+     * @param {object} params.table - The table instance.
+     * @returns {Promise<void>} - A promise that resolves when the asset subcategory is created.
+     */
     const handleCreateAssetSubCategory = async ({ values, table }) => {
         if (!validateAssetSubCategory(values)) return;
         try {
@@ -87,6 +116,12 @@ const AssetSubCategoryManagement = () => {
         }
     }
 
+    /**
+     * Handles the deletion of an asset subcategory.
+     * 
+     * @param {object} row - The row to delete.
+     * @returns {Promise<void>} - A promise that resolves when the asset subcategory is deleted.
+     */
     const handleDeleteAssetSubCategory = async () => {
         if (!rowToEdit?.original?.id) {
             toast.error("Error al eliminar: ID no encontrado.");
@@ -102,6 +137,15 @@ const AssetSubCategoryManagement = () => {
         }
     }
 
+    /**
+     * Handles the update of an asset subcategory.
+     * 
+     * @param {object} params - The parameters for updating the asset subcategory.
+     * @param {object} params.values - The values for the updated asset subcategory.
+     * @param {object} params.row - The row to update.
+     * @param {object} params.table - The table instance.
+     * @returns {Promise<void>} - A promise that resolves when the asset subcategory is updated.
+     */
     const handleUpdateAssetSubCategory = async ({ values, row }) => {
         if (!validateAssetSubCategory(values)) return;
         try {

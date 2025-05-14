@@ -1,7 +1,24 @@
+/**
+ * SpaceStatusModal Component
+ * 
+ * This component renders a modal that displays the status of spaces in a table format.
+ * It includes a title, a table with space statuses, and a close button.
+ * It is used to show information about space statuses in a user-friendly way.
+ * The modal can be customized with additional content.
+ */
 import { Modal, Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
+/**
+ * SpaceStatusModal component that displays a modal with space statuses.
+ * 
+ * @component
+ * @param {boolean} open - Indicates whether the modal is open or closed.
+ * @param {function} onClose - Function to call when the modal is closed.
+ * @param {Array} spaceStatuses - Array of space statuses to display in the modal.
+ * @returns {JSX.Element} The rendered SpaceStatusModal component.
+ */
 const SpaceStatusModal = ({ open, onClose, spaceStatuses }) => {
     return (
         <Modal open={open} onClose={onClose} aria-labelledby="modal-title" aria-describedby="modal-description">
@@ -44,7 +61,7 @@ const SpaceStatusModal = ({ open, onClose, spaceStatuses }) => {
     );
 };
 
-// **Estilos Responsivos**
+// Modal styles
 const modalStyle = {
     position: 'absolute',
     top: '50%',
@@ -58,6 +75,7 @@ const modalStyle = {
     borderRadius: 2,
 };
 
+// Styles for the title
 const titleStyle = {
     fontSize: '22px',
     fontWeight: 'bold',
@@ -70,12 +88,12 @@ const titleStyle = {
     paddingBottom: '10px',
 };
 
+// Styles for the table container
 const tableContainerStyle = {
     maxHeight: '300px',
     overflowX: 'auto',
 };
 
-// **PropTypes**
 SpaceStatusModal.propTypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,

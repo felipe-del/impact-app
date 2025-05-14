@@ -1,3 +1,13 @@
+/**
+ * TopBar Component
+ * 
+ * This component renders the top navigation bar of the application.
+ * It includes the user's name, role, and a dropdown menu for user actions.
+ * It also includes a logout confirmation modal.
+ * The component uses Bootstrap for styling and layout.
+ * It is used in the main application layout.
+ * The component is responsive and adapts to different screen sizes.
+ */
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import GenericModal from "../popUp/generic/GenericModal.jsx";
@@ -6,13 +16,30 @@ import {Link, useNavigate} from "react-router-dom";
 import {toast} from "react-hot-toast";
 import {capitalizeFirstLetter} from "../../util/StringUtils.js";
 
+/**
+ * TopBar React component.
+ * 
+ * @component
+ * @param {Object} props - Component props.
+ * @param {Object} props.user - User object containing user information.
+ * @param {string} props.user.userName - The user's username.
+ * @param {string} props.user.name - The user's name.
+ * @param {Object} props.user.userRoleResponse - The user's role information.
+ * @param {string} props.user.userRoleResponse.roleName - The name of the user's role.
+ * @returns {JSX.Element} The rendered TopBar component.
+ */
 const TopBar = ({ user }) => {
     const [showModal, setShowModal] = useState(false);
     const handleShowModal = () => setShowModal(true);
     const handleHideModal = () => setShowModal(false);
-
     const navigate = useNavigate()
 
+    /**
+     * Handles the logout action.
+     * Removes the authentication token from local storage and redirects to the home page.
+     * 
+     * @returns {Promise<void>} - A promise that resolves when the logout action is completed.
+     */
     const handleLogout = async () => {
         try {
             const jwtToken = localStorage.getItem('AUTH_TOKEN');
@@ -59,51 +86,6 @@ const TopBar = ({ user }) => {
                     </div>
                 </li>
 
-
-                {/* Nav Item - Messages
-                <li className="nav-item dropdown no-arrow mx-1">
-                    <a className="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i className="fas fa-envelope fa-fw"></i>
-                        <span className="badge badge-danger badge-counter">3</span>
-                    </a>
-                    <div className="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
-                        <h6 className="dropdown-header">Message Center</h6>
-
-                        <a className="dropdown-item d-flex align-items-center" href="#">
-                            <div className="dropdown-list-image mr-3">
-                                <div className="status-indicator bg-success"></div>
-                            </div>
-                            <div className="font-weight-bold">
-                                <div className="text-truncate">Hey! Are you available for a quick meeting?</div>
-                                <div className="small text-gray-500">John Doe · 2m ago</div>
-                            </div>
-                        </a>
-
-                        <a className="dropdown-item d-flex align-items-center" href="#">
-                            <div className="dropdown-list-image mr-3">
-                                <div className="status-indicator bg-warning"></div>
-                            </div>
-                            <div>
-                                <div className="text-truncate">Dont forget to submit the report by EOD.</div>
-                                <div className="small text-gray-500">Jane Smith · 30m ago</div>
-                            </div>
-                        </a>
-
-                        <a className="dropdown-item d-flex align-items-center" href="#">
-                            <div className="dropdown-list-image mr-3">
-                                <div className="status-indicator bg-danger"></div>
-                            </div>
-                            <div>
-                                <div className="text-truncate">Urgent: Please check your email ASAP.</div>
-                                <div className="small text-gray-500">Michael Brown · 1h ago</div>
-                            </div>
-                        </a>
-
-                        <a className="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
-                    </div>
-                </li>*/}
-
-
                 <div className="topbar-divider d-none d-sm-block"></div>
 
                 {/* Nav Item - User Information */}
@@ -117,14 +99,6 @@ const TopBar = ({ user }) => {
                             <i className="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                             Perfil
                         </Link>
-                        {/*<a className="dropdown-item" href="#">
-                            <i className="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                            Configuración
-                        </a>
-                        <a className="dropdown-item" href="#">
-                            <i className="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                            Registro de Actividad
-                        </a>*/}
                         <div className="dropdown-divider"></div>
                         <a className="dropdown-item" href="#" onClick={handleShowModal}>
                             <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>

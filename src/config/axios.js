@@ -1,3 +1,9 @@
+/**
+ * axios.js
+ * 
+ * This file configures the Axios instance for making HTTP requests to the API.
+ * It sets the base URL and includes an interceptor to attach the JWT token to the request headers.
+ */
 import axios from 'axios';
 
 const api = axios.create({
@@ -14,11 +20,5 @@ api.interceptors.request.use((config) => {
     }
     return config
 })
-
-// view the request created by axios
-/*api.interceptors.request.use(request => {
-    console.log('Starting Request', request)
-    return request
-})*/
 
 export default api

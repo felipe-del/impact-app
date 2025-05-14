@@ -1,3 +1,11 @@
+/**
+ * GenericInformationModal Component
+ * 
+ * This component renders a modal that displays a title and description.
+ * It includes a close button to hide the modal.
+ * It is used to show information in a user-friendly way.
+ * The modal can be customized with additional content.
+ */
 import {
     Modal,
     Box,
@@ -6,6 +14,15 @@ import {
 } from '@mui/material';
 import PropTypes from 'prop-types';
 
+/**
+ * GenericInformationModal component that displays a modal with a title and description.
+ * 
+ * @component
+ * @param {boolean} open - Indicates whether the modal is open or closed.
+ * @param {function} onClose - Function to call when the modal is closed.
+ * @param {string} title - The title of the modal.
+ * @param {string} description - The description of the modal.
+ */
 const GenericInformationModal = ({ open, onClose, title, description }) => {
     return (
         <Modal
@@ -36,7 +53,7 @@ const GenericInformationModal = ({ open, onClose, title, description }) => {
     );
 };
 
-// Estilos
+// Modal styles
 const modalStyle = {
     position: 'absolute',
     top: '50%',
@@ -50,6 +67,7 @@ const modalStyle = {
     borderRadius: 3,
 };
 
+// Title style
 const titleStyle = {
     fontSize: '22px',
     fontWeight: 'bold',
@@ -62,6 +80,7 @@ const titleStyle = {
     paddingBottom: '10px',
 };
 
+// Description style
 const descriptionStyle = {
     mt: 2,
     mb: 4,
@@ -71,6 +90,7 @@ const descriptionStyle = {
     lineHeight: 1.6,
 };
 
+// Close button style
 const closeButtonStyle = {
     display: 'block',
     margin: '0 auto',
@@ -79,7 +99,6 @@ const closeButtonStyle = {
     '&:hover': { backgroundColor: "#003B73" },
 };
 
-// Props
 GenericInformationModal.propTypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,

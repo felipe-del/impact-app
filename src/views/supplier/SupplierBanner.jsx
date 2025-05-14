@@ -1,3 +1,11 @@
+/**
+ * SupplierBanner Component
+ * 
+ * This component is used to display a banner for the Supplier management page.
+ * It includes a title and action buttons for navigation and exporting data.
+ * It uses Material-UI for styling and icons.
+ * It also includes a modal for displaying general information.
+ */
 import { useState } from "react";
 import { Menu, MenuItem } from "@mui/material";
 import {FileDownload, ArrowBack, AddBusiness } from "@mui/icons-material";
@@ -8,17 +16,25 @@ import PropTypes from "prop-types";
 import BannerActionButton from "../../components/button/BannerActionButton.jsx";
 import {bannerStyle} from "../../style/codeStyle.js";
 
+/**
+ * SupplierBanner component that displays a banner for the Supplier management page.
+ * 
+ * @component
+ * @param {string} title - The title of the banner.
+ * @param {Array} visibleButtons - The buttons to display on the banner.
+ * @param {function} exportToPDF - The function to call when the export to PDF button is clicked.
+ * @param {Array} flatBrands - The data to export to CSV.
+ * @param {function} createBrandMethod - The function to call when the create supplier button is clicked.
+ * @return {JSX.Element} - The SupplierBanner component.
+ */
 const SupplierBanner = ({ title = "", visibleButtons = [""], exportToPDF, flatBrands, createBrandMethod}) => {
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState(null);
 
-
-    // Abre el menú
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
 
-    // Cierra el menú
     const handleClose = () => {
         setAnchorEl(null);
     };

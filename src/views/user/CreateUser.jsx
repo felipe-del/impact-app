@@ -1,3 +1,12 @@
+/**
+ * CreateUser Component
+ * 
+ * This component is used to create a new user in the system.
+ * It includes a form with fields for the user's name, email, state, and role.
+ * It uses Material-UI for styling and icons.
+ * It also includes a modal for displaying roles and states.
+ * It uses the React Query library for data fetching and caching.
+ */
 import { useEffect, useState, useRef } from "react";
 import { useUser } from "../../hooks/user/useUser.jsx";
 import UserBanner from "./UserBanner.jsx";
@@ -12,6 +21,12 @@ import { useNavigate } from "react-router-dom";
 import '../../style/createPage.css'
 import {StatusTranslator} from "../../util/Translator.js";
 
+/**
+ * CreateUser component that displays a form for creating a new user.
+ * 
+ * @component
+ * @returns {JSX.Element} - The CreateUser component.
+ */
 export default function CreateUser() {
 
     const [formData, setFormData] = useState({ name: "", email: "", state: "", role: "" });
@@ -56,6 +71,12 @@ export default function CreateUser() {
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
+    /**
+     * Validates the form fields and sets error messages if any field is invalid.
+     * 
+     * @param {object} formData - The form data to validate.
+     * @return {boolean} - Returns true if the form is valid, false otherwise.
+     */
     const checkErrors = () => {
         const errors = {};
 
@@ -69,7 +90,12 @@ export default function CreateUser() {
     };
 
    
-
+    /**
+     * Handles the form submission and sends the user data to the server.
+     * 
+     * @param {object} e - The event object.
+     * @return {void}
+     */
     const handleSubmit = async () => {
         if (!checkErrors()) return;
 

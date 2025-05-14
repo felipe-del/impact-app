@@ -2,9 +2,9 @@
 
 .background-notfound {
     /*background-image: url("public/cool-background-notFound.svg");*/
-    background-repeat: no-repeat; /* No repite la imagen */
-    background-size: cover; /* Expande la imagen para cubrir el área */
-    background-position: center; /* Centra la imagen */
+    background-repeat: no-repeat; 
+    background-size: cover;
+    background-position: center; 
 }
 
 .notfound-page-container {
@@ -12,7 +12,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* 100% of the viewport height */
+    height: 100vh; 
     padding: 20px;
     max-width: 800px;
     margin: 0 auto;
@@ -21,7 +21,7 @@
 
 /* Centering content with a shadowed box */
 .notfound-page-content {
-    background-color: rgba(255, 255, 255, 0.91); /* Slight transparency for better contrast */
+    background-color: rgba(255, 255, 255, 0.91);
     padding: 30px;
     border-radius: 15px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -47,7 +47,7 @@
 .notfound-page-heading {
     font-size: 2.5rem;
     font-family: 'Roboto', sans-serif;
-    color: #c0392b; /* Same red as unauthorized */
+    color: #c0392b;
     margin-bottom: 15px;
 }
 
@@ -63,7 +63,7 @@
 .notfound-page-button {
     display: inline-block;
     padding: 12px 24px;
-    background: linear-gradient(135deg, #e74c3c, #c0392b); /* Same red gradient as unauthorized */
+    background: linear-gradient(135deg, #e74c3c, #c0392b); 
     color: #fff;
     border-radius: 8px;
     text-decoration: none;
@@ -76,7 +76,7 @@
     background: linear-gradient(135deg, #c0392b, #e74c3c);
     transform: translateY(-3px);
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
-    text-decoration: none; /* Prevent text underline */
+    text-decoration: none; 
     color: white;
 }
 

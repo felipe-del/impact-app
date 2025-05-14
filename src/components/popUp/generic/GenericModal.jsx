@@ -1,7 +1,29 @@
+/**
+ * GenericModal Component
+ * 
+ * This component renders a modal with a futuristic design.
+ * It includes a title, body text, and action buttons.
+ * It is used to display information and confirm actions in a user-friendly way.
+ * The modal can be customized with additional content.
+ */
 import { Modal, Box, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import ActionButtons from "../../button/ActionButtons.jsx";
 
+/**
+ * GenericModal component that displays a modal with a futuristic design.
+ * 
+ * @component
+ * @param {Object} props - Component props.
+ * @param {boolean} props.show - Indicates whether the modal is open or closed.
+ * @param {function} props.onHide - Function to call when the modal is closed.
+ * @param {string} props.title - The title of the modal.
+ * @param {string} props.bodyText - The body text of the modal.
+ * @param {string} [props.buttonText] - The text for the action button (default: 'Aceptar').
+ * @param {function} props.onButtonClick - Function to call when the action button is clicked.
+ * @param {ReactNode} [props.customContent] - Custom content to display in the modal.
+ * @returns {JSX.Element} The rendered GenericModal component.
+*/ 
 const GenericModal = ({
                           show,
                           onHide,
@@ -12,6 +34,10 @@ const GenericModal = ({
                           customContent,
                       }) => {
 
+    /**
+     * Handles the action button click event.
+     * @returns {Promise<void>} - A promise that resolves when the action is executed.
+     */
     const handleButtonClick = async () => {
         try {
             await onButtonClick();

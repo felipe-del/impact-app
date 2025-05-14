@@ -1,3 +1,10 @@
+/**
+ * BrandManagement Component
+ * 
+ * This component manages the brand data, allowing users to create, update, and delete brands.
+ * It uses Material React Table for displaying the data and MUI for styling.
+ * It also includes a modal for confirming deletion of brands.
+ */
 import useBrandData from "../../hooks/apiData/brandData/BrandData.jsx";
 import { useState, useMemo, useEffect } from "react";
 import { MaterialReactTable, useMaterialReactTable } from "material-react-table";
@@ -11,6 +18,12 @@ import GenericModal from "../../components/popUp/generic/GenericModal.jsx";
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import LoadingPointsSpinner from "../../components/spinner/loadingSpinner/LoadingPointsSpinner.jsx";
 
+/**
+ * BrandManagement component that manages brand data.
+ * 
+ * @component
+ * @returns {JSX.Element} - The BrandManagement component.
+ */
 const BrandManagement = () => {
     const { brands, isLoading, isError, refetch } = useBrandData();
     const [data, setData] = useState([]);
@@ -37,6 +50,13 @@ const BrandManagement = () => {
         { accessorKey: "name", header: "Nombre", enableEditing: true },
     ], []);
 
+    /**
+     * Handles the creation of a new brand.
+     * 
+     * @param {object} values - The values of the new brand.
+     * @param {object} table - The table instance.
+     * @returns {void}
+     */
     const handleCreateBrand = async ({ values, table }) => {
         if (!values.name) {
             toast.error("El nombre no puede estar vacío.");
@@ -52,6 +72,12 @@ const BrandManagement = () => {
         }
     };
 
+    /**
+     * Handles the deletion of a brand.
+     * 
+     * @param {void}
+     * @returns {void}
+     */
     const handleDeleteBrand = async () => {
         if (!rowToEdit?.original?.id) {
             toast.error("Error al eliminar: ID no encontrado.");
@@ -68,6 +94,13 @@ const BrandManagement = () => {
         }
     };
 
+    /**
+     * Handles the update of a brand.
+     * 
+     * @param {object} values - The updated values of the brand.
+     * @param {object} row - The row instance.
+     * @returns {void}
+     */
     const handleUpdateBrand = async ({ values, row }) => {
         if (!values.name || !row?.original?.id) {
             toast.error("Error al actualizar: datos inválidos.");
@@ -93,14 +126,14 @@ const BrandManagement = () => {
         enableEditing: true,
         editingMode: "row",
         enableExpandAll: false,
-        manualFiltering: true, //turn off built-in client-side filtering
-        manualPagination: true, //turn off built-in client-side pagination
-        manualSorting: true, //turn off built-in client-side sorting
+        manualFiltering: true, 
+        manualPagination: true,
+        manualSorting: true, 
         initialState: { density: "comfortable", pagination: { pageSize: 5 } },
         onCreatingRowSave: handleCreateBrand,
         onEditingRowSave: handleUpdateBrand,
         renderRowActions: ({ row, table }) => {
-            if (!row?.original) return null; // Evita errores si row no está bien definido
+            if (!row?.original) return null; 
 
             return (
                 <Box sx={{ display: 'flex', gap: '1rem' }}>

@@ -4,7 +4,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* Full height */
+    height: 100vh;
     padding: 20px;
     max-width: 800px;
     margin: 0 auto;
@@ -14,7 +14,7 @@
 /* Centering content with a shadowed box */
 .unauthorized-page-content {
     /*    background-color: #fff; */
-    background-color: rgba(255, 255, 255, 0.91); /* Slight transparency for better contrast */
+    background-color: rgba(255, 255, 255, 0.91); 
     padding: 30px;
     border-radius: 15px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -69,7 +69,7 @@
     background: linear-gradient(135deg, #c0392b, #e74c3c);
     transform: translateY(-3px);
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
-    text-decoration: none; /* Prevent text underline */
+    text-decoration: none; 
     color: white;
 }
 

@@ -88,30 +88,30 @@
 
 @media (max-width: 768px) {
     .entities {
-        flex-direction: column; /* Stack cards on smaller screens */
+        flex-direction: column; 
         gap: 20px;
     }
 
     .welcome-container {
-        padding: 20px; /* Reduce padding for smaller screens */
+        padding: 20px;
     }
 
     .title {
-        font-size: 1.5rem; /* Adjust title size for smaller screens */
+        font-size: 1.5rem; 
     }
 
     .paragraph {
-        font-size: 1rem; /* Adjust paragraph size for smaller screens */
+        font-size: 1rem;
     }
 }
 
 @media (max-width: 480px) {
     .title {
-        font-size: 1.2rem; /* Further reduce title size on very small screens */
+        font-size: 1.2rem; 
     }
 
     .paragraph {
-        font-size: 0.9rem; /* Further reduce paragraph size */
+        font-size: 0.9rem; 
     }
 }
 

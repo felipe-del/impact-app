@@ -1,8 +1,28 @@
+/**
+ * BannerActionButton Component
+ * 
+ * This component renders a button with an icon and a tooltip.
+ * When hovered, it expands to show the text and changes its background color.
+ * It is used to perform an action in a user interface.
+ */
+
 import {useState} from 'react';
 import {IconButton, Tooltip, Typography} from '@mui/material';
 import PropTypes from 'prop-types';
 import {gradientMapping} from "../../style/codeStyle.js";
 
+/**
+ * BannerActionButton component that displays an icon and expands to show text on hover.
+ * 
+ * @component
+ * @param {function} onClick - Function to call when the button is clicked.
+ * @param {node} icon - The icon to display inside the button.
+ * @param {string} text - The text to display when the button is hovered.
+ * @param {string} color - The color of the button (default: "primary").
+ * @param {object} style - Additional styles to apply to the button.
+ * @param {string} widthWhenIsHover - The width of the button when hovered (default: '100px').
+ * * @returns {JSX.Element} The rendered BannerActionButton component.
+ */
 const BannerActionButton = ({ onClick, icon, text, color = "primary", style = {}, widthWhenIsHover = '100px' }) => {
     const [hover, setHover] = useState(false);
 
