@@ -152,7 +152,7 @@ npm run dev
 | Maria González | Full Stack De | [maria.gonzalez.benavides@est.una.ac.cr](mailto:maria.gonzalez.benavides@est.una.ac.cr) |
 | Isaac Brenes | Full Stack Dev | [isaacfelibrenes1904@gmail.com](mailto:isaacfelibrenes1904@gmail.com) |
 | Dilan Hernández | Full Stack Dev | [dilan.hernandez.ulate@est.una.ac.cr](mailto:dilan.hernandez.ulate@est.una.ac.cr) |
-| Marco Leandro | Full Stack Dev | [marco.leandro.chacon@est.una.ac.cr](mailto:marco.leandro.chacon@est.una.ac.cr) |
+| Marco Leandro | Full Stack Dev | [marcoleandro2808@gmail.com](mailto:marcoleandro2808@gmail.com) |
 
 ## 📜 Licencia
 
