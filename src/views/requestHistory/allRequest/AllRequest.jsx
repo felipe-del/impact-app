@@ -317,7 +317,7 @@ const AllRequest = () => {
         initialState: {
             columnVisibility: {id: false},
             density: "comfortable",
-            pagination: {pageSize: 5},
+            pagination: {pageSize: 15},
         },
         muiDetailPanelProps: () => ({
             sx: (theme) => ({

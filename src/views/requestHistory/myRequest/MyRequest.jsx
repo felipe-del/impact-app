@@ -370,7 +370,7 @@ const MyRequest = () => {
                 eventDesc: false
             },
             density: 'comfortable',
-            pagination: {pageSize: 5},
+            pagination: {pageSize: 15},
         },
     });
 
@@ -385,7 +385,7 @@ const MyRequest = () => {
                 productId: false,
             },
             density: 'comfortable',
-            pagination: {pageSize: 5},
+            pagination: {pageSize: 15},
         },
     });
 
@@ -399,7 +399,7 @@ const MyRequest = () => {
                 id: false,
             },
             density: 'comfortable',
-            pagination: {pageSize: 5},
+            pagination: {pageSize: 15},
         },
     });
 
@@ -420,7 +420,6 @@ const MyRequest = () => {
     return (
         <>
             {loading && <LoadingPointsSpinner />}
-
             <MyRequestsBanner
                 title={
                     activeButton

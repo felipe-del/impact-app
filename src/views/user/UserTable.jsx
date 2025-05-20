@@ -407,7 +407,7 @@ const UserTable = () => {
             columnVisibility: { id: false },
             density: 'comfortable',
             pagination: {
-                pageSize: 5,
+                pageSize: 15,
             },
         },
     });

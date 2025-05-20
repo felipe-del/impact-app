@@ -126,10 +126,13 @@ const BrandManagement = () => {
         enableEditing: true,
         editingMode: "row",
         enableExpandAll: false,
-        manualFiltering: true, 
-        manualPagination: true,
-        manualSorting: true, 
-        initialState: { density: "comfortable", pagination: { pageSize: 5 } },
+        //manualFiltering: true,
+        //manualPagination: true,
+        //manualSorting: true,
+        initialState: {
+            density: "comfortable",
+            pagination: { pageSize: 15 }
+        },
         onCreatingRowSave: handleCreateBrand,
         onEditingRowSave: handleUpdateBrand,
         renderRowActions: ({ row, table }) => {
