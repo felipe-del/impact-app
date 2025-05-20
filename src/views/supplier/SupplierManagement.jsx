@@ -90,7 +90,11 @@ const SupplierManagement = () => {
     const validateSupplier = (values) => {
         const errors = [];
         if (!values.name) errors.push("El nombre no puede estar vacío.");
-        if (!values.phone) errors.push("El teléfono no puede estar vacío.");
+        if (!values.phone) {
+            errors.push("El teléfono no puede estar vacío.");
+        } else if (!/^\d{8}$/.test(values.phone)) {
+            errors.push("El teléfono debe contener exactamente 8 dígitos.");
+        }
         if (!values.email) errors.push("El email no puede estar vacío.");
         if (!values.address) errors.push("La dirección no puede estar vacía.");
         if (!values.entityTypeName) errors.push("El tipo de entidad no puede estar vacío.");
