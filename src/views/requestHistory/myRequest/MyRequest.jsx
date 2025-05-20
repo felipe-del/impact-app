@@ -8,7 +8,7 @@
  * It uses React hooks for state management and side effects.
  * It uses the react-hot-toast library for displaying notifications.
  */
-import {useState, useMemo} from "react";
+import {useState, useMemo, useEffect} from "react";
 import {useUser} from "../../../hooks/user/useUser.jsx";
 import {getAssetRequestByUser, cancelledAssetRequest} from "../../../api/assetRequest/assetRequest_API.js";
 import {getSpaceRandRByUser, cancelResAndReq} from "../../../api/SpaceRndR/spaceRndR_API.js";
@@ -416,6 +416,10 @@ const MyRequest = () => {
         overflow: 'hidden',
         whiteSpace: 'nowrap',
     };
+
+    useEffect(() => {
+        handleButtonClick("assetRequest");
+    }, []);
 
     return (
         <>
