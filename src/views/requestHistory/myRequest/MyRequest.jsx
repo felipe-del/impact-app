@@ -280,6 +280,7 @@ const MyRequest = () => {
         {accessorKey: 'user', header: 'Usuario Responsable'},
         {accessorKey: 'reason', header: 'Razón'},
         {accessorKey: 'createdAt', header: 'Fecha de Solicitud'},
+        {accessorKey: 'expirationDate', header: 'Fecha de Expiración'},
         {accessorKey: 'status', header: 'Estado'},
         {
             id: 'actions',
