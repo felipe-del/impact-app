@@ -301,12 +301,19 @@ const MyRequest = () => {
                 const today = dayjs();
                 const daysUntilExpiration = expirationDate.diff(today, 'day');
 
+                const hideCancelStatuses = [
+                    "Pendiente de renovacion.",
+                    "En espera de la renovación de otra solicitud."
+                ];
+
                 return (
                     <div style={{ display: 'flex', gap: '8px' }}>
-                      <CancelButton handleCancel={handlePreCancel} row={row} />
-                      {daysUntilExpiration >= 2 && row.original.status === "Ha sido aceptado." && (
-                        <RenewalButton renewAction={() => handlePreRenew(row)} row={row} />
-                      )}
+                        {!hideCancelStatuses.includes(row.original.status) && (
+                            <CancelButton handleCancel={handlePreCancel} row={row} />
+                        )}
+                        {daysUntilExpiration >= 2 && row.original.status === "Ha sido aceptado." && (
+                            <RenewalButton renewAction={() => handlePreRenew(row)} row={row} />
+                        )}
                     </div>
                   );
             }
